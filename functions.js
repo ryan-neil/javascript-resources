@@ -25,9 +25,9 @@ function grumpus() {
 	console.log('LEAVE ME ALONE!!!');
 }
 grumpus();
-// ugh...you again...
-// for the last time...
-// LEAVE ME ALONE!!!
+// -> ugh...you again...
+// -> for the last time...
+// -> LEAVE ME ALONE!!!
 
 /*
 ===================================
@@ -41,7 +41,7 @@ function rollDie() {
 	console.log(`Rolled: ${roll}`);
 }
 rollDie();
-// Rolled: 2
+// -> Rolled: 2
 
 // to roll multiple dice at once:
 function throwDice() {
@@ -50,9 +50,9 @@ function throwDice() {
 	rollDie();
 }
 throwDice();
-// Rolled: 3
-// Rolled: 5
-// Rolled: 1
+// -> Rolled: 3
+// -> Rolled: 5
+// -> Rolled: 1
 
 /*
 ===================================
@@ -65,7 +65,7 @@ Arguments
 function greet(person) {
 	console.log(`Hi, ${person}!`);
 }
-greet('Ryan'); // Hi, Ryan!
+greet('Ryan'); // -> Hi, Ryan!
 
 // Example 2: Modifying Dice Roll
 function rollDie() {
@@ -79,9 +79,9 @@ function throwDice(numRolls) {
 	}
 }
 throwDice(3);
-// Rolled: 4
-// Rolled: 6
-// Rolled: 2
+// -> Rolled: 4
+// -> Rolled: 6
+// -> Rolled: 2
 
 /*
 ===================================
@@ -93,7 +93,7 @@ Functions with Multiple Arguments
 function square(num) {
 	console.log(num * num);
 }
-square(4); // 16
+square(4); // -> 16
 // "num" is the "parameter"
 // "4" is the "argument"
 
@@ -101,14 +101,14 @@ square(4); // 16
 function sum(x, y) {
 	console.log(x + y);
 }
-sum(4, 5); // 9 * in this example, order does not matter
+sum(4, 5); // -> 9 * in this example, order does not matter
 
 // Example 2: Where order of arguments DOES matter
 function divide(a, b) {
 	console.log(a / b);
 }
-divide(1, 4); // 0.25
-divide(4, 1); // 4
+divide(1, 4); // -> 0.25
+divide(4, 1); // -> 4
 
 /*
 ===================================
@@ -118,27 +118,26 @@ Return Statement
 */
 
 const yell = 'I will end you!'.toUpperCase();
-yell; // I WILL END YOU!
+yell; // -> I WILL END YOU!
 
 const idx = [ 'a', 'b', 'c' ].indexOf('c');
-console.log(idx); // 2
+console.log(idx); // -> 2
 
 // Example 1:
 function add(x, y) {
 	return x + y;
 }
 const sum = add(4, 5);
-sum; // 9
+sum; // -> -> 9
 const answer = add(100, 200);
-answer; // 300
+answer; // -> -> 300
 
 // Example 2:
 function avg(x, y) {
 	return (x + y) / 2;
 }
-const avgMovieRating = avg(3, 4.8); // 3.9
-console.log(`Average Movie Rating: ${avgMovieRating}`);
-// Average Movie Rating: 3.9
+const avgMovieRating = avg(3, 4.8);
+console.log(`Average Movie Rating: ${avgMovieRating}`); // -> Average Movie Rating: 3.9
 
 // Example 2: function with an "if"
 function isPurple(color) {
@@ -149,8 +148,8 @@ function isPurple(color) {
 		return false;
 	}
 }
-isPurple('purple'); // true
-isPurple('blue'); // false
+isPurple('purple'); // -> true
+isPurple('blue'); // -> false
 
 // Example 2.1: We can shorten the return if it is a boolean
 function isPurple(color) {
@@ -166,7 +165,7 @@ function containsPurple(arr) {
 			return true;
 		}
 	}
-	return false; // **this "return" is placed outside the "if" statement or else the array would not be looped
+	return false; // **this "return" is placed outside the for loop or else the array would not be looped
 }
 containsPurple([ 'blue', 'red', 'magenta' ]); // true
 containsPurple([ 'blue', 'red', 'yellow' ]); // false

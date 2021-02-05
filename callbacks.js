@@ -370,5 +370,43 @@ const results = books.filter(book => {
 /*
 Every
 
-- Tests whether all elements in the array pass the provided function. It returns a Boolean value.
+- "Every" Tests whether all elements in the array pass the provided function. It returns a Boolean value.
+- "Every" accepts a callback which itself needs to be a boolean.
+- The function has to return "true" for every element in the parameter for "every" to return "true".
+
+Some
+
+- Similar to "every", but returns true if ANY of the array elements pass the test function.
+*/
+
+// Example 1: "every"
+const words = [ 'dog', 'dig', 'log', 'bag', 'wag' ];
+// if all the words end with the letter "g"
+const endsWithG = words.every(word => {
+	const lastLetter = word.length - 1;
+	return word[lastLetter] === 'g';
+});
+console.log(endsWithG); // -> true
+
+// Example 1: Breakdown
+const endsWithG = words.every(word => {
+	console.log(word.length); // -> 3
+	// this gets us the last index of the word in the array because .length gives us one more than the total index.
+	const lastLetter = word.length - 1; // -> 2
+	// this says, is word of index [2] equal to the letter 'g'?
+	return word[lastLetter] === 'g';
+});
+
+// Example 2: "some"
+const words = [ 'dog', 'dig', 'log', 'bag', 'wag' ];
+// Checking is some of the words start with the letter "d"
+const someStartWithD = words.some(word => {
+	return word[0] === 'd';
+});
+console.log(someStartWithD); // -> true
+
+/*
+Sort
+
+- 
 */
