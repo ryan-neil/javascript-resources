@@ -408,5 +408,139 @@ console.log(someStartWithD); // -> true
 /*
 Sort
 
-- 
+- Sort is one of the few callback array methods that mutates the array in place.
+
+Syntax:
+arr.sort(compareFunc(a, b));
+- If compareFunc(a, b) returns less than 0
+	- Sort a before b
+- If compareFunc(a, b) returns 0
+	- Leave a and b unchanged with respect to each other
+- If compareFunc(a, b) returns greater than 0
+	- Sort b before a
 */
+
+// Example 1:
+const prices = [ 400.5, 3000, 99.99, 35.99, 12.0, 9500 ];
+
+// the standard sort (sorting smallest to largest)
+const ascendingSort = prices.sort((a, b) => a - b); // -> [ 12, 35.99, 99.99, 400.5, 3000, 9500 ]
+
+// the standard sort (sorting largest to smallest)
+const decendingSort = prices.sort((a, b) => b - a); // -> [ 9500, 3000, 400.5, 99.99, 35.99, 12 ]
+
+// Example 1: Largest to Smallest Breakdown
+// in this example a = 400.5 and b = 3000 so we have 3000 - 400.5 this returns a positive number so we sort b before a or moving the larger numbers to the left side of the array.
+// ** This will also change the "prices" array **
+const ascendingSort = prices.sort((a, b) => b - a);
+
+// Example 2:
+const books = [
+	{
+		title   : 'Good Omens',
+		authors : [ 'Terry Pratchett', 'Neil Gaiman' ],
+		rating  : 4.25,
+		genres  : [ 'fiction', 'fantasy' ]
+	},
+	{
+		title   : 'Changing My Mind',
+		authors : [ 'Zadie Smith' ],
+		rating  : 3.83,
+		genres  : [ 'nonfiction', 'essays' ]
+	},
+	{
+		title   : 'Bone: The Complete Edition',
+		authors : [ 'Jeff Smith' ],
+		rating  : 4.42,
+		genres  : [ 'fiction', 'graphic novel', 'fantasy' ]
+	},
+	{
+		title   : 'American Gods',
+		authors : [ 'Neil Gaiman' ],
+		rating  : 4.11,
+		genres  : [ 'fiction', 'fantasy' ]
+	},
+	{
+		title   : 'A Gentleman in Moscow',
+		authors : [ 'Amor Towles' ],
+		rating  : 4.36,
+		genres  : [ 'fiction', 'historical fiction' ]
+	},
+	{
+		title   : 'The Name of the Wind',
+		authors : [ 'Patrick Rothfuss' ],
+		rating  : 4.54,
+		genres  : [ 'fiction', 'fantasy' ]
+	},
+	{
+		title   : 'The Overstory',
+		authors : [ 'Richard Powers' ],
+		rating  : 4.19,
+		genres  : [ 'fiction', 'short stories' ]
+	},
+	{
+		title   : 'The Way of Kings',
+		authors : [ 'Brandon Sanderson' ],
+		rating  : 4.65,
+		genres  : [ 'fantasy', 'epic' ]
+	},
+	{
+		title   : 'Lord of the flies',
+		authors : [ 'William Golding' ],
+		rating  : 3.67,
+		genres  : [ 'fiction' ]
+	}
+];
+// sort by rating
+// * we can't sort by just "a" and "b" because they're both "objects".
+books.sort((a, b) => a.rating - b.ratings); // -> this returns lowest rating book object or "element" first.
+
+/*
+Reduce
+
+- Executes a reducer function on each element of the array, resulting in a single value.
+- We're taking a bunch of values and reducing them down to a single value.
+- It could be tallying votes or tallying data in an array.
+*/
+
+// Example 1: Summing an array
+[ 3, 5, 7, 9, 11 ].reduce((accumulator, currentValue) => {
+	return accumulator + currentValue;
+});
+// -> 35
+// Breakdown of how "reduce" works under the hood:
+// first call -> 3 + 5 = 8
+// second call -> 8 + 7 = 15
+// third call -> 15 + 9 = 24
+// fourth call -> 24 + 11 = 35
+
+// Example 2: Multiply all numbers together
+const nums = [ 3, 4, 5, 6, 7 ];
+
+nums.reduce((total, currentVal) => {
+	return total * currentVal;
+});
+// -> 2520
+
+// Example 2: Finding the highest grade
+const grades = [ 87, 64, 96, 92, 88, 99, 73, 70, 64 ];
+
+const highestGrade = grades.reduce((max, currVal) => {
+	if (currVal < max) return currVal;
+	return max;
+});
+// -> 99
+// Breakdown:			max		currVal		return
+// first call -> 	87		64				87
+// second call -> 87		96				96
+// third call -> 	96		92				96 ... etc.
+
+// Example 2.1: We can re-write the above block with the built in "Math.max" function
+const grades = [ 87, 64, 96, 92, 88, 99, 73, 70, 64 ];
+
+const highestGrade = grades.reduce((max, currVal) => {
+	return Math.max(max, currVal);
+}); // -> 99
+const lowestGrade = grades.reduce((max, currVal) => {
+	return Math.min(max, currVal);
+}); // -> 64
