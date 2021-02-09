@@ -394,7 +394,7 @@ const endsWithG = words.every(word => {
 	// this gets us the last index of the word in the array because .length gives us one more than the total index.
 	const lastLetter = word.length - 1; // -> 2
 	// this says, is word of index [2] equal to the letter 'g'?
-	return word[lastLetter] === 'g';
+	return word[lastLetter] === 'g'; // -> true
 });
 
 // Example 2: "some"
@@ -414,10 +414,10 @@ Syntax:
 arr.sort(compareFunc(a, b));
 - If compareFunc(a, b) returns less than 0
 	- Sort a before b
-- If compareFunc(a, b) returns 0
-	- Leave a and b unchanged with respect to each other
 - If compareFunc(a, b) returns greater than 0
 	- Sort b before a
+- If compareFunc(a, b) returns 0
+	- Leave a and b unchanged with respect to each other
 */
 
 // Example 1:
@@ -432,7 +432,7 @@ const decendingSort = prices.sort((a, b) => b - a); // -> [ 9500, 3000, 400.5, 9
 // Example 1: Largest to Smallest Breakdown
 // in this example a = 400.5 and b = 3000 so we have 3000 - 400.5 this returns a positive number so we sort b before a or moving the larger numbers to the left side of the array.
 // ** This will also change the "prices" array **
-const ascendingSort = prices.sort((a, b) => b - a);
+const ascendingSort = prices.sort((a, b) => b - a); // -> [ 9500, 3000, 400.5, 99.99, 35.99, 12 ]
 
 // Example 2:
 const books = [
@@ -505,9 +505,9 @@ Reduce
 
 // Example 1: Summing an array
 [ 3, 5, 7, 9, 11 ].reduce((accumulator, currentValue) => {
-	return accumulator + currentValue;
+	return accumulator + currentValue; // -> 35
 });
-// -> 35
+
 // Breakdown of how "reduce" works under the hood:
 // first call -> 3 + 5 = 8
 // second call -> 8 + 7 = 15
@@ -518,18 +518,17 @@ Reduce
 const nums = [ 3, 4, 5, 6, 7 ];
 
 nums.reduce((total, currentVal) => {
-	return total * currentVal;
+	return total * currentVal; // -> 2520
 });
-// -> 2520
 
 // Example 2: Finding the highest grade
 const grades = [ 87, 64, 96, 92, 88, 99, 73, 70, 64 ];
 
 const highestGrade = grades.reduce((max, currVal) => {
 	if (currVal < max) return currVal;
-	return max;
+	return max; // -> 99
 });
-// -> 99
+
 // Breakdown:			max		currVal		return
 // first call -> 	87		64				87
 // second call -> 87		96				96
@@ -539,8 +538,126 @@ const highestGrade = grades.reduce((max, currVal) => {
 const grades = [ 87, 64, 96, 92, 88, 99, 73, 70, 64 ];
 
 const highestGrade = grades.reduce((max, currVal) => {
-	return Math.max(max, currVal);
-}); // -> 99
-const lowestGrade = grades.reduce((max, currVal) => {
-	return Math.min(max, currVal);
-}); // -> 64
+	return Math.max(max, currVal); // -> 99
+});
+const lowestGrade = grades.reduce((min, currVal) => {
+	return Math.min(min, currVal); // -> 64
+});
+
+/*
+Reduce continued...
+*/
+
+// Example 1: Tallying Logic/Breakdown
+const votes = [ 'y', 'y', 'n', 'y', 'n', 'y', 'y', 'n' ];
+const results = votes.reduce((tally, val) => {
+	// if the tally value ("y" or "n") is already in there we increment by 1.
+	if (tally[val]) {
+		tally[val]++;
+		// if the tally value ("y" or "n") has not been seen yet we set it to "1".
+	} else {
+		tally[val] = 1;
+	}
+	return tally; // -> { y: 5, n: 3 }
+}, {});
+
+// Breakdown:				tally				val			return
+// first call -> 		-						'y'			{ }
+// second call -> 	{y:1}				'y'			{y:2}
+// third call -> 		{y:2}				'n'			{y:2, n:1}
+// fourth call -> 	{y:2, n:1}	'y'			{y:3, n:1}
+
+// Example 1.1: Tallying Shorthand
+const votes = [ 'y', 'y', 'n', 'y', 'n', 'y', 'y', 'n' ];
+
+const results = votes.reduce((tally, vote) => {
+	tally[vote] = (tally[vote] || 0) + 1;
+	return tally;
+}, {});
+console.log(results); // -> { y: 5, n: 3 }
+
+// Example 2: Grouping Books by Rating
+const books = [
+	{
+		title   : 'Good Omens',
+		authors : [ 'Terry Pratchett', 'Neil Gaiman' ],
+		rating  : 4.25,
+		genres  : [ 'fiction', 'fantasy' ]
+	},
+	{
+		title   : 'Changing My Mind',
+		authors : [ 'Zadie Smith' ],
+		rating  : 3.83,
+		genres  : [ 'nonfiction', 'essays' ]
+	},
+	{
+		title   : 'Bone: The Complete Edition',
+		authors : [ 'Jeff Smith' ],
+		rating  : 4.42,
+		genres  : [ 'fiction', 'graphic novel', 'fantasy' ]
+	},
+	{
+		title   : 'American Gods',
+		authors : [ 'Neil Gaiman' ],
+		rating  : 4.11,
+		genres  : [ 'fiction', 'fantasy' ]
+	},
+	{
+		title   : 'A Gentleman in Moscow',
+		authors : [ 'Amor Towles' ],
+		rating  : 4.36,
+		genres  : [ 'fiction', 'historical fiction' ]
+	},
+	{
+		title   : 'The Name of the Wind',
+		authors : [ 'Patrick Rothfuss' ],
+		rating  : 4.54,
+		genres  : [ 'fiction', 'fantasy' ]
+	},
+	{
+		title   : 'The Overstory',
+		authors : [ 'Richard Powers' ],
+		rating  : 4.19,
+		genres  : [ 'fiction', 'short stories' ]
+	},
+	{
+		title   : 'A Truly Horrible Book',
+		authors : [ 'Xavier Time' ],
+		rating  : 2.18,
+		genres  : [ 'fiction', 'trash' ]
+	},
+	{
+		title   : 'The Way of Kings',
+		authors : [ 'Brandon Sanderson' ],
+		rating  : 4.65,
+		genres  : [ 'fantasy', 'epic' ]
+	},
+	{
+		title   : 'Lord of the flies',
+		authors : [ 'William Golding' ],
+		rating  : 3.67,
+		genres  : [ 'fiction' ]
+	}
+];
+
+const groupedByRating = books.reduce((groupedBooks, book) => {
+	const key = Math.floor(book.rating);
+	if (!groupedBooks[key]) groupedBooks[key] = [];
+	groupedBooks[key].push(book);
+	return groupedBooks;
+}, {});
+console.log(groupedByRating);
+
+// Example 2 Logic/Breakdown
+const groupedByRating = books.reduce((groupedBooks, book) => {
+	// we remove the decimal of the book rating
+	const key = Math.floor(book.rating);
+	// we then check if there is a key in "groupedBooks"
+	// if there isn't a key we set it equal to an empty array
+	if (!groupedBooks[key]) groupedBooks[key] = [];
+	// we then push the whole book into the array
+	groupedBooks[key].push(book);
+
+	return groupedBooks;
+}, {});
+console.log(groupedByRating);
