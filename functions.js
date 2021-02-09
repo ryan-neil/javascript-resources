@@ -336,9 +336,7 @@ function getCard() {
 	// Math.floor() removes all decimals and returns a number from 0 to 12.
 	Math.floor(Math.random() * valuesArr.length);
 	// Assign a variable to the equation
-	const valuesIndex = Math.floor(
-		Math.random() * valuesArr.length
-	);
+	const valuesIndex = Math.floor(Math.random() * valuesArr.length);
 	// To select a random value from the array we do:
 	valuesArr[valuesIndex];
 	// We assign a variable (value) to values[valueIndex]
@@ -346,9 +344,7 @@ function getCard() {
 
 	// Now we need to do the same thing for the suits
 	const suitsArr = [ 'clubs', 'spades', 'hearts', 'diamonds' ];
-	const suitsIndex = Math.floor(
-		Math.random() * suitsArr.length
-	);
+	const suitsIndex = Math.floor(Math.random() * suitsArr.length);
 	const suit = suitsArr[suitsIndex];
 
 	// Now we need to return an object
@@ -670,3 +666,33 @@ isNinties(2021); // -> false
 const isNiceWeather = makeBetweenFunc(65, 90);
 isNiceWeather(73); // -> true
 isNiceWeather(98); // -> false
+
+/*
+==========================================
+Default Function Parameters
+==========================================
+- The order MATTERS for default parameters
+*/
+// OLD default param syntax
+function multiply(x, y) {
+	if (typeof y === 'undefined') {
+		y = 1;
+	}
+	return x * y;
+}
+multiply(4, 5); // -> 20
+multiply(4); // -> 4
+
+// NEW default param syntax
+function multiply(a, b = 1) {
+	return a * b;
+}
+multiply(4); // -> 4
+multiply(4, 5); // -> 20
+
+// Example 1:
+const greet = (person, greeting = 'Hi') => {
+	console.log(`${greeting}, ${person}!`);
+};
+greet('Tim'); // -> Hi, Tim
+greet('Tim', 'Yoo'); // -> Yoo, Tim
