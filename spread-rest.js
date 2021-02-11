@@ -1,4 +1,9 @@
 /*
+JavaScript Notes and Documentation
+Spread and Rest:
+*/
+
+/*
 ==========================================
 Spread
 ==========================================
@@ -23,33 +28,33 @@ Math.max(...nums); // -> 9 (this is the same as calling: Math.max(9, 3, 2, 8))
 
 // Example 1:
 function giveMeFour(a, b, c, d) {
-	console.log('a', a);
-	console.log('b', b);
-	console.log('c', c);
-	console.log('d', d);
+	console.log('a:', a);
+	console.log('b:', b);
+	console.log('c:', c);
+	console.log('d:', d);
 }
 const colors = [ 'red', 'orange', 'yellow', 'green' ];
 // without spread
 giveMeFour(colors);
-// -> a [ 'red', 'orange', 'yellow', 'green' ]
-// -> b undefined
-// -> c undefined
-// -> d undefined
+// -> a: [ 'red', 'orange', 'yellow', 'green' ]
+// -> b: undefined
+// -> c: undefined
+// -> d: undefined
 
 // with spread
 giveMeFour(...colors);
-// -> a red
-// -> b orange
-// -> c yellow
-// -> d green
+// -> a: red
+// -> b: orange
+// -> c: yellow
+// -> d: green
 
 // spread with a string
 const str = 'GOAT';
 giveMeFour(...str);
-// -> a G
-// -> b O
-// -> c A
-// -> d T
+// -> a: G
+// -> b: O
+// -> c: A
+// -> d: T
 
 /*
 Spread in Array Literals
@@ -130,9 +135,84 @@ const houseCatClone = {
 
 /*
 ==========================================
+The Arguments Object
+==========================================
+- Available inside every function.
+- It's an array-like object
+	* Has a length property
+	* Does not have array methods like push/pop
+- Contains all the arguments passed to the function
+- Not available inside of arrow functions
+*/
+
+// old method to sum all numbers
+function sumAll() {
+	let total = 0;
+	for (let i = 0; i < arguments.length; i++) {
+		total += arguments[i];
+	}
+	return total;
+}
+sumAll(8, 4, 6, 3, 4); // -> 25
+sumAll(2, 3); // -> 5
+
+// reduce method
+function sumAll() {
+	// for this method we must turn arguments into an array if we want to use array methods, like .reduce()
+	const argsArr = [ ...arguments ];
+	return argsArr.reduce((total, currVal) => {
+		return total + currVal;
+	});
+}
+sumAll(2, 2, 2); // -> 6
+
+/*
+==========================================
 Rest
 ==========================================
 - Collects arguments or data down into a single array.
 - Almost like the opposite of "spread".
 - Primarily used when we want to make functions that accept an unlimited number of arguments or a variable number of arguments.
 */
+function sumAll(...nums) {
+	let total = 0;
+	for (let n of nums) {
+		total += n;
+	}
+	return total;
+}
+sumAll(1, 2); // -> 3
+
+// .reduce() method
+function sumAll(...nums) {
+	// this time we do not need to make it an array because ...nums already does this for us
+	return nums.reduce((total, currVal) => {
+		return total + currVal;
+	});
+}
+sumAll(3, 4); // -> 7
+
+// Example 1:
+function fullName(first, last, ...titles) {
+	console.log('first:', first);
+	console.log('last:', last);
+	console.log('titles:', titles);
+}
+fullName('tom', 'jones', 'III', 'order of the phoenix');
+// -> first: tom
+// -> last: jones
+// -> titles: [ "III", "order of the phoenix" ]
+// ** after "tom" and "jones" the rest of the parameters get caught in "...titles" **
+
+// Example 2: Multiply all numbers of an array
+// implicit method
+const multiplyFunc = (...nums) =>
+	nums.reduce((total, currVal) => {
+		return total * currVal;
+	});
+multiplyFunc(10, 10); // -> 100
+// or
+// double implicit method (one line)
+const multiplyFunc = (...nums) =>
+	nums.reduce((total, currVal) => total * currVal);
+multiplyFunc(2, 10); // -> 20
