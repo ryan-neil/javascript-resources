@@ -18,5 +18,5 @@
 `/src/js/` contains all JavaScript files. \
 `/src/js/challenges/` contains some example JavaScript challenges for practice. \
 
-# Resources
+# 🔗 Resources
 - [JavaScript MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
