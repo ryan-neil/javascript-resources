@@ -14,9 +14,9 @@ This is a collection of JavaScript resources and code examples of the main featu
 10. Spread and Rest
 
 ## Repo Folder Structure
-`/src/` contains the source files for the Github repo. \
-`/src/js/` contains all JavaScript files. \
-`/src/js/challenges/` contains some example JavaScript challenges for practice. \
+`/src/` - contains the source files for the Github repo.
+`/src/js/` - contains all JavaScript files.
+`/src/js/challenges/` - contains some example JavaScript challenges for practice.
 
 ## Resources
 - [JavaScript MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
