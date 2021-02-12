@@ -7,10 +7,11 @@ Objects:
 =================================
 Objects
 =================================
-Objects are collections of properties. Properties are a key value pair. Rather than accessing data using an index, we use custom keys.
-An object, compared to an array, is more like a blob that holds different pieces of data. Key and value pairs where there's not necessarily and order to them. It's more about storing pairs of information.
-We do not use a number to access our data out like with an array, we would directly call for the data we need (city, age, zip, etc.)
-Example of Key-Value pairs:
+* Objects are collections of properties. Properties are a key value pair. Rather than accessing data using an index, we use custom keys.
+* An object, compared to an array, is more like a blob that holds different pieces of data. Key and value pairs where there's not necessarily and order to them. It's more about storing pairs of information.
+* We do not use a number to access our data out like with an array, we would directly call for the data we need (city, age, zip, etc.)
+
+* Example of Key-Value pairs:
 username: --> 'crazyCatLady' (username would be a "key" and "crazyCatLady" would be a value).
 upvotes: --> 7 (upvotes would be a "key" and 7 would be a value).
 text: --> 'great post!' (text would be a "key" and "great post!" would be a value).
@@ -49,9 +50,12 @@ let lucyTotalSteps = 290000;
 let lucyTotalFloors = 1214;
 let lucyTotalMiles = 100; // etc.
 
-// =================================
-// Object Literals
-// =================================
+/*
+=================================
+Object Literals
+=================================
+*/
+
 // Example 1: Syntax
 const fitBitData = {
 	totalSteps       : 308727,
@@ -93,9 +97,11 @@ let mysteryColor = 'yellow';
 palette[mysteryColor]; // "#f9ca24"
 palette.mysteryColor; // undefined
 
-// ==============================================
-// Updating and Adding Properties to an Object
-// ==============================================
+/*
+=================================
+Updating and Adding Properties to an Object
+=================================
+*/
 
 const fitBitData = {
 	totalSteps       : 308727,
@@ -120,9 +126,12 @@ userReview.mrSmith78 = 3.5; // This takes the "mrSmith78" key and gives it a val
 
 console.log(userReview); // { queenBee49: 4, mrSmith78: 3.5 }
 
-// =================================
-// Nested Arrays and Objects
-// =================================
+/*
+=================================
+Nested Arrays and Objects
+=================================
+*/
+
 // Example Syntax 1: Shopping Cart
 const shoppingCart = [
 	{
@@ -175,10 +184,13 @@ const game = {
 	board   : [ [ 'O', null, 'X' ], [ 'X', 'O', 'X' ], [ null, 'O', 'X' ] ]
 };
 
-// =================================
-// Objects and Reference Types
-// =================================
-// Object Reference Types work the same exact way as Array Reference Types.
+/*
+=================================
+Objects and Reference Types
+=================================
+- Object Reference Types work the same exact way as Array Reference Types.
+*/
+
 const palette = {
 	red    : '#eb4d4b',
 	yellow : '#f9ca24',
@@ -190,9 +202,12 @@ palette2.green = '#3a8a36'; // This updates "palette" as well as "palette2" with
 
 console.log(palette2); // { red: "#eb4d4b", yellow: "#f9ca24", blue: "#30336b", green: "#3a8a36" }
 
-// =================================
-// Array and Object Equality
-// =================================
+/*
+=================================
+Array and Object Equality
+=================================
+*/
+
 let nums = [ 1, 2, 3 ];
 let mystery = [ 1, 2, 3 ];
 
@@ -222,3 +237,26 @@ if (!user.notifications.length) {
 	console.log('No new notifications!'); // This works because .length would give us "0" in this scenario because the array is empty and "0" is falsy. So this is saying if there is no length we get no new notifications.
 }
 // ** We cannot easily compare values in arrays without looping through **
+
+/*
+=================================
+Shorthand Properties
+=================================
+*/
+
+// old method
+const getStats = arr => {
+	const max = Math.max(...arr);
+	const min = Math.min(...arr);
+	const sum = arr.reduce((sum, r) => sum + r);
+	const avg = sum / arr.length;
+	return {
+		max : max,
+		min : min,
+		sum : sum,
+		avg : avg
+	};
+};
+const reviews = [ 4.5, 5.0, 3.44, 2.8, 3.5, 4.0, 3.5 ];
+
+const stats = getStats(reviews);
