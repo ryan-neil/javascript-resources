@@ -66,8 +66,8 @@ const fitBitData = {
 };
 
 // accessing the data using "dot" syntax
-fitBitData.totalFloors; // 1814
-fitBitData.totalMiles; // 211
+fitBitData.totalFloors; // -> 1814
+fitBitData.totalMiles; // -> 211
 
 // ** All keys are converted to strings **
 // "key" : "value"
@@ -79,7 +79,7 @@ const numbers = {
 
 // numbers.100; This is a SyntaxError!!!
 // Correct syntax
-numbers[100]; // "one hundred"
+numbers[100]; // -> "one hundred"
 
 // Example 3: Using a dynamic value (variable) to access data from an object
 const palette = {
@@ -88,14 +88,14 @@ const palette = {
 	blue   : '#30336b'
 };
 
-palette.blue; // "#30336b"
-palette.red; // "#eb4d4b"
+palette.blue; // -> "#30336b"
+palette.red; // -> "#eb4d4b"
 
 let mysteryColor = 'yellow';
 
 // ** when using a variable you MUST use square brackets. "Dot" syntax will not work **
-palette[mysteryColor]; // "#f9ca24"
-palette.mysteryColor; // undefined
+palette[mysteryColor]; // -> "#f9ca24"
+palette.mysteryColor; // -> undefined
 
 /*
 =================================
@@ -124,7 +124,7 @@ const userReview = {};
 userReview['queenBee49'] = 4.0; // This takes the "queenBee49" key and gives it a value of 4.0
 userReview.mrSmith78 = 3.5; // This takes the "mrSmith78" key and gives it a value of 3.5
 
-console.log(userReview); // { queenBee49: 4, mrSmith78: 3.5 }
+console.log(userReview); // -> { queenBee49: 4, mrSmith78: 3.5 }
 
 /*
 =================================
@@ -168,8 +168,8 @@ student.exams.average = '';
 // Step 2: Add midterm and final together and divide by 2. Assign the new average value to "average".
 student.exams.average = (student.exams.midterm + student.exams.final) / 2;
 
-console.log(student.exams.average); // 90
-console.log(student.exams); // {midterm: 92, final: 88, average: 90}
+console.log(student.exams.average); // -> 90
+console.log(student.exams); // -> {midterm: 92, final: 88, average: 90}
 
 // Example 3: Tic-Tac-Toe Game
 const game = {
@@ -200,7 +200,7 @@ const palette = {
 const palette2 = palette;
 palette2.green = '#3a8a36'; // This updates "palette" as well as "palette2" with green since we assigned "palette2" = "palette".
 
-console.log(palette2); // { red: "#eb4d4b", yellow: "#f9ca24", blue: "#30336b", green: "#3a8a36" }
+console.log(palette2); // -> { red: "#eb4d4b", yellow: "#f9ca24", blue: "#30336b", green: "#3a8a36" }
 
 /*
 =================================
@@ -258,5 +258,158 @@ const getStats = arr => {
 	};
 };
 const reviews = [ 4.5, 5.0, 3.44, 2.8, 3.5, 4.0, 3.5 ];
-
 const stats = getStats(reviews);
+console.log(stats); // -> { max: 5, min: 2.8, sum: 26.74, avg: 3.82 }
+
+// new shorthand method
+const getStats = arr => {
+	const max = Math.max(...arr);
+	const min = Math.min(...arr);
+	const sum = arr.reduce((sum, r) => sum + r);
+	const avg = sum / arr.length;
+	return {
+		// we take the variables that we have and use them to both set the key name and the corresponding value
+		max,
+		min,
+		sum,
+		avg
+	};
+};
+const reviews = [ 4.5, 5.0, 3.44, 2.8, 3.5, 4.0, 3.5 ];
+const stats = getStats(reviews);
+
+// Example 1: Get Card Challenge
+function pick(arr) {
+	// return random element from array
+	const randomElement = Math.floor(Math.random() * arr.length);
+	return arr[randomElement];
+}
+
+function getCard() {
+	const values = [
+		'2',
+		'3',
+		'4',
+		'5',
+		'6',
+		'7',
+		'8',
+		'9',
+		'10',
+		'J',
+		'Q',
+		'K',
+		'A'
+	];
+	const suits = [ 'clubs', 'spades', 'hearts', 'diamonds' ];
+	const value = pick(values);
+	const suit = pick(suits);
+	return {
+		value,
+		suit
+	};
+}
+
+/*
+=================================
+Computed Properties
+=================================
+- "Computed Properties" are just an improvement for the object literal syntax where we can add a property with a dynamic key.
+*/
+const role = 'host';
+const person = 'Katie Neil';
+const role2 = 'Director';
+const person2 = 'Ryan Neil';
+
+// old method
+const team = {
+	role : person
+};
+console.log(team); // -> { role: "Katie Neil" } (we don't want this)
+
+// new method with computed properties
+const team = {
+	[role]  : person,
+	[role2] : person2
+};
+console.log(team); // -> { host: "Katie Neil", Director: "Ryan Neil" }
+// ** we can use a variable as a key name in an object literal property **
+
+// Example 2: A function that accepts an object and returns a copy of that object with a new property added in
+const role = 'host';
+const person = 'Katie Neil';
+const role2 = 'Director';
+const person2 = 'Ryan Neil';
+
+const team = {
+	[role]  : person,
+	[role2] : person2
+};
+
+// not using computed properties
+function addProp(obj, key, val) {
+	const objClone = { ...obj };
+	objClone[key] = val;
+	return objClone;
+}
+const result = addProp(team, 'happy', ':)');
+console.log(result);
+// ->  { host: "Katie Neil", Director: "Ryan Neil", happy: ":)" }
+
+// using computed properties
+const addProp = (obj, key, val) => {
+	return {
+		...obj,
+		[key] : val
+	};
+};
+const result = addProp(team, 'excited', ':)');
+console.log(result);
+// ->  { host: "Katie Neil", Director: "Ryan Neil", excited: ":)" }
+
+/*
+=================================
+Adding Methods to Objects
+=================================
+- We can add functions as properties on objects. We call these "methods".
+- The most basic reason we would do this is to simply group functions together.
+*/
+const mathFuncs = {
+	add      : function(x, y) {
+		return x + y;
+	},
+	multiply : function(x, y) {
+		return x * y;
+	},
+	divide   : function(x, y) {
+		return x / y;
+	},
+	square   : function(x) {
+		return x * x;
+	}
+};
+mathFuncs.add(2, 3); // -> 5
+mathFuncs.multiply(2, 3); // -> 6
+mathFuncs.divide(10, 5); // -> 2
+mathFuncs.square(2); // -> 4
+
+/*
+=================================
+Method Shorthand Syntax
+=================================
+- We do this so often that there's a new shorthand way of adding methods.
+*/
+const mathFuncs = {
+	blah     : 'Hi!',
+	// this shorthand method takes "add" as the key automatically
+	add(x, y) {
+		return x + y;
+	},
+	multiply(x, y) {
+		return x * y;
+	}
+};
+console.log(mathFuncs);
+// -> add: function add(x,y)
+// -> blah: "Hi!"
+// -> multiply: function multiply(x,y)
