@@ -152,3 +152,63 @@ const person = {
 console.log(person.laugh());
 // -> Window
 // -> undefined says HAHAHA!
+
+// Example 2: The annoyifier
+const annoyer = {
+	phrases    : [
+		'literally',
+		'cray cray',
+		"I can't even",
+		'Totes!',
+		'YOLO',
+		"Can't Stop, Won't Stop"
+	],
+	// picking random phrases function
+	pickPhrase() {
+		// reference the "annoyer" object with "this"
+		const phrases = this.phrases;
+		// select a random phrase from the "phrases" array
+		const idx = Math.floor(Math.random() * phrases.length);
+		// access it out of phrases using that index
+		return phrases[idx];
+	},
+	start() {
+		// setInterval() syntax: setInterval(func, time)
+		// we need make setInterval() an arrow function for this to work
+		setInterval(() => {
+			console.log(this.pickPhrase());
+		}, 3000);
+	}
+};
+// -> Totes!
+// -> YOLO
+// -> I can't even ... etc.
+// ** sometimes arrow functions are better to use when we don't want a new "this" but the other side of that is they suck as regular methods on an object because we don't get access to "this" referencing the object **
+
+// Example 2.1: Stopping the interval
+const annoyer = {
+	phrases    : [
+		'literally',
+		'cray cray',
+		"I can't even",
+		'Totes!',
+		'YOLO',
+		"Can't Stop, Won't Stop"
+	],
+	pickPhrase() {
+		const phrases = this.phrases;
+		const idx = Math.floor(Math.random() * phrases.length);
+		return phrases[idx];
+	},
+	start() {
+		// assign setInterval to a variable [timerId]
+		this.timerId = setInterval(() => {
+			console.log(this.pickPhrase());
+		}, 3000);
+	},
+	stop() {
+		// call setInterval() variable [timerId] here
+		clearInterval(this.timerId);
+		console.log('All done!');
+	}
+};
