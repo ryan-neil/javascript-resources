@@ -1,16 +1,12 @@
 /*
-==========================================
-Function Challenge 1: Password Validator
-==========================================
-Write a isValidPassword function that accepts 2 arguments: password and username.
-Password must:
-- be at least 8 characters
-- cannot contain spaces
-- cannot contain the username
-If all requirements are met, return true
-Otherwise: false
+Colt Steele Challenges
 */
 
+/*
+==========================================
+Function Challenge 1: Password Validator Answer
+==========================================
+*/
 function isValidPassword(password, username) {
 	// finding the length of the password
 	if (password.length < 8) {
@@ -44,12 +40,9 @@ function isValidPassword(password, username) {
 
 /*
 ==========================================
-Function Challenge 2: Average of an Array
+Function Challenge 2: Average of an Array Answer
 ==========================================
-Write a function to find the average value in an array of numbers.
-let testScores = [ 86, 92, 78, 82 ];
 */
-
 function avg(arr) {
 	let total = 0;
 
@@ -67,14 +60,9 @@ avg(testScores); // 84.5
 
 /*
 ==========================================
-Function Challenge 3: Pangrams
+Function Challenge 3: Pangrams Answer
 ==========================================
-A pangram is a sentence that contains every letter of the alphabet, like:
-"The quick brown fox jumps over the lazy dog"
-
-Write a function called isPangram, which checks to see if a given sentence contains every letter of the alphabet. Make sure you ignore string casing.
 */
-
 function isPangram(sentence) {
 	// create a variable to hold the alphabet
 	let alph = 'abcdefghijklmnopqrstuvwxyz';
@@ -122,22 +110,9 @@ isPangram('Pack my Box with Five Dozen Liquor Jugs.'); // true
 
 /*
 ==========================================
-Function Challenge 4: Get Playing Card
+Function Challenge 4: Get Playing Card Answer
 ==========================================
-Write a getCard() function which returns a random playing card object, like:
-{
-	value: 'K'
-	suit: 'clubs'
-}
-
-Pick a random value from:
-2,3,4,5,6,7,8,9,10,J,Q,K,A
-Pick a random suit from:
-'clubs', 'spades', 'hearts', 'diamonds'
-
-Return both in an object
 */
-
 function getCard() {
 	// We turn the values into an array and assign it a variable
 	const valuesArr = [
@@ -164,9 +139,7 @@ function getCard() {
 	// Math.floor() removes all decimals and returns a number from 0 to 12.
 	Math.floor(Math.random() * valuesArr.length);
 	// Assign a variable to the equation
-	const valuesIndex = Math.floor(
-		Math.random() * valuesArr.length
-	);
+	const valuesIndex = Math.floor(Math.random() * valuesArr.length);
 	// To select a random value from the array we do:
 	valuesArr[valuesIndex];
 	// We assign a variable (value) to values[valueIndex]
@@ -174,9 +147,7 @@ function getCard() {
 
 	// Now we need to do the same thing for the suits
 	const suitsArr = [ 'clubs', 'spades', 'hearts', 'diamonds' ];
-	const suitsIndex = Math.floor(
-		Math.random() * suitsArr.length
-	);
+	const suitsIndex = Math.floor(Math.random() * suitsArr.length);
 	const suit = suitsArr[suitsIndex];
 
 	// Now we need to return an object
@@ -262,33 +233,22 @@ function getCard() {
 }
 getCard();
 
-/* 
-==========================================
-Looping Challenge 1: Looping a Triangle
-==========================================
-
-Write a loop that makes seven calls to console.log to output the following triangle:
-#
-##
-###
-####
-#####
-######
-#######
+/*
+Eloquent JavaScript Challenges
 */
 
-for (let line = '#'; line.length < 8; line += '#')
-	console.log(line);
+/* 
+==========================================
+Looping Challenge 1: Looping a Triangle Answer
+==========================================
+*/
+for (let line = '#'; line.length < 8; line += '#') console.log(line);
 
 /* 
 ==========================================
 Looping Challenge 2: FizzBuzz
 ==========================================
-Write a program that uses console.log to print all the numbers from 0 to 100, with two exceptions. For numbers divisible by 3, print "Fizz" instead of the number, and for numbers divisible by 5 (and not 3), print "Buzz" instead.
-
-When you have that working, modify your program to print "FizzBuzz" for numbers that are divisible by both 3 and 5 (and still print "Fizz" or "Buzz" for numbers divisible by only one of those).
 */
-
 for (let n = 1; n <= 100; n++) {
 	let output = '';
 	if (n % 3 === 0) {
@@ -305,17 +265,130 @@ console.log('Loop is done!');
 
 /* 
 ==========================================
-Looping Challenge 3: Chessboard
+Looping Challenge 3: Chessboard Answer
 ==========================================
-Write a program that creates a string that represents an 8x8 grid, using "newline" characters tom separate lines. At each position of the grid there is either a space or a # character. The characters should form a chessboard.
-
-Passing this string to console.log should show something like this:
- # # # #
-# # # #
- # # # #
-# # # #
- # # # #
-# # # #
- # # # #
-# # # #
 */
+let size = 8;
+let board = '';
+
+for (let y = 0; y < size; y++) {
+	for (let x = 0; x < size; x++) {
+		if ((x + y) % 2 == 0) {
+			board += ' ';
+		} else {
+			board += '#';
+		}
+	}
+	board += '\n';
+}
+console.log(board);
+
+/* 
+==========================================
+Function Challenge 1: Minimum
+==========================================
+*/
+function min(a, b) {
+	if (a < b) return a;
+	else return b;
+}
+console.log(min(0, 10)); // → 0
+console.log(min(0, -10)); // → -10
+
+/* 
+==========================================
+Function Challenge 2: Recursion
+==========================================
+*/
+function isEven(n) {
+	if (n == 0) return true;
+	else if (n == 1) return false;
+	else if (n < 0) return isEven(-n);
+	else return isEven(n - 2);
+}
+console.log(isEven(50)); // → true
+console.log(isEven(75)); // → false
+console.log(isEven(-1)); // → false
+
+/* 
+==========================================
+Function Challenge 3: Bean Counting
+==========================================
+*/
+function countChar(string, char) {
+	let counted = 0;
+	for (let i = 0; i < string.length; i++) {
+		if (string[i] === char) {
+			counted += 1;
+		}
+	}
+	return counted;
+}
+
+function countBs(string) {
+	return countChar(string, 'B');
+}
+console.log(countBs('BBC')); // → 2
+console.log(countChar('kakkerlak', 'k')); // → 4
+
+/* 
+==========================================
+Data Structures: Objects and Arrays Challenge 1: 
+The Sum of a Range
+==========================================
+*/
+function range(start, end, step = start < end ? 1 : -1) {
+	let array = [];
+
+	if (step > 0) {
+		for (let i = start; i <= end; i += step) array.push(i);
+	} else {
+		for (let i = start; i >= end; i += step) array.push(i);
+	}
+	return array;
+}
+
+function sum(array) {
+	let total = 0;
+	for (let value of array) {
+		total += value;
+	}
+	return total;
+}
+
+console.log(range(1, 10));
+// → [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+console.log(range(5, 2, -1));
+// → [5, 4, 3, 2]
+console.log(sum(range(1, 10)));
+// → 55
+
+/* 
+==========================================
+Data Structures: Objects and Arrays Challenge 2: 
+Reversing an array
+==========================================
+*/
+function reverseArray(array) {
+	let output = [];
+	for (let i = array.length - 1; i >= 0; i--) {
+		output.push(array[i]);
+	}
+	return output;
+}
+
+function reverseArrayInPlace(array) {
+	for (let i = 0; i < Math.floor(array.length / 2); i++) {
+		let old = array[i];
+		array[i] = array[array.length - 1 - i];
+		array[array.length - 1 - i] = old;
+	}
+	return array;
+}
+
+console.log(reverseArray([ 'A', 'B', 'C' ]));
+// → ["C", "B", "A"];
+let arrayValue = [ 1, 2, 3, 4, 5 ];
+reverseArrayInPlace(arrayValue);
+console.log(arrayValue);
+// → [5, 4, 3, 2, 1]
