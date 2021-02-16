@@ -12,6 +12,7 @@ This is a collection of JavaScript resources and code examples of the main featu
 8. Loops
 9. Objects
 10. Spread and Rest
+11. "This" Keyword
 
 ## Repo Folder Structure
 `/src/` - contains the source files for the Github repo. \
