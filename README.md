@@ -23,3 +23,4 @@ This is a collection of resources and code examples for the main features of Jav
 - [JavaScript MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 - [Fake API for testing and prototyping (JSON Placeholder)](https://jsonplaceholder.typicode.com/)
 - [CSS -> JavaScript](https://css2js.dotenv.dev/)
+- [Guide to CSS Flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)

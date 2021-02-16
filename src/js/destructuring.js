@@ -30,7 +30,7 @@ const gold = raceResults[0]; // -> Ryan Neil
 const silver = raceResults[1]; // -> Katie Neil
 const bronze = raceResults[2]; // -> Galen Rupp
 
-// destructuring method:
+// saving names to a variable using destructuring:
 const [ gold, silver, bronze ] = raceResults;
 console.log(gold); // -> Ryan Neil
 console.log(silver); // -> Katie Neil

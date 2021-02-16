@@ -55,7 +55,7 @@ const myDeck = {
 
 /*
 =================================
-Deck of Cards
+Deck of Cards: Breakdown
 =================================
 Features:
 - Create deck of cards [makeDeck function]
@@ -165,7 +165,40 @@ console.log(myDeck.drawMultiple(4));
 // -> [value: "A", suit: "spades"]
 // -> [value: "A", suit: "diamonds"]
 // -> [value: "A", suit: "hearts"]
+console.log(drawnCards);
+// -> [value: "A", suit: "clubs"]
+// -> [value: "A", suit: "spades"]
+// -> [value: "A", suit: "diamonds"]
+// -> [value: "A", suit: "hearts"]
 console.log(myDeck);
 // -> (48) cards in deck now
 
 // Step 6: Adding a shuffle method
+// for this shuffle we are using an algorithm called the "Fisher Yates Shuffle" and it's used to shuffle an array.
+function shuffle(arr) {
+	// here we're looping over the array backwards, so we start at the end of the array and work towards the front
+	for (let i = arr.length - 1; i > 0; i--) {
+		// pick random index before current element
+		let j = Math.floor(Math.random() * (i + 1));
+		// shorthand way of swapping elements using destructuring
+		[ arr[i], arr[j] ] = [ arr[j], arr[i] ];
+		// console.log() the array we pass in so we can see how it works
+		console.log(arr);
+	}
+}
+// ** how this is working under the hood
+shuffle([ 'a', 'b', 'c', 'd', 'e', 'f' ]);
+// Array(6) [ "a", "b", "c", "d", "f", "e" ] -> "e" & "f" switch
+// Array(6) [ "a", "b", "f", "d", "c", "e" ] -> "c" & "f" switch
+// Array(6) [ "d", "b", "f", "a", "c", "e" ] -> "a" & "d" switch
+// Array(6) [ "f", "b", "d", "a", "c", "e" ] -> "d" & "f" switch
+// Array(6) [ "b", "f", "d", "a", "c", "e" ] -> "b" & "f" switch
+
+// Another example of how the destructuring is working
+const letters = [ 'a', 'b', 'c', 'd', 'e', 'f' ];
+// swapping indexes in the array
+[ letters[0], (letters[3] = letters[3]), letters[0] ];
+// [ "a", "d" = "d", "a" ]
+// -> [ "d", "a" ]
+letters;
+// -> [ 'd', 'b', 'c', 'a', 'e', 'f' ]
