@@ -1,5 +1,5 @@
 # JavaScript Resources
-This is a collection of JavaScript resources and code examples for the main features of JavaScript.
+This is a collection of resources and code examples for the main features of JavaScript.
 
 ## Repo Features
 1. Arrays
