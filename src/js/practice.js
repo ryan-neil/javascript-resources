@@ -69,7 +69,9 @@ Features:
 '2,3,4,5,6,7,8,9,10,J,Q,K,A'
 */
 
-// Step 1: create the deck of cards
+/*
+Step 1: Create deck Function
+*/
 function makeDeck() {
 	// create an empty deck array
 	const deck = [];
@@ -94,11 +96,13 @@ function makeDeck() {
 	return deck;
 }
 
-// Step 2: Draw a single card from the deck
+/*
+Step 2: Draw a single card Function
+*/
 // we create the "drawCard()" function with "deck" (from the above function) as an argument
 function drawCard(deck) {
 	// draw the card by "popping" a card off the end of the deck
-	// ** calling .pop will always return the value [value: "A", suit: "clubs"] and also change the original array. Because of this we can simple just return "deck.pop()"
+	// *** calling .pop will always return the value [value: "A", suit: "clubs"] and also change the original array. Because of this we can simple just return "deck.pop()"
 	return deck.pop();
 }
 // to draw a single card, we need to make a "deck" variable from the makeDeck() function
@@ -112,9 +116,10 @@ console.log(myDeck); // -> (50) item array
 console.log(drawCard(myDeck)); // -> [value: "A", suit: "diamonds"]
 console.log(myDeck); // -> (49) item array
 
-// Step 3: Refactoring the code
-// we can refactor this code by using objects. we can use an object to store the deck and on that object we can have a method called "drawCard()", "shuffleDeck()", etc. We then have access to the deck with the keyword "this".
-
+/*
+Step 3: Refactoring the code
+- we can refactor this code by using objects. we can use an object to store the deck and on that object we can have a method called "drawCard()", "shuffleDeck()", etc. We then have access to the deck with the keyword "this".
+*/
 // we create the entire "deck" object. in here we're grouping data with functionality.
 const myDeck = {
 	// create the property "deck" which can start as an empty array
@@ -138,7 +143,8 @@ const myDeck = {
 		// we now don't have to return "deck" because we wouldn't lose the "deck" since its now a property
 		return deck;
 	},
-	// Step 4: Draw a single card and add a discard pile or drawnCards pile.
+
+	// Step 4: Create a Method to draw a single card and add a discard pile
 	// we need to add a "drawnCards" empty array property to the top of the function
 	drawCard() {
 		// we draw a card and pop it off the end of the "deck"
@@ -147,7 +153,8 @@ const myDeck = {
 		this.drawnCards.push(card);
 		return card;
 	},
-	// Step 5: Create a method to draw multiple cards
+
+	// Step 5: Create a Method to draw multiple cards
 	// we need to give "drawMultiple" a number of cards parameter
 	drawMultiple(numCards) {
 		// loop num cards times and take advantage of our "drawCard()" method we already created. we just do a plain old for loop here
@@ -173,8 +180,10 @@ console.log(drawnCards);
 console.log(myDeck);
 // -> (48) cards in deck now
 
-// Step 6: Adding a shuffle method
-// for this shuffle we are using an algorithm called the "Fisher Yates Shuffle" and it's used to shuffle an array.
+/*
+Step 6: Create shuffle Function
+- for this shuffle we are using an algorithm called the "Fisher Yates Shuffle" and it's used to shuffle an array.
+*/
 function shuffle(arr) {
 	// here we're looping over the array backwards, so we start at the end of the array and work towards the front
 	for (let i = arr.length - 1; i > 0; i--) {
@@ -186,7 +195,7 @@ function shuffle(arr) {
 		console.log(arr);
 	}
 }
-// ** how this is working under the hood
+// *** how this is working under the hood
 shuffle([ 'a', 'b', 'c', 'd', 'e', 'f' ]);
 // Array(6) [ "a", "b", "c", "d", "f", "e" ] -> "e" & "f" switch
 // Array(6) [ "a", "b", "f", "d", "c", "e" ] -> "c" & "f" switch
@@ -194,11 +203,59 @@ shuffle([ 'a', 'b', 'c', 'd', 'e', 'f' ]);
 // Array(6) [ "f", "b", "d", "a", "c", "e" ] -> "d" & "f" switch
 // Array(6) [ "b", "f", "d", "a", "c", "e" ] -> "b" & "f" switch
 
-// Another example of how the destructuring is working
+// *** Another example of how shuffle and destructuring is working
 const letters = [ 'a', 'b', 'c', 'd', 'e', 'f' ];
 // swapping indexes in the array
 [ letters[0], (letters[3] = letters[3]), letters[0] ];
 // [ "a", "d" = "d", "a" ]
 // -> [ "d", "a" ]
-letters;
+console.log(letters);
 // -> [ 'd', 'b', 'c', 'a', 'e', 'f' ]
+
+/*
+Step 7: Refactoring the code more and adding "shuffle" method
+*/
+// Whole deck object with different Methods inside
+const myDeck = {
+	deck         : [],
+	drawnCards   : [],
+	suits        : [ 'hearts', 'diamonds', 'spades', 'clubs' ],
+	values       : '2,3,4,5,6,7,8,9,10,J,Q,K,A',
+
+	// Reset the deck
+	refillDeck() {
+		const { suits, values, deck } = this;
+		for (let value of values.split(',')) {
+			for (let suit of suits) {
+				deck.push({
+					value : value,
+					suit  : suit
+				});
+			}
+		}
+		return deck;
+	},
+	// Draw single card Method and add to drawn cards Method
+	drawCard() {
+		const card = this.deck.pop();
+		this.drawnCards.push(card);
+		return card;
+	},
+	// Draw multiple cards Method
+	drawMultiple(numCards) {
+		for (let i = 0; i < numCards; i++) {
+			const cards = [];
+			cards.push(this.drawCard());
+		}
+		return cards;
+	},
+	// Shuffle the deck Method
+	shuffle() {
+		// destructuring the deck out of "this"
+		const { deck } = this;
+		for (let i = deck.length - 1; i > 0; i--) {
+			let j = Math.floor(Math.random() * (i + 1));
+			[ deck[i], deck[j] ] = [ deck[j], deck[i] ];
+		}
+	}
+};

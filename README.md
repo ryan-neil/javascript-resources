@@ -1,5 +1,9 @@
+![js](https://user-images.githubusercontent.com/59746024/108250339-3946ac80-70fa-11eb-9441-607fce5c3843.gif)
+
+![js-gif](/assets/js.gif =250x250)
+
 # JavaScript Resources
-This is a collection of resources and code examples for the main features of JavaScript.
+This is an ever-evolving collection of the most common JavaScript features and code samples.
 
 ## Repo Features
 1. Arrays
@@ -11,8 +15,9 @@ This is a collection of resources and code examples for the main features of Jav
 7. JSON Files
 8. Loops
 9. Objects
-10. Spread and Rest
-11. "This" Keyword
+10. Rest
+11. Spread
+12. "This" Keyword
 
 ## Repo Folder Structure
 `/src/` - contains the source files for the Github repo. \
