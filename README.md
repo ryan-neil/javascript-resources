@@ -1,7 +1,6 @@
 # JavaScript Resources
-This is an ever-evolving collection of the most common JavaScript features and code samples.
-
 ![js](https://user-images.githubusercontent.com/59746024/108250339-3946ac80-70fa-11eb-9441-607fce5c3843.gif)
+This is an ever-evolving collection of the most common JavaScript features and code samples.
 
 ## Repo Features
 1. Arrays
