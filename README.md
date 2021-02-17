@@ -1,3 +1,5 @@
+![js](https://user-images.githubusercontent.com/59746024/108250339-3946ac80-70fa-11eb-9441-607fce5c3843.gif)
+
 # JavaScript Resources
 This is a collection of resources and code examples for the main features of JavaScript.
 
