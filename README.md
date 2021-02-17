@@ -20,6 +20,7 @@ This is an ever-evolving collection of the most common JavaScript features and c
 ## Repo Folder Structure
 `/src/` - contains the source files for the Github repo. \
 `/src/js/` - contains all JavaScript files. \
+`/src/js/analysis/` - contains the breakdown of JavaScript coding projects. \
 `/src/js/challenges/` - contains some example JavaScript challenges for practice.
 
 ## Resources
