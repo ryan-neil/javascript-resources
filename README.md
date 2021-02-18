@@ -29,3 +29,27 @@ This is an ever-evolving collection of the most common JavaScript features and c
 - [Fake API for testing and prototyping (JSON Placeholder)](https://jsonplaceholder.typicode.com/)
 - [CSS -> JavaScript](https://css2js.dotenv.dev/)
 - [Guide to CSS Flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
+
+## Notes
+
+### Parameters vs. Arguments
+A *parameter* is the variable name, defined in the function signature, of the value which will be given as an *argument*. 
+
+It's important to distinguish them, as a parameter can represent many different values or even types of values, while an argument will only be that specific value at the time of evaluation.
+
+In this "square" function, "number" is the *parameter*:
+
+```javascript
+function square(number) {
+  return number * number;
+}
+```
+
+The "2" is the *argument* being passed into the "square" function:
+
+```javascript
+function square(number) {
+  return number * number;
+}
+square(2);
+```
