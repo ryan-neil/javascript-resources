@@ -164,7 +164,8 @@ function makeDeck() {
 /*
 Step 2: Add a draw a single card Function
 */
-// we create the "drawCard()" function with "deck" (from the above function) as an argument
+// we create the "drawCard()" function
+// we need to pass in "deck" as an argument and since we want to keep track of our drawn cards from the deck we need to pass in our "drawnCards" argument
 function drawCard(deck, drawnCards) {
 	// draw the card by "popping" a card off the end of the deck and assign it to a variable [card]
 	// *** calling .pop will always return the value [value: "A", suit: "clubs"] and also change the original array. Because of this we can simple just return "deck.pop()"
@@ -230,7 +231,7 @@ Step 5:
 const firstDeck = makeDeck();
 const drawnCards = [];
 shuffle(firstDeck);
-// We have to pass a ton of arguments around:
+// Every time we want to draw a card we have to pass in all of these arguments
 const hand1 = drawMultiple(2, firstDeck, drawnCards);
 const hand2 = drawMultiple(2, firstDeck, drawnCards);
 const pokerHand = drawMultiple(5, firstDeck, drawnCards);
@@ -250,7 +251,8 @@ const myDeck = {
 	values       : '2,3,4,5,6,7,8,9,10,J,Q,K,A',
 	// Step 2: Add a reset deck Method
 	makeDeck() {
-		const { suits, values, deck } = this;
+		// we use destructuring here
+		const { suits, values, deck } = this; // this code is equal to this.suits, this.values, this.deck
 		for (let value of values.split(',')) {
 			for (let suit of suits) {
 				deck.push({
@@ -265,7 +267,8 @@ const myDeck = {
 	// Step 3: Add a draw single card Method + drawn cards array
 	// we need to add a "drawnCards" empty array property to the top of the object
 	drawCard() {
-		const card = this.deck.pop();
+		const card = this.deck.pop(); // "this" is equal to "myDeck"
+		// here we're pushing the card we drew into the "drawnCards" array at the top of our object
 		this.drawnCards.push(card);
 		return card;
 	},
@@ -273,6 +276,7 @@ const myDeck = {
 	drawMultiple(numCards) {
 		const cards = [];
 		for (let i = 0; i < numCards; i++) {
+			// here we want to push the cards we draw into the cards array
 			cards.push(this.drawCard());
 		}
 		return cards;
@@ -299,3 +303,58 @@ console.log(h1);
 console.log(h2);
 // -> { value: "9", suit: "hearts" }
 // -> { value: "3", suit: "spades" }
+
+/*
+===========================================
+Creating a Deck Factory
+===========================================
+*/
+// *** this is not the best way to do this...
+const makeDeckFunc = () => {
+	// we return the entire "makeDeck" object from above
+	return {
+		deck         : [],
+		drawnCards   : [],
+		suits        : [ 'hearts', 'diamonds', 'spades', 'clubs' ],
+		values       : '2,3,4,5,6,7,8,9,10,J,Q,K,A',
+		// Step 2: Add a reset deck Method
+		makeDeck() {
+			const { suits, values, deck } = this;
+			for (let value of values.split(',')) {
+				for (let suit of suits) {
+					deck.push({
+						value,
+						suit
+					});
+				}
+			}
+			return deck;
+		},
+		// Step 3: Add a draw a single card Method
+		drawCard() {
+			const card = this.deck.pop();
+			this.drawnCards.push(card);
+			return card;
+		},
+		// Step 4: Add a draw multiple cards Method
+		drawMultiple(numCards) {
+			const cards = [];
+			for (let i = 0; i < numCards; i++) {
+				cards.push(this.drawCard());
+			}
+			return cards;
+		},
+		// Step 5: Add a shuffle cards Method
+		shuffle() {
+			const { deck } = this;
+			for (let i = deck.length - 1; i > 0; i--) {
+				let j = Math.floor(Math.random() * (i + 1));
+				[ deck[i], deck[j] ] = [ deck[j], deck[i] ];
+			}
+		}
+	};
+};
+const myDeck = makeDeckFunc();
+// this returns to us a new deck
+const deck2 = makeDeckFunc();
+// this gives us another new deck

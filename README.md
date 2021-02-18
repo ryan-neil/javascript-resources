@@ -9,13 +9,14 @@ This is an ever-evolving collection of the most common JavaScript features and c
 3. The Basics
 4. Callbacks
 5. Destructuring
-6. Functions
-7. JSON Files
-8. Loops
-9. Objects
-10. Rest
-11. Spread
-12. "This" Keyword
+6. The Dom
+7. Functions
+8. JSON Files
+9. Loops
+10. Objects
+11. Rest
+12. Spread
+13. "This" Keyword
 
 ## Repo Folder Structure
 `/src/` - contains the source files for the Github repo. \
