@@ -26,6 +26,7 @@ This is an ever-evolving collection of the most common JavaScript features and c
 
 ## 🔗 Resources
 - [JavaScript MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+- [30 Seconds of Code](https://www.30secondsofcode.org/)
 - [Fake API for testing and prototyping (JSON Placeholder)](https://jsonplaceholder.typicode.com/)
 - [CSS -> JavaScript](https://css2js.dotenv.dev/)
 - [Guide to CSS Flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
@@ -36,14 +37,14 @@ This is an ever-evolving collection of the most common JavaScript features and c
 ## Table of Contents
 
   1. [For Loops](#for-loops)
-  1. [Parameters vs. Arguments](#parameters-vs.-arguments)
+  1. [Parameters vs. Arguments](#parameters-vs-arguments)
   1. [Higher-Order Functions](#higher-order-functions)
   1. [Destructuring](#destructuring)
   1. [Spread](#spread)
   1. [Rest](#rest)
 
 #### For Loops
-###### for...in
+##### for...in
 `for...in` is used to iterate over all enumerable properties of an object, including inherited enumerable properties. This iteration statement can be used with arrays strings or plain objects, but not with `Map` or `Set` objects.
 
 ```javascript
@@ -60,7 +61,7 @@ for (let prop in new Set(['a', 'b', 'a', 'd']))
   console.log(prop); // -> undefined (no enumerable properties)
 ```
 
-###### for...of
+##### for...of
 `for...of` is used to iterate over iterable objects, iterating over their values instead of their properties. This iteration statement can be used with arrays, strings, `Map` or `Set` objects, but not with plain objects.
 
 ```javascript
@@ -77,7 +78,7 @@ for (let val of new Set(['a', 'b', 'a', 'd']))
   console.log(val); // -> a, b, d (Set values)
 ```
 
-###### forEach()
+##### forEach()
 Finally, `forEach()` is a method of the `Array` prototype, which allows you to iterate over the elements of an array. While `forEach()` only iterates over arrays, it can access both the value and the index of each element while iterating.
 
 ```javascript
@@ -90,7 +91,7 @@ Finally, `forEach()` is a method of the `Array` prototype, which allows you to i
 );
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ Back to top](#table-of-contents)**
 
 #### Parameters vs. Arguments
 A __*parameter*__ is the variable name, defined in the function signature, of the value which will be given as an __*argument*__. 
@@ -105,6 +106,8 @@ function square(number) {
 }
 square(6); // -> 36
 ```
+
+**[⬆ Back to top](#table-of-contents)**
 
 #### Higher-Order Functions
 A Higher-Order Function can take functions as arguments and/or return a function.
@@ -122,11 +125,11 @@ const userID = id('Ryan', randomNumGen);
 console.log(userID); // -> Ryan-766
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ Back to top](#table-of-contents)**
 
 #### Destructuring
 
-###### Object Destructuring
+##### Object Destructuring
 Destructuring saves you from creating temporary references for those properties, and from repetitive access of the object. 
 
 Repeating object access creates more repetitive code, requires more reading, and creates more opportunities for mistakes. 
@@ -154,7 +157,7 @@ function getFullName({ firstName, lastName }) {
 }
 ```
 
-###### Array Destructuring
+##### Array Destructuring
 
 ```javascript
 const arr = [1, 2, 3, 4];
@@ -167,7 +170,7 @@ const second = arr[1];
 const [first, second] = arr;
 ```
 
-###### Destructuring multiple return values
+##### Destructuring multiple return values
 We use object destructuring for multiple return values, not array destructuring.
 
 Why? You can add new properties over time or change the order of things without breaking call sites.
@@ -178,7 +181,6 @@ function processInput(input) {
   // then a miracle occurs
   return [left, right, top, bottom];
 }
-
 // the caller needs to think about the order of return data
 const [left, __, top] = processInput(input);
 
@@ -187,12 +189,11 @@ function processInput(input) {
   // then a miracle occurs
   return { left, right, top, bottom };
 }
-
 // the caller selects only the data they need
 const { left, top } = processInput(input);
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ Back to top](#table-of-contents)**
 
 #### Spread
 The spread operator (`...`) allows you to expand a single array into its values. Some common use-cases for the spread operator include:
@@ -210,32 +211,36 @@ Math.max(...a); // -> 3
 
 // Clone an array
 const b = [4, 5, 6];
-const c = [...b]; // -> c = [4, 5, 6], b !== c
+const c = [...b];
+console.log(c); // -> [4, 5, 6], b !== c
 
 // Concatenate two arrays
-const d = [...a, ...b]; // -> d = [1, 2, 3, 4, 5, 6]
+const d = [...a, ...b]; 
+console.log(d); // -> [1, 2, 3, 4, 5, 6]
 
 // Flatten an array
 const e = [[1, 2], [3, 4]];
-const f = [...e[0], ...e[1]]; // -> f = [1, 2, 3, 4]
+const f = [...e[0], ...e[1]]; 
+console.log(f); // -> [1, 2, 3, 4]
 
 // Convert iterable to array
-const g = [...'hello']; // -> g = ['h', 'e', 'l', 'l', 'o']
+const g = [...'hello']; 
+console.log(g); // -> g = ['h', 'e', 'l', 'l', 'o']
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ Back to top](#table-of-contents)**
 
 #### Rest
 The rest parameter syntax allows you to collapse any remaining arguments into an array. While it looks very similar to the spread operator, the rest parameter syntax is only used in function declarations (arrow or otherwise).
 
 ```javascript
 // Rest parameter syntax, not to be confused with the spread operator
-const fn = (str, ...nums) => `${str}_${nums.join('')}`;
-fn('hi', 1, 2, 3); // -> 'hi_123', `nums` will be [1, 2, 3]
+const foo = (str, ...nums) => `${str}_${nums.join('')}`;
+foo('hi', 1, 2, 3); // -> 'hi_123', `nums` will be [1, 2, 3]
 
 const data = [4, 5, 6];
 // Spread operator, expanding the array
-fn('hey', ...data); // -> 'hey_456', `nums` will be [4, 5, 6]
+foo('hey', ...data); // -> 'hey_456', `nums` will be [4, 5, 6]
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ Back to top](#table-of-contents)**
