@@ -52,8 +52,8 @@ This is an ever-evolving collection of the most common JavaScript features and c
   1. [Spread](#spread)
   1. [Rest](#rest)
 
-#### For Loops
-##### for...in
+### For Loops
+#### for...in
 `for...in` is used to iterate over all enumerable properties of an object, including inherited enumerable properties. This iteration statement can be used with arrays strings or plain objects, but not with `Map` or `Set` objects.
 
 ```javascript
@@ -70,7 +70,7 @@ for (let prop in new Set(['a', 'b', 'a', 'd']))
   console.log(prop); // -> undefined (no enumerable properties)
 ```
 
-##### for...of
+#### for...of
 `for...of` is used to iterate over iterable objects, iterating over their values instead of their properties. This iteration statement can be used with arrays, strings, `Map` or `Set` objects, but not with plain objects.
 
 ```javascript
@@ -87,22 +87,9 @@ for (let val of new Set(['a', 'b', 'a', 'd']))
   console.log(val); // -> a, b, d (Set values)
 ```
 
-##### forEach()
-Finally, `forEach()` is a method of the `Array` prototype, which allows you to iterate over the elements of an array. While `forEach()` only iterates over arrays, it can access both the value and the index of each element while iterating.
-
-```javascript
-['a', 'b', 'c'].forEach(
-  val => console.log(val) // -> a, b, c (array values)
-);
-
-['a', 'b', 'c'].forEach(
-  (val, i) => console.log(i) // -> 0, 1, 2 (array indexes)
-);
-```
-
 **[⬆ Back to top](#table-of-contents)**
 
-#### Conditionals
+### Conditionals
 Conditional Statements are used for making decisions with code. They can have 3 different pieces, an __if__, an __else if__, and __else__.
 
 `if` = Run the code *if* a given condition is true
@@ -117,7 +104,7 @@ if (rating === 3) {
 } else if (rating === 2) {
 	console.log('Meets expectations');
 } else if (rating === 1) {
-    console.log('Needs improvement');
+	console.log('Needs improvement');
 } else {
 	console.log('Invalid Rating');
 }
@@ -126,7 +113,7 @@ if (rating === 3) {
 
 **[⬆ Back to top](#table-of-contents)**
 
-#### Ternary Operator
+### Ternary Operator
 A shortcut syntax that we can use for certain conditionals. It basically takes an __if__ and an __else__ and turns them into a single line of code. This will only work if there are no __else if__ statements.
 
 Syntax:
@@ -151,10 +138,10 @@ let color = status === 'offline' ? 'red' : 'green'; // -> 'red'
 
 **[⬆ Back to top](#table-of-contents)**
 
-#### Array Methods
+### Array Methods
 Here is a collection of some of the most useful methods explained with examples.
 
-##### forEach Method
+#### forEach Method
 The `forEach` method executes a provided function once for every element in the array.
 
 Syntax: `Array.forEach(callback(currentValue [, index [, array]])[, thisArg]);`
@@ -213,7 +200,7 @@ Advantages of using forEach instead of a for loop:
 * Using a `forEach` loop makes code easy to debug because there are no extra variables for looping through the array
 * The `forEach` loop automatically stops when all the elements of the array are finished iterating.
 
-##### map Method
+#### map Method
 ```javascript
 
 ```
@@ -318,7 +305,7 @@ Advantages of using the map method:
 
 **[⬆ Back to top](#table-of-contents)**
 
-#### Objects
+### Objects
 Objects are collections of *properties* which are a key value pair. Rather than accessing the data using an index, we use custom keys.
 
 An object, compared to an array, is more like a container that holds different pieces of data called key's and value pairs where there's not necessarily any order to them. It's more about storing pairs of information.
@@ -358,7 +345,7 @@ numbers.100; // -> SyntaxError!!!
 numbers[100]; // -> "one hundred"
 ```
 
-##### Nested Objects and Arrays
+#### Nested Objects and Arrays
 Our *objects* and *arrays* can have other nested *objects* and *arrays*.
 
 ```javascript
@@ -382,7 +369,7 @@ console.log(student.exams);
 
 **[⬆ Back to top](#table-of-contents)**
 
-#### Parameters vs. Arguments
+### Parameters vs. Arguments
 A __*parameter*__ is the variable name, defined in the function signature, of the value which will be given as an __*argument*__. 
 
 It's important to distinguish them, as a parameter can represent many different values or even types of values, while an argument will only be that specific value at the time of evaluation.
@@ -398,7 +385,7 @@ square(6); // -> 36
 
 **[⬆ Back to top](#table-of-contents)**
 
-#### Higher-Order Functions
+### Higher-Order Functions
 A Higher-Order Function can take functions as arguments and/or return a function.
 
 ```javascript
@@ -416,9 +403,9 @@ console.log(userID); // -> Ryan-766
 
 **[⬆ Back to top](#table-of-contents)**
 
-#### Destructuring
+### Destructuring
 
-##### Object Destructuring
+#### Object Destructuring
 Destructuring saves you from creating temporary references for those properties, and from repetitive access of the object. 
 
 Repeating object access creates more repetitive code, requires more reading, and creates more opportunities for mistakes. 
@@ -446,7 +433,7 @@ function getFullName({ firstName, lastName }) {
 }
 ```
 
-##### Array Destructuring
+#### Array Destructuring
 
 ```javascript
 const arr = [1, 2, 3, 4];
@@ -459,7 +446,7 @@ const second = arr[1];
 const [first, second] = arr;
 ```
 
-##### Destructuring multiple return values
+#### Destructuring multiple return values
 We use object destructuring for multiple return values, not array destructuring.
 
 Why? You can add new properties over time or change the order of things without breaking call sites.
@@ -484,7 +471,7 @@ const { left, top } = processInput(input);
 
 **[⬆ Back to top](#table-of-contents)**
 
-#### Spread
+### Spread
 The spread operator (`...`) allows you to expand a single array into its values. Some common use-cases for the spread operator include:
 
 * Expanding an array's values to pass them as arguments to a function that does not accept an array.
@@ -519,7 +506,7 @@ console.log(g); // -> g = ['h', 'e', 'l', 'l', 'o']
 
 **[⬆ Back to top](#table-of-contents)**
 
-#### Rest
+### Rest
 The rest parameter syntax allows you to collapse any remaining arguments into an array. While it looks very similar to the spread operator, the rest parameter syntax is only used in function declarations (arrow or otherwise).
 
 ```javascript
