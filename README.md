@@ -102,11 +102,11 @@ let rating = 2;
 if (rating === 3) {
   console.log('You are a superstar!');
 } else if (rating === 2) {
-	console.log('Meets expectations');
+  console.log('Meets expectations');
 } else if (rating === 1) {
-	console.log('Needs improvement');
+  console.log('Needs improvement');
 } else {
-	console.log('Invalid Rating');
+  console.log('Invalid Rating');
 }
 // -> 'Meets expectations'
 ```
@@ -125,9 +125,9 @@ let status = 'offline';
 let color = '';
 
 if (status === 'offline') {
-	color = 'red';
+  color = 'red';
 } else {
-	color = 'green';
+  color = 'green';
 }
 
 // New
@@ -150,7 +150,7 @@ Syntax: `Array.forEach(callback(currentValue [, index [, array]])[, thisArg]);`
 const testScores = [ 89, 92, 76, 99 ];
 
 testScores.forEach(function(score) {
-	console.log(score);
+  console.log(score);
 });
 // -> 89, 92, 76, 99
 ```
@@ -161,7 +161,7 @@ The equivalent `for loop` code for the above example looks like this:
 const testScores = [ 89, 92, 76, 99 ];
 
 for (let i = 0; i < testScores.length; i++) {
-	console.log(testScores[i]);
+  console.log(testScores[i]);
 }
 ```
 
@@ -171,8 +171,9 @@ The thing you need to keep in mind is that the forEach method does not return an
 const testScores = [ 89, 92, 76, 99 ];
 
 const returnedValue = testScores.forEach(function(score) {
-	return score;
+  return score;
 });
+
 console.log('returnedValue: ', returnedValue);
 // -> returnedValue: undefined
 ```
@@ -188,7 +189,7 @@ In all the above examples, we have used only the first parameter of the callback
 const testScores = [ 89, 92, 76, 99 ];
 
 testScores.forEach(function(scores, index, array) {
-	console.log(scores, index, array);
+  console.log(scores, index, array);
 });
 // -> 89 0 [89, 92, 76, 99]
 // -> 92 1 [89, 92, 76, 99] ... etc.
@@ -206,7 +207,7 @@ The Array map method is the most useful and widely used array method among all o
 Syntax:
 ```javascript
 Array.map(function callback(currentValue[, index[, array]]) {
-    // Return element for new_array
+  // Return element for new_array
 }[, thisArg])
 ```
 
@@ -215,8 +216,9 @@ The `map` method executes a provided function once for every element in the arra
 ```javascript
 const students = [ 'John', 'Jane', 'Katie' ];
 const transformedArray = students.map(function(student) {
-	return student.toUpperCase();
+  return student.toUpperCase();
 });
+
 console.log(transformedArray); 
 // -> [ "JOHN", "JANE", "KATIE" ]
 ```
@@ -229,8 +231,9 @@ const students = [ 'John', 'Jane', 'Katie' ];
 const converted = [];
 
 for (let i = 0; i < students.length; i++) {
-	converted.push(students[i].toUpperCase());
+  converted.push(students[i].toUpperCase());
 }
+
 console.log(converted);
 ```
 
@@ -244,22 +247,23 @@ Also, note that `map` does not change the original array but returns a new array
 
 ```javascript
 const users = [
-	{
-		firstName : 'John',
-		lastName  : 'Doe'
-	},
-	{
-		firstName : 'Jane',
-		lastName  : 'Doe'
-	},
-	{
-		firstName : 'Katie',
-		lastName  : 'Jane'
-	}
+  {
+    firstName : 'John',
+    lastName  : 'Doe'
+  },
+  {
+    firstName : 'Jane',
+    lastName  : 'Doe'
+  },
+  {
+    firstName : 'Katie',
+    lastName  : 'Jane'
+  }
 ];
 const userList = users.map(function(user) {
-	return `${user.firstName} ${user.lastName}`;
+  return `${user.firstName} ${user.lastName}`;
 });
+
 console.log(userList);
 // -> [ "John Doe", "Jane Doe", "Katie Jane" ]
 ```
@@ -268,25 +272,26 @@ The array map method is also useful, if you want to extract only specific data f
 
 ```javascript
 const users = [
-	{
-		firstName : 'John',
-		lastName  : 'Doe',
-		age       : 36
-	},
-	{
-		firstName : 'Jane',
-		lastName  : 'Doe',
-		age       : 42
-	},
-	{
-		firstName : 'Katie',
-		lastName  : 'Jane',
-		age       : 27
-	}
+  {
+    firstName : 'John',
+    lastName  : 'Doe',
+    age       : 36
+  },
+  {
+    firstName : 'Jane',
+    lastName  : 'Doe',
+    age       : 42
+  },
+  {
+    firstName : 'Katie',
+    lastName  : 'Jane',
+    age       : 27
+  }
 ];
 const surnames = users.map(function(user) {
-	return user.lastName;
+  return user.lastName;
 });
+
 console.log(surnames);
 // -> [ "Doe", "Doe", "Jane" ]
 ```
@@ -316,13 +321,12 @@ In the example below:
 
 ```javascript
 const fitBitData = {
-	totalSteps       : 308727,
-	totalFloors      : 1814,
-	totalMiles       : 211,
-	workoutsThisWeek : '5 of 7',
-	avgGoodSleep     : '2:13'
+  totalSteps       : 308727,
+  totalFloors      : 1814,
+  totalMiles       : 211,
+  workoutsThisWeek : '5 of 7',
+  avgGoodSleep     : '2:13'
 };
-
 // accessing the data using "dot" syntax
 fitBitData.totalFloors; // -> 1814
 fitBitData.totalMiles; // -> 211
@@ -332,8 +336,8 @@ It's important to remember that all __keys__ are converted to *strings*.
 
 ```javascript
 const numbers = {
-	100 : 'one hundred',
-	16  : 'sixteen'
+  100 : 'one hundred',
+  16  : 'sixteen'
 };
 
 // bad
@@ -347,17 +351,19 @@ Our *objects* and *arrays* can have other nested *objects* and *arrays*.
 
 ```javascript
 const student = {
-	firstName : 'David',
-	lastName  : 'Jones',
-	strengths : [ 'Music', 'Art' ],
-	exams     : {
-		midterm : 92,
-		final   : 88
+  firstName : 'David',
+  lastName  : 'Jones',
+  strengths : [ 'Music', 'Art' ],
+  exams     : {
+    midterm : 92,
+    final   : 88
 	}
 };
+
 // Finding the average score of exams:
 student.exams.average = ''; // here we're adding an "average" property to the end of the "exams" object
 student.exams.average = (student.exams.midterm + student.exams.final) / 2;
+
 console.log(student.exams.average); 
 // -> 90
 console.log(student.exams); 
@@ -387,11 +393,11 @@ A Higher-Order Function can take functions as arguments and/or return a function
 
 ```javascript
 function randomNumGen() {
-	return Math.floor(Math.random() * 1000);
+  return Math.floor(Math.random() * 1000);
 }
 
 function id(name, randFunc) {
-	return name + '-' + randFunc();
+  return name + '-' + randFunc();
 }
 const userID = id('Ryan', randomNumGen);
 
@@ -416,18 +422,18 @@ function getFullName(user) {
   const lastName = user.lastName;
 
   return `${firstName} ${lastName}`;
-}
+};
 
 // good
 function getFullName(user) {
   const { firstName, lastName } = user;
   return `${firstName} ${lastName}`;
-}
+};
 
 // best
 function getFullName({ firstName, lastName }) {
   return `${firstName} ${lastName}`;
-}
+};
 ```
 
 #### Array Destructuring
