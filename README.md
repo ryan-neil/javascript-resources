@@ -100,7 +100,7 @@ Conditional Statements are used for making decisions with code. They can have 3 
 let rating = 2;
 
 if (rating === 3) {
-	console.log('You are a superstar!');
+  console.log('You are a superstar!');
 } else if (rating === 2) {
 	console.log('Meets expectations');
 } else if (rating === 1) {
