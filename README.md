@@ -201,9 +201,6 @@ Advantages of using forEach instead of a for loop:
 * The `forEach` loop automatically stops when all the elements of the array are finished iterating.
 
 #### map Method
-```javascript
-
-```
 The Array map method is the most useful and widely used array method among all other methods.
 
 Syntax:
