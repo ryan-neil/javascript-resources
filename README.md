@@ -49,6 +49,8 @@ This is an ever-evolving collection of the most common JavaScript features and c
      * [filter Method](#array.filter-method)
      * [every Method](#array.every-method)
      * [some Method](#array.some-method)
+     * [every Method](#array.every-method)
+     * [reduce Method](#array.reduce-method)
   1. [Objects](#objects)
   1. [Functions](#functions)
   1. [Parameters vs. Arguments](#parameters-vs-arguments)
@@ -538,10 +540,10 @@ So instead of using the `find` and `findIndex` methods separately, we can use th
 
 ```javascript
 const students = [
-	{ name: 'Mike Ewing', age: 21 },
-	{ name: 'Sally Brady', age: 18 },
-	{ name: 'Mike Sheridan', age: 19 },
-	{ name: 'Katie Jane', age: 27 }
+  { name: 'Mike Ewing', age: 21 },
+  { name: 'Sally Brady', age: 18 },
+  { name: 'Mike Sheridan', age: 19 },
+  { name: 'Katie Jane', age: 27 }
 ];
 
 let indexValue = -1;
@@ -611,7 +613,7 @@ const doublesSum = numbers.reduce(function(accumulator, number) {
   return accumulator + number * 2;
 }, 10);
 
-console.log(doublesSum); // 40
+console.log(doublesSum); // -> 40
 ```
 
 Here, we’re multiplying each element of the array by 2. We have provided an `initialValue` of 10 to the `accumulator` so 10 will be added to the final result of the sum like this:
@@ -633,7 +635,7 @@ const sum = coordinates.reduce(function(accumulator, currentValue) {
   return accumulator + currentValue.x;
 }, 0);
 
-console.log(sum); // 6
+console.log(sum); // -> 6
 ```
 
 Advantages of using the reduce method:
