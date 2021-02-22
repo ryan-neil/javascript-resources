@@ -5,18 +5,18 @@ This is an ever-evolving collection of the most common JavaScript features and c
 
 ## 📌 Repo Features
 1. Arrays
-2. Arrow Functions
-3. The Basics
-4. Callbacks
-5. Destructuring
-6. The Dom
-7. Functions
-8. JSON Files
-9. Loops
-10. Objects
-11. Rest
-12. Spread
-13. "This" Keyword
+1. Arrow Functions
+1. The Basics
+1. Callbacks
+1. Destructuring
+1. The Dom
+1. Functions
+1. JSON Files
+1. Loops
+1. Objects
+1. Rest
+1. Spread
+1. "This" Keyword
 
 ## 📂 Repo Folder Structure
 `/src/` - contains the source files for the Github repo. \
@@ -56,7 +56,7 @@ This is an ever-evolving collection of the most common JavaScript features and c
 
 ### Loops
 
-#### for
+#### for:
 The __for statement__ creates a loop that consists of three optional expressions, enclosed in parentheses and separated by semicolons, followed by a statement (usually a block statement) to be executed in the loop.
 
 Syntax:
@@ -75,8 +75,8 @@ for (let i = 0; i < examScores.length; i++) {
 // -> 98, 77, 84, 91
 ```
 
-#### for..in
-`for...in` is 
+#### for..in:
+A `for...in` loop only iterates over enumerable, non-Symbol properties. We're returned the indeces rather than the values.
 
 Syntax:
 ```javascript
@@ -95,7 +95,7 @@ for (let sport in sports) {
 // -> 0, 1, 2, 3 (these are the string indeces)
 ```
 
-#### for..of
+#### for..of:
 `for...of` is an easier way to iterate over arrays (or other iterable objects)
 
 Syntax:
@@ -124,7 +124,7 @@ for (let i = 0; i < sports.length; i++) {
 }
 ```
 
-#### for..of vs. for..in
+#### for..of vs. for..in:
 Both `for..of` and `for..in` statements iterate over lists; the values iterated on are different though: 
 * `for..in` returns a list of keys on the object being iterated. 
 * `for..of` returns a list of values of the numeric properties of the object being iterated.
@@ -174,14 +174,14 @@ Remove decimal point:
 Math.floor(3.999); // -> 3
 ```
 
-#### Random Numbers
+#### Random Numbers:
 `Math.random()` gives us a random decimal between 0 and 1 (non-inclusive)
 ```javascript
 Math.random(); // -> 0.3909038834734563
 Math.random(); // -> 0.8165536795157997 etc.
 ```
 
-#### Random Integers
+#### Random Integers:
 `Math.random()` times 10 gives us a random decimal number up to 9.999...
 ```javascript
 Math.random() * 10; // -> 1.373859877092636
@@ -229,8 +229,7 @@ if (rating === 3) {
 // -> 'Meets expectations'
 ```
 
-#### Nesting Conditional Statements
-
+#### Nesting Conditional Statements:
 ```javascript
 let password = 'catdog';
 if (password.length >= 8) {
@@ -252,7 +251,7 @@ If you want to test multiple conditions without writing nested `if...else` state
 ! -> Not
 ```
 
-##### And (`&&`)
+##### And (`&&`):
 With the `and` logical operator, both sides of the && needs to be true for the entire statement to be true.
 
 ```javascript
@@ -275,7 +274,7 @@ if (password.length >= 8 && password.indexOf(' ') === -1) {
 // -> Invalid password! (password contains a space)
 ```
 
-##### Or (`||`)
+##### Or (`||`):
 With the `or` logical operator, only one side of the "pipe" needs to be true for the entire statement to be true.
 
 ```javascript
@@ -297,7 +296,7 @@ if (age < 6 || age >= 65) {
 // -> You get in for free!
 ```
 
-##### Not (`!`)
+##### Not (`!`):
 With the `not` logical operator, the expression returns true if the expression is false.
 
 ```javascript
@@ -323,7 +322,7 @@ if (!(flavor === 'grape' || flavor === 'cherry')) {
 // -> We don't have that flavor!
 ```
 
-#### Switch Statements
+#### Switch Statements:
 Switch statements take a single expression/value as an input, and then look through a number of choices until they find one that matches that value, executing the corresponding code that goes along with it.
 
 ```javascript
@@ -398,6 +397,7 @@ Syntax:
 condition ? expIfTrue : expIfFalse
 ```
 
+Example:
 ```javascript
 // Old syntax
 let status = 'offline';
@@ -424,7 +424,7 @@ This is a collection of the most commonly used ES5 and ES6+ array methods.
 
 #### Adding/Removing Elements:
 
-#### arr.push Method
+#### arr.push Method:
 The `push()` method __adds__ one or more elements to the __end__ of an array and returns the new length of the array.
 
 Syntax:
@@ -442,7 +442,7 @@ console.log(sports) // -> [ 'soccer', 'baseball', 'football', 'tennis' ]
 console.log(total) // -> 4
 ```
 
-#### arr.pop Method
+#### arr.pop Method:
 The `pop()` method __removes__ the __last__ element from an array and returns that element. This method changes the length of the array.
 
 Syntax:
@@ -460,7 +460,7 @@ console.log(sports); // -> [ "soccer", "baseball", "football" ]
 console.log(result); // -> tennis
 ```
 
-#### arr.unshift Method
+#### arr.unshift Method:
 The `unshift()` method __adds__ one or more elements to the __beginning__ of an array and returns the new length of the array.
 
 Syntax:
@@ -478,7 +478,7 @@ console.log(sports); // -> [ "rugby", "basketball", "soccer", "baseball", "footb
 console.log(result); // -> 6
 ```
 
-#### arr.shift Method
+#### arr.shift Method:
 The `shift()` method __removes__ the __first__ element from an array and returns that removed element. This method changes the length of the array.
 
 Syntax:
@@ -496,7 +496,7 @@ console.log(sports); // -> [ "baseball", "football", "tennis" ]
 console.log(result); // -> soccer
 ```
 
-#### arr.splice Method
+#### arr.splice Method:
 The `splice()` method changes the contents of an array by removing or replacing existing elements and/or adding new elements in place.
 
 Syntax:
@@ -518,7 +518,7 @@ months.splice(4, 1, 'May');
 console.log(months); // -> [ "Jan", "Feb", "March", "April", "May" ]
 ```
 
-#### arr.slice Method
+#### arr.slice Method:
 The `slice()` method returns a shallow copy of a portion of an array into a new array object selected from `start` to `end` (end not included) where `start` and `end` represent the index of items in that array. The original array will not be modified.
 
 Syntax:
@@ -546,7 +546,7 @@ console.log(citrus); // -> [ "Orange", "Lemon" ]
 
 #### Iterating Over Elements:
 
-#### arr.forEach Method
+#### arr.forEach Method:
 The `forEach` method executes a provided function once for every element in the array.
 
 Syntax:
@@ -613,7 +613,7 @@ Advantages of using forEach instead of a for loop:
 
 #### Searching Among Elements:
 
-#### arr.filter Method
+#### arr.filter Method:
 The `filter` method returns `a new array` with all the elements that satisfy the provided test condition.
 
 The `filter` method takes a callback function as the first argument and executes the callback function for every element of the array. Each array element value is passed as the first parameter to the callback function.
@@ -677,7 +677,7 @@ Advantages of using the filter method:
 * It always returns an array even if there is no match, so it avoids writing extra `if` conditions.
 * It avoids the need of creating an extra variable to store the filtered elements.
 
-#### arr.find Method
+#### arr.find Method:
 The `find` method returns the `value` of the `first element` in the array that satisfies the provided test condition.
 
 Syntax:
@@ -709,7 +709,7 @@ Advantages of using the find method:
 * It allows us to quickly find any element without writing a lot of code.
 * It stops looping as soon as it finds a match so there is no need for an extra break statement.
 
-#### arr.findIndex Method
+#### arr.findIndex Method:
 The `findIndex` method returns the __index__ of the first element in the array __that satisfies the provided test condition__. Otherwise, it returns `-1`, indicating that no element passed the test.
 
 Syntax:
@@ -740,7 +740,7 @@ Advantages of using the findIndex method:
 * It stops looping as soon as it finds a match so there is no need for an extra break statement.
 * We can find the index using the array `find` method also, but using `findIndex` makes it easy and avoids creating extra variables to store the index.
 
-#### arr.every Method
+#### arr.every Method:
 The `every` method tests whether all elements in the array pass the provided test conditions and returns a boolean `true` or `false` value.
 
 Syntax:
@@ -797,7 +797,7 @@ If the callback function returns a `false` value for any of the elements in the 
 Advantage of using the every method:
 * It allows us to quickly check if all the elements match certain criteria without writing a lot of code.
 
-#### arr.some Method
+#### arr.some Method:
 The `some` method tests whether at least one element in the array passes the test condition given by the provided function and returns a boolean `true` or `false` value.
 
 Syntax:
@@ -869,7 +869,7 @@ Advantages of using the some method
 
 #### Transforming the Array:
 
-#### arr.map Method
+#### arr.map Method:
 The Array map method is the most useful and widely used array method among all other methods.
 
 The `map` method executes a provided function once for every element in the array and it returns a new transformed array.
@@ -974,7 +974,7 @@ Advantages of using the map method:
 * It allows us to quickly extract any element of the array.
 * It generates an array with the exact same length as the original array.
 
-#### arr.reduce Method
+#### arr.reduce Method:
 The `reduce` method executes a reducer function (that you provide) on each element of the array, resulting in a single output value.
 
 Syntax:
@@ -1119,7 +1119,7 @@ numbers.100; // -> SyntaxError!!!
 numbers[100]; // -> "one hundred"
 ```
 
-#### Nested Objects and Arrays
+#### Nested Objects and Arrays:
 Our *objects* and *arrays* can have other nested *objects* and *arrays*.
 
 ```javascript
@@ -1165,7 +1165,7 @@ function add(x, y) {
 add(5, 4); // -> 9
 ```
 
-#### Function Scope
+#### Function Scope:
 In JavaScript there are two types of scope:
 * Local scope
 * Global scope
@@ -1179,12 +1179,12 @@ Local variables have __Function scope__: They can only be accessed from within t
 
 Example:
 ```javascript
-// code here can NOT use name
+// code here can NOT use carName
 
 function myFunc() {
-  let name = 'Katie';
+  let carName = 'Toyota';
 
-  // code here CAN use name
+  // code here CAN use carName
 }
 ```
 
@@ -1199,18 +1199,18 @@ A global variable has __global scope__: All scripts and functions on a web page 
 
 Example:
 ```javascript
-let name = 'Katie';
+let carName = 'Toyota';
 
-// code here CAN use name
+// code here CAN use carName
 
 function myFunc() {
 
-  // code here CAN also use name
+  // code here CAN also use carName
 
 }
 ```
 
-#### Function Expressions
+#### Function Expressions:
 In JavaScript functions are objects which means we can store them in variables, arrays, and we can pass them around as arguments.
 
 Example 1: Storing a function in a variable
@@ -1281,7 +1281,7 @@ operationsObject.add(50, 2); // -> 52
 operationsObject.subtract(50, 2); // -> 48
 ```
 
-#### Parameters vs. Arguments
+#### Parameters vs. Arguments:
 A __parameter__ is the variable name, defined in the function signature, of the value which will be given as an __argument__. 
 
 It's important to distinguish them, as a __parameter__ can represent many different values or even types of values, while an __argument__ will only be that specific value at the time of evaluation.
@@ -1295,7 +1295,7 @@ function square(number) {
 square(6); // -> 36
 ```
 
-#### Higher-Order Functions
+#### Higher-Order Functions:
 A Higher-Order Function can take functions as arguments and/or return a function.
 
 ```javascript
@@ -1311,7 +1311,7 @@ const userID = id('Ryan', randomNumGen);
 console.log(userID); // -> Ryan-766
 ```
 
-#### Arrow Functions
+#### Arrow Functions:
 Arrow functions allow us to write shorter function syntax:
 
 Example:
@@ -1341,7 +1341,7 @@ square = (x) => x + x;
 
 ### Destructuring
 
-#### Object Destructuring
+#### Object Destructuring:
 Destructuring saves you from creating temporary references for those properties, and from repetitive access of the object. 
 
 Repeating object access creates more repetitive code, requires more reading, and creates more opportunities for mistakes. 
@@ -1369,9 +1369,7 @@ function getFullName({ firstName, lastName }) {
 };
 ```
 
-
-#### Array Destructuring
-
+#### Array Destructuring:
 ```javascript
 const arr = [1, 2, 3, 4];
 
@@ -1383,8 +1381,7 @@ const second = arr[1];
 const [first, second] = arr;
 ```
 
-
-#### Destructuring multiple return values
+#### Destructuring multiple return values:
 We use object destructuring for multiple return values, not array destructuring.
 
 Why? You can add new properties over time or change the order of things without breaking call sites.
@@ -1490,7 +1487,7 @@ console.log(window.b)  // "katie"
 console.log(b)         // "katie"
 ```
 
-#### This and Arrow Functions
+#### This and Arrow Functions:
 In short, with arrow functions there are no binding of `this`.
 
 In regular functions the `this` keyword represented the object that called the function, which could be the window, the document, a button or whatever.
