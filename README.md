@@ -38,7 +38,7 @@ This is an ever-evolving collection of the most common JavaScript features and c
 
 ### Table of Contents
 
-  1. [For Loops](#for-loops)
+  1. [Loops](#loops)
   1. [Math](#math)
   1. [Conditionals](#conditionals)
   1. [Ternary Operator](#ternary-operator)
@@ -49,46 +49,102 @@ This is an ever-evolving collection of the most common JavaScript features and c
      * [Transform](#transforming-the-array)
   1. [Objects](#objects)
   1. [Functions](#functions)
-  1. [Parameters vs. Arguments](#parameters-vs-arguments)
-  1. [Higher-Order Functions](#higher-order-functions)
   1. [Destructuring](#destructuring)
   1. [Spread](#spread)
   1. [Rest](#rest)
+  1. [This](#this)
 
-### For Loops
-#### for...in
-`for...in` is used to iterate over all enumerable properties of an object, including inherited enumerable properties. This iteration statement can be used with arrays strings or plain objects, but not with `Map` or `Set` objects.
+### Loops
 
+#### for
+The __for statement__ creates a loop that consists of three optional expressions, enclosed in parentheses and separated by semicolons, followed by a statement (usually a block statement) to be executed in the loop.
+
+Syntax:
 ```javascript
-for (let prop in ['a', 'b', 'c'])
-  console.log(prop); // -> 0, 1, 2 (array indexes)
-
-for (let prop in 'str')
-  console.log(prop); // -> 0, 1, 2 (string indexes)
-
-for (let prop in {a: 1, b: 2, c: 3})
-  console.log(prop); // -> a, b, c (object property names)
-
-for (let prop in new Set(['a', 'b', 'a', 'd']))
-  console.log(prop); // -> undefined (no enumerable properties)
+for ([initialization]; [condition]; [final-expression])
+  [statement];
 ```
 
-#### for...of
-`for...of` is used to iterate over iterable objects, iterating over their values instead of their properties. This iteration statement can be used with arrays, strings, `Map` or `Set` objects, but not with plain objects.
-
+Example:
 ```javascript
-for (let val of ['a', 'b', 'c'])
-  console.log(val); // -> a, b, c (array values)
+const examScores = [ 98, 77, 84, 91 ];
 
-for (let val of 'str')
-  console.log(val); // -> s, t, r (string characters)
-
-for (let val of {a: 1, b: 2, c: 3})
-  console.log(prop); // -> TypeError (not iterable)
-
-for (let val of new Set(['a', 'b', 'a', 'd']))
-  console.log(val); // -> a, b, d (Set values)
+for (let i = 0; i < examScores.length; i++) {
+  console.log(examScores[i]);
+}
+// -> 98, 77, 84, 91
 ```
+
+#### for..in
+`for...in` is 
+
+Syntax:
+```javascript
+for ( [variable] in [iterable] ) {
+  [statement];
+}
+```
+
+Example:
+```javascript
+let sports = [ 'soccer', 'football', 'basketball', 'baseball' ];
+
+for (let sport in sports) {
+  console.log(sport);
+}
+// -> 0, 1, 2, 3 (these are the string indeces)
+```
+
+#### for..of
+`for...of` is an easier way to iterate over arrays (or other iterable objects)
+
+Syntax:
+```javascript
+for ( [variable] of [iterable] ) {
+  [statement];
+}
+```
+
+Example:
+```javascript
+let sports = [ 'soccer', 'football', 'basketball', 'baseball' ];
+
+for (let sport of sports) {
+  console.log(sport);
+}
+// -> soccer, football, basketball, baseball
+```
+
+Same example with a traditional `for` method:
+```javascript
+let sports = [ 'soccer', 'football', 'basketball', 'baseball' ];
+
+for (let i = 0; i < sports.length; i++) {
+  console.log(sports[i]);
+}
+```
+
+#### for..of vs. for..in
+Both `for..of` and `for..in` statements iterate over lists; the values iterated on are different though: 
+* `for..in` returns a list of keys on the object being iterated. 
+* `for..of` returns a list of values of the numeric properties of the object being iterated.
+
+Example:
+```javascript
+let list = [ 4, 5, 6 ];
+
+for (let i in list) {
+  console.log(i); 
+}
+// -> "0", "1", "2",
+
+for (let i of list) {
+  console.log(i); 
+}
+// -> "4", "5", "6"
+```
+
+> We can remember this by: for "in" for `index` and for "of" would be the `values` of each index/key/item.
 
 **[⬆ Top](#table-of-contents)**
 
@@ -338,10 +394,12 @@ switch (item) {
 A shortcut syntax that we can use for certain conditionals. It basically takes an __if__ and an __else__ and turns them into a single line of code. This will only work if there are no __else if__ statements.
 
 Syntax:
-`condition ? expIfTrue : expIfFalse`
+```javascript 
+condition ? expIfTrue : expIfFalse
+```
 
 ```javascript
-// Old
+// Old syntax
 let status = 'offline';
 let color = '';
 
@@ -351,7 +409,7 @@ if (status === 'offline') {
   color = 'green';
 }
 
-// New
+// New syntax
 let status = 'offline';
 
 let color = status === 'offline' ? 'red' : 'green'; // -> 'red'
@@ -479,6 +537,12 @@ let citrus = fruits.slice(1, 3);
 console.log(fruits); // -> [ "Banana", "Orange", "Lemon", "Apple", "Mango" ]
 console.log(citrus); // -> [ "Orange", "Lemon" ]
 ```
+
+> Splice vs Slice:
+  * The `splice()` method returns the removed item(s) in an array and `slice()` method returns the selected element(s) in an array, as a new array object.
+  * The `splice()` method changes the original array and `slice()` method doesn’t change the original array.
+  * The `splice()` method can take n number of arguments and `slice()` method takes 2 arguments.
+
 
 #### Iterating Over Elements:
 
@@ -1055,7 +1119,6 @@ numbers.100; // -> SyntaxError!!!
 numbers[100]; // -> "one hundred"
 ```
 
-
 #### Nested Objects and Arrays
 Our *objects* and *arrays* can have other nested *objects* and *arrays*.
 
@@ -1085,19 +1148,145 @@ console.log(student.exams);
 ----
 
 ### Functions
+A __function__ is simply a reusable procedure. Functions allow us to write reusable, modular code. We define a *chunk* of code that we can then execute at a later time.
 
+Syntax:
+```javascript
+function name([param[, param[, ... param]]]) {
+  [statements];
+}
+```
 
+Example:
+```javascript
+function add(x, y) {
+  return x + y;
+}
+add(5, 4); // -> 9
+```
 
-**[⬆ Top](#table-of-contents)**
+#### Function Scope
+In JavaScript there are two types of scope:
+* Local scope
+* Global scope
 
-----
+With function scope, each function creates a new scope and scope determines the accessibility (visibility) of these variables. Variables defined inside a function are not accessible (visible) from outside the function.
 
-### Parameters vs. Arguments
-A __*parameter*__ is the variable name, defined in the function signature, of the value which will be given as an __*argument*__. 
+##### Local Variables:
+Variables declared within a JavaScript function, become __local__ to the function.
 
-It's important to distinguish them, as a parameter can represent many different values or even types of values, while an argument will only be that specific value at the time of evaluation.
+Local variables have __Function scope__: They can only be accessed from within the function.
 
-In this *square* function, *number* is the __*parameter*__ and *6* is the __*argument*__ being passed into the function:
+Example:
+```javascript
+// code here can NOT use name
+
+function myFunc() {
+  let name = 'Katie';
+
+  // code here CAN use name
+}
+```
+
+Since __local__ variables are only recognized inside their functions, variables with the same name can be used in different functions.
+
+__Local__ variables are created when a function starts, and deleted when the function is completed.
+
+##### Global Variables:
+A variable declared outside a function, becomes __global__.
+
+A global variable has __global scope__: All scripts and functions on a web page can access it.
+
+Example:
+```javascript
+let name = 'Katie';
+
+// code here CAN use name
+
+function myFunc() {
+
+  // code here CAN also use name
+
+}
+```
+
+#### Function Expressions
+In JavaScript functions are objects which means we can store them in variables, arrays, and we can pass them around as arguments.
+
+Example 1: Storing a function in a variable
+```javascript
+// New syntax
+const square = function(num) {
+  return num + num;
+};
+square(7); // -> 49
+
+// Old syntax
+function square(num) {
+  return num + num;
+}
+square(7); // -> 49
+```
+
+We can store our functions in an `array` like this:
+```javascript
+const add = function(x, y) {
+  return x + y;
+};
+
+const subtract = function(x, y) {
+  return x - y;
+};
+
+const multiply = function(x, y) {
+  return x * y;
+};
+
+const divide = function(x, y) {
+  return x / y;
+};
+
+// next we add our functions to an array
+const operations = [ add, subtract, multiply, divide ];
+
+// we can call our functions from the variable "operations"
+operations[1](100, 4); // -> 96 (subtract)
+operations[2](100, 4); // -> 400 (multiply)
+// or from the function itself
+subtract(100 - 4); // -> 96
+multiply(100 - 4); // -> 400
+```
+
+From the code above, we can loop over our `array` of functions like this:
+```javascript
+for (let func of operations) {
+  let result = func(30, 5);
+  console.log(result);
+}
+// -> 35 (add)
+// -> 25 (subtract)
+// -> 150 (multiply)
+// -> 6 (divide)
+```
+
+Continuing from our examples above, we can store functions in an `object` like this:
+```javascript
+const operationsObject = {
+  add      : add,
+  subtract : subtract,
+  multiply : multiply,
+  divide   : divide
+};
+operationsObject.add(50, 2); // -> 52
+operationsObject.subtract(50, 2); // -> 48
+```
+
+#### Parameters vs. Arguments
+A __parameter__ is the variable name, defined in the function signature, of the value which will be given as an __argument__. 
+
+It's important to distinguish them, as a __parameter__ can represent many different values or even types of values, while an __argument__ will only be that specific value at the time of evaluation.
+
+In this *square* function, *number* is the __parameter__ and *6* is the __argument__ being passed into the function:
 
 ```javascript
 function square(number) {
@@ -1106,11 +1295,7 @@ function square(number) {
 square(6); // -> 36
 ```
 
-**[⬆ Top](#table-of-contents)**
-
-----
-
-### Higher-Order Functions
+#### Higher-Order Functions
 A Higher-Order Function can take functions as arguments and/or return a function.
 
 ```javascript
@@ -1125,6 +1310,30 @@ const userID = id('Ryan', randomNumGen);
 
 console.log(userID); // -> Ryan-766
 ```
+
+#### Arrow Functions
+Arrow functions allow us to write shorter function syntax:
+
+Example:
+```javascript
+// Old syntax
+square = function(x) {
+  return x + x;
+};
+
+// New syntax
+const square = (x) => {
+  return x + x;
+};
+```
+
+We can shorten this even more if the function has *only* one statement, and the statement returns a value, we can remove the brackets *and* the `return` keyword:
+
+```javascript
+square = (x) => x + x; 
+```
+
+> When dealing with arrow functions it's important to remember that the keyword `this` behaves differently than it does is traditional functions. *See the "this" section for more details*.
 
 **[⬆ Top](#table-of-contents)**
 
@@ -1253,3 +1462,40 @@ foo('hey', ...data); // -> 'hey_456', `nums` will be [4, 5, 6]
 ```
 
 **[⬆ Top](#table-of-contents)**
+
+----
+
+### This
+`this` is a fundamental part of JavaScript that helps us write much more useful `methods` in our `objects`.
+
+We can think of `this` as a reference to the current *execution scope*. It is going to give you an `object` back.
+
+So depending on the scope and depending on the rules of how `this` works that `object` changes. It could be a reference to the *global scope*.
+
+Syntax:
+```javascript
+this
+```
+
+Example:
+```javascript
+// In web browsers, the window object is also the global object:
+console.log(this === window); // true
+
+a = 37;
+console.log(window.a); // 37
+
+this.b = 'katie';
+console.log(window.b)  // "katie"
+console.log(b)         // "katie"
+```
+
+#### This and Arrow Functions
+In short, with arrow functions there are no binding of `this`.
+
+In regular functions the `this` keyword represented the object that called the function, which could be the window, the document, a button or whatever.
+
+With arrow functions the `this` keyword *always* represents the object that defined the arrow function.
+
+**[⬆ Top](#table-of-contents)**
+
