@@ -374,6 +374,7 @@ Syntax:
 arr.push([element1[, ...[, elementN]]])
 ```
 
+Example:
 ```javascript
 let sports = ['soccer', 'baseball']
 
@@ -391,6 +392,7 @@ Syntax:
 arr.pop()
 ```
 
+Example:
 ```javascript
 let sports = [ 'soccer', 'baseball', 'football', 'tennis' ];
 
@@ -408,6 +410,7 @@ Syntax:
 arr.unshift(element1[, ...[, elementN]])
 ```
 
+Example:
 ```javascript
 let sports = [ 'soccer', 'baseball', 'football', 'tennis' ];
 
@@ -425,6 +428,7 @@ Syntax:
 arr.shift()
 ```
 
+Example:
 ```javascript
 let sports = [ 'soccer', 'baseball', 'football', 'tennis' ];
 
@@ -442,6 +446,7 @@ Syntax:
 let arrDeletedItems = arr.splice(start[, deleteCount[, item1[, item2[, ...]]]])
 ```
 
+Example:
 ```javascript
 const months = [ 'Jan', 'March', 'April', 'June' ];
 // insert at index 1, replaces 0 elements
@@ -465,6 +470,7 @@ slice(start)
 slice(start, end)
 ```
 
+Example:
 ```javascript
 let fruits = [ 'Banana', 'Orange', 'Lemon', 'Apple', 'Mango' ];
 // we cut starting at index 1 and stop at index 3
@@ -484,6 +490,7 @@ Syntax:
 arr.forEach(callback(currentValue [, index [, array]])[, thisArg]);
 ```
 
+Example:
 ```javascript
 const testScores = [ 89, 92, 76, 99 ];
 
@@ -505,6 +512,7 @@ for (let i = 0; i < testScores.length; i++) {
 
 The thing you need to keep in mind is that the forEach method does not return any value.
 
+Example:
 ```javascript
 const testScores = [ 89, 92, 76, 99 ];
 
@@ -551,6 +559,7 @@ Syntax:
 arr.filter(callback(element[, index[, array]])[, thisArg])
 ```
 
+Example:
 ```javascript
 const students = [
   { name: 'Mike Ewing', age: 21 },
@@ -614,6 +623,7 @@ arr.find(callback(element[, index[, array]])[, thisArg])
 
 The `find` method takes a callback function as the first argument and executes the callback function for every element of the array. Each array element value is passed as the first parameter to the callback function.
 
+Example:
 ```javascript
 const students = [
   { name: 'Mike Ewing', age: 21 },
@@ -643,6 +653,7 @@ Syntax:
 arr.findIndex(callback(element[, index[, array]])[, thisArg])
 ```
 
+Example:
 ```javascript
 const students = [
   { name: 'Mike Ewing', age: 21 },
@@ -797,6 +808,8 @@ Advantages of using the some method
 ##### arr.map Method
 The Array map method is the most useful and widely used array method among all other methods.
 
+The `map` method executes a provided function once for every element in the array and it returns a new transformed array.
+
 Syntax:
 ```javascript
 arr.map(function callback(currentValue[, index[, array]]) {
@@ -804,8 +817,7 @@ arr.map(function callback(currentValue[, index[, array]]) {
 }[, thisArg])
 ```
 
-The `map` method executes a provided function once for every element in the array and it returns a new transformed array.
-
+Example:
 ```javascript
 const students = [ 'John', 'Jane', 'Katie' ];
 const transformedArray = students.map(function(student) {
