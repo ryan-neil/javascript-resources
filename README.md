@@ -109,11 +109,11 @@ Absolute value:
 ```javascript
 Math.abs(-456); // -> 456
 ```
-Power, raises 2 to the 5th power:
+Power, raise 2 to the 5th power:
 ```javascript
 Math.pow(2, 5); // -> 35
 ```
-Removes decimal:
+Remove decimal point:
 ```javascript
 Math.floor(3.999); // -> 3
 ```
@@ -140,7 +140,7 @@ Math.floor(Math.random() * 10); // -> 5
 Math.floor(Math.random() * 10); // -> 9 etc.
 ```
 
-Adding `+ 1` to `Math.floor(Math.random() * 10)` gives us a number from 0 to 10.
+Adding `+1` to `Math.floor(Math.random() * 10)` gives us a number from 0 to 10.
 ```javascript
 Math.floor(Math.random() * 10) + 1; // -> 7
 Math.floor(Math.random() * 10) + 1; // -> 3
@@ -154,8 +154,8 @@ Math.floor(Math.random() * 10) + 1; // -> 10 etc.
 ### Conditionals
 Conditional Statements are used for making decisions with code. They can have 3 different pieces, an __if__, an __else if__, and __else__.
 
-`if` = Run the code `if` a given condition is true
-`else if` = if not the first thing, maybe this other thing??
+`if` = Run the code `if` a given condition is true \
+`else if` = if not the first thing, maybe this other thing?? \
 `else` = if nothing `else` was true, run this...
 
 ```javascript
@@ -364,9 +364,9 @@ let color = status === 'offline' ? 'red' : 'green'; // -> 'red'
 ### Array Methods
 This is a collection of the most commonly used ES5 and ES6+ array methods.
 
-#### Adding/Removing Elements
+#### Adding/Removing Elements:
 
-##### arr.push Method
+#### arr.push Method
 The `push()` method __adds__ one or more elements to the __end__ of an array and returns the new length of the array.
 
 Syntax:
@@ -384,7 +384,7 @@ console.log(sports) // -> [ 'soccer', 'baseball', 'football', 'tennis' ]
 console.log(total) // -> 4
 ```
 
-##### arr.pop Method
+#### arr.pop Method
 The `pop()` method __removes__ the __last__ element from an array and returns that element. This method changes the length of the array.
 
 Syntax:
@@ -402,7 +402,7 @@ console.log(sports); // -> [ "soccer", "baseball", "football" ]
 console.log(result); // -> tennis
 ```
 
-##### arr.unshift Method
+#### arr.unshift Method
 The `unshift()` method __adds__ one or more elements to the __beginning__ of an array and returns the new length of the array.
 
 Syntax:
@@ -420,7 +420,7 @@ console.log(sports); // -> [ "rugby", "basketball", "soccer", "baseball", "footb
 console.log(result); // -> 6
 ```
 
-##### arr.shift Method
+#### arr.shift Method
 The `shift()` method __removes__ the __first__ element from an array and returns that removed element. This method changes the length of the array.
 
 Syntax:
@@ -438,7 +438,7 @@ console.log(sports); // -> [ "baseball", "football", "tennis" ]
 console.log(result); // -> soccer
 ```
 
-##### arr.splice Method
+#### arr.splice Method
 The `splice()` method changes the contents of an array by removing or replacing existing elements and/or adding new elements in place.
 
 Syntax:
@@ -460,7 +460,7 @@ months.splice(4, 1, 'May');
 console.log(months); // -> [ "Jan", "Feb", "March", "April", "May" ]
 ```
 
-##### arr.slice Method
+#### arr.slice Method
 The `slice()` method returns a shallow copy of a portion of an array into a new array object selected from `start` to `end` (end not included) where `start` and `end` represent the index of items in that array. The original array will not be modified.
 
 Syntax:
@@ -480,9 +480,9 @@ console.log(fruits); // -> [ "Banana", "Orange", "Lemon", "Apple", "Mango" ]
 console.log(citrus); // -> [ "Orange", "Lemon" ]
 ```
 
-#### Iterating Over Elements
+#### Iterating Over Elements:
 
-##### arr.forEach Method
+#### arr.forEach Method
 The `forEach` method executes a provided function once for every element in the array.
 
 Syntax:
@@ -547,9 +547,9 @@ Advantages of using forEach instead of a for loop:
 * Using a `forEach` loop makes code easy to debug because there are no extra variables for looping through the array.
 * The `forEach` loop automatically stops when all the elements of the array are finished iterating.
 
-#### Searching Among Elements
+#### Searching Among Elements:
 
-##### arr.filter Method
+#### arr.filter Method
 The `filter` method returns `a new array` with all the elements that satisfy the provided test condition.
 
 The `filter` method takes a callback function as the first argument and executes the callback function for every element of the array. Each array element value is passed as the first parameter to the callback function.
@@ -613,7 +613,7 @@ Advantages of using the filter method:
 * It always returns an array even if there is no match, so it avoids writing extra `if` conditions.
 * It avoids the need of creating an extra variable to store the filtered elements.
 
-##### arr.find Method
+#### arr.find Method
 The `find` method returns the `value` of the `first element` in the array that satisfies the provided test condition.
 
 Syntax:
@@ -645,7 +645,7 @@ Advantages of using the find method:
 * It allows us to quickly find any element without writing a lot of code.
 * It stops looping as soon as it finds a match so there is no need for an extra break statement.
 
-##### arr.findIndex Method
+#### arr.findIndex Method
 The `findIndex` method returns the __index__ of the first element in the array __that satisfies the provided test condition__. Otherwise, it returns `-1`, indicating that no element passed the test.
 
 Syntax:
@@ -676,7 +676,7 @@ Advantages of using the findIndex method:
 * It stops looping as soon as it finds a match so there is no need for an extra break statement.
 * We can find the index using the array `find` method also, but using `findIndex` makes it easy and avoids creating extra variables to store the index.
 
-##### arr.every Method
+#### arr.every Method
 The `every` method tests whether all elements in the array pass the provided test conditions and returns a boolean `true` or `false` value.
 
 Syntax:
@@ -733,7 +733,7 @@ If the callback function returns a `false` value for any of the elements in the 
 Advantage of using the every method:
 * It allows us to quickly check if all the elements match certain criteria without writing a lot of code.
 
-##### arr.some Method
+#### arr.some Method
 The `some` method tests whether at least one element in the array passes the test condition given by the provided function and returns a boolean `true` or `false` value.
 
 Syntax:
@@ -803,9 +803,9 @@ Advantages of using the some method
 * It allows us to quickly check if some of the elements match certain criteria without writing a lot of code.
 * It allows us to quickly break out of the loop, which was not possible with other looping methods seen above.
 
-#### Transforming the Array
+#### Transforming the Array:
 
-##### arr.map Method
+#### arr.map Method
 The Array map method is the most useful and widely used array method among all other methods.
 
 The `map` method executes a provided function once for every element in the array and it returns a new transformed array.
@@ -910,7 +910,7 @@ Advantages of using the map method:
 * It allows us to quickly extract any element of the array.
 * It generates an array with the exact same length as the original array.
 
-##### arr.reduce Method
+#### arr.reduce Method
 The `reduce` method executes a reducer function (that you provide) on each element of the array, resulting in a single output value.
 
 Syntax:
@@ -980,7 +980,7 @@ Advantages of using the reduce method:
 * Using reduce allows us to generate any type of simple or complex data based on the array.
 * It remembers the previously returns data from the loop so helps us avoid creating a global variable to store the previous value.
 
-##### Summary of array methods:
+#### Summary of array methods:
 
 To add/remove elements:
 * `push(...items)` – adds items to the end.
