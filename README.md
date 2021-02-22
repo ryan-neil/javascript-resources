@@ -39,18 +39,14 @@ This is an ever-evolving collection of the most common JavaScript features and c
 ### Table of Contents
 
   1. [For Loops](#for-loops)
+  1. [Math](#math)
   1. [Conditionals](#conditionals)
   1. [Ternary Operator](#ternary-operator)
   1. [Array Methods](#array-methods)
-     * [forEach Method](#array.foreach-method)
-     * [map Method](#array.map-method)
-     * [find Method](#array.find-method)
-     * [findIndex Method](#array.findindex-method)
-     * [filter Method](#array.filter-method)
-     * [every Method](#array.every-method)
-     * [some Method](#array.some-method)
-     * [every Method](#array.every-method)
-     * [reduce Method](#array.reduce-method)
+     * [Add/Remove](#addingremoving-elements)
+     * [Iterate](#iterating-over-elements)
+     * [Search](#searching-among-elements)
+     * [Transform](#transforming-the-array)
   1. [Objects](#objects)
   1. [Functions](#functions)
   1. [Parameters vs. Arguments](#parameters-vs-arguments)
@@ -98,12 +94,69 @@ for (let val of new Set(['a', 'b', 'a', 'd']))
 
 ----
 
+### Math
+`Math` is a built-in object that has *properties* and *methods* for mathematical constants and functions. It’s not a function object.
+
+Value of pi:
+```javascript
+Math.PI; // -> 3.141592653589793
+```
+Rounding a number:
+```javascript
+Math.round(4.9); // -> 5
+```
+Absolute value:
+```javascript
+Math.abs(-456); // -> 456
+```
+Power, raises 2 to the 5th power:
+```javascript
+Math.pow(2, 5); // -> 35
+```
+Removes decimal:
+```javascript
+Math.floor(3.999); // -> 3
+```
+
+#### Random Numbers
+`Math.random()` gives us a random decimal between 0 and 1 (non-inclusive)
+```javascript
+Math.random(); // -> 0.3909038834734563
+Math.random(); // -> 0.8165536795157997 etc.
+```
+
+#### Random Integers
+`Math.random()` times 10 gives us a random decimal number up to 9.999...
+```javascript
+Math.random() * 10; // -> 1.373859877092636
+Math.random() * 10; // -> 5.467900649576393
+Math.random() * 10; // -> 9.245014588722578 etc.
+```
+
+`Math.floor()` removes the decimal point. And gives us a number from 0 to 9.
+```javascript
+Math.floor(Math.random() * 10); // -> 0
+Math.floor(Math.random() * 10); // -> 5
+Math.floor(Math.random() * 10); // -> 9 etc.
+```
+
+Adding `+ 1` to `Math.floor(Math.random() * 10)` gives us a number from 0 to 10.
+```javascript
+Math.floor(Math.random() * 10) + 1; // -> 7
+Math.floor(Math.random() * 10) + 1; // -> 3
+Math.floor(Math.random() * 10) + 1; // -> 10 etc.
+```
+
+**[⬆ Top](#table-of-contents)**
+
+----
+
 ### Conditionals
 Conditional Statements are used for making decisions with code. They can have 3 different pieces, an __if__, an __else if__, and __else__.
 
-`if` = Run the code *if* a given condition is true
+`if` = Run the code `if` a given condition is true
 `else if` = if not the first thing, maybe this other thing??
-`else` = if nothing *else* was true, run this...
+`else` = if nothing `else` was true, run this...
 
 ```javascript
 let rating = 2;
@@ -118,6 +171,163 @@ if (rating === 3) {
   console.log('Invalid Rating');
 }
 // -> 'Meets expectations'
+```
+
+#### Nesting Conditional Statements
+
+```javascript
+let password = 'catdog';
+if (password.length >= 8) {
+  if (password.indexOf(' ') !== -1) {
+    console.log('Password cannot include spaces');
+  } else {
+    console.log('Valid password!');
+  }
+} else {
+  console.log('Password too short!');
+}
+```
+
+#### Conditionals and Logical Operators: And, Or and Not
+If you want to test multiple conditions without writing nested `if...else` statements, logical operators can help you. When used in conditions, the first two do the following:
+``` 
+&& -> And
+|| -> Or
+! -> Not
+```
+
+##### And (`&&`)
+With the `and` logical operator, both sides of the && needs to be true for the entire statement to be true.
+
+```javascript
+1 <= 4 && 'a'; // -> true
+9 > 10 && 9 >= 9; // -> false
+'abc'.length === 3 && 1 + 1 === 4; // -> false
+```
+
+Example: Password checker
+
+```javascript
+let password = 'taco tuesday';
+
+// This is checking if the password is greater than or equal to 8 characters AND does not contain a space
+if (password.length >= 8 && password.indexOf(' ') === -1) {
+  console.log('Valid password!');
+} else {
+  console.log('Invalid password!');
+}
+// -> Invalid password! (password contains a space)
+```
+
+##### Or (`||`)
+With the `or` logical operator, only one side of the "pipe" needs to be true for the entire statement to be true.
+
+```javascript
+1 !== 1 || 10 === 10; // -> true
+10 / 2 === 5 || null; // -> true
+0 || undefined; // -> false
+```
+
+Example: Community theater program
+
+```javascript
+let age = 76;
+
+if (age < 6 || age >= 65) {
+  console.log('You get in for free!');
+} else {
+  console.log('That will be $10 please.');
+}
+// -> You get in for free!
+```
+
+##### Not (`!`)
+With the `not` logical operator, the expression returns true if the expression is false.
+
+```javascript
+!null; // -> true (this is saying, not null)
+!(0 === 0); // -> false (0 = 0 is truthy so not truthy is falsy)
+!(3 <= 4); // -> false (3 IS less than or equal to 4 so not true is false)
+!45; // -> false (45 is truthy so not "true" [45] is falsy)
+```
+
+Example: Online snow cone stand with only 2 flavors (grape and cherry)
+
+```javascript
+let flavor = strawberry;
+
+// first way to solve this:
+if (flavor !== 'grape' && flavor !== 'cherry') {
+	console.log("We don't have that flavor!");
+}
+// or an example using not (!):
+if (!(flavor === 'grape' || flavor === 'cherry')) {
+	console.log("We don't have that flavor!");
+}
+// -> We don't have that flavor!
+```
+
+#### Switch Statements
+Switch statements take a single expression/value as an input, and then look through a number of choices until they find one that matches that value, executing the corresponding code that goes along with it.
+
+```javascript
+let day = 2;
+
+switch (day) {
+  case 1:
+    console.log('Monday');
+    break;
+  case 2:
+    console.log('Tuesday');
+    break;
+  case 3:
+    console.log('Wednesday');
+    break;
+  case 4:
+    console.log('Thursday');
+    break;
+  case 5:
+    console.log('Friday');
+    break;
+  case 6:
+    console.log('Saturday');
+    break;
+  case 7:
+    console.log('Sunday');
+    break;
+
+  default: // this is equivalent to "else"
+    console.log('Invalid day');
+}
+// -> Tuesday
+```
+
+Sometimes we can have multiple variables that we are checking against one value:
+
+```javascript
+let item = 'Mangoes';
+
+switch (item) {
+  case 'Oranges':
+    console.log('Oranges are $0.59 a pound.');
+    break;
+  case 'Apples':
+    console.log('Apples are $0.32 a pound.');
+    break;
+  case 'Bananas':
+    console.log('Bananas are $0.48 a pound.');
+    break;
+  case 'Cherries':
+    console.log('Cherries are $3.00 a pound.');
+    break;
+  case 'Mangoes':
+  case 'Papayas':
+    console.log('Mangoes and papayas are $2.79 a pound.');
+    break;
+  default:
+    console.log(`Sorry, we are out of ${item}.`);
+}
+// -> Mangoes and papayas are $2.79 a pound.
 ```
 
 **[⬆ Top](#table-of-contents)**
@@ -154,12 +364,124 @@ let color = status === 'offline' ? 'red' : 'green'; // -> 'red'
 ### Array Methods
 This is a collection of the most commonly used ES5 and ES6+ array methods.
 
-#### Array.forEach Method
+#### Adding/Removing Elements
+
+##### arr.push Method
+The `push()` method __adds__ one or more elements to the __end__ of an array and returns the new length of the array.
+
+Syntax:
+```javascript 
+arr.push([element1[, ...[, elementN]]])
+```
+
+```javascript
+let sports = ['soccer', 'baseball']
+
+let total = sports.push('football', 'tennis')
+
+console.log(sports) // -> [ 'soccer', 'baseball', 'football', 'tennis' ]
+console.log(total) // -> 4
+```
+
+##### arr.pop Method
+The `pop()` method __removes__ the __last__ element from an array and returns that element. This method changes the length of the array.
+
+Syntax:
+```javascript 
+arr.pop()
+```
+
+```javascript
+let sports = [ 'soccer', 'baseball', 'football', 'tennis' ];
+
+let result = sports.pop();
+
+console.log(sports); // -> [ "soccer", "baseball", "football" ]
+console.log(result); // -> tennis
+```
+
+##### arr.unshift Method
+The `unshift()` method __adds__ one or more elements to the __beginning__ of an array and returns the new length of the array.
+
+Syntax:
+```javascript 
+arr.unshift(element1[, ...[, elementN]])
+```
+
+```javascript
+let sports = [ 'soccer', 'baseball', 'football', 'tennis' ];
+
+let result = sports.unshift('rugby', 'basketball');
+
+console.log(sports); // -> [ "rugby", "basketball", "soccer", "baseball", "football", "tennis" ]
+console.log(result); // -> 6
+```
+
+##### arr.shift Method
+The `shift()` method __removes__ the __first__ element from an array and returns that removed element. This method changes the length of the array.
+
+Syntax:
+```javascript 
+arr.shift()
+```
+
+```javascript
+let sports = [ 'soccer', 'baseball', 'football', 'tennis' ];
+
+let result = sports.shift();
+
+console.log(sports); // -> [ "baseball", "football", "tennis" ]
+console.log(result); // -> soccer
+```
+
+##### arr.splice Method
+The `splice()` method changes the contents of an array by removing or replacing existing elements and/or adding new elements in place.
+
+Syntax:
+```javascript 
+let arrDeletedItems = arr.splice(start[, deleteCount[, item1[, item2[, ...]]]])
+```
+
+```javascript
+const months = [ 'Jan', 'March', 'April', 'June' ];
+// insert at index 1, replaces 0 elements
+months.splice(1, 0, 'Feb');
+
+console.log(months); // -> [ "Jan", "Feb", "March", "April", "June" ]
+
+// insert at index 4, replaces 1 element (June)
+months.splice(4, 1, 'May');
+
+console.log(months); // -> [ "Jan", "Feb", "March", "April", "May" ]
+```
+
+##### arr.slice Method
+The `slice()` method returns a shallow copy of a portion of an array into a new array object selected from `start` to `end` (end not included) where `start` and `end` represent the index of items in that array. The original array will not be modified.
+
+Syntax:
+```javascript 
+slice()
+slice(start)
+slice(start, end)
+```
+
+```javascript
+let fruits = [ 'Banana', 'Orange', 'Lemon', 'Apple', 'Mango' ];
+// we cut starting at index 1 and stop at index 3
+let citrus = fruits.slice(1, 3);
+
+console.log(fruits); // -> [ "Banana", "Orange", "Lemon", "Apple", "Mango" ]
+console.log(citrus); // -> [ "Orange", "Lemon" ]
+```
+
+#### Iterating Over Elements
+
+##### arr.forEach Method
 The `forEach` method executes a provided function once for every element in the array.
 
 Syntax:
 ```javascript 
-Array.forEach(callback(currentValue [, index [, array]])[, thisArg]);
+arr.forEach(callback(currentValue [, index [, array]])[, thisArg]);
 ```
 
 ```javascript
@@ -217,12 +539,267 @@ Advantages of using forEach instead of a for loop:
 * Using a `forEach` loop makes code easy to debug because there are no extra variables for looping through the array.
 * The `forEach` loop automatically stops when all the elements of the array are finished iterating.
 
-#### Array.map Method
+#### Searching Among Elements
+
+##### arr.filter Method
+The `filter` method returns `a new array` with all the elements that satisfy the provided test condition.
+
+The `filter` method takes a callback function as the first argument and executes the callback function for every element of the array. Each array element value is passed as the first parameter to the callback function.
+
+Syntax:
+```javascript 
+arr.filter(callback(element[, index[, array]])[, thisArg])
+```
+
+```javascript
+const students = [
+  { name: 'Mike Ewing', age: 21 },
+  { name: 'Sally Brady', age: 18 },
+  { name: 'Mike Sheridan', age: 19 },
+  { name: 'Katie Jane', age: 27 }
+];
+
+const student = students.filter(function(student) {
+  return student.name.indexOf('Mike') > -1;
+});
+
+console.log(student);
+// -> { name: "Mike Ewing", age: 21 }
+// -> { name: "Mike Sheridan", age: 19 }
+```
+
+As can be seen in the above code, using `filter` helps to find all the elements from the array that match the specified test condition.
+
+So using `filter` does not stop when it finds a particular match but keeps checking for other elements in the array that match the condition. Then it returns all the matching elements from the array.
+
+> The main difference between `find` and `filter` is that `find` only returns the first matching element of the array, but using `filter` returns all the matching elements from the array.
+
+Note that the `filter` method always returns an array. If no element passes the test condition, an empty array will be returned.
+
+The equivalent for loop code for the above example looks like this:
+
+```javascript
+const students = [
+  { name: 'Mike Ewing', age: 21 },
+  { name: 'Sally Brady', age: 18 },
+  { name: 'Mike Sheridan', age: 19 },
+  { name: 'Katie Jane', age: 27 }
+];
+
+let filtered = [];
+
+for (let i = 0; i < students.length; i++) {
+  if (students[i].name.indexOf('Mike') > -1) {
+    filtered.push(students[i]);
+  }
+}
+
+console.log(filtered);
+// -> { name: "Mike Ewing", age: 21 }
+// -> { name: "Mike Sheridan", age: 19 }
+```
+
+Advantages of using the filter method:
+* It allows us to quickly find all the matching elements from the array.
+* It always returns an array even if there is no match, so it avoids writing extra `if` conditions.
+* It avoids the need of creating an extra variable to store the filtered elements.
+
+##### arr.find Method
+The `find` method returns the `value` of the `first element` in the array that satisfies the provided test condition.
+
+Syntax:
+```javascript 
+arr.find(callback(element[, index[, array]])[, thisArg])
+```
+
+The `find` method takes a callback function as the first argument and executes the callback function for every element of the array. Each array element value is passed as the first parameter to the callback function.
+
+```javascript
+const students = [
+  { name: 'Mike Ewing', age: 21 },
+  { name: 'Sally Brady', age: 18 },
+  { name: 'Mike Sheridan', age: 19 },
+  { name: 'Katie Jane', age: 27 }
+];
+
+const student = students.find(function(student) {
+  return student.name.indexOf('Mike') > -1;
+});
+
+console.log(student); // -> { name: "Mike Ewing", age: 21 }
+```
+
+> It's important to note that the find method will stop when it finds the first match.
+
+Advantages of using the find method:
+* It allows us to quickly find any element without writing a lot of code.
+* It stops looping as soon as it finds a match so there is no need for an extra break statement.
+
+##### arr.findIndex Method
+The `findIndex` method returns the __index__ of the first element in the array __that satisfies the provided test condition__. Otherwise, it returns `-1`, indicating that no element passed the test.
+
+Syntax:
+```javascript 
+arr.findIndex(callback(element[, index[, array]])[, thisArg])
+```
+
+```javascript
+const students = [
+  { name: 'Mike Ewing', age: 21 },
+  { name: 'Sally Brady', age: 18 },
+  { name: 'Mike Sheridan', age: 19 },
+  { name: 'Katie Jane', age: 27 }
+];
+
+const index = students.findIndex(function(student) {
+  return student.name.indexOf('Sally') > -1;
+});
+
+console.log(index); // -> 1
+```
+
+Here we get the output as __1__ which is the index of the first object with the name `John`. Note that the index starts with zero.
+
+Advantages of using the findIndex method:
+* It allows us to quickly find the index of an element without writing a lot of code.
+* It stops looping as soon as it finds a match so there is no need for an extra break statement.
+* We can find the index using the array `find` method also, but using `findIndex` makes it easy and avoids creating extra variables to store the index.
+
+##### arr.every Method
+The `every` method tests whether all elements in the array pass the provided test conditions and returns a boolean `true` or `false` value.
+
+Syntax:
+```javascript 
+arr.every(callback(element[, index[, array]])[, thisArg])
+```
+
+Suppose we have an array of numbers and we want to check if every element of the array is a positive number. We can use the `every` method to achieve it.
+
+```javascript
+let numbers = [ 10, -30, 20, 50 ];
+
+let allPositive = numbers.every(function(number) {
+  return number > 0;
+});
+console.log(allPositive); // false
+
+numbers = [ 10, 30, 20, 50 ];
+
+allPositive = numbers.every(function(number) {
+  return number > 0;
+});
+console.log(allPositive); // true
+```
+
+Now, imagine we have a registration form, and you want to check if all of the required fields are entered or not before submitting the form. You can use the `every` method to check for each field value easily.
+
+```javascript
+window.onload = function() {
+  const form = document.getElementById('registration_form');
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+    const fields = [ 'first_name', 'last_name', 'email', 'city' ];
+    const allFieldsEntered = fields.every(function(fieldId) {
+      return document.getElementById(fieldId).value.trim() !== '';
+    });
+
+    if (allFieldsEntered) {
+      console.log('All the fields are entered');
+      // All the field values are entered, submit the form
+    } else {
+      alert('Please, fill out all the field values.');
+    }
+  });
+};
+```
+
+Here, inside the callback function of the `every` method, we’re checking if each field value is not empty and returning a boolean value.
+
+In the above code, the `every` method returns `true` if, for all the elements in the `fields` array, the callback function returns a `true` value.
+
+If the callback function returns a `false` value for any of the elements in the `fields` array, then the `every` method will return `false` as the result.
+
+Advantage of using the every method:
+* It allows us to quickly check if all the elements match certain criteria without writing a lot of code.
+
+##### arr.some Method
+The `some` method tests whether at least one element in the array passes the test condition given by the provided function and returns a boolean `true` or `false` value.
+
+Syntax:
+```javascript
+ arr.some(callback(element[, index[, array]])[, thisArg]
+```
+
+It returns `true` once it finds the first match and returns `false` if there is no match.
+
+Suppose we have an array of numbers and we want to check if the array contains at least one positive element. We can use the `some` method to achieve it.
+
+```javascript
+let numbers = [ -30, 40, 20, 50 ];
+
+// here we're using an arrow functions
+let containsPositive = numbers.some((number) => {
+  return number > 0;
+});
+console.log(containsPositive); // true
+
+numbers = [ -10, -30, -20, -50 ];
+
+// here we're using an arrow functions
+containsPositive = numbers.every((number) => {
+  return number > 0;
+});
+console.log(containsPositive); // false
+```
+
+Here are some useful scenarios for using the some method:
+__Example 1:__
+Let's say we have a list of students and we want to check if a particular student is present in that array or not. We also want to get the index position of that student if the student is found.
+
+So instead of using the `find` and `findIndex` methods separately, we can use the `some` method to do both of these.
+
+```javascript
+const students = [
+  { name: 'Mike Ewing', age: 21 },
+  { name: 'Sally Brady', age: 18 },
+  { name: 'Mike Sheridan', age: 19 },
+  { name: 'Katie Jane', age: 27 }
+];
+
+let indexValue = -1;
+const student = students.some(function(student, index) {
+  const isFound = student.name.indexOf('Katie') > -1;
+  if (isFound) {
+    indexValue = index;
+  }
+  return isFound;
+});
+
+console.log(student, indexValue); // -> true 3
+```
+
+__Example 2:__
+The array `forEach`, `map`, and `filter` methods run from start to finish until all of the elements of the array are processed. There is no way of stopping or breaking out of the loop, once a particular element is found.
+
+In such cases, we can use the array `some` method. The `map`, `forEach` and `some` methods take the same parameters in the callback function:
+* The first parameter is the actual value
+* The second parameter is the index
+* The third parameter is the original array
+
+The `some` method stops looping through the array once it finds a particular match as can be seen in the above example 1.
+
+Advantages of using the some method
+* It allows us to quickly check if some of the elements match certain criteria without writing a lot of code.
+* It allows us to quickly break out of the loop, which was not possible with other looping methods seen above.
+
+#### Transforming the Array
+
+##### arr.map Method
 The Array map method is the most useful and widely used array method among all other methods.
 
 Syntax:
 ```javascript
-Array.map(function callback(currentValue[, index[, array]]) {
+arr.map(function callback(currentValue[, index[, array]]) {
   // Return element for new_array
 }[, thisArg])
 ```
@@ -321,263 +898,12 @@ Advantages of using the map method:
 * It allows us to quickly extract any element of the array.
 * It generates an array with the exact same length as the original array.
 
-#### Array.find Method
-The `find` method returns the `value` of the `first element` in the array that satisfies the provided test condition.
-
-Syntax:
-```javascript 
-Array.find(callback(element[, index[, array]])[, thisArg])
-```
-
-The `find` method takes a callback function as the first argument and executes the callback function for every element of the array. Each array element value is passed as the first parameter to the callback function.
-
-```javascript
-const students = [
-  { name: 'Mike Ewing', age: 21 },
-  { name: 'Sally Brady', age: 18 },
-  { name: 'Mike Sheridan', age: 19 },
-  { name: 'Katie Jane', age: 27 }
-];
-
-const student = students.find(function(student) {
-  return student.name.indexOf('Mike') > -1;
-});
-
-console.log(student); // -> { name: "Mike Ewing", age: 21 }
-```
-
-> It's important to note that the find method will stop when it finds the first match.
-
-Advantages of using the find method:
-* It allows us to quickly find any element without writing a lot of code.
-* It stops looping as soon as it finds a match so there is no need for an extra break statement.
-
-#### Array.findIndex Method
-The `findIndex` method returns the __index__ of the first element in the array __that satisfies the provided test condition__. Otherwise, it returns `-1`, indicating that no element passed the test.
-
-Syntax:
-```javascript 
-Array.findIndex(callback(element[, index[, array]])[, thisArg])
-```
-
-```javascript
-const students = [
-  { name: 'Mike Ewing', age: 21 },
-  { name: 'Sally Brady', age: 18 },
-  { name: 'Mike Sheridan', age: 19 },
-  { name: 'Katie Jane', age: 27 }
-];
-
-const index = students.findIndex(function(student) {
-  return student.name.indexOf('Sally') > -1;
-});
-
-console.log(index); // -> 1
-```
-
-Here we get the output as __1__ which is the index of the first object with the name `John`. Note that the index starts with zero.
-
-Advantages of using the findIndex method:
-* It allows us to quickly find the index of an element without writing a lot of code.
-* It stops looping as soon as it finds a match so there is no need for an extra break statement.
-* We can find the index using the array `find` method also, but using `findIndex` makes it easy and avoids creating extra variables to store the index.
-
-#### Array.filter Method
-The `filter` method returns `a new array` with all the elements that satisfy the provided test condition.
-
-The `filter` method takes a callback function as the first argument and executes the callback function for every element of the array. Each array element value is passed as the first parameter to the callback function.
-
-Syntax:
-```javascript 
-Array.filter(callback(element[, index[, array]])[, thisArg])
-```
-
-```javascript
-const students = [
-  { name: 'Mike Ewing', age: 21 },
-  { name: 'Sally Brady', age: 18 },
-  { name: 'Mike Sheridan', age: 19 },
-  { name: 'Katie Jane', age: 27 }
-];
-
-const student = students.filter(function(student) {
-  return student.name.indexOf('Mike') > -1;
-});
-
-console.log(student);
-// -> { name: "Mike Ewing", age: 21 }
-// -> { name: "Mike Sheridan", age: 19 }
-```
-
-As can be seen in the above code, using `filter` helps to find all the elements from the array that match the specified test condition.
-
-So using `filter` does not stop when it finds a particular match but keeps checking for other elements in the array that match the condition. Then it returns all the matching elements from the array.
-
-> The main difference between `find` and `filter` is that `find` only returns the first matching element of the array, but using `filter` returns all the matching elements from the array.
-
-Note that the `filter` method always returns an array. If no element passes the test condition, an empty array will be returned.
-
-The equivalent for loop code for the above example looks like this:
-
-```javascript
-const students = [
-  { name: 'Mike Ewing', age: 21 },
-  { name: 'Sally Brady', age: 18 },
-  { name: 'Mike Sheridan', age: 19 },
-  { name: 'Katie Jane', age: 27 }
-];
-
-let filtered = [];
-
-for (let i = 0; i < students.length; i++) {
-  if (students[i].name.indexOf('Mike') > -1) {
-    filtered.push(students[i]);
-  }
-}
-
-console.log(filtered);
-// -> { name: "Mike Ewing", age: 21 }
-// -> { name: "Mike Sheridan", age: 19 }
-```
-
-Advantages of using the filter method:
-* It allows us to quickly find all the matching elements from the array.
-* It always returns an array even if there is no match, so it avoids writing extra `if` conditions.
-* It avoids the need of creating an extra variable to store the filtered elements.
-
-#### Array.every Method
-The `every` method tests whether all elements in the array pass the provided test conditions and returns a boolean `true` or `false` value.
-
-Syntax:
-```javascript 
-Array.every(callback(element[, index[, array]])[, thisArg])
-```
-
-Suppose we have an array of numbers and we want to check if every element of the array is a positive number. We can use the `every` method to achieve it.
-
-```javascript
-let numbers = [ 10, -30, 20, 50 ];
-
-let allPositive = numbers.every(function(number) {
-  return number > 0;
-});
-console.log(allPositive); // false
-
-numbers = [ 10, 30, 20, 50 ];
-
-allPositive = numbers.every(function(number) {
-  return number > 0;
-});
-console.log(allPositive); // true
-```
-
-Now, imagine we have a registration form, and you want to check if all of the required fields are entered or not before submitting the form. You can use the `every` method to check for each field value easily.
-
-```javascript
-window.onload = function() {
-  const form = document.getElementById('registration_form');
-  form.addEventListener('submit', function(event) {
-    event.preventDefault();
-    const fields = [ 'first_name', 'last_name', 'email', 'city' ];
-    const allFieldsEntered = fields.every(function(fieldId) {
-      return document.getElementById(fieldId).value.trim() !== '';
-    });
-
-    if (allFieldsEntered) {
-      console.log('All the fields are entered');
-      // All the field values are entered, submit the form
-    } else {
-      alert('Please, fill out all the field values.');
-    }
-  });
-};
-```
-
-Here, inside the callback function of the `every` method, we’re checking if each field value is not empty and returning a boolean value.
-
-In the above code, the `every` method returns `true` if, for all the elements in the `fields` array, the callback function returns a `true` value.
-
-If the callback function returns a `false` value for any of the elements in the `fields` array, then the `every` method will return `false` as the result.
-
-Advantage of using the every method:
-* It allows us to quickly check if all the elements match certain criteria without writing a lot of code.
-
-#### Array.some Method
-The `some` method tests whether at least one element in the array passes the test condition given by the provided function and returns a boolean `true` or `false` value.
-
-Syntax:
-```javascript
- Array.some(callback(element[, index[, array]])[, thisArg]
-```
-
-It returns `true` once it finds the first match and returns `false` if there is no match.
-
-Suppose we have an array of numbers and we want to check if the array contains at least one positive element. We can use the `some` method to achieve it.
-
-```javascript
-let numbers = [ -30, 40, 20, 50 ];
-
-// here we're using an arrow functions
-let containsPositive = numbers.some((number) => {
-  return number > 0;
-});
-console.log(containsPositive); // true
-
-numbers = [ -10, -30, -20, -50 ];
-
-// here we're using an arrow functions
-containsPositive = numbers.every((number) => {
-  return number > 0;
-});
-console.log(containsPositive); // false
-```
-
-Here are some useful scenarios for using the some method:
-##### Example 1:
-Let's say we have a list of students and we want to check if a particular student is present in that array or not. We also want to get the index position of that student if the student is found.
-
-So instead of using the `find` and `findIndex` methods separately, we can use the `some` method to do both of these.
-
-```javascript
-const students = [
-  { name: 'Mike Ewing', age: 21 },
-  { name: 'Sally Brady', age: 18 },
-  { name: 'Mike Sheridan', age: 19 },
-  { name: 'Katie Jane', age: 27 }
-];
-
-let indexValue = -1;
-const student = students.some(function(student, index) {
-  const isFound = student.name.indexOf('Katie') > -1;
-  if (isFound) {
-    indexValue = index;
-  }
-  return isFound;
-});
-
-console.log(student, indexValue); // -> true 3
-```
-
-##### Example 2:
-The array `forEach`, `map`, and `filter` methods run from start to finish until all of the elements of the array are processed. There is no way of stopping or breaking out of the loop, once a particular element is found.
-
-In such cases, we can use the array `some` method. The `map`, `forEach` and `some` methods take the same parameters in the callback function:
-* The first parameter is the actual value
-* The second parameter is the index
-* The third parameter is the original array
-
-The `some` method stops looping through the array once it finds a particular match as can be seen in the above example 1.
-
-Advantages of using the some method
-* It allows us to quickly check if some of the elements match certain criteria without writing a lot of code.
-* It allows us to quickly break out of the loop, which was not possible with other looping methods seen above.
-
-#### Array.reduce Method
+##### arr.reduce Method
 The `reduce` method executes a reducer function (that you provide) on each element of the array, resulting in a single output value.
 
 Syntax:
 ```javascript
-Array.reduce(callback(accumulator, currentValue[, index[, array]])[, initialValue])
+arr.reduce(callback(accumulator, currentValue[, index[, array]])[, initialValue])
 ```
 
 > Note that the output of the reduce method is always a single value. It can be an object, a number, a string, an array, and so on. It depends on what you want the output of reduce method to generate but it's always a single value.
