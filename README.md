@@ -1333,9 +1333,7 @@ square = (x) => x + x;
 ### Destructuring
 
 #### Object Destructuring:
-Destructuring saves you from creating temporary references for those properties, and from repetitive access of the object. 
-
-Repeating object access creates more repetitive code, requires more reading, and creates more opportunities for mistakes. 
+Destructuring saves you from creating temporary references for those properties, and from repetitive access of the object. Repeating object access creates more repetitive code, requires more reading, and creates more opportunities for mistakes. 
 
 Destructuring objects also provides a single site of definition of the object structure that is used in the block, rather than requiring reading the entire block to determine what is used.
 
@@ -1506,10 +1504,10 @@ const person = {
   nickName : '2 Sweet',
   fullName() {
 
-    // destructure "this"
-		const { first, last, nickName } = this;
-		// we can then remove the "this" and simply call the keys
-		console.log(`${first} ${last} aka ${nickName}`);
+    // destructuring "this"
+    const { first, last, nickName } = this;
+    // we can then remove the "this" and simply call the keys
+    console.log(`${first} ${last} aka ${nickName}`);
   }
 };
 person.fullName(); // -> Katie Jane aka 2 Sweet
