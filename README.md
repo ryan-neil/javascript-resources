@@ -245,11 +245,10 @@ if (password.length >= 8) {
 
 #### Conditionals and Logical Operators: And, Or and Not
 If you want to test multiple conditions without writing nested `if...else` statements, logical operators can help you. When used in conditions, the first two do the following:
-``` 
-&& -> And
-|| -> Or
-! -> Not
-```
+
+`&& -> And`
+`|| -> Or`
+`! -> Not`
 
 ##### And (`&&`):
 With the `and` logical operator, both sides of the && needs to be true for the entire statement to be true.
@@ -364,10 +363,8 @@ let item = 'Mangoes';
 
 switch (item) {
   case 'Oranges':
-    console.log('Oranges are $0.59 a pound.');
-    break;
   case 'Apples':
-    console.log('Apples are $0.32 a pound.');
+    console.log('Oranges and Apples are $0.32 a pound.');
     break;
   case 'Bananas':
     console.log('Bananas are $0.48 a pound.');
@@ -377,7 +374,7 @@ switch (item) {
     break;
   case 'Mangoes':
   case 'Papayas':
-    console.log('Mangoes and papayas are $2.79 a pound.');
+    console.log('Mangoes and Papayas are $2.79 a pound.');
     break;
   default:
     console.log(`Sorry, we are out of ${item}.`);
@@ -399,6 +396,11 @@ condition ? expIfTrue : expIfFalse
 
 Example:
 ```javascript
+// New syntax
+let status = 'offline';
+
+let color = status === 'offline' ? 'red' : 'green'; // -> 'red'
+
 // Old syntax
 let status = 'offline';
 let color = '';
@@ -408,11 +410,6 @@ if (status === 'offline') {
 } else {
   color = 'green';
 }
-
-// New syntax
-let status = 'offline';
-
-let color = status === 'offline' ? 'red' : 'green'; // -> 'red'
 ```
 
 **[⬆ Top](#table-of-contents)**
@@ -434,7 +431,7 @@ arr.push([element1[, ...[, elementN]]])
 
 Example:
 ```javascript
-let sports = ['soccer', 'baseball']
+let sports = [ 'soccer', 'baseball' ]
 
 let total = sports.push('football', 'tennis')
 
@@ -507,12 +504,12 @@ let arrDeletedItems = arr.splice(start[, deleteCount[, item1[, item2[, ...]]]])
 Example:
 ```javascript
 const months = [ 'Jan', 'March', 'April', 'June' ];
-// insert at index 1, replaces 0 elements
+// insert at index 1, replace 0 elements
 months.splice(1, 0, 'Feb');
 
 console.log(months); // -> [ "Jan", "Feb", "March", "April", "June" ]
 
-// insert at index 4, replaces 1 element (June)
+// insert at index 4, replace 1 element (June)
 months.splice(4, 1, 'May');
 
 console.log(months); // -> [ "Jan", "Feb", "March", "April", "May" ]
@@ -538,11 +535,7 @@ console.log(fruits); // -> [ "Banana", "Orange", "Lemon", "Apple", "Mango" ]
 console.log(citrus); // -> [ "Orange", "Lemon" ]
 ```
 
-> Splice vs Slice:
-  * The `splice()` method returns the removed item(s) in an array and `slice()` method returns the selected element(s) in an array, as a new array object.
-  * The `splice()` method changes the original array and `slice()` method doesn’t change the original array.
-  * The `splice()` method can take n number of arguments and `slice()` method takes 2 arguments.
-
+> The difference between `splice` and `slice` is that the `splice()` method returns the removed item(s) in an array and `slice()` method returns the selected element(s) in an array, as a new array object. Also, the `splice()` method changes the original array and `slice()` method doesn’t change the original array. In addition, the `splice()` method can take n number of arguments and `slice()` method takes 2 arguments.
 
 #### Iterating Over Elements:
 
@@ -564,7 +557,7 @@ testScores.forEach(function(score) {
 // -> 89, 92, 76, 99
 ```
 
-The equivalent `for loop` code for the above example looks like this:
+The equivalent `for loop` for the above example looks like this:
 
 ```javascript
 const testScores = [ 89, 92, 76, 99 ];
@@ -649,7 +642,7 @@ So using `filter` does not stop when it finds a particular match but keeps check
 
 Note that the `filter` method always returns an array. If no element passes the test condition, an empty array will be returned.
 
-The equivalent for loop code for the above example looks like this:
+The equivalent `for loop` for the above example looks like this:
 
 ```javascript
 const students = [
@@ -756,14 +749,14 @@ let numbers = [ 10, -30, 20, 50 ];
 let allPositive = numbers.every(function(number) {
   return number > 0;
 });
-console.log(allPositive); // false
+console.log(allPositive); // -> false
 
 numbers = [ 10, 30, 20, 50 ];
 
 allPositive = numbers.every(function(number) {
   return number > 0;
 });
-console.log(allPositive); // true
+console.log(allPositive); // -> true
 ```
 
 Now, imagine we have a registration form, and you want to check if all of the required fields are entered or not before submitting the form. You can use the `every` method to check for each field value easily.
@@ -816,7 +809,7 @@ let numbers = [ -30, 40, 20, 50 ];
 let containsPositive = numbers.some((number) => {
   return number > 0;
 });
-console.log(containsPositive); // true
+console.log(containsPositive); // -> true
 
 numbers = [ -10, -30, -20, -50 ];
 
@@ -824,11 +817,12 @@ numbers = [ -10, -30, -20, -50 ];
 containsPositive = numbers.every((number) => {
   return number > 0;
 });
-console.log(containsPositive); // false
+console.log(containsPositive); // -> false
 ```
 
 Here are some useful scenarios for using the some method:
-__Example 1:__
+
+__Example 1:__ \
 Let's say we have a list of students and we want to check if a particular student is present in that array or not. We also want to get the index position of that student if the student is found.
 
 So instead of using the `find` and `findIndex` methods separately, we can use the `some` method to do both of these.
@@ -853,15 +847,14 @@ const student = students.some(function(student, index) {
 console.log(student, indexValue); // -> true 3
 ```
 
-__Example 2:__
 The array `forEach`, `map`, and `filter` methods run from start to finish until all of the elements of the array are processed. There is no way of stopping or breaking out of the loop, once a particular element is found.
 
-In such cases, we can use the array `some` method. The `map`, `forEach` and `some` methods take the same parameters in the callback function:
+In such cases, we can use the `some` array method. The `map`, `forEach` and `some` methods take the same parameters in the callback function:
 * The first parameter is the actual value
 * The second parameter is the index
 * The third parameter is the original array
 
-The `some` method stops looping through the array once it finds a particular match as can be seen in the above example 1.
+The `some` method stops looping through the array once it finds a particular match as can be seen in the above example.
 
 Advantages of using the some method
 * It allows us to quickly check if some of the elements match certain criteria without writing a lot of code.
@@ -1002,11 +995,9 @@ The `number` is the second parameter to the callback function that will contain 
 
 In the above code, we have provided `0` as the `initialValue` for the `accumulator`. So the first time the callback function executes, the `accumulator + number` will be `0 + 1 = 1` and we're returning back the value `1`.
 
-The next time the callback function runs, `accumulator` + number will be `1 + 2 = 3` (`1` here is the previous value returned in the last iteration and `2` is the next element from the array).
+The next time the callback function runs, `accumulator + number` will be `1 + 2 = 3` (`1` here is the previous value returned in the last iteration and `2` is the next element from the array).
 
-> In the above code, initialValue of 0 is not required because all the elements of the array are integers.
-
-But it’s always good to specify the `initialValue` of `accumulator` as it makes it easy to understand the return type of the `reduce` method and get the correct type of data back.
+> It’s always good to specify the `initialValue` of `accumulator` as it makes it easy to understand the return type of the `reduce` method and get the correct type of data back.
 
 ```javascript
 const numbers = [ 1, 2, 3, 4, 5 ];
@@ -1065,7 +1056,7 @@ To iterate over elements:
 * `forEach(func)` – calls `func` for every element, does not return anything.
 
 To transform the array:
-* map(func) – creates a new array from results of calling func for * every element.
+* `map(func)` – creates a new array from results of calling func for * every element.
 * `sort(func)` – sorts the array in-place, then returns it.
 * `reverse()` – reverses the array in-place, then returns it.
 * `split/join` – convert a string to array and back.
@@ -1087,10 +1078,10 @@ An object, compared to an array, is more like a container that holds different p
 
 We do not use a number [`0`] to access our data out like with an array, we would directly call for the data we need (city, age, zip, etc.)
 
-Example of key-value pairs:
-`key: value`
-In the example below:
-`totalSteps: --> 308727` - *totalSteps* would be a __key__ and *308727* would be a __value__
+Example of key-value pairs: \
+`key: value` \
+In the example below: \
+`totalSteps: 308727` - *totalSteps* would be a __key__ and *308727* would be a __value__
 
 ```javascript
 const fitBitData = {
@@ -1213,18 +1204,18 @@ function myFunc() {
 #### Function Expressions:
 In JavaScript functions are objects which means we can store them in variables, arrays, and we can pass them around as arguments.
 
-Example 1: Storing a function in a variable
+Example 1: Storing a function in a `variable`
 ```javascript
-// New syntax
-const square = function(num) {
-  return num + num;
-};
-square(7); // -> 49
-
 // Old syntax
 function square(num) {
   return num + num;
 }
+square(7); // -> 49
+
+// New syntax
+const square = function(num) {
+  return num + num;
+};
 square(7); // -> 49
 ```
 
@@ -1257,7 +1248,7 @@ subtract(100 - 4); // -> 96
 multiply(100 - 4); // -> 400
 ```
 
-From the code above, we can loop over our `array` of functions like this:
+We can then loop over our `array` of functions like this:
 ```javascript
 for (let func of operations) {
   let result = func(30, 5);
@@ -1269,7 +1260,7 @@ for (let func of operations) {
 // -> 6 (divide)
 ```
 
-Continuing from our examples above, we can store functions in an `object` like this:
+To store functions in an `object` we do this:
 ```javascript
 const operationsObject = {
   add      : add,
@@ -1333,7 +1324,7 @@ We can shorten this even more if the function has *only* one statement, and the 
 square = (x) => x + x; 
 ```
 
-> When dealing with arrow functions it's important to remember that the keyword `this` behaves differently than it does is traditional functions. *See the "this" section for more details*.
+> When dealing with arrow functions it's important to remember that the keyword `this` behaves differently than it does in traditional functions. *See the "this" section for more details*.
 
 **[⬆ Top](#table-of-contents)**
 
@@ -1389,7 +1380,7 @@ Why? You can add new properties over time or change the order of things without 
 ```javascript
 // bad
 function processInput(input) {
-  // then a miracle occurs
+  
   return [left, right, top, bottom];
 }
 // the caller needs to think about the order of return data
@@ -1431,7 +1422,7 @@ console.log(c); // -> [4, 5, 6], b !== c
 const d = [...a, ...b]; 
 console.log(d); // -> [1, 2, 3, 4, 5, 6]
 
-// Flatten an array
+// Flatten separate arrays
 const e = [[1, 2], [3, 4]];
 const f = [...e[0], ...e[1]]; 
 console.log(f); // -> [1, 2, 3, 4]
@@ -1467,7 +1458,7 @@ foo('hey', ...data); // -> 'hey_456', `nums` will be [4, 5, 6]
 
 We can think of `this` as a reference to the current *execution scope*. It is going to give you an `object` back.
 
-So depending on the scope and depending on the rules of how `this` works that `object` changes. It could be a reference to the *global scope*.
+So depending on the scope and depending on the rules of how `this` works that `object` changes. It could even be a reference to the *global scope*.
 
 Syntax:
 ```javascript
@@ -1477,22 +1468,114 @@ this
 Example:
 ```javascript
 // In web browsers, the window object is also the global object:
-console.log(this === window); // true
+console.log(this === window); // -> true
 
 a = 37;
-console.log(window.a); // 37
+console.log(window.a); // -> 37
 
 this.b = 'katie';
-console.log(window.b)  // "katie"
-console.log(b)         // "katie"
+console.log(window.b) // -> "katie"
+console.log(b) // -> "katie"
 ```
 
+#### This in Methods:
+We have the ability to write an `object` or a `method` that is aware of the `object` it lives in.
+
+This means we can use `objects` not only to store different `methods` because they're related (add, multiply, divide, etc.) we group them together as a nice way to create a container for our `methods` that are similar.
+
+But now we have a way of also interacting with properties with other `values` or even other `methods`. This means our object can be a little self-contained world where we can have variables.
+
+Example 1:
+```javascript
+const person = {
+  first    : 'Katie',
+  last     : 'Jane',
+  nickName : '2 Sweet',
+  fullName() {
+    console.log(`${this.first} ${this.last} aka ${this.nickName}`);
+  }
+};
+person.fullName(); // -> Katie Jane aka 2 Sweet
+```
+
+In the example above, since we're writing `this` a lot we can destructure it down to:
+```javascript
+const person = {
+  first    : 'Katie',
+  last     : 'Jane',
+  nickName : '2 Sweet',
+  fullName() {
+
+    // destructure "this"
+		const { first, last, nickName } = this;
+		// we can then remove the "this" and simply call the keys
+		console.log(`${first} ${last} aka ${nickName}`);
+  }
+};
+person.fullName(); // -> Katie Jane aka 2 Sweet
+```
+
+Example 2: Adding multiple methods to an object
+```javascript
+const person = {
+  first    : 'Katie',
+  last     : 'Jane',
+  nickName : '2 Sweet',
+  fullName() {
+    const { first, last, nickName } = this;
+
+    console.log(`${first} ${last} aka ${nickName}`);
+  },
+  // here we add a second method
+  printBio() {
+    // we need to use "this" to reference the whole object,    only using fullName() throws a reference error
+    const fullName = this.fullName();
+    console.log(`${fullName} is a person!`);
+  }
+};
+
+const printBio = person.printBio();
+console.log(printBio); // -> Katie Jane aka 2 Sweet is a person!
+```
+In the example above, we call a method `this.fullName()` that is located within the same object using `this`. In that method we access 3 different properties `[first, last, nickName]` using `this` using destructuring. 
+
+The value of `this` in both methods is referring to the object they live in (person).
+
+
 #### This and Arrow Functions:
-In short, with arrow functions there are no binding of `this`.
+In short, the value of `this` does not change in arrow functions.
 
 In regular functions the `this` keyword represented the object that called the function, which could be the window, the document, a button or whatever.
 
 With arrow functions the `this` keyword *always* represents the object that defined the arrow function.
+
+This is generally why we do not use arrow functions as methods because a lot of the methods we write, we want to have access to the parent object of the containing object to do things like:
+  * referencing properties
+  * calling a different method like we did in `printBio()` (`this.fullName()`).
+
+Example:
+```javascript
+const person = {
+  first    : 'Katie',
+  last     : 'Jane',
+  nickName : '2 Sweet',
+  fullName() {
+		const { first, last, nickName } = this;
+		return `${first} ${last} aka ${nickName}`;
+	},
+	printBio() {
+		const fullName = this.fullName();
+		console.log(`${fullName} is a person!`);
+	},
+	sayHello    : () => {
+		console.log(this);
+		console.log(`${this.nickName} says hi there!`);
+	}
+};
+console.log(person.sayHello());
+// -> Window
+// -> undefined says hi there!!
+```
 
 **[⬆ Top](#table-of-contents)**
 
