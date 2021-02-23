@@ -117,7 +117,7 @@ let dishesToDo = [ 'plate', 'bowl', 'cup' ];
 dishesToDo.shift(); // plate ['bowl', 'cup']
 dishesToDo.shift(); // bowl ['cup']
 
-consol.log(dishesToDo); // ['cup']
+console.log(dishesToDo); // ['cup']
 
 /*
 =================================
@@ -168,7 +168,13 @@ if (ingredients.includes('flour')) {
 // ** indexOf **
 // This method returns the first index at which a given element can be found in the array, or -1 if it is not present.
 // Example 1:
-let ingredients = [ 'water', 'corn starch', 'flour', 'cheese', 'butter' ];
+let ingredients = [
+	'water',
+	'corn starch',
+	'flour',
+	'cheese',
+	'butter'
+];
 
 ingredients.indexOf('butter'); // [4]
 ingredients.indexOf('maple syrup'); // [-1] (undefined)
@@ -194,7 +200,14 @@ letters.reverse().join('-'); // ["R-E-S-P-E-C-T"]
 // ** slice **
 // This method returns a shallow copy of a portion of an array into a new array object selected from start to end (end not included) where start and end represent the index of items in that array. The original array will not be modified.
 // Example 1:
-let animals = [ 'shark', 'salmon', 'whale', 'bear', 'lizard', 'tortoise' ];
+let animals = [
+	'shark',
+	'salmon',
+	'whale',
+	'bear',
+	'lizard',
+	'tortoise'
+];
 
 let swimmers = animals.slice(0, 3); // ['shark', 'salmon', 'whale']
 let mammals = mammals.slice(2, 4); // ['whale', 'bear']
@@ -211,7 +224,14 @@ let arrayCopy = animals.slice(); // ['shark', 'salmon', 'whale', 'bear', 'lizard
 // Syntax: splice(startIdx, deleteCount, itemsToInsert)
 
 // Example 1: Insert an item after 'shark'.
-let animals = [ 'shark', 'salmon', 'whale', 'bear', 'lizard', 'tortoise' ];
+let animals = [
+	'shark',
+	'salmon',
+	'whale',
+	'bear',
+	'lizard',
+	'tortoise'
+];
 
 // " at index 1, delete 0 items and insert 'octopus' "
 animals.splice(1, 0, 'octopus'); // ['shark', 'octopus', 'salmon', 'whale', 'bear', 'lizard', 'tortoise']
@@ -229,7 +249,14 @@ animals.splice(0, 2, 'SHARK!', 'SALMON!'); // ['SHARK!', 'SALMON!', 'whale', 'be
 // Syntax: arr.sort([compareFunction])
 
 // Example 1: People
-let people = [ 'Julie', 'Katie', 'Angie', 'Jolene', 'Maggie', 'Roxanne' ];
+let people = [
+	'Julie',
+	'Katie',
+	'Angie',
+	'Jolene',
+	'Maggie',
+	'Roxanne'
+];
 
 // people gets sorted alphabetically
 people.sort(); // ["Angie", "Jolene", "Julie", "Katie", "Maggie", "Roxanne"]

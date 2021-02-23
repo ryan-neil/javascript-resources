@@ -48,7 +48,9 @@ const person = {
 	last     : 'Sarkisian',
 	nickName : 'Cher',
 	fullName() {
-		console.log(`${this.first} ${this.last} aka ${this.nickName}`);
+		console.log(
+			`${this.first} ${this.last} aka ${this.nickName}`
+		);
 	}
 };
 person.fullName(); // -> Cherilyn Sarkisian aka Cher
@@ -70,7 +72,7 @@ person.fullName(); // -> Cherilyn Sarkisian aka Cher
 // Example 1.4: Adding multiple methods to an object
 /* 
 Breakdown: 
-- We call a method [printBio()] that is located within the same object using "this" [this.fullName()]. 
+- We call a method [this.fullName()] that is located within the same object using "this". 
 - In that method we access 3 different properties [first, last, nickName] using "this" [fullName()] using destructuring.
 - The value of "this" in both methods is referring to the object they live in
 */
@@ -101,20 +103,21 @@ this: Invocation Context
 */
 // Example 1: Changing the value of "this"
 const person = {
-	first    : 'Cherilyn',
-	last     : 'Sarkisian',
-	nickName : 'Cher',
+	first    : 'Katie',
+	last     : 'Jane',
+	nickName : '2 Sweet',
 	fullName() {
 		const { first, last, nickName } = this;
 		return `${first} ${last} aka ${nickName}`;
 	},
 	printBio() {
 		const fullName = this.fullName();
-		console.log(`${fullName} is a person!`);
+		return `${fullName} is a person!`;
 	}
 };
 
-const printBio = person.printBio;
+const printBio = person.printBio();
+console.log(printBio); // -> Katie Jane aka 2 Sweet is a person!
 /* 
 - We can think of it as if there is something to the left and then a dot [person.] and then we're executing the function, "this" will be set to that thing to the left.
 - For example, person.printBio(): this is set to "person". 
@@ -154,14 +157,13 @@ console.log(person.laugh());
 // -> undefined says HAHAHA!
 
 // Example 2: The annoyifier
-const annoyer = {
+const compliments = {
 	phrases    : [
-		'literally',
-		'cray cray',
-		"I can't even",
-		'Totes!',
-		'YOLO',
-		"Can't Stop, Won't Stop"
+		'You look great today',
+		"You're a smart cookie",
+		'I like your style',
+		'I appreciate you',
+		'You have the best smile'
 	],
 	// picking random phrases function
 	pickPhrase() {
@@ -180,6 +182,7 @@ const annoyer = {
 		}, 3000);
 	}
 };
+compliments.start();
 // -> Totes!
 // -> YOLO
 // -> I can't even ... etc.
