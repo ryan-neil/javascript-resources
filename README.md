@@ -1,9 +1,21 @@
+# JavaScript Resources
 ![js-gif](https://user-images.githubusercontent.com/59746024/108250339-3946ac80-70fa-11eb-9441-607fce5c3843.gif)
 
-# JavaScript Resources
-This is an ever-evolving collection of the most common JavaScript features and code samples.
+## Introduction
+The goal of this document is to provide a quick reference guide for the main features of JavaScript along with simple to understand sample code.
 
-## 📌 Repo Features
+This guide is not intended to teach you the fundamentals of the JavaScript programming language but merely a reference guide to come back to for a quick refresher.
+
+If you found this guide helpful let me know! \
+[![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/josephskycrest.svg?style=social&label=Follow%20%40josephskycrest)](https://twitter.com/josephskycrest)
+
+## 📂 Repo Folder Structure
+`/src/` - contains the source files for the Github repo. \
+`/src/js/` - contains all JavaScript component files. \
+`/src/js/analysis/` - contains the breakdown of JavaScript coding projects. \
+`/src/js/challenges/` - contains some example JavaScript challenges for practice.
+
+## 📌 Repo File Components
 1. Arrays
 1. Arrow Functions
 1. The Basics
@@ -18,16 +30,11 @@ This is an ever-evolving collection of the most common JavaScript features and c
 1. Spread
 1. "This" Keyword
 
-## 📂 Repo Folder Structure
-`/src/` - contains the source files for the Github repo. \
-`/src/js/` - contains all JavaScript files. \
-`/src/js/analysis/` - contains the breakdown of JavaScript coding projects. \
-`/src/js/challenges/` - contains some example JavaScript challenges for practice.
-
 ## 🔗 Resources
 - [JavaScript MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-- [Array Methods v1](https://www.freecodecamp.org/news/complete-introduction-to-the-most-useful-javascript-array-methods/)
-- [Array Methods v2](https://javascript.info/array-methods)
+- [Dev Docs](https://devdocs.io/javascript/)
+- [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript)
+- [Tutorial Republic - JavaScript](https://www.tutorialrepublic.com/javascript-tutorial/)
 - [30 Seconds of Code](https://www.30secondsofcode.org/)
 - [Fake API for testing and prototyping (JSON Placeholder)](https://jsonplaceholder.typicode.com/)
 - [CSS -> JavaScript](https://css2js.dotenv.dev/)
@@ -38,8 +45,11 @@ This is an ever-evolving collection of the most common JavaScript features and c
 
 ### Table of Contents
 
-  1. [Basics](#basics)
-  1. [Loops](#loops)
+  1. [Commenting](#commenting)
+  1. [Naming Conventions](#naming-conventions)
+  1. [Properties](#properties)
+  1. [Variables](#variables)
+  1. [For Loops](#for-loops)
   1. [Math](#math)
   1. [Conditionals](#conditionals)
   1. [Ternary Operator](#ternary-operator)
@@ -58,11 +68,196 @@ This is an ever-evolving collection of the most common JavaScript features and c
 
 ----
 
-### Basics
+### Commenting
 
-> When it come to commenting, don't explain what the code does, explain what the intentions of the code are. Generally, anyone can tell what the code is doing by looking at it, but it can often be impossible to understand why it's being done just by looking at the code alone.
+We want to use `/** ... */` for multiline comments.
 
-### Loops
+```javascript
+/**
+ * make() returns a new element
+ * based on the passed-in tag name
+ */
+function make(tag) {
+	
+  // ...
+
+	return element;
+}
+```
+
+Use want to use `//` for single line comments. Place single line comments on a newline above the subject of the comment. Put an empty line before the comment unless it’s on the first line of a block. Start all comments with a space to make it easier to read.
+
+```javascript
+// bad
+const active = true; // is current tab
+
+// good
+// is current tab
+const active = true;
+
+// bad
+function getType() {
+  console.log('fetching type...');
+  // set the default type to 'no type'
+  const type = this.type || 'no type';
+
+  return type;
+}
+
+// good
+function getType() {
+  console.log('fetching type...');
+
+  // set the default type to 'no type'
+  const type = this.type || 'no type';
+
+  return type;
+}
+
+// also good
+function getType() {
+  // set the default type to 'no type'
+  const type = this.type || 'no type';
+
+  return type;
+}
+```
+
+> When it come to commenting, don't explain what the code does, explain what the intentions of the code are. Generally, anyone can tell what the code is doing by looking at it, but it can often be impossible to understand why it's being done just by looking at the code alone. \  - Some internet guy
+
+**[⬆ Top](#table-of-contents)**
+
+----
+
+### Naming Conventions
+If possible, avoid single letter names. Be descriptive with your naming.
+
+```javascript
+// bad
+function q() {
+  // ...
+}
+
+// good
+function query() {
+  // ...
+}
+```
+
+Always use camelCase when naming objects, functions, and instances.
+
+```javascript
+// bad
+const OBJEcttsssss = {};
+const this_is_my_object = {};
+function c() {}
+
+// good
+const thisIsMyObject = {};
+function thisIsMyFunction() {}
+```
+
+Use PascalCase only when naming constructors or classes.
+
+```javascript
+// bad
+function user(options) {
+  this.name = options.name;
+}
+
+const bad = new user({
+  name: 'nope',
+});
+
+// good
+class User {
+  constructor(options) {
+    this.name = options.name;
+  }
+}
+
+const good = new User({
+  name: 'yup',
+});
+```
+
+Acronyms and initialisms should always be all uppercased, or all lowercased. This is because names are for readability, not to appease a computer algorithm.
+
+```javascript
+// bad
+import SmsContainer from './containers/SmsContainer';
+
+// bad
+const HttpRequests = [
+  // ...
+];
+
+// good
+import SMSContainer from './containers/SMSContainer';
+
+// good
+const HTTPRequests = [
+  // ...
+];
+```
+
+**[⬆ Top](#table-of-contents)**
+
+----
+
+### Properties
+We want to use dot notation when accessing properties.
+
+```javascript
+const thor = {
+  superhero: true,
+  age: 1500
+};
+
+// bad
+const isSuperhero = thor['superhero'];
+
+// good
+const isSuperhero = thor.superhero;
+```
+
+We want to use bracket notation `[]` when accessing properties with a variable.
+
+```javascript
+const thor = {
+  superhero: true,
+  age: 1500
+};
+
+function getProp(prop) {
+  return thor[prop];
+}
+
+const isSuperhero = getProp('superhero');
+```
+
+**[⬆ Top](#table-of-contents)**
+
+----
+
+### Variables
+
+We always want to use `const` or `let` to declare variables. Not doing so will result in global variables. We need to be carful not to muddy up the global namespace.
+
+The `const` keyword works exactly the same as `let`, except that variables declared using `const` cannot be reassigned later in the code.
+
+```javascript
+const daysInWeek = 7;
+
+let counter = 1;
+let counter = counter + 1; // -> 2
+```
+
+**[⬆ Top](#table-of-contents)**
+
+----
+
+### For Loops
 
 #### for:
 The __for statement__ creates a loop that consists of three optional expressions, enclosed in parentheses and separated by semicolons, followed by a statement (usually a block statement) to be executed in the loop.
@@ -1075,6 +1270,10 @@ Additionally:
 
 > Please note that methods sort, reverse and splice modify the array itself.
 
+#### Helpful Resources:
+[Array Methods v1](https://www.freecodecamp.org/news/complete-introduction-to-the-most-useful-javascript-array-methods/)
+[Array Methods v2](https://javascript.info/array-methods)
+
 **[⬆ Top](#table-of-contents)**
 
 ----
@@ -1591,11 +1790,9 @@ console.log(person.sayHello());
 
 The Document Object Model (DOM) is an application programming interface (API) for manipulating HTML and XML documents.
 
-This is, fundamentally, connecting JavaScript to HTML and CSS. It's our JavaScript window into the contents of a webpage.
-
 The DOM is the JavaScript representation of the content on a page and it consists of a bunch of objects that we can interact with via JavaScript.
 
-In this html code:
+In this HTML code:
 ```html
 <html>
   <body>
@@ -1612,15 +1809,6 @@ JavaScript reads it as, a `document` object, a `body` object, an `h1` object, a 
 
 These JavaScript objects have a variety of properties and methods associated with them. An example of this might be, what their content is or what text is inside the object (property). Or maybe we want to delete one of the objects or update it (method).
 
-#### The "Document" Object:
-The document object is our entry point into the world of the DOM. It contains representations of all the content on the page, plus tons of useful methods and properties.
-
-The `document` is the root of the entire webpage.
-
-```<!document html>```
-
-All of the other pieces (objects) of the DOM are located *within* the "document" object.
-
 #### DOM Properties and Methods:
 HTML DOM __methods__ are *actions* you can perform on HTML Elements (like add or deleting an HTML element).
 
@@ -1630,7 +1818,7 @@ In the following example, the `<script>` changes the content (the `innerHTML`) o
 
 Example:
 ```html
-// HTML
+<!-- HTML -->
 <body>
   <p id="practice"></p>
 </body>
@@ -1640,6 +1828,20 @@ Example:
 document.getElementById("practice").innerHTML = "Hello World!";
 ```
 In the example above, `getElementById` is a __method__, while `innerHTML` is a __property__.
+
+#### DOM Manipulation:
+When working with JS in the browser, instead of writing `document.querySelector()`/`document.querySelectorAll()` multiple times, you could do the following thing:
+
+```javascript
+const $ = document.querySelector.bind(document);
+const $$ = document.querySelectorAll.bind(document);
+
+// Usage
+const demo = $('#demo');
+
+// Select all the `a` tags
+[...$$("a[href *='#']")].forEach(console.log);
+```
 
 #### Selecting Methods:
 #### document.getElementById()
@@ -1652,7 +1854,7 @@ let element = document.getElementById(id);
 
 Example:
 ```html
-// HTML
+<!-- HTML -->
 <body>
   <p id="para">Some text here</p>
   <button onclick="changeColor('blue');">Blue</button>
@@ -1679,7 +1881,7 @@ let elements = document.getElementsByTagName(name);
 
 Example:
 ```html
-// HTML
+<!-- HTML -->
 <body>
   <p>Paragraph 1</p>
   <p>Paragraph 2</p>
@@ -1733,3 +1935,21 @@ console.log(arr);
 // -> 2: <p>
 ```
 We have now turned it into an array!
+
+#### document.getElementsClassName()
+`getElementClassName()` 
+
+Syntax:
+```javascript
+let elements = document.getElementsByClassName(name);
+```
+
+#### Helpful Resources:
+[Traversing the DOM](https://zellwk.com/blog/dom-traversals/)
+
+**[⬆ Top](#table-of-contents)**
+
+----
+
+### Contributing
+Contributions are always welcome! All I ask is that you open an issue and we discuss your proposed changes before you create a pull request.
