@@ -38,6 +38,7 @@ This is an ever-evolving collection of the most common JavaScript features and c
 
 ### Table of Contents
 
+  1. [Basics](#basics)
   1. [Loops](#loops)
   1. [Math](#math)
   1. [Conditionals](#conditionals)
@@ -53,6 +54,13 @@ This is an ever-evolving collection of the most common JavaScript features and c
   1. [Spread](#spread)
   1. [Rest](#rest)
   1. [This](#this)
+  1. [The DOM](#the-document-object-model-dom)
+
+----
+
+### Basics
+
+> When it come to commenting, don't explain what the code does, explain what the intentions of the code are. Generally, anyone can tell what the code is doing by looking at it, but it can often be impossible to understand why it's being done just by looking at the code alone.
 
 ### Loops
 
@@ -131,17 +139,17 @@ Both `for..of` and `for..in` statements iterate over lists; the values iterated 
 
 Example:
 ```javascript
-let list = [ 4, 5, 6 ];
+let sports = [ 'soccer', 'football', 'basketball' ];
 
-for (let i in list) {
-  console.log(i); 
+for (let i in sports) {
+	console.log(i);
 }
 // -> "0", "1", "2",
 
-for (let i of list) {
-  console.log(i); 
+for (let i of sports) {
+	console.log(i);
 }
-// -> "4", "5", "6"
+// -> soccer, football, basketball
 ```
 
 > We can remember this by: for "in" for `index` and for "of" would be the `values` of each index/key/item.
@@ -520,9 +528,9 @@ The `slice()` method returns a shallow copy of a portion of an array into a new 
 
 Syntax:
 ```javascript 
-slice()
-slice(start)
-slice(start, end)
+arr.slice()
+arr.slice(start)
+arr.slice(start, end)
 ```
 
 Example:
@@ -1485,7 +1493,7 @@ But now we have a way of also interacting with properties with other `values` or
 
 Example 1:
 ```javascript
-const person = {
+const user = {
   first    : 'Katie',
   last     : 'Jane',
   nickName : '2 Sweet',
@@ -1493,12 +1501,12 @@ const person = {
     console.log(`${this.first} ${this.last} aka ${this.nickName}`);
   }
 };
-person.fullName(); // -> Katie Jane aka 2 Sweet
+user.fullName(); // -> Katie Jane aka 2 Sweet
 ```
 
 In the example above, since we're writing `this` a lot we can destructure it down to:
 ```javascript
-const person = {
+const user = {
   first    : 'Katie',
   last     : 'Jane',
   nickName : '2 Sweet',
@@ -1510,12 +1518,12 @@ const person = {
     console.log(`${first} ${last} aka ${nickName}`);
   }
 };
-person.fullName(); // -> Katie Jane aka 2 Sweet
+user.fullName(); // -> Katie Jane aka 2 Sweet
 ```
 
 Example 2: Adding multiple methods to an object
 ```javascript
-const person = {
+const user = {
   first    : 'Katie',
   last     : 'Jane',
   nickName : '2 Sweet',
@@ -1528,16 +1536,16 @@ const person = {
   printBio() {
     // we need to use "this" to reference the whole object,    only using fullName() throws a reference error
     const fullName = this.fullName();
-    console.log(`${fullName} is a person!`);
+    console.log(`${fullName} is awesome!`);
   }
 };
 
-const printBio = person.printBio();
-console.log(printBio); // -> Katie Jane aka 2 Sweet is a person!
+const printBio = user.printBio();
+console.log(printBio); // -> Katie Jane aka 2 Sweet is awesome!
 ```
 In the example above, we call a method `this.fullName()` that is located within the same object using `this`. In that method we access 3 different properties `[first, last, nickName]` using `this` using destructuring. 
 
-The value of `this` in both methods is referring to the object they live in (person).
+The value of `this` in both methods is referring to the object they live in (user).
 
 
 #### This and Arrow Functions:
@@ -1577,3 +1585,151 @@ console.log(person.sayHello());
 
 **[⬆ Top](#table-of-contents)**
 
+----
+
+### The Document Object Model (DOM)
+
+The Document Object Model (DOM) is an application programming interface (API) for manipulating HTML and XML documents.
+
+This is, fundamentally, connecting JavaScript to HTML and CSS. It's our JavaScript window into the contents of a webpage.
+
+The DOM is the JavaScript representation of the content on a page and it consists of a bunch of objects that we can interact with via JavaScript.
+
+In this html code:
+```html
+<html>
+  <body>
+    <h1>Hello!</h1>
+    <ul>
+      <l1>Water Plants</li>
+      <l1>Do Laundry</li>
+    </ul>
+  </body>
+</html>
+```
+
+JavaScript reads it as, a `document` object, a `body` object, an `h1` object, a `ul` object, and two `li` objects.
+
+These JavaScript objects have a variety of properties and methods associated with them. An example of this might be, what their content is or what text is inside the object (property). Or maybe we want to delete one of the objects or update it (method).
+
+#### The "Document" Object:
+The document object is our entry point into the world of the DOM. It contains representations of all the content on the page, plus tons of useful methods and properties.
+
+The `document` is the root of the entire webpage.
+
+```<!document html>```
+
+All of the other pieces (objects) of the DOM are located *within* the "document" object.
+
+#### DOM Properties and Methods:
+HTML DOM __methods__ are *actions* you can perform on HTML Elements (like add or deleting an HTML element).
+
+HTML DOM __properties__ are *values* of HTML Elements that you can set or change (like changing the content of an HTML element).
+
+In the following example, the `<script>` changes the content (the `innerHTML`) of the `<p>` element with `id = "demo"`.
+
+Example:
+```html
+// HTML
+<body>
+  <p id="practice"></p>
+</body>
+```
+```javascript
+// JavaScript
+document.getElementById("practice").innerHTML = "Hello World!";
+```
+In the example above, `getElementById` is a __method__, while `innerHTML` is a __property__.
+
+#### Selecting Methods:
+#### document.getElementById()
+`getElementById()` returns an *Element* object representing the element whose `id` property matches the specified string. Since element IDs are required to be unique if specified, they're a useful way to get access to a specific element quickly.
+
+Syntax:
+```javascript
+let element = document.getElementById(id);
+```
+
+Example:
+```html
+// HTML
+<body>
+  <p id="para">Some text here</p>
+  <button onclick="changeColor('blue');">Blue</button>
+  <button onclick="changeColor('red');">Red</button>
+</body>
+```
+```javascript
+// JavaScript
+function changeColor(newColor) {
+  let elem = document.getElementById('para');
+  elem.style.color = newColor;
+}
+```
+Result: \
+When the `Blue` button is clicked, `Some text here` text changes color to blue and vice-versa with the `Red` button.
+
+#### document.getElementsTagName()
+`getElementTagName()` method of *Document* interface returns an *HTMLCollection* of elements with the given tag name (`< >`). The complete document is searched, including the root node.
+
+Syntax:
+```javascript
+let elements = document.getElementsByTagName(name);
+```
+
+Example:
+```html
+// HTML
+<body>
+  <p>Paragraph 1</p>
+  <p>Paragraph 2</p>
+  <p>Paragraph 3</p>
+  <button onclick="countPTags()">Count paragraphs</button>
+</body>
+```
+```javascript
+// JavaScript
+function countPTags() {
+  let totalPTags = document.getElementsByTagName('p');
+  console.log(`Total p tags are: ${totalPTags.length}`);
+}
+// -> Total p tags are: 3
+```
+Result: \
+When the `Count paragraphs` button is clicked, the console logs the amount of `<p>` tags it finds in the document (3).
+
+The `HTMLCollection` is an array-like object that is not an array. It is a collection of objects that we can access using indeces.
+
+> Regular array methods like `pop()` or `includes()` don't work with `HTMLCollection`.
+
+For Example:
+```javascript
+const pTags = document.getElementsByTagName('p');
+
+console.log(pTags); // -> HTMLCollection { 0: p, 1: p, 2: p }
+console.log(pTags.length); // -> 3
+console.log(pTags[0]); // -> <p> (Paragraph 1)
+console.log(pTags[2]); // -> <p> (Paragraph 3)
+```
+
+From the example above, we can iterate over `HTMLCollection`'s:
+```javascript
+for (let p of pTags) {
+  console.log(p);
+}
+// -> <p>
+// -> <p>
+// -> <p>
+```
+
+Since it is an iterable we can also use __spread__ (`...`)
+To turn it into an array and spread it:
+```javascript
+const arr = [...pTags];
+
+console.log(arr);
+// -> 0: <p>
+// -> 1: <p>
+// -> 2: <p>
+```
+We have now turned it into an array!
