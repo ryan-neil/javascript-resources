@@ -1,5 +1,5 @@
 # JavaScript Resources
-![js-gif](https://user-images.githubusercontent.com/59746024/108250339-3946ac80-70fa-11eb-9441-607fce5c3843.gif)
+<img src="/src/assets/js-resources.gif" width="600" alt="js-resources-gif">
 
 ## Introduction
 The goal of this document is to provide a quick reference guide for the main features of JavaScript along with simple to understand sample code.
