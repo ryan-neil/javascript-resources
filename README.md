@@ -1,5 +1,5 @@
 # JavaScript Resources
-<img src="/src/assets/js-resources.gif" width="600" alt="js-resources-gif">
+<img src="/src/assets/js-resources.gif" width="800" alt="js-resources-gif">
 
 ## Introduction
 The goal of this document is to provide a quick reference guide for the main features of JavaScript along with simple to understand sample code.
@@ -11,6 +11,7 @@ This guide is not intended to teach you the fundamentals of the JavaScript progr
 
 ## 📂 Repo Folder Structure
 `/src/` - contains the source files for the Github repo. \
+`/src/assets/` contains images for the repo. \
 `/src/js/` - contains all JavaScript component files. \
 `/src/js/analysis/` - contains the breakdown of JavaScript coding projects. \
 `/src/js/challenges/` - contains some example JavaScript challenges for practice.
