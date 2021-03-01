@@ -6,7 +6,7 @@ The goal of this document is to provide a quick reference guide for the main fea
 
 This guide is not intended to teach you the fundamentals of the JavaScript programming language but merely a reference guide to come back to for a quick refresher.
 
-If you found this guide helpful let me know! \
+###### If you found this guide helpful give me a follow and let me know! 🤙🏻
 [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/josephskycrest.svg?style=social&label=Follow%20%40josephskycrest)](https://twitter.com/josephskycrest)
 
 ## 📂 Repo Folder Structure
@@ -34,8 +34,10 @@ If you found this guide helpful let me know! \
 - [JavaScript MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 - [Dev Docs](https://devdocs.io/javascript/)
 - [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript)
-- [Tutorial Republic - JavaScript](https://www.tutorialrepublic.com/javascript-tutorial/)
+- [FCC Beginner's Handbook 2020](https://www.freecodecamp.org/news/the-complete-javascript-handbook-f26b2c71719c/#objectproperties)
 - [30 Seconds of Code](https://www.30secondsofcode.org/)
+
+#### Misc Resources:
 - [Fake API for testing and prototyping (JSON Placeholder)](https://jsonplaceholder.typicode.com/)
 - [CSS -> JavaScript](https://css2js.dotenv.dev/)
 - [Guide to CSS Flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
@@ -46,9 +48,9 @@ If you found this guide helpful let me know! \
 ### Table of Contents
 
   1. [Commenting](#commenting)
+  1. [Variables](#variables)
   1. [Naming Conventions](#naming-conventions)
   1. [Properties](#properties)
-  1. [Variables](#variables)
   1. [For Loops](#for-loops)
   1. [Math](#math)
   1. [Conditionals](#conditionals)
@@ -81,7 +83,7 @@ function make(tag) {
 	
   // ...
 
-	return element;
+  return element;
 }
 ```
 
@@ -123,7 +125,24 @@ function getType() {
 }
 ```
 
-> When it come to commenting, don't explain what the code does, explain what the intentions of the code are. Generally, anyone can tell what the code is doing by looking at it, but it can often be impossible to understand why it's being done just by looking at the code alone. \  - Some internet guy
+> When it comes to commenting, don't explain what the code does, explain what the intentions of the code are. Generally, anyone can tell what the code is doing by looking at it, but it can often be impossible to understand why it's being done just by looking at the code alone. - Some internet guy
+
+**[⬆ Top](#table-of-contents)**
+
+----
+
+### Variables
+
+We always want to use `const` or `let` to declare variables. Not doing so will result in global variables. We need to be carful not to muddy up the global namespace.
+
+The `const` keyword works exactly the same as `let`, except that variables declared using `const` cannot be reassigned later in the code.
+
+```javascript
+const daysInWeek = 7;
+
+let counter = 1;
+let counter = counter + 1; // -> 2
+```
 
 **[⬆ Top](#table-of-contents)**
 
@@ -240,24 +259,46 @@ const isSuperhero = getProp('superhero');
 
 ----
 
-### Variables
+### For Loops
 
-We always want to use `const` or `let` to declare variables. Not doing so will result in global variables. We need to be carful not to muddy up the global namespace.
-
-The `const` keyword works exactly the same as `let`, except that variables declared using `const` cannot be reassigned later in the code.
-
+The 4 for loops of JavaScript:
 ```javascript
-const daysInWeek = 7;
-
-let counter = 1;
-let counter = counter + 1; // -> 2
+// traditional
+let arr = [ 'thor', 'ironman', 'hulk', 'loki' ];
+for (let i = 0; i < arr.length; i++) {
+  console.log(i);
+  console.log(arr[i]);
+}
+// -> 0, 1, 2, 3
+// -> thor, ironman, hulk, loki
 ```
 
-**[⬆ Top](#table-of-contents)**
+```javascript
+// for ... of
+let arr = [ 'thor', 'ironman', 'hulk', 'loki' ];
+for (let item of arr) {
+	console.log(item);
+}
+// -> thor, ironman, hulk, loki
+```
 
-----
+```javascript
+// for ... in
+let arr = [ 'thor', 'ironman', 'hulk', 'loki' ];
+for (let item in arr) {
+	console.log(item);
+}
+// -> 0, 1, 2, 3
+```
 
-### For Loops
+```javascript
+// forEach
+let arr = [ 'thor', 'ironman', 'hulk', 'loki' ];
+arr.forEach(item => {
+	console.log(item);
+});
+// -> thor, ironman, hulk, loki
+```
 
 #### for:
 The __for statement__ creates a loop that consists of three optional expressions, enclosed in parentheses and separated by semicolons, followed by a statement (usually a block statement) to be executed in the loop.
@@ -1871,8 +1912,8 @@ function changeColor(newColor) {
 Result: \
 When the `Blue` button is clicked, `Some text here` text changes color to blue and vice-versa with the `Red` button.
 
-#### document.getElementsTagName()
-`getElementTagName()` method of *Document* interface returns an *HTMLCollection* of elements with the given tag name (`< >`). The complete document is searched, including the root node.
+#### document.getElementsByTagName()
+`getElementsByTagName()` method of *Document* interface returns an *HTMLCollection* of elements with the given tag name (`< >`). The complete document is searched, including the root node.
 
 Syntax:
 ```javascript
@@ -1936,13 +1977,71 @@ console.log(arr);
 ```
 We have now turned it into an array!
 
-#### document.getElementsClassName()
-`getElementClassName()` 
+#### document.getElementsByClassName()
+`getElementsByClassName()` method of `Document` interface returns an array-like object of all child elements which have all of the given class name(s). When called on the `document` object, the complete document is searched, including the root node.
 
 Syntax:
 ```javascript
-let elements = document.getElementsByClassName(name);
+let elements = document.getElementsByClassName(names); 
+// or
+let elements = rootElement.getElementsByClassName(names);
 ```
+
+For Example:
+```html
+<!-- HTML -->
+<body>
+  <div id="parent-id">
+    <p>hello world 1</p>
+    <p class="test">hello world 2</p>
+    <p>hello world 3</p>
+    <p>hello world 4</p>
+  </div>
+</body>
+```
+```javascript
+// JavaScript
+// a list of matching elements, *not* the element itself
+const test = document.getElementsByClassName('test');
+console.log(test);
+// -> HTMLCollection { 0: p.test, length: 1 }
+
+// the first element, as we wanted
+const testTarget = document.getElementsByClassName('test')[0];
+console.log(testTarget);
+// -> <p class="test">
+```
+
+A commonly used method of operation is combining or chaining `document.getElementById()` and `document.getElementByClassName()`.
+
+From the example above:
+```html
+<!-- HTML -->
+<body>
+  <div id="parent-id">
+    <p>hello world 1</p>
+    <p class="test">hello world 2</p>
+    <p>hello world 3</p>
+    <p>hello world 4</p>
+  </div>
+</body>
+```
+```javascript
+// JavaScript
+const parentDOM = document.getElementById("parent-id");
+console.log(parentDOM); // -> <div id="parent-id">
+
+// a list of matching elements, *not* the element itself
+const test = parentDOM.getElementsByClassName('test');
+console.log(test); // -> HTMLCollection { 0: p.test, length: 1 }
+
+// the first element, as we wanted
+const testTarget = parentDOM.getElementsByClassName('test')[0];
+console.log(testTarget); // -> <p class="test">
+```
+
+#### document.querySelector()
+
 
 #### Helpful Resources:
 [Traversing the DOM](https://zellwk.com/blog/dom-traversals/)
