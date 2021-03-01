@@ -278,7 +278,7 @@ for (let i = 0; i < arr.length; i++) {
 // for ... of
 let arr = [ 'thor', 'ironman', 'hulk', 'loki' ];
 for (let item of arr) {
-	console.log(item);
+  console.log(item);
 }
 // -> thor, ironman, hulk, loki
 ```
@@ -287,7 +287,7 @@ for (let item of arr) {
 // for ... in
 let arr = [ 'thor', 'ironman', 'hulk', 'loki' ];
 for (let item in arr) {
-	console.log(item);
+  console.log(item);
 }
 // -> 0, 1, 2, 3
 ```
@@ -296,7 +296,7 @@ for (let item in arr) {
 // forEach
 let arr = [ 'thor', 'ironman', 'hulk', 'loki' ];
 arr.forEach(item => {
-	console.log(item);
+  console.log(item);
 });
 // -> thor, ironman, hulk, loki
 ```
@@ -379,12 +379,12 @@ Example:
 let sports = [ 'soccer', 'football', 'basketball' ];
 
 for (let i in sports) {
-	console.log(i);
+  console.log(i);
 }
 // -> "0", "1", "2",
 
 for (let i of sports) {
-	console.log(i);
+  console.log(i);
 }
 // -> soccer, football, basketball
 ```
@@ -557,11 +557,11 @@ let flavor = strawberry;
 
 // first way to solve this:
 if (flavor !== 'grape' && flavor !== 'cherry') {
-	console.log("We don't have that flavor!");
+  console.log("We don't have that flavor!");
 }
 // or an example using not (!):
 if (!(flavor === 'grape' || flavor === 'cherry')) {
-	console.log("We don't have that flavor!");
+  console.log("We don't have that flavor!");
 }
 // -> We don't have that flavor!
 ```
@@ -1807,17 +1807,17 @@ const person = {
   last     : 'Jane',
   nickName : '2 Sweet',
   fullName() {
-		const { first, last, nickName } = this;
-		return `${first} ${last} aka ${nickName}`;
-	},
-	printBio() {
-		const fullName = this.fullName();
-		console.log(`${fullName} is a person!`);
-	},
-	sayHello    : () => {
-		console.log(this);
-		console.log(`${this.nickName} says hi there!`);
-	}
+    const { first, last, nickName } = this;
+    return `${first} ${last} aka ${nickName}`;
+  },
+  printBio() {
+    const fullName = this.fullName();
+    console.log(`${fullName} is a person!`);
+  },
+  sayHello    : () => {
+    console.log(this);
+    console.log(`${this.nickName} says hi there!`);
+  }
 };
 console.log(person.sayHello());
 // -> Window
