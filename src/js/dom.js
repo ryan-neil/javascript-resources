@@ -14,8 +14,8 @@ The Dom
 
 /*
 ====================================
-The "Document" Object
-====================================
+The "Document" Object:
+
 - The document object is our entry point into the world of the DOM. It contains representations of all the content on the page, plus tons of useful methods and properties.
 - The document is the root of the entire webpage (<!document html>).
 - All of the other pieces (objects) of the DOM are located within the "document" object.
@@ -413,4 +413,211 @@ console.log(range.min); // -> -10
  * parentElement
  * children
  * nextSibling
+ * previousSibling
 */
+
+// * parentElement
+// HTML
+<body>
+	<section>
+		<h2>Section Title</h2>
+		<p>First paragraph</p>
+		<p>Second paragraph</p>
+		<p>Third paragraph</p>
+	</section>
+</body>;
+
+// JavaScript
+const firstP = document.querySelector('p');
+
+console.log(firstP.parentElement); // -> <section>
+// we can chain the .parentElement
+console.log(firstP.parentElement.parentElement); // -> <body>
+
+// * children
+// HTML
+<body>
+	<section>
+		<h2>Section Title</h2>
+		<p>First paragraph</p>
+		<p>Second paragraph</p>
+		<p>Third paragraph</p>
+	</section>
+</body>;
+
+// JavaScript
+const sectionChild = document.querySelector('section');
+
+console.log(sectionChild.children); // -> HTMLCollection { 0: h2, 1: p, 2: p, 3: p }
+console.log(sectionChild.children[0]); // -> <h2>
+
+// * nextElementSibling
+// HTML
+<body>
+	<section>
+		<h2>Section Title</h2>
+		<p>First paragraph</p>
+		<p>Second paragraph</p>
+		<p>Third paragraph</p>
+	</section>
+</body>;
+
+// JavaScript
+const nextSib = document.querySelector('h2');
+console.log(nextSib.nextElementSibling); // -> <p>First paragraph</p>
+
+// * previousElementSibling
+// HTML
+<body>
+	<section>
+		<h2>Section Title</h2>
+		<p>First paragraph</p>
+		<p>Second paragraph</p>
+		<p>Third paragraph</p>
+	</section>
+</body>;
+
+// JavaScript
+const previousSib = document.querySelector('p');
+console.log(previousSib.previousElementSibling); // -> <h2>Section Title</h2>
+
+/**
+====================================
+Changing Multiple Elements:
+
+- We use querySelectorAll(), getElementsByClassName(), getElementsByTagName() to select all of the element and get an array-like object.
+- We then iterate over that object and call a method or property we want.
+*/
+
+// Example 1: Change the text inside all "p" elements
+// HTML
+<body>
+	<section>
+		<h2>Section Title</h2>
+		<p>First paragraph</p>
+		<p>Second paragraph</p>
+		<p>Third paragraph</p>
+	</section>
+</body>;
+
+// JavaScript
+// we select all the p tags
+const allPTags = document.querySelectorAll('p');
+
+// next we loop over all p tags
+for (let p of allPTags) {
+	//  last, we change the text
+	p.innerText = 'This is new text';
+}
+
+/**
+====================================
+Changing Styles Using JavaScript:
+*/
+
+// Example 2: Change the text color inside all "p" elements
+// HTML
+<body>
+	<section>
+		<h2>Section Title</h2>
+		<p>cd paragraph</p>
+		<p>Second paragraph</p>
+		<p>Third paragraph</p>
+	</section>
+</body>;
+
+// JavaScript
+// we select all the p tags
+const allPTags = document.querySelectorAll('p');
+// we create a colors array
+const colors = [ 'coral', 'violet', 'lightblue' ];
+
+// next we loop over all p tags and print the text and index
+allPTags.forEach((p, idx) => {
+	// assign a variable to all the colors in the array
+	const newColors = colors[idx];
+	// change the text color of the iterated p tags
+	p.style.color = newColors;
+});
+
+/** getComputedStyle
+	* a different way of accessing style values.
+	* Retrieving what the current value is for a color, backgroundColor, display, width, etc.
+*/
+
+document.querySelector('p').style.color;
+// "" (returns empty)
+
+/**
+	* This returns empty because the styleproperty only contains the inline styles.
+	* It does not contain any "calculated" styles,styles from a style sheet (CSS) or styles from a given class.
+*/
+
+// if we want to get the computed value for an element we have to call the method "getComputedStyle":
+const p = document.querySelector('p');
+
+const styles = getComputedStyle(p);
+
+// we can now access the style properties of all the "p" elements
+console.log(styles.backgroundColor);
+// -> "rgba(0, 0, 0, 0)"
+console.log(styles.fontFamily);
+// -> "serif"
+
+/** classList
+ * It is an object representation (DOM token list) that contains the classes on an element.
+ * It also provides Methods (toggle, forEach, add, etc.) so we can do things with them.
+ * If we're styling multiple styles at once or we plan on reusing this and styling multiple elements the same way, create a "class" and add or remove the "class" using the "classList" property and it's methods.
+ */
+
+// Instead of doing this:
+const todo = document.querySelector('#todos .todo');
+
+todo.style.color = 'grey';
+todo.style.textDecoration = 'line-through';
+todo.style.opacity = '50%';
+
+/**
+ * The downside of this method is our styles end up all in our JavaScript file rather than neatly in our CSS stylesheet.
+ */
+
+// We must add a "done" class to our CSS sheet with the above styles and then do this:
+const todo = document.querySelector('#todos .todo');
+
+// we have the ability to toggle classes: which basically says, "if it's there already, remove it" or "if it's not there, add it".
+const toggleClass = todo.classList.toggle('done');
+console.log(toggleClass); // -> true
+console.log(toggleClass); // -> false
+
+// to achieve this without toggle:
+const todo = document.querySelector('#todos .todo');
+
+todo.getAttribute('class'); // -> "todo"
+todo.getAttribute('class').includes('done'); // -> false
+// it does not have the class "done" so here we're changing the "class" [todo] to "class done" or [todo done]
+todo.setAttribute('class', todo.getAttribute('class') + ' done');
+// to toggle it again
+todo.getAttribute('class').includes('done');
+
+/** Creating Elements
+ * Insert or add elements into the DOM.
+ */
+
+// Syntax:
+let element = document.createElement(tagName);
+
+// Step 1: Create our element
+const newH2 = document.createElement('h2');
+console.log(newH2); // -> <h2> </h2>
+
+// Step 2: Add text to our new "h2" element
+newH2.innerText = "I like superhero's!";
+
+// Step 3: Add the class "special" to our "h2" element
+newH2.classList.add('special');
+
+// Step 4: Add our element to the DOM
+// we select where we want to add the new element
+const addedBodyElement = document.querySelector('body');
+// we append the element to the end of the body section
+addedBodyElement.appendChild(newH2);

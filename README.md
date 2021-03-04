@@ -22,14 +22,14 @@ This guide is not intended to teach you the fundamentals of the JavaScript progr
 1. The Basics
 1. Callbacks
 1. Destructuring
-1. The Dom
+1. The DOM
 1. Functions
 1. JSON Files
 1. Loops
 1. Objects
 1. Rest
 1. Spread
-1. "This" Keyword
+1. This
 
 ## 🔗 Resources
 - [JavaScript MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
@@ -45,9 +45,9 @@ This guide is not intended to teach you the fundamentals of the JavaScript progr
 - [GitHub Markdown Styling](https://guides.github.com/features/mastering-markdown/)
 
 ## 📓 Notes
-
 ### Table of Contents
 
+  1. [Running JavaScript](#running-javascript)
   1. [Commenting](#commenting)
   1. [Variables](#variables)
   1. [Naming Conventions](#naming-conventions)
@@ -68,6 +68,52 @@ This guide is not intended to teach you the fundamentals of the JavaScript progr
   1. [Rest](#rest)
   1. [This](#this)
   1. [The DOM](#the-document-object-model-dom)
+
+  ----
+
+### Running JavaScript
+#### From the Command Line:
+Running JavaScript from the command line is handled by NodeJS.
+
+First, we need to [instal Node.js](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) if you haven't already.
+
+Next, open the terminal in VS Code and move to the current directory where our `.js` file is located:
+
+```bash
+cd yourdirectoryname
+```
+
+Now we have moved to the directory in which out JavaScript code is present.
+
+Last, type the following command into the VS Code terminal to view the output of your code:
+
+```bash
+node yourJSfilename
+```
+
+This method allows us to view the output of our JavaScript code without the need of an HTML file! Pretty sweet.
+
+#### From the Browser:
+
+##### Command-Line Keyboard Shortcuts:
+Here's a curated list of some of the most used CLI shortcuts.
+##### Moving the cursor
+`CTRL-A`/`HOME`: Move to the beginning of a line.
+`CTRL-E`/`END`: Move to the end of a line.
+`OPT-LEFT`: Move left one word.
+`OPT-RIGHT`: Move right one word.
+##### Editing Text
+`CTRL-U`: Cut all the characters.
+`CTRL-_`: Undo the last edit.
+##### Managing the screen
+`CTRL-L`: Clear screen (just like `clear`).
+`CTRL-S`: Stop screen output. Useful for preventing processes from spamming the stdout.
+`CTRL-Q`: Resume screen output.
+`CTRL-D`: Exit shell (just like exit).
+##### Accessing Command History
+`CTRL-R`: Search the command history. Accept with `ENTER`/`RETURN`, abort with CTRL-G.
+`CTRL-P`/`UP`: The previous command in history.
+`CTRL-N`/`DOWN`: The next command in history.
 
 ----
 
@@ -295,10 +341,10 @@ for (let item in arr) {
 ```javascript
 // forEach
 let arr = [ 'thor', 'ironman', 'hulk', 'loki' ];
-arr.forEach(item => {
-  console.log(item);
+arr.forEach((item, idx) => {
+  console.log(item, idx);
 });
-// -> thor, ironman, hulk, loki
+// -> thor [0], ironman [1], hulk [2], loki [3]
 ```
 
 #### for:
@@ -794,6 +840,7 @@ arr.forEach(callback(currentValue [, index [, array]])[, thisArg]);
 
 Example:
 ```javascript
+// new
 const testScores = [ 89, 92, 76, 99 ];
 
 testScores.forEach(function(score) {
@@ -805,6 +852,7 @@ testScores.forEach(function(score) {
 The equivalent `for loop` for the above example looks like this:
 
 ```javascript
+// old
 const testScores = [ 89, 92, 76, 99 ];
 
 for (let i = 0; i < testScores.length; i++) {
@@ -1404,6 +1452,11 @@ function add(x, y) {
 }
 add(5, 4); // -> 9
 ```
+
+For my visual learners out there:
+<p align="left">
+  <img src="/src/assets/function-definition.jpg" width="80%" alt="function-definition">
+</p>
 
 #### Function Scope:
 In JavaScript there are two types of scope:
