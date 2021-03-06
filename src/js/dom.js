@@ -621,3 +621,24 @@ newH2.classList.add('special');
 const addedBodyElement = document.querySelector('body');
 // we append the element to the end of the body section
 addedBodyElement.appendChild(newH2);
+
+// * Creating an image:
+const newImg = document.createElement('img');
+// link the image
+newImg.src =
+	'https://images.unsplash.com/photo-1580927752452-89d86da3fa0a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=80';
+newImg.style.width = '500px';
+// now we need to append it to the DOM
+document.body.appendChild(newImg);
+
+// * Creating a link:
+const newLink = document.createElement('a');
+newLink.innerText = 'Click here for more info';
+newLink.href = 'https://www.josephskycrest.com/';
+
+const ulEnd = document.querySelector('ul');
+ulEnd.appendChild(newLink);
+
+/** 
+ * 
+ */

@@ -35,13 +35,13 @@ This guide is not intended to teach you the fundamentals of the JavaScript progr
 - [JavaScript MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 - [Dev Docs](https://devdocs.io/javascript/)
 - [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript)
+- [Code Academy JavaScript Cheatsheet](https://www.codecademy.com/learn/introduction-to-javascript/modules/learn-javascript-introduction/cheatsheet)
 - [FCC Beginner's Handbook 2020](https://www.freecodecamp.org/news/the-complete-javascript-handbook-f26b2c71719c/#objectproperties)
 - [30 Seconds of Code](https://www.30secondsofcode.org/)
 
 #### Misc Resources:
 - [Fake API for testing and prototyping (JSON Placeholder)](https://jsonplaceholder.typicode.com/)
 - [CSS -> JavaScript](https://css2js.dotenv.dev/)
-- [Guide to CSS Flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
 - [GitHub Markdown Styling](https://guides.github.com/features/mastering-markdown/)
 
 ## 📓 Notes
@@ -75,7 +75,7 @@ This guide is not intended to teach you the fundamentals of the JavaScript progr
 #### From the Command Line:
 Running JavaScript from the command line is handled by NodeJS.
 
-First, we need to [instal Node.js](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) if you haven't already.
+First, we need to [install Node.js](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) if you haven't already.
 
 Next, open the terminal in VS Code and move to the current directory where our `.js` file is located:
 
@@ -83,9 +83,7 @@ Next, open the terminal in VS Code and move to the current directory where our `
 cd yourdirectoryname
 ```
 
-Now we have moved to the directory in which out JavaScript code is present.
-
-Last, type the following command into the VS Code terminal to view the output of your code:
+Now that we're in the directory where our JavaScript file is located we can type the following command into the VS Code terminal to view the output of our code:
 
 ```bash
 node yourJSfilename
@@ -95,24 +93,24 @@ This method allows us to view the output of our JavaScript code without the need
 
 #### From the Browser:
 
-##### Command-Line Keyboard Shortcuts:
+#### Command-Line Keyboard Shortcuts:
 Here's a curated list of some of the most used CLI shortcuts.
 ##### Moving the cursor
-`CTRL-A`/`HOME`: Move to the beginning of a line.
-`CTRL-E`/`END`: Move to the end of a line.
-`OPT-LEFT`: Move left one word.
+`CTRL-A`/`HOME`: Move to the beginning of a line. \
+`CTRL-E`/`END`: Move to the end of a line. \
+`OPT-LEFT`: Move left one word. \
 `OPT-RIGHT`: Move right one word.
 ##### Editing Text
-`CTRL-U`: Cut all the characters.
+`CTRL-U`: Cut all the characters. \
 `CTRL-_`: Undo the last edit.
 ##### Managing the screen
-`CTRL-L`: Clear screen (just like `clear`).
-`CTRL-S`: Stop screen output. Useful for preventing processes from spamming the stdout.
-`CTRL-Q`: Resume screen output.
+`CTRL-L`: Clear screen (just like `clear`). \
+`CTRL-S`: Stop screen output. Useful for preventing processes from spamming the stdout. \
+`CTRL-Q`: Resume screen output. \
 `CTRL-D`: Exit shell (just like exit).
 ##### Accessing Command History
-`CTRL-R`: Search the command history. Accept with `ENTER`/`RETURN`, abort with CTRL-G.
-`CTRL-P`/`UP`: The previous command in history.
+`CTRL-R`: Search the command history. Accept with `ENTER`/`RETURN`, abort with CTRL-G. \
+`CTRL-P`/`UP`: The previous command in history. \
 `CTRL-N`/`DOWN`: The next command in history.
 
 ----
@@ -1465,7 +1463,7 @@ In JavaScript there are two types of scope:
 
 With function scope, each function creates a new scope and scope determines the accessibility (visibility) of these variables. Variables defined inside a function are not accessible (visible) from outside the function.
 
-##### Local Variables:
+#### Local Variables:
 Variables declared within a JavaScript function, become __local__ to the function.
 
 Local variables have __Function scope__: They can only be accessed from within the function.
@@ -1485,7 +1483,7 @@ Since __local__ variables are only recognized inside their functions, variables 
 
 __Local__ variables are created when a function starts, and deleted when the function is completed.
 
-##### Global Variables:
+#### Global Variables:
 A variable declared outside a function, becomes __global__.
 
 A global variable has __global scope__: All scripts and functions on a web page can access it.
@@ -1508,13 +1506,13 @@ In JavaScript functions are objects which means we can store them in variables, 
 
 Example 1: Storing a function in a `variable`
 ```javascript
-// Old syntax
+// old
 function square(num) {
   return num + num;
 }
 square(7); // -> 49
 
-// New syntax
+// new
 const square = function(num) {
   return num + num;
 };
@@ -1609,12 +1607,12 @@ Arrow functions allow us to write shorter function syntax:
 
 Example:
 ```javascript
-// Old syntax
+// old
 square = function(x) {
   return x + x;
 };
 
-// New syntax
+// new
 const square = (x) => {
   return x + x;
 };
