@@ -639,6 +639,69 @@ newLink.href = 'https://www.josephskycrest.com/';
 const ulEnd = document.querySelector('ul');
 ulEnd.appendChild(newLink);
 
-/** 
- * 
+/** Inserting elements in an order
+ * appendChild = End
+ * insertBefore = Start
+ * insertAdjacentElement = String values of Start -> End
  */
+
+// add an item to the front of the list
+const parentUL = document.querySelector('ul');
+
+// we need to create the new "li" item
+const newLI = document.createElement('li');
+newLI.innerText = 'I am a new li';
+
+// * appendChild: Add an element to the END of the section
+parentUL.appendChild(newLI);
+
+// * insertBefore: Add an element to the START of a section
+// we have to first select the element that we want our new element to go before:
+const firstLI = document.querySelector('li.todo');
+// next to insert it before we need to call the parent element and then our "newLI" and where we want to insert it:
+parentUL.insertBefore(newLI, firstLI);
+
+// * insertAdjacentElement: Slightly more efficient than the appendChild method
+// Syntax:
+targetElement.insertAdjacentElement(position, element);
+// Visualization:
+// 		beforebegin
+//		<p>
+// 			afterbegin
+// 			foo (existing element)
+//			beforeend
+// 		</p>
+//		afterend
+
+// Example:
+// create the new "i" tag:
+const iTag = document.createElement('i');
+iTag.innerText = 'I am italics!';
+
+// select the element where we want to insert our new "i" tag:
+const firstP = document.querySelector('p');
+
+// insert where and what we want to insert into the DOM:
+firstP.insertAdjacentElement('beforebegin', iTag);
+
+/** Removing elements from the DOM
+ * removeChild = End
+ * remove
+ */
+
+// * removeChild
+// select the parent:
+const ul = document.querySelector('ul');
+// select the child to be removed:
+const removeEle = ul.querySelector('.special');
+// the pattern goes: the parent, then remove child, then the child
+ul.removeChild(removeEle);
+
+// when we remove a child it returns the removed child which allows us to save it to a variable incase we want to do something with it:
+const deleted = ul.removeChild(removeEle);
+
+// * remove
+// remove method does not need the parent node.
+// what we do is select the target (what we want to remove) and then call remove on that node (the actual item we want to remove)
+const h2 = document.querySelector('h2');
+h2.remove();

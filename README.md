@@ -38,6 +38,7 @@ This guide is not intended to teach you the fundamentals of the JavaScript progr
 - [Code Academy JavaScript Cheatsheet](https://www.codecademy.com/learn/introduction-to-javascript/modules/learn-javascript-introduction/cheatsheet)
 - [FCC Beginner's Handbook 2020](https://www.freecodecamp.org/news/the-complete-javascript-handbook-f26b2c71719c/#objectproperties)
 - [30 Seconds of Code](https://www.30secondsofcode.org/)
+- [Medium JavaScript](https://medium.com/topic/javascript)
 
 #### Misc Resources:
 - [Fake API for testing and prototyping (JSON Placeholder)](https://jsonplaceholder.typicode.com/)
@@ -685,12 +686,12 @@ condition ? expIfTrue : expIfFalse
 
 Example:
 ```javascript
-// New syntax
+// new
 let status = 'offline';
 
 let color = status === 'offline' ? 'red' : 'green'; // -> 'red'
 
-// Old syntax
+// old
 let status = 'offline';
 let color = '';
 
@@ -1451,7 +1452,7 @@ function add(x, y) {
 add(5, 4); // -> 9
 ```
 
-For my visual learners out there:
+For the visual learners out there:
 <p align="left">
   <img src="/src/assets/function-definition.jpg" width="80%" alt="function-definition">
 </p>
