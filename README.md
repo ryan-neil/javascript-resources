@@ -39,6 +39,9 @@ This guide is not intended to teach you the fundamentals of the JavaScript progr
 - [FCC Beginner's Handbook 2020](https://www.freecodecamp.org/news/the-complete-javascript-handbook-f26b2c71719c/#objectproperties)
 - [30 Seconds of Code](https://www.30secondsofcode.org/)
 - [Medium JavaScript](https://medium.com/topic/javascript)
+- [JavaScript Visualized](https://dev.to/lydiahallie/series/3341)
+- [1 Line - JavaScript Utilities](https://1loc.dev/)
+
 
 #### Misc Resources:
 - [Fake API for testing and prototyping (JSON Placeholder)](https://jsonplaceholder.typicode.com/)
@@ -57,12 +60,11 @@ This guide is not intended to teach you the fundamentals of the JavaScript progr
   1. [Math](#math)
   1. [Conditionals](#conditionals)
   1. [Ternary Operator](#ternary-operator)
-  1. [Array Methods](#array-methods)
-     * [Add/Remove](#addingremoving-elements)
-     * [Iterate](#iterating-over-elements)
-     * [Search](#searching-among-elements)
-     * [Transform](#transforming-the-array)
   1. [Objects](#objects)
+  1. [Methods](#methods)
+     * [Array Methods](#array-methods)
+     * [Object Methods](#object-methods)
+     * [String Methods](#string-methods)
   1. [Functions](#functions)
   1. [Destructuring](#destructuring)
   1. [Spread](#spread)
@@ -1429,6 +1431,447 @@ console.log(student.exams.average);
 console.log(student.exams); 
 // -> {midterm: 92, final: 88, average: 90}
 ```
+
+**[⬆ Top](#table-of-contents)**
+
+----
+
+### Methods
+This is a collection of the most commonly used ES5 and ES6+ methods for arrays, objects and strings.
+
+JavaScript methods are actions that can be performed on objects. Methods are functions stored as object properties.
+
+[Useful Methods](https://dev.to/otamnitram/my-most-used-javascript-methods-1i64)
+
+#### Array Methods:
+
+##### Resources:
+[Array Methods](https://www.w3schools.com/js/js_array_methods.asp)
+
+#### .map()
+It returns a new array with the result of a function for each element in another array. The array returned has the same length as the original array.
+
+Example: Create an array that contains the square of each item of another array
+```js
+const numbers = [ 2, 4, 6 ];
+const square = numbers.map(n => {
+  return n * n;
+});
+
+console.log(square); // -> [ 4, 16, 36 ]
+console.log(numbers); // -> [ 2, 4, 6 ]
+```
+
+[.map MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map)
+
+#### .forEach()
+This executes a provided function once for every element in the array.
+
+Example: Loop through the array and print the values
+```js
+const testScores = [ 89, 92, 76, 99 ];
+
+testScores.forEach(scores => {
+  console.log(scores);
+});
+// -> 89
+// -> 92
+// -> 76
+// -> 99
+```
+
+forEach also allows us to receive two additional parameters:
+* index - the index of the element which is currently being iterated
+* array - original array which we're looping over
+
+```js
+const testScores = [ 89, 92, 76, 99 ];
+
+testScores.forEach((scores, index, array) => {
+  console.log(scores, index, array);
+});
+// -> 89 0 [ 89, 92, 76, 99 ]
+// -> 92 1 [ 89, 92, 76, 99 ]
+// -> 76 2 [ 89, 92, 76, 99 ]
+// -> 99 3 [ 89, 92, 76, 99 ]
+```
+
+> Note: This is only used to loop through the array and perform some processing or logging. It does not return any value, even if you explicitly return a value from the callback function (this means that the returned value comes as `undefined` in the above example).
+
+[.forEach MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach)
+
+#### .reduce()
+This executes a reducer function (that you provide) on each element of the array, resulting in a single output value.
+
+Example: Sum all numbers of the array
+```js
+const numbers = [ 1, 2, 3 ];
+
+const sum = numbers.reduce((accumulator, number) => {
+  return accumulator + number;
+}, 0);
+
+console.log(sum); // -> 6
+```
+
+> Note: It’s always good to specify the `initialValue` of `accumulator` as it makes it easy to understand the return type of the `reduce` method and get the correct type of data back.
+
+[.reduce MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce)
+
+#### .filter()
+This returns an array with all the elements of another array that meet a determined condition.
+
+Example: Return numbers less than or equal to 100
+```js
+const numbers = [ 20, 200, 30, 45, 100, 102 ];
+const result = numbers.filter(n => {
+  return n <= 100;
+});
+
+console.log(result); // -> [ 20, 30, 45, 100 ]
+```
+
+[.filter MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter)
+
+#### .some()
+This tests whether __at least one__ element in the array passes the test condition given by the provided function and returns a boolean `true` or `false` value.
+
+Example: Return true if there is a positive number in the array
+```js
+const numbers = [ -20, 32, -18 ];
+
+const containsPositive = numbers.some(number => {
+  return number > 0;
+});
+console.log(containsPositive); // -> true
+```
+
+[.some MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some)
+
+#### .every()
+This tests whether __all__ elements in the array pass the provided test conditions and returns a boolean `true` or `false` value.
+
+Example: Return true if all numbers in the array are positive
+```js
+const numbers = [ 40, 32, -24 ];
+
+const allPositive = numbers.every(number => {
+  return number > 0;
+});
+console.log(allPositive); // -> false
+```
+
+[.every MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every)
+
+#### (Array).slice()
+This returns a shallow copy of a portion of an array into a new array object selected from start to end (end not included) where start and end represent the index of items in that array. The original array will not be modified.
+
+Example: Return superheros who are Gods from the array
+```js
+const superheros = [ 'thor', 'loki', 'ironman', 'hulk' ];
+
+const superheroGods = superheros.slice(0, 2);
+console.log(superheroGods); // -> [ 'thor', 'loki' ]
+```
+
+[(Array).every MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every)
+
+#### (Array).indexOf()
+This returns the first index at which a given element can be found in the array, or -1 if it is not present.
+
+Example: Find the index of "tiger" from the array
+```js
+const animals = [ 'dolphin', 'giraffe', 'tiger' ];
+
+console.log(animals.indexOf('tiger')); // -> 2
+console.log(animals.indexOf('lion')); // -> -1
+``` 
+
+[(Array).indexOf MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf)
+
+#### Array.from()
+This creates a new, shallow-copied Array instance from an array-like or iterable object.
+
+Example: Return an array with each letter of my last name.
+```js
+const lastName = 'neil';
+const lastNameLetters = Array.from(lastName);
+
+console.log(lastNameLetters); // -> [ 'n', 'e', 'i', 'l' ]
+console.log(lastName); // -> 'neil'
+```
+
+[Array.from MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from)
+
+#### .pop()
+This __REMOVES__ an element from the __END__ of an array and returns that element. This method changes the length of the array.
+
+Example: Remove a todo task from the end of the array
+```js
+let todo = [ 'do laundry', 'wash dishes', 'take out trash' ];
+
+console.log(todo.pop()); // -> 'take out trash'
+```
+
+The `.pop()` method returns the value that was "popped" out. We can then save that value to a variable and use it:
+```js
+let todo = [ 'do laundry', 'wash dishes', 'take out trash' ];
+
+let completedTask = todo.pop();
+console.log(completedTask); // -> 'take out trash'
+```
+
+[.pop MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/pop)
+
+#### .push()
+This __ADDS__ an element to the __END__ of an array.
+
+Example: Add a todo task to the end of the array
+```js
+let todo = [ 'do laundry', 'wash dishes', 'take out trash' ];
+
+todo.push('vacuum');
+console.log(todo); // -> [ 'do laundry', 'wash dishes', 'take out trash', 'vacuum' ]
+```
+
+The `push()` method returns the new array length:
+```js
+let todo = [ 'do laundry', 'wash dishes', 'take out trash' ];
+
+let addedTask = todo.push('vacuum');
+console.log(addedTask); // -> 4
+```
+
+[.push MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/pop)
+
+#### .shift()
+This __REMOVES__ an element from the __START__ of an array and "shifts" all other elements to a lower index.
+
+Example: Remove a todo task from the start of the array
+```js
+let todo = [ 'do laundry', 'wash dishes', 'take out trash' ];
+
+todo.shift();
+console.log(todo); // -> [ 'wash dishes', 'take out trash' ]
+```
+
+The `shift()` method returns the string that was "shifted out". We can then save that value to a variable and use it:
+```js
+let todo = [ 'do laundry', 'wash dishes', 'take out trash' ];
+
+let completedTask = todo.shift();
+console.log(completedTask); // -> 'do laundry'
+```
+
+[.shift MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/shift)
+
+#### .unshift()
+This __ADDS__ an element to the __START__ of an array and "unshifts" older elements.
+
+Example: Add a todo task to the start of the array
+```js
+let todo = [ 'do laundry', 'wash dishes', 'take out trash' ];
+
+todo.unshift('vacuum');
+console.log(todo); // -> [ 'do laundry', 'wash dishes', 'take out trash', 'vacuum' ]
+```
+
+The `unshift()` method returns the new array length:
+```js
+let todo = [ 'do laundry', 'wash dishes', 'take out trash' ];
+
+let addedTask = todo.unshift('vacuum');
+console.log(addedTask); // -> 4
+```
+
+[.unshift MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift)
+
+#### Object Methods:
+
+##### Resources:
+[Object Methods](https://www.w3schools.com/js/js_object_properties.asp)
+
+#### Object.values()
+Returns an array of the object's values.
+
+```js
+const car = {
+  name  : 'Audi',
+  model : 'a4',
+  year  : 2020
+};
+const values = Object.values(car);
+console.log(values); // -> ['Audi', 'a4', 2020]
+```
+
+[Object.values MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_objects/Object/values)
+
+#### Object.keys()
+Returns an array of the object's keys(names).
+
+```js
+const car = {
+  name  : 'Audi',
+  model : 'a4',
+  year  : 2020
+};
+const keys = Object.keys(car);
+console.log(keys); // -> ['name', 'model', 'year']
+```
+
+[Object.keys MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys)
+
+#### Object.assign()
+This is useful for merging or cloning objects.
+
+```js
+const car = {
+  name  : 'Audi',
+  model : 'a4',
+  year  : 2020
+};
+const carDetails = {
+  color : 'red',
+  type  : 'Coupe',
+  year  : 2021
+};
+
+const combined = Object.assign({}, car, carDetails);
+console.log(combined); // -> { name: 'Audi', model: 'a4', color: 'red', type: 'Coupe', year: 2021 }
+```
+
+> Note: if both objects have the same property, it will take the value of the second object
+
+[Object.assign MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
+
+#### Object.entries()
+Returns an array for each of the key:value pairs in the object wrapped in array.
+
+```js
+const car = {
+  name  : 'Audi',
+  model : 'a4',
+  year  : 2020
+};
+const items = Object.entries(car);
+console.log(items); // -> [ [ name:'Audi' ], [ model:'a4' ], [ year:2020 ] ]
+```
+
+[Object.entries MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries)
+
+#### Object.freeze()
+This "freezes" the object and makes it so we can no longer change it.
+
+```js
+const car = {
+  name  : 'Audi',
+  model : 'a4',
+  year  : 2020
+};
+Object.freeze(car);
+
+car.year = 2021;
+console.log(car); // -> { name: 'Audi', model: 'a4', year: 2020 }
+```
+
+> Note: to check if the object is frozen or not use Object.isFrozen(car), if frozen it will return true, and false if not
+
+[Object.entries MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze)
+
+#### Object.seal()
+This is similar to Object.freeze() but the difference is this lets you change the property of the object as long they are writeable (Not methods) But we CANNOT delete or add new properties.
+
+```js
+const car = {
+  name  : 'Audi',
+  model : 'a4',
+  year  : 2020
+};
+Object.seal(car);
+
+// good
+car.year = 2021;
+console.log(car.year); // -> 2021
+
+// bad
+delete car.year;
+console.log(car.year); // -> 2021
+```
+
+> Note: to check if the object is sealed or not use Object.isSealed(car), if sealed it will return true, and false if not. 
+
+[Object.entries MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/seal)
+
+#### String Methods:
+
+##### Resources:
+[String Methods](https://www.w3schools.com/js/js_string_methods.asp)
+
+#### .split()
+This divides a string with a `separator` into an ordered list of substrings, puts these substrings into an array, and returns the array. Use the second parameter (`limit`) to return a limited number of splits.
+
+Example: Separate the string with commas
+```js
+const str = 'JavaScript String split()';
+
+const substrings = str.split(' ');
+console.log(substrings); // -> [ 'JavaScript', 'String', 'split()' ]
+``` 
+
+Access a single word from the string
+```js
+const str = 'JavaScript String split()';
+
+const substrings = str.split(' ');
+console.log(substrings[0]); // -> 'JavaScript'
+console.log(substrings[2]); // -> 'split()'
+```
+
+Access a single character from the string
+```js
+const str = 'JavaScript String split()';
+
+const substrings = str.split('');
+console.log(substrings[0]); // -> 'J'
+console.log(substrings[11]); // -> 'S'
+```
+
+We can also copy the string with .split()
+```js
+const str = 'JavaScript String split()';
+
+const strCopy = str.split();
+console.log(strCopy); // -> [ 'JavaScript String split()' ]
+```
+
+[.split MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split)
+
+#### (String).slice()
+This extracts a section of a string and returns it as a new string, without modifying the original string.
+
+Example: Extract the last two words from the string
+```js
+const str = 'JavaScript String split()';
+
+const strSlice = str.slice(10);
+console.log(strSlice); // ->  'String split()'
+``` 
+
+[(String).slice MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/slice)
+
+#### (String).indexOf()
+This returns the index within the calling String object of the first occurrence of the specified value, starting the search at fromIndex. Returns -1 if the value is not found.
+
+Example: Find the index of "String" from the string
+```js
+const str = 'JavaScript String split()';
+
+const searchTerm = 'String';
+const indexOfFirst = str.indexOf(searchTerm);
+console.log(indexOfFirst); // -> 11
+``` 
+
+[(String).indexOf MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/indexOf)
 
 **[⬆ Top](#table-of-contents)**
 
