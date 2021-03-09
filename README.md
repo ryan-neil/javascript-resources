@@ -55,6 +55,7 @@ This guide is not intended to teach you the fundamentals of the JavaScript progr
   1. [Commenting](#commenting)
   1. [Variables](#variables)
   1. [Naming Conventions](#naming-conventions)
+  1. [Hoisting](#hoisting)
   1. [Properties](#properties)
   1. [For Loops](#for-loops)
   1. [Math](#math)
@@ -75,6 +76,7 @@ This guide is not intended to teach you the fundamentals of the JavaScript progr
   ----
 
 ### Running JavaScript
+
 #### From the Command Line:
 Running JavaScript from the command line is handled by NodeJS.
 
@@ -267,6 +269,97 @@ const HTTPRequests = [
   // ...
 ];
 ```
+
+**[⬆ Top](#table-of-contents)**
+
+----
+
+### Hoisting
+
+#### What is Hoisting?
+Hoisting is a JavaScript mechanism where variables and function declarations are moved to the top of their scope before code execution.
+
+This means that no matter where functions and variables are declared, they are moved to the top of their scope regardless of whether their scope is global or local.
+
+> Note: the hoisting mechanism only moves the declaration. The assignments are left in place. 
+
+__var__:
+```js
+console.log(x); // -> undefined
+var x = 0;
+```
+In the above code, var keyword is pushed above the code and initialized automatically by JavaScript (only i variable is pushed above, not the value 0). So at the time of execution of code, it becomes something like this:
+```js
+var x; // automatically inserted by JS Engine at run time
+console.log(x);
+var x = 0;
+```
+`x` has been pushed above and initialized by the JS engine, that's why we get undefined at the console line instead of an Error.
+
+#### Hoisting with let and const:
+In the case of `var`, when JavaScript moves all the variables and functions to the top of the code, it __initializes__ it. This is not the case with `let` and `const`. 
+
+__let__:
+```js
+console.log(y); // -> ReferenceError: Cannot access 'y' before initialization
+let y = 0;
+```
+__const__:
+```js
+console.log(z); // -> ReferenceError: Cannot access 'z' before initialization
+const z = 0;
+```
+In the case of `let` and `const` keywords, the JavaScript engine hoists the variable declarations but __doesn't initialize__ them. The JS engine is aware of the variable, but it cant be used until it is declared or initialized.
+
+#### Hoisting a Function:
+Functions __are__ hoisted but Function expressions __are not__ hoisted in JavaScript.
+
+```js
+let x = 20;
+let y = 30;
+
+let total = add(x, y);
+console.log(total); // -> 50, because of hoisting
+
+function add(a, b) {
+  return a + b;
+}
+```
+In the above code, the output will be 50 as the regular function is also hoisted (moved to the top of the script) in JavaScript.
+
+What about when we have a function expression?
+```js
+let x = 20;
+let y = 30;
+
+let total = sum(x, y);
+console.log(total); // -> TypeError: sum is not a function
+
+var sum = function(a, b) {
+  return a + b;
+};
+```
+As the function is stored in the variable `sum` (declared by `var` keyword), it is hoisted and initialized above (not the function expression, as only the variable is pushed above, not the value), and the value of `sum` gets undefined. Therefore we get `sum` is not a function as it is undefined.
+
+At the time of execution, the code looks something like this:
+```js
+let x = 20;
+let y = 30;
+var sum; // automatically inserted by JS engine
+
+let total = sum(x, y);
+console.log(total);
+
+var sum = function(a, b) {
+  return a + b;
+};
+```
+
+#### Why is Hoisting Important?
+
+Hoisting is (to many developers) an unknown or overlooked behavior of JavaScript. If a developer doesn't understand hoisting, programs may contain bugs (errors).
+
+To avoid bugs, always declare all variables at the beginning of every scope.
 
 **[⬆ Top](#table-of-contents)**
 
@@ -788,7 +881,7 @@ JavaScript methods are actions that can be performed on objects. Methods are fun
 * [Array Methods](https://www.w3schools.com/js/js_array_methods.asp)
 
 #### .map()
-It returns a new array with the result of a function for each element in another array. The array returned has the same length as the original array.
+This returns a new array with the result of a function for each element in another array. The array returned has the same length as the original array.
 
 __Example__: Create an array that contains the square of each item of another array
 ```js
@@ -806,7 +899,7 @@ console.log(numbers); // -> [ 2, 4, 6 ]
 #### .forEach()
 This executes a provided function once for every element in the array.
 
-__Example__: Loop through the array and print the values
+__Example__: Loop through the array and print the numbers
 ```js
 const testScores = [ 89, 92, 76, 99 ];
 
@@ -820,8 +913,8 @@ testScores.forEach(scores => {
 ```
 
 forEach also allows us to receive two additional parameters:
-* index - the index of the element which is currently being iterated
-* array - original array which we're looping over
+* `index` - the index of the element which is currently being iterated
+* `array` - original array which we're looping over
 
 ```js
 const testScores = [ 89, 92, 76, 99 ];
@@ -854,6 +947,24 @@ console.log(sum); // -> 6
 ```
 
 > Note: It’s always good to specify the `initialValue` of `accumulator` as it makes it easy to understand the return type of the `reduce` method and get the correct type of data back.
+
+`.reduce()` under the hood:
+
+__Example__: Multiply all the elements by two and Sum all numbers of the array
+```js
+const numbers = [ 1, 2, 3 ];
+
+const doubleSum = numbers.reduce(function(accumulator, number) {
+  return accumulator + number * 2;
+}, 10);
+console.log(doubleSum); // -> 22
+```
+
+Here, we’re multiplying each element of the array by 2. We have provided an `initialValue` of 10 to the `accumulator` so 10 will be added to the final result of the sum like this:
+
+```javascript
+[1 * 2, 2 * 2, 3 * 2, 4 * 2, 5 * 2] = [2, 4, 6, 8, 10] = 30 + 10 = 40
+```
 
 [.reduce MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce)
 
