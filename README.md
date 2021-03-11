@@ -9,27 +9,37 @@ This guide is not intended to teach you the fundamentals of the JavaScript progr
 ###### If you found this guide helpful give me a follow and let me know! 🤙🏻
 [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/josephskycrest.svg?style=social&label=Follow%20%40josephskycrest)](https://twitter.com/josephskycrest)
 
-## 📂 Repo Folder Structure
-`/src/` - contains the source files for the Github repo. \
-`/src/assets/` contains images for the repo. \
-`/src/js/` - contains all JavaScript component files. \
-`/src/js/analysis/` - contains the breakdown of JavaScript coding projects. \
-`/src/js/challenges/` - contains some example JavaScript challenges for practice.
+## 🧐 What's inside?
+A quick look at the important files and directories you'll see in the repo.
 
-## 📌 Repo File Components
-1. Arrays
-1. Arrow Functions
-1. The Basics
-1. Callbacks
-1. Destructuring
-1. The DOM
-1. Functions
-1. JSON Files
-1. Loops
-1. Objects
-1. Rest
-1. Spread
-1. This
+  .
+  └── src
+  	├── assets
+  	  ├── repo image files
+  	└── js
+      ├── components
+        ├── arrays.js
+        ├── arrow-functions.js
+        ├── basics.js
+        ├── callbacks.js
+        ├── destructuring.js
+        ├── dom.js
+        ├── functions.js
+        ├── json.js
+        ├── loops.js
+        ├── objects.js
+        ├── rest.js
+        ├── spread.js
+        └── this.js
+      ├── console-testing
+      └── projects
+
+1.  **`/src`**: This directory contains all of the source files for the Github repo.
+  1.  **`/assets`**: This directory contains images for the repo.
+  1.  **`/js`**: This directory contains all JavaScript component files.
+    1.  **`/components`**: This directory contains all the javascript repo files for the important features of JavaScript. Each file contains simple explanations along with example code for the features.
+    1.  **`/console-testing`**: This directory contains a starting project boilerplate for testing JavaScript code.
+    1.  **`/projects`**: This directory contains some example JavaScript projects for reference.
 
 ## 🔗 Resources
 - [JavaScript MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
@@ -41,7 +51,6 @@ This guide is not intended to teach you the fundamentals of the JavaScript progr
 - [Medium JavaScript](https://medium.com/topic/javascript)
 - [JavaScript Visualized](https://dev.to/lydiahallie/series/3341)
 - [1 Line - JavaScript Utilities](https://1loc.dev/)
-
 
 #### Misc Resources:
 - [Fake API for testing and prototyping (JSON Placeholder)](https://jsonplaceholder.typicode.com/)
@@ -63,16 +72,16 @@ This guide is not intended to teach you the fundamentals of the JavaScript progr
   1. [Ternary Operator](#ternary-operator)
   1. [Objects](#objects)
   1. [Methods](#methods)
-     * [Array Methods](#array-methods)
-     * [Object Methods](#object-methods)
-     * [String Methods](#string-methods)
+    * [Array Methods](#array-methods)
+    * [Object Methods](#object-methods)
+    * [String Methods](#string-methods)
   1. [Functions](#functions)
   1. [Destructuring](#destructuring)
   1. [Spread](#spread)
   1. [Rest](#rest)
   1. [This](#this)
   1. [The DOM](#the-document-object-model-dom)
-     *  [DOM Methods and Properties](#dom-methods-and-properties)
+    *  [DOM Methods and Properties](#dom-methods-and-properties)
 
   ----
 
@@ -1999,7 +2008,7 @@ console.log(testTarget); // -> <p class="test">
 ```
 
 #### document.querySelector()
-This returns the first `Element` within the document that matches the specified selector, or group of selectors. If no matches are found, null is returned.
+This returns the first `Element` within the document that matches the specified selector, or group of selectors. If no matches are found, `null` is returned.
 
 It is an all-in-one method to select a single element from the DOM. It can select everything that we use to select elements (ID, class, tag, etc.). This will only pass us the very first match regardless of how many there are in the document.
 
@@ -2007,6 +2016,7 @@ __Syntax__:
 ```javascript
 element = document.querySelector(selectors);
 ```
+__Examples__:
 
 This will find the first `<h1>` element tag:
 ```javascript
@@ -2021,7 +2031,7 @@ This will find the first element with `class` of `.big`:
 document.querySelector('.big');
 ```
 
-> Note: "querySelector()" is less performant than the traditional "getElementById" or "getElementsByClassName/TagName". Depending on what we pass into it, it could have to do a lot of work.
+> Note: `querySelector()` is less performant than the traditional `getElementById` or `getElementsByClassName/TagName`. Depending on what we pass into it, it could have to do a lot of work.
 
 #### document.querySelectorAll()
 This returns a static (not live) `NodeList` representing a list of the document's elements that match the specified group of selectors.
@@ -2037,12 +2047,12 @@ __Example__:
 ```html
 <!-- HTML -->
 <body>
-	<div id="parent-id">
-		<p>hello world 1</p>
-		<p class="test">hello world 2</p>
-		<p>hello world 3</p>
-		<p>hello world 4</p>
-	</div>
+  <div id="parent-id">
+    <p>hello world 1</p>
+    <p class="test">hello world 2</p>
+    <p>hello world 3</p>
+    <p>hello world 4</p>
+  </div>
 </body>
 ```
 ```javascript
@@ -2082,12 +2092,12 @@ __Example__:
 ```html
 <!-- HTML -->
 <body>
-	<div id="parent-id">
-		<p>hello world 1</p>
-		<p class="test">hello world 2</p>
-		<p>hello world 3</p>
-		<p>hello world 4</p>
-	</div>
+  <div id="parent-id">
+    <p>hello world 1</p>
+    <p class="test">hello world 2</p>
+    <p>hello world 3</p>
+    <p>hello world 4</p>
+  </div>
 </body>
 ```
 ```javascript
@@ -2403,8 +2413,8 @@ const allPTags = document.querySelectorAll('p');
 
 // next we loop over all p tags
 for (let p of allPTags) {
-	//  last, we change the text of the p tags
-	p.innerText = 'This is new text';
+  //  last, we change the text of the p tags
+  p.innerText = 'This is new text';
 }
 console.log(allPTags[0].innerText); // -> 'This is new text'
 console.log(allPTags[1].innerText); // -> 'This is new text'
@@ -2479,6 +2489,8 @@ __Syntax__:
 const elementClasses = elementNodeReference.classList;
 ```
 
+__Examples__:
+
 Add an element to the DOM:
 ```html
 <body>
@@ -2508,8 +2520,8 @@ el.classList.remove('this', 'little', 'piggy');
 // Loop over each class
 el.classList; // DOMTokenList (pretty much an array)
 el.classList.forEach(className => {
-	// don't use "class" as that's a reserved word
-	console.log(className);
+  // don't use "class" as that's a reserved word
+  console.log(className);
 });
 
 el.classList.length; // integer of how many classes there are
@@ -2623,7 +2635,7 @@ __Visualization__:
     foo (existing element)
     beforeend
   </p>
-afterend
+  afterend
 ```
 
 __Example__:
@@ -2657,8 +2669,10 @@ __Example__:
 ```javascript
 // select the parent:
 const ul = document.querySelector('ul');
+
 // select the child to be removed:
 const removeEle = ul.querySelector('.special');
+
 // the pattern goes: the parent, then remove child, then the child
 ul.removeChild(removeEle);
 
