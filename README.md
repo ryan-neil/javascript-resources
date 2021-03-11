@@ -36,12 +36,12 @@ A quick look at the files and directories you'll see in the repo.
       └── projects
 ```
 
-1. **`/src`**: This directory contains all of the source files for the Github repo.
-  1. **`/assets`**: This directory contains images for the repo.
-  1. **`/js`**: This directory contains all JavaScript component files.
-    1. **`/components`**: This directory contains all the javascript repo files for the important features of JavaScript. Each file contains simple explanations along with example code for the features.
-    1. **`/console-testing`**: This directory contains a starting project boilerplate for testing JavaScript code.
-    1. **`/projects`**: This directory contains some example JavaScript projects for reference.
+  1. **`/src`**: This directory contains all of the source files for the Github repo.
+    1. **`/assets`**: This directory contains images for the repo.
+    1. **`/js`**: This directory contains all JavaScript component files.
+      1. **`/components`**: This directory contains all the javascript repo files for the important features of JavaScript. Each file contains simple explanations along with example code for the features.
+      1. **`/console-testing`**: This directory contains a starting project boilerplate for testing JavaScript code.
+      1. **`/projects`**: This directory contains some example JavaScript projects for reference.
 
 ## 🔗 Resources
 - [JavaScript MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
