@@ -520,7 +520,7 @@ Changing Styles Using JavaScript:
 <body>
 	<section>
 		<h2>Section Title</h2>
-		<p>cd paragraph</p>
+		<p>First paragraph</p>
 		<p>Second paragraph</p>
 		<p>Third paragraph</p>
 	</section>
@@ -549,14 +549,14 @@ document.querySelector('p').style.color;
 // "" (returns empty)
 
 /**
-	* This returns empty because the styleproperty only contains the inline styles.
-	* It does not contain any "calculated" styles,styles from a style sheet (CSS) or styles from a given class.
+	* This returns empty because the style property only contains the inline styles.
+	* It does not contain any "calculated" styles, styles from a style sheet (CSS) or styles from a given class.
 */
 
 // if we want to get the computed value for an element we have to call the method "getComputedStyle":
-const p = document.querySelector('p');
+const pStyle = document.querySelector('p');
 
-const styles = getComputedStyle(p);
+const styles = getComputedStyle(pStyle);
 
 // we can now access the style properties of all the "p" elements
 console.log(styles.backgroundColor);

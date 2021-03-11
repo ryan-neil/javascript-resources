@@ -72,6 +72,7 @@ This guide is not intended to teach you the fundamentals of the JavaScript progr
   1. [Rest](#rest)
   1. [This](#this)
   1. [The DOM](#the-document-object-model-dom)
+     *  [DOM Methods and Properties](#dom-methods-and-properties)
 
   ----
 
@@ -1799,13 +1800,13 @@ JavaScript reads it as, a `document` object, a `body` object, an `h1` object, a 
 These JavaScript objects have a variety of properties and methods associated with them. An example of this might be, what their content is or what text is inside the object (property). Or maybe we want to delete one of the objects or update it (method).
 
 #### DOM Properties and Methods:
-HTML DOM __methods__ are *actions* you can perform on HTML Elements (like add or deleting an HTML element).
+HTML DOM __methods__ are *actions* you can perform on HTML Elements (like adding or deleting an HTML element).
 
 HTML DOM __properties__ are *values* of HTML Elements that you can set or change (like changing the content of an HTML element).
 
 In the following example, the `<script>` changes the content (the `innerHTML`) of the `<p>` element with `id = "demo"`.
 
-Example:
+__Example__:
 ```html
 <!-- HTML -->
 <body>
@@ -1832,16 +1833,18 @@ const demo = $('#demo');
 [...$$("a[href *='#']")].forEach(console.log);
 ```
 
-#### Selecting Methods:
+### DOM Methods and Properties
+
+#### DOM Selecting Methods:
 #### document.getElementById()
 `getElementById()` returns an *Element* object representing the element whose `id` property matches the specified string. Since element IDs are required to be unique if specified, they're a useful way to get access to a specific element quickly.
 
-Syntax:
+__Syntax__:
 ```javascript
 let element = document.getElementById(id);
 ```
 
-Example:
+__Example__:
 ```html
 <!-- HTML -->
 <body>
@@ -1863,12 +1866,12 @@ When the `Blue` button is clicked, `Some text here` text changes color to blue a
 #### document.getElementsByTagName()
 `getElementsByTagName()` method of *Document* interface returns an *HTMLCollection* of elements with the given tag name (`< >`). The complete document is searched, including the root node.
 
-Syntax:
+__Syntax__:
 ```javascript
 let elements = document.getElementsByTagName(name);
 ```
 
-Example:
+__Example__:
 ```html
 <!-- HTML -->
 <body>
@@ -1893,7 +1896,15 @@ The `HTMLCollection` is an array-like object that is not an array. It is a colle
 
 > Regular array methods like `pop()` or `includes()` don't work with `HTMLCollection`.
 
-For Example:
+__Example__:
+```html
+<!-- HTML -->
+<body>
+  <p>Paragraph 1</p>
+  <p>Paragraph 2</p>
+  <p>Paragraph 3</p>
+</body>
+```
 ```javascript
 const pTags = document.getElementsByTagName('p');
 
@@ -1908,13 +1919,12 @@ From the example above, we can iterate over `HTMLCollection`'s:
 for (let p of pTags) {
   console.log(p);
 }
-// -> <p>
-// -> <p>
-// -> <p>
+// -> <p> (Paragraph 1)
+// -> <p> (Paragraph 2)
+// -> <p> (Paragraph 3)
 ```
 
-Since it is an iterable we can also use __spread__ (`...`)
-To turn it into an array and spread it:
+Since it is an iterable we can also use __spread__ (`...`) to turn it into an array and spread it:
 ```javascript
 const arr = [...pTags];
 
@@ -1928,14 +1938,14 @@ We have now turned it into an array!
 #### document.getElementsByClassName()
 `getElementsByClassName()` method of `Document` interface returns an array-like object of all child elements which have all of the given class name(s). When called on the `document` object, the complete document is searched, including the root node.
 
-Syntax:
+__Syntax__:
 ```javascript
 let elements = document.getElementsByClassName(names); 
 // or
 let elements = rootElement.getElementsByClassName(names);
 ```
 
-For Example:
+__Example__:
 ```html
 <!-- HTML -->
 <body>
@@ -1950,12 +1960,12 @@ For Example:
 ```javascript
 // JavaScript
 // a list of matching elements, *not* the element itself
-const test = document.getElementsByClassName('test');
+const test = document.getElementsByClassName('.test');
 console.log(test);
 // -> HTMLCollection { 0: p.test, length: 1 }
 
 // the first element, as we wanted
-const testTarget = document.getElementsByClassName('test')[0];
+const testTarget = document.getElementsByClassName('.test')[0];
 console.log(testTarget);
 // -> <p class="test">
 ```
@@ -1976,20 +1986,699 @@ From the example above:
 ```
 ```javascript
 // JavaScript
-const parentDOM = document.getElementById("parent-id");
+const parentDOM = document.getElementById("#parent-id");
 console.log(parentDOM); // -> <div id="parent-id">
 
 // a list of matching elements, *not* the element itself
-const test = parentDOM.getElementsByClassName('test');
+const test = parentDOM.getElementsByClassName('.test');
 console.log(test); // -> HTMLCollection { 0: p.test, length: 1 }
 
 // the first element, as we wanted
-const testTarget = parentDOM.getElementsByClassName('test')[0];
+const testTarget = parentDOM.getElementsByClassName('.test')[0];
 console.log(testTarget); // -> <p class="test">
 ```
 
 #### document.querySelector()
+This returns the first `Element` within the document that matches the specified selector, or group of selectors. If no matches are found, null is returned.
 
+It is an all-in-one method to select a single element from the DOM. It can select everything that we use to select elements (ID, class, tag, etc.). This will only pass us the very first match regardless of how many there are in the document.
+
+__Syntax__:
+```javascript
+element = document.querySelector(selectors);
+```
+
+This will find the first `<h1>` element tag:
+```javascript
+document.querySelector('h1');
+```
+This will find the first element with `ID` of `red`:
+```javascript
+document.querySelector('#red');
+```
+This will find the first element with `class` of `.big`:
+```javascript
+document.querySelector('.big');
+```
+
+> Note: "querySelector()" is less performant than the traditional "getElementById" or "getElementsByClassName/TagName". Depending on what we pass into it, it could have to do a lot of work.
+
+#### document.querySelectorAll()
+This returns a static (not live) `NodeList` representing a list of the document's elements that match the specified group of selectors.
+
+This acts the same as `document.querySelector()`, but returns a collection of matching elements.
+
+__Syntax__:
+```javascript
+elementList = parentNode.querySelectorAll(selectors);
+```
+
+__Example__:
+```html
+<!-- HTML -->
+<body>
+	<div id="parent-id">
+		<p>hello world 1</p>
+		<p class="test">hello world 2</p>
+		<p>hello world 3</p>
+		<p>hello world 4</p>
+	</div>
+</body>
+```
+```javascript
+// JavaScript
+// targeting the ID, "parent-id":
+const parentDOM = document.querySelector('#parent-id');
+console.log(parentDOM); // -> <div id="parent-id">
+
+// targeting the class, "test":
+const test = parentDOM.querySelector('.test');
+console.log(test); // -> <p class="test">
+
+// targeting all the p tags:
+const pTags = parentDOM.querySelectorAll('p');
+console.log(pTags); // -> NodeList(4) [ p, p.test, p, p ]
+
+// targeting more specifically:
+const pTarget = document.querySelector('p.test');
+console.log(pTarget); // -> <p class="test">hello world 2</p>
+```
+
+#### DOM Manipulating or "Accessing" Properties and Methods:
+
+#### HTMLElement.innerText
+The innerText property of the HTMLElement interface represents the "rendered" text content, or the "visible" text of a node and its descendants. 
+ * used for Accessing text from an element (how we get the contents of an element)
+ * innerText only shows “human-readable” elements.
+ * We CANNOT create new elements with innerText.
+
+__Syntax__:
+```javascript
+const renderedText = htmlElement.innerText
+htmlElement.innerText = string
+```
+
+__Example__:
+```html
+<!-- HTML -->
+<body>
+	<div id="parent-id">
+		<p>hello world 1</p>
+		<p class="test">hello world 2</p>
+		<p>hello world 3</p>
+		<p>hello world 4</p>
+	</div>
+</body>
+```
+```javascript
+// JavaScript
+const insideElement = document.querySelector('p.test');
+console.log(insideElement.innerText); // -> 'hello world 2'
+```
+
+#### Node.textContent
+This property sets or returns the text content of the specified node, and __all__ its descendants.
+ * textContent gets the content of all elements, including `<script> `and `<style>` elements.
+ * textContent will return the text of elements that are hidden with CSS.
+ * textContent will print out all text formatting (indenting), hidden code, tags, etc.
+
+__Syntax__:
+```javascript
+let text = someNode.textContent
+someOtherNode.textContent = string
+```
+
+#### innerText vs. textContent:
+`innerText` is defined only for HTMLElement objects, while `textContent` is defined for all Node objects.
+
+__Example__:
+```html
+<!-- HTML -->
+<p>
+  Hello <span style="display: none;">World</span>
+</p>
+```
+```javascript
+// JavaScript
+const element = document.querySelector('p');
+
+console.log(element.innerText); // -> Hello
+console.log(element.textContent); // -> Hello World
+```
+
+#### Element.innerHTML:
+This property sets or returns the HTML content (inner HTML) of an element.
+
+`innerHTML` will return all of the text inside of an element as well as all other tags inside a given element. When updating the HTML, like adding an element we __HAVE__ to use innerHTML. We __CANNOT__ use innerText for this.
+
+__Syntax__:
+```javascript
+const content = element.innerHTML;
+element.innerHTML = htmlString;
+```
+
+__Example__:
+```html
+<!-- HTML -->
+<body>
+  <ul>
+    <li>First thing</li>
+    <li>Second thing</li>
+    <li>Third thing</li>
+  </ul>
+</body>
+```
+```javascript
+// JavaScript
+const elements = document.querySelector('ul');
+
+// using "innerHTML"
+console.log(elements.innerHTML);
+// -> <li>First thing</li>
+// -> <li>Second thing</li>
+// -> <li>Third thing</li>
+
+// using "innerText"
+console.log(elements.innerText);
+// -> "First thing
+// -> Second thing
+// -> Third thing"
+```
+
+#### DOM Accessing Properties on Individual Elements:
+These are all referred to as "attributes" which in JavaScript is a word followed by an equal sign (`=`) and quotes (`src=" "`).
+
+#### .value
+All the elements which allow a user to type something in or select something, have a `value` property with JavaScript.
+
+> If the elements have just plain text, you can use `textContent` and `innerHTML` to get the plain text value
+
+__Example__:
+```html
+<!-- HTML -->
+<body>
+  <form>
+    <input type="text" placeholder="Name" value="Katie" />
+    <input type="password" placeholder="Password" />
+    <input type="checkbox" />
+    <input type="range" min="0" max="100" step="10" />
+    <input type="submit" value="Submit" />
+  </form>
+</body>
+```
+```javascript
+// JavaScript
+const inputs = document.querySelectorAll('input');
+
+// for text boxes:
+const nameValue = inputs[0].value;
+// if user typed "Katie" in the first input box ("Name)
+console.log(nameValue); // -> "Katie"
+
+// for checkboxes:
+const inputChecked = inputs[2].checked;
+// if user toggles the checkbox "on"
+console.log(inputChecked); // -> true
+
+// for range slider:
+const rangeSlider = inputs[3].value;
+// if user slides the knob halfway.
+console.log(rangeSlider); // -> "50" [incrementing by 10 (step)]
+```
+
+#### Element.getAttribute()
+This method of the `Element` interface returns the value of a specified attribute on the element. If the given attribute does not exist, the value returned will either be `null` or `" "` (the empty string).
+
+__Syntax__:
+```javascript
+let attribute = element.getAttribute(attributeName);
+```
+
+__Example__:
+```html
+<!-- HTML -->
+<body>
+  <form>
+    <input type="text" placeholder="Name" />
+    <input type="range" min="0" max="100" step="10" />
+    <input type="submit" value="Submit" />
+  </form>
+</body>
+```
+```javascript
+// JavaScript
+const range = document.querySelector('input[type="range"]');
+
+const maxRange = range.getAttribute('max');
+console.log(maxRange); // -> "100"
+
+const minRange = range.getAttribute('min');
+console.log(minRange); // -> 0
+```
+
+#### Element.setAttribute()
+Sets the value of an attribute on the specified element. If the attribute already exists, the value is updated; otherwise a new attribute is added with the specified name and value.
+
+To get the current value of an attribute, use `getAttribute()`; to remove an attribute, call `removeAttribute()`.
+
+__Syntax__:
+```javascript
+Element.setAttribute(name, value);
+```
+
+__Example__:
+```html
+<!-- HTML -->
+<body>
+  <form>
+    <input type="text" placeholder="Name" />
+    <input type="range" min="0" max="100" step="10" />
+    <input type="submit" value="Submit" />
+  </form>
+</body>
+```
+```javascript
+// JavaScript
+const range = document.querySelector('input[type="range"]');
+
+range.setAttribute('max', '120');
+range.setAttribute('min', '-10');
+```
+
+#### DOM Accessing the Parent, Children or Nearest Sibling:
+
+#### Node.parentElement
+This returns the parent element of the specified element.
+
+__Syntax__:
+```javascript
+parentElement = node.parentElement
+```
+
+__Example__:
+```html
+<!-- HTML -->
+<body>
+  <section>
+    <h2>Section Title</h2>
+    <p>First paragraph</p>
+    <p>Second paragraph</p>
+  </section>
+</body>
+```
+```javascript
+// JavaScript
+const firstP = document.querySelector('p');
+
+console.log(firstP.parentElement); // -> <section>
+
+// we can also chain the .parentElement
+console.log(firstP.parentElement.parentElement); // -> <body>
+```
+
+#### ParentNode.children
+This returns a live `HTMLCollection` which contains all of the child elements of the node upon which it was called.
+
+__Syntax__:
+```javascript
+let children = node.children;
+```
+
+__Example__:
+```html
+<!-- HTML -->
+<body>
+  <section>
+    <h2>Section Title</h2>
+    <p>First paragraph</p>
+    <p>Second paragraph</p>
+  </section>
+</body>
+```
+```javascript
+// JavaScript
+const sectionChild = document.querySelector('section');
+
+console.log(sectionChild.children); // -> HTMLCollection { 0: h2, 1: p, 2: p }
+console.log(sectionChild.children[0]); // -> <h2>
+```
+
+#### Element.nextElementSibling
+This returns the element immediately following the specified one in its parent's children list, or `null` if the specified element is the last one in the list.
+
+__Syntax__:
+```javascript
+// Getter
+element = el.nextElementSibling;
+
+// No setter; read-only property
+```
+
+__Example__:
+```html
+<!-- HTML -->
+<body>
+  <section>
+    <h2>Section Title</h2>
+    <p>First paragraph</p>
+    <p>Second paragraph</p>
+  </section>
+</body>
+```
+```javascript
+// JavaScript
+const nextSib = document.querySelector('h2');
+
+console.log(nextSib.nextElementSibling); // -> <p>First paragraph</p>
+```
+
+#### Element.previousElementSibling
+This returns the `Element` immediately prior to the specified one in its parent's children list, or `null` if the specified element is the first one in the list.
+
+__Syntax__:
+```javascript
+// Getter
+element = el.previousElementSibling;
+
+// No setter; read-only property
+```
+
+__Example__:
+```html
+<!-- HTML -->
+<body>
+  <section>
+    <h2>Section Title</h2>
+    <p>First paragraph</p>
+    <p>Second paragraph</p>
+  </section>
+</body>
+```
+```javascript
+// JavaScript
+const previousSib = document.querySelector('p');
+
+console.log(previousSib.previousElementSibling); // -> <h2>Section Title</h2>
+```
+
+### DOM Manipulating or "Changing" Multiple Elements:
+We use `querySelectorAll()`, `getElementsByClassName()`, `getElementsByTagName()` to select all of the element and get an array-like object. We then iterate over that object and call a method or property that we want.
+
+__Example__: Change the text inside all of the "p" elements
+```html
+<!-- HTML -->
+<body>
+  <section>
+    <h2>Section Title</h2>
+    <p>First paragraph</p>
+    <p>Second paragraph</p>
+    <p>Third paragraph</p>
+  </section>
+</body>
+```
+```javascript
+// JavaScript
+// we select all the p tags
+const allPTags = document.querySelectorAll('p');
+
+// next we loop over all p tags
+for (let p of allPTags) {
+	//  last, we change the text of the p tags
+	p.innerText = 'This is new text';
+}
+console.log(allPTags[0].innerText); // -> 'This is new text'
+console.log(allPTags[1].innerText); // -> 'This is new text'
+```
+
+### DOM Changing Styles:
+
+__Example__: Change the text color inside all "p" elements
+```html
+<!-- HTML -->
+<body>
+  <section>
+    <h2>Section Title</h2>
+    <p>First paragraph</p>
+    <p>Second paragraph</p>
+    <p>Third paragraph</p>
+  </section>
+</body>
+```
+```javascript
+// JavaScript
+// we select all the p tags
+const allPTags = document.querySelectorAll('p');
+
+// we create a colors array
+const colors = [ 'red', 'green', 'blue' ];
+
+// next we loop over all p tags and print the text and index
+allPTags.forEach((p, idx) => {
+  // assign a variable to all the colors in the array
+  const newColors = colors[idx];
+  // change the text color of the iterated p tags
+  p.style.color = newColors;
+});
+```
+
+#### Window.getComputedStyle()
+This method returns an object containing the values of all CSS properties of an element (color, backgroundColor, display, width, etc.), after applying active stylesheets and resolving any basic computation those values may contain. 
+
+Individual CSS property values are accessed through APIs provided by the object, or by indexing with CSS property names.
+
+__Syntax__:
+```javascript
+window.getComputedStyle(element);
+window.getComputedStyle(element, pseudoElt);
+```
+
+```javascript
+document.querySelector('p').style.color;
+// -> "" (returns empty)
+```
+This returns empty because the style property only contains the inline styles. It does not contain any "calculated" styles, styles from a style sheet (CSS) or styles from a given class.
+
+If we want to get the computed value for an element we have to call the method "getComputedStyle":
+```javascript
+const p = document.querySelector('p');
+
+const styles = getComputedStyle(p);
+
+// we can now access the style properties of all the "p" elements
+console.log(styles.backgroundColor); // -> "rgba(0, 0, 0, 0)"
+console.log(styles.fontFamily); // -> "serif"
+```
+
+#### Element.classList
+This property returns a live `DOMTokenList` collection of the class attributes of the element. This can then be used to manipulate the class list.
+
+This property is useful to add, remove and toggle CSS classes on an element. The classList property is read-only, however, you can modify it by using the add() and remove() methods.
+
+__Syntax__:
+```javascript
+const elementClasses = elementNodeReference.classList;
+```
+
+Add an element to the DOM:
+```html
+<body>
+  <div id="el"></div>
+</body>
+```
+We then get a reference to the DOM element:
+```javascript
+const el = document.querySelector("#el");
+```
+We can now manipulate the classes on that element with the `classList` method:
+```javascript
+// Add a class
+el.classList.add('open');
+
+// Add many classes
+el.classList.add('this', 'little', 'piggy');
+let classes = [ 'is-message', 'is-warning' ];
+el.classList.add(...classes);
+
+// Remove a class
+el.classList.remove('open');
+
+// Remove multiple classes
+el.classList.remove('this', 'little', 'piggy');
+
+// Loop over each class
+el.classList; // DOMTokenList (pretty much an array)
+el.classList.forEach(className => {
+	// don't use "class" as that's a reserved word
+	console.log(className);
+});
+
+el.classList.length; // integer of how many classes there are
+
+// Replace a class (replaces first with second)
+el.classList.replace('is-big', 'is-small');
+
+// Toggle a class (if it's there, remove it, if it's not there, add it)
+el.classList.toggle('open');
+// Remove the class
+el.classList.toggle('open', false);
+// Add the class
+el.classList.toggle('open', true);
+// Add the class with logic
+el.classList.toggle('raining', weather === 'raining');
+
+// Check if element has class (returns true or false)
+el.classList.contains('open');
+
+// Look at individual classes <div class="hot dog">
+el.classList.item(0); // -> hot
+el.classList.item(1); // -> dog
+el.classList.item(2); // -> null
+el.classList[1]; // -> dog
+```
+
+### DOM Creating Elements
+How we insert or add elements into the DOM.
+
+#### Document.createElement()
+This method creates the HTML element specified by `tagName`, or an `HTMLUnknownElement` if `tagName` isn't recognized.
+
+__Syntax__:
+```javascript
+let element = document.createElement(tagName[, options]);
+```
+
+__Example__: Creating an Element
+```javascript
+// Step 1: Create our element
+const newH2 = document.createElement('h2');
+console.log(newH2); // -> <h2> </h2>
+
+// Step 2: Add text to our new "h2" element
+newH2.innerText = "I like superhero's!";
+
+// Step 3: Add the class "special" to our "h2" element
+newH2.classList.add('special');
+
+// Step 4: Add our element to the DOM
+// we select where we want to add the new element
+const addedBodyElement = document.querySelector('body');
+// we append the element to the end of the body section
+addedBodyElement.appendChild(newH2);
+```
+
+__Example__: Creating an Image
+```javascript
+// create the image:
+const newImg = document.createElement('img');
+
+// link the image:
+newImg.src ='https://images.unsplash.com/photo-1580927752452-89d86da3fa0a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=80';
+
+// resize the image:
+newImg.style.width = '500px';
+
+// append the image to the DOM:
+document.body.appendChild(newImg);
+```
+
+__Example__: Creating a Link
+```javascript
+// create the link:
+const newLink = document.createElement('a');
+
+// add the link text:
+newLink.innerText = 'Click here for more info';
+// add the link source:
+newLink.href = 'https://www.josephskycrest.com/';
+
+// append the link to the DOM:
+const ulEnd = document.querySelector('ul');
+ulEnd.appendChild(newLink);
+```
+
+### DOM Inserting Elements with an Order
+
+#### Element.insertAdjacentElement()
+This method of the `Element` interface inserts a given element node at a given position relative to the element it is invoked upon.
+
+__Syntax__:
+```javascript
+targetElement.insertAdjacentElement(position, element);
+```
+
+__Position__:
+
+A `DOMString` representing the position relative to the `targetElement`; must match (case-insensitively) one of the following strings:
+  * `beforebegin`: Before the targetElement itself.
+  * `afterbegin`: Just inside the targetElement, before its first child.
+  * `beforeend`: Just inside the targetElement, after its last child.
+  * `afterend`: After the targetElement itself.
+
+
+__Visualization__:
+```html
+  beforebegin
+  <p>
+    afterbegin
+    foo (existing element)
+    beforeend
+  </p>
+afterend
+```
+
+__Example__:
+```javascript
+// JavaScript
+// create the new "i" tag:
+const iTag = document.createElement('i');
+iTag.innerText = 'I am italics!';
+
+// select the element where we want to insert our new "i" tag:
+const firstP = document.querySelector('p');
+
+// insert where and what we want to insert into the DOM:
+firstP.insertAdjacentElement('beforebegin', iTag);
+```
+
+### DOM Removing Elements
+
+#### Node.removeChild()
+This method removes a child node from the DOM and returns the removed node.
+
+__Syntax__:
+```javascript
+let oldChild = node.removeChild(child);
+// or just
+node.removeChild(child);
+```
+The removed child node still exists in memory, but is no longer part of the DOM. With the first syntax form shown, you may reuse the removed node later in your code, via the `oldChild` object reference.
+
+__Example__:
+```javascript
+// select the parent:
+const ul = document.querySelector('ul');
+// select the child to be removed:
+const removeEle = ul.querySelector('.special');
+// the pattern goes: the parent, then remove child, then the child
+ul.removeChild(removeEle);
+
+// when we remove a child it returns the removed child which allows us to save it to a variable incase we want to do something with it:
+const deleted = ul.removeChild(removeEle);
+```
+
+#### ChildNode.remove()
+This method removes the object from the tree it belongs to. The `remove` method does not need the parent node.
+
+__Syntax__:
+```javascript
+node.remove();
+```
+
+All we have to do is select the target (what we want to remove) and then call remove on that node (the actual item we want to remove):
+```javascript
+const h2 = document.querySelector('h2');
+h2.remove();
+```
 
 #### Helpful Resources:
 [Traversing the DOM](https://zellwk.com/blog/dom-traversals/)
