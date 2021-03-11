@@ -288,13 +288,13 @@ __var__:
 console.log(x); // -> undefined
 var x = 0;
 ```
-In the above code, var keyword is pushed above the code and initialized automatically by JavaScript (only i variable is pushed above, not the value 0). So at the time of execution of code, it becomes something like this:
+In the above code, the `var` keyword is pushed above the code and initialized automatically by JavaScript (only `x` variable is pushed above, not the value 0). So at the time of execution, the code looks something like this:
 ```js
 var x; // automatically inserted by JS Engine at run time
 console.log(x);
 var x = 0;
 ```
-`x` has been pushed above and initialized by the JS engine, that's why we get undefined at the console line instead of an Error.
+`x` has been pushed above and initialized by the JS engine, that's why we get undefined at the console line instead of a `ReferenceError`.
 
 #### Hoisting with let and const:
 In the case of `var`, when JavaScript moves all the variables and functions to the top of the code, it __initializes__ it. This is not the case with `let` and `const`. 
@@ -309,23 +309,23 @@ __const__:
 console.log(z); // -> ReferenceError: Cannot access 'z' before initialization
 const z = 0;
 ```
-In the case of `let` and `const` keywords, the JavaScript engine hoists the variable declarations but __doesn't initialize__ them. The JS engine is aware of the variable, but it cant be used until it is declared or initialized.
+In the case of `let` and `const`, the JavaScript engine hoists the variable declarations but __doesn't initialize__ them. The JS engine is aware of the variable, but it can not be used until it is declared or initialized.
 
 #### Hoisting a Function:
-Functions __are__ hoisted but Function expressions __are not__ hoisted in JavaScript.
+Functions __are__ hoisted in JavaScript. On the contrary, function expressions __are not__ hoisted in JavaScript.
 
 ```js
 let x = 20;
 let y = 30;
 
 let total = add(x, y);
-console.log(total); // -> 50, because of hoisting
+console.log(total); // -> 50, because the function is hoisted
 
 function add(a, b) {
   return a + b;
 }
 ```
-In the above code, the output will be 50 as the regular function is also hoisted (moved to the top of the script) in JavaScript.
+In the above code, the output will be `50` as the regular function is also hoisted (moved to the top of the script) in JavaScript.
 
 What about when we have a function expression?
 ```js
@@ -335,6 +335,7 @@ let y = 30;
 let total = sum(x, y);
 console.log(total); // -> TypeError: sum is not a function
 
+// function expression with var
 var sum = function(a, b) {
   return a + b;
 };
@@ -950,11 +951,11 @@ console.log(sum); // -> 6
 
 `.reduce()` under the hood:
 
-__Example__: Multiply all the elements by two and Sum all numbers of the array
+__Example__: Multiply all the elements by two and sum all numbers of the array
 ```js
 const numbers = [ 1, 2, 3 ];
 
-const doubleSum = numbers.reduce(function(accumulator, number) {
+const doubleSum = numbers.reduce((accumulator, number) => {
   return accumulator + number * 2;
 }, 10);
 console.log(doubleSum); // -> 22
@@ -963,7 +964,7 @@ console.log(doubleSum); // -> 22
 Here, we’re multiplying each element of the array by 2. We have provided an `initialValue` of 10 to the `accumulator` so 10 will be added to the final result of the sum like this:
 
 ```javascript
-[1 * 2, 2 * 2, 3 * 2, 4 * 2, 5 * 2] = [2, 4, 6, 8, 10] = 30 + 10 = 40
+[1 * 2, 2 * 2, 3 * 2] = [2, 4, 6] = 12 + 10 = 22
 ```
 
 [.reduce MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce)
@@ -974,10 +975,10 @@ This returns an array with all the elements of another array that meet a determi
 __Example__: Return numbers less than or equal to 100
 ```js
 const numbers = [ 20, 200, 30, 45, 100, 102 ];
+
 const result = numbers.filter(n => {
   return n <= 100;
 });
-
 console.log(result); // -> [ 20, 30, 45, 100 ]
 ```
 
@@ -1061,6 +1062,7 @@ __Example__: Remove a todo task from the end of the array
 let todo = [ 'do laundry', 'wash dishes', 'take out trash' ];
 
 console.log(todo.pop()); // -> 'take out trash'
+console.log(todo); // -> [ "do laundry", "wash dishes" ]
 ```
 
 The `.pop()` method returns the value that was "popped" out. We can then save that value to a variable and use it:
@@ -1101,7 +1103,7 @@ __Example__: Remove a todo task from the start of the array
 ```js
 let todo = [ 'do laundry', 'wash dishes', 'take out trash' ];
 
-todo.shift();
+console.log(todo.shift()); // -> 'do laundry'
 console.log(todo); // -> [ 'wash dishes', 'take out trash' ]
 ```
 
