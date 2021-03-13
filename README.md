@@ -15,9 +15,9 @@ A quick look at the files and directories you'll see in the repo.
 ```bash
   .
   ├── src
-  	├── assets
-  	  ├── repo image files
-  	└── js
+    ├── assets
+      ├── repo image files
+    └── js
       ├── components
         ├── arrays.js
         ├── arrow-functions.js
@@ -44,21 +44,21 @@ A quick look at the files and directories you'll see in the repo.
       1. **`/projects`**: This directory contains some example JavaScript projects for reference.
 
 ## 🔗 Resources
-- [JavaScript MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-- [Dev Docs](https://devdocs.io/javascript/)
-- [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript)
-- [Code Academy JavaScript Cheatsheet](https://www.codecademy.com/learn/introduction-to-javascript/modules/learn-javascript-introduction/cheatsheet)
-- [FCC Beginner's Handbook 2020](https://www.freecodecamp.org/news/the-complete-javascript-handbook-f26b2c71719c/#objectproperties)
-- [30 Seconds of Code](https://www.30secondsofcode.org/)
-- [Medium JavaScript](https://medium.com/topic/javascript)
-- [JavaScript Visualized](https://dev.to/lydiahallie/series/3341)
-- [1 Line - JavaScript Utilities](https://1loc.dev/)
+  - [JavaScript MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+  - [Dev Docs](https://devdocs.io/javascript/)
+  - [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript)
+  - [Code Academy JavaScript Cheatsheet](https://www.codecademy.com/learn/introduction-to-javascript/modules/learn-javascript-introduction/cheatsheet)
+  - [FCC Beginner's Handbook 2020](https://www.freecodecamp.org/news/the-complete-javascript-handbook-f26b2c71719c/#objectproperties)
+  - [30 Seconds of Code](https://www.30secondsofcode.org/)
+  - [Medium JavaScript](https://medium.com/topic/javascript)
+  - [JavaScript Visualized](https://dev.to/lydiahallie/series/3341)
+  - [1 Line - JavaScript Utilities](https://1loc.dev/)
 
 #### Misc Resources:
-- [Fake API for testing and prototyping (JSON Placeholder)](https://jsonplaceholder.typicode.com/)
-- [CSS -> JavaScript](https://css2js.dotenv.dev/)
-- [Data Visualization - GoodData.UI](https://sdk.gooddata.com/gooddata-ui/)
-- [GitHub Markdown Styling](https://guides.github.com/features/mastering-markdown/)
+  - [Fake API for testing and prototyping (JSON Placeholder)](https://jsonplaceholder.typicode.com/)
+  - [CSS -> JavaScript](https://css2js.dotenv.dev/)
+  - [Data Visualization - GoodData.UI](https://sdk.gooddata.com/gooddata-ui/)
+  - [GitHub Markdown Styling](https://guides.github.com/features/mastering-markdown/)
 
 ## 📓 Notes
 ### Table of Contents
