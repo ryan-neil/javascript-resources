@@ -37,11 +37,11 @@ A quick look at the files and directories you'll see in the repo.
 ```
 
 1. **`/src`**: This directory contains all of the source files for the Github repo. \
-  1. **`/assets`**: This directory contains images for the repo. \
-  1. **`/js`**: This directory contains all JavaScript component files.
-    1. **`/components`**: This directory contains all the javascript repo files for the important features of JavaScript. Each file contains simple explanations along with example code for the features.
-    1. **`/console-testing`**: This directory contains a starting project boilerplate for testing JavaScript code.
-    1. **`/projects`**: This directory contains some example JavaScript projects for reference.
+    1. **`/assets`**: This directory contains images for the repo. \
+    1. **`/js`**: This directory contains all JavaScript component files.
+        1. **`/components`**: This directory contains all the javascript repo files for the important features of JavaScript. Each file contains simple explanations along with example code for the features.
+        1. **`/console-testing`**: This directory contains a starting project boilerplate for testing JavaScript code.
+        1. **`/projects`**: This directory contains some example JavaScript projects for reference.
 
 ## 🔗 Resources
 - [JavaScript MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
@@ -75,16 +75,16 @@ A quick look at the files and directories you'll see in the repo.
 1. [Ternary Operator](#ternary-operator)
 1. [Objects](#objects)
 1. [Methods](#methods)
-  * [Array Methods](#array-methods)
-  * [Object Methods](#object-methods)
-  * [String Methods](#string-methods)
+    * [Array Methods](#array-methods)
+    * [Object Methods](#object-methods)
+    * [String Methods](#string-methods)
 1. [Functions](#functions)
 1. [Destructuring](#destructuring)
 1. [Spread](#spread)
 1. [Rest](#rest)
 1. [This](#this)
 1. [The DOM](#the-document-object-model-dom)
-  * [DOM Methods and Properties](#dom-methods-and-properties)
+    * [DOM Methods and Properties](#dom-methods-and-properties)
 
   ----
 
