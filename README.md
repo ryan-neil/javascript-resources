@@ -84,7 +84,7 @@ A quick look at the files and directories you'll see in the repo.
   1. [Rest](#rest)
   1. [This](#this)
   1. [The DOM](#the-document-object-model-dom)
-    *  [DOM Methods and Properties](#dom-methods-and-properties)
+    * [DOM Methods and Properties](#dom-methods-and-properties)
 
   ----
 
