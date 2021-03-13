@@ -57,6 +57,7 @@ A quick look at the files and directories you'll see in the repo.
 #### Misc Resources:
 - [Fake API for testing and prototyping (JSON Placeholder)](https://jsonplaceholder.typicode.com/)
 - [CSS -> JavaScript](https://css2js.dotenv.dev/)
+- [Data Visualization - GoodData.UI](https://sdk.gooddata.com/gooddata-ui/)
 - [GitHub Markdown Styling](https://guides.github.com/features/mastering-markdown/)
 
 ## 📓 Notes
