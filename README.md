@@ -36,55 +36,55 @@ A quick look at the files and directories you'll see in the repo.
       └── projects
 ```
 
-  1. **`/src`**: This directory contains all of the source files for the Github repo. \
-    1. **`/assets`**: This directory contains images for the repo. \
-    1. **`/js`**: This directory contains all JavaScript component files.
-      1. **`/components`**: This directory contains all the javascript repo files for the important features of JavaScript. Each file contains simple explanations along with example code for the features.
-      1. **`/console-testing`**: This directory contains a starting project boilerplate for testing JavaScript code.
-      1. **`/projects`**: This directory contains some example JavaScript projects for reference.
+1. **`/src`**: This directory contains all of the source files for the Github repo. \
+  1. **`/assets`**: This directory contains images for the repo. \
+  1. **`/js`**: This directory contains all JavaScript component files.
+    1. **`/components`**: This directory contains all the javascript repo files for the important features of JavaScript. Each file contains simple explanations along with example code for the features.
+    1. **`/console-testing`**: This directory contains a starting project boilerplate for testing JavaScript code.
+    1. **`/projects`**: This directory contains some example JavaScript projects for reference.
 
 ## 🔗 Resources
-  - [JavaScript MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-  - [Dev Docs](https://devdocs.io/javascript/)
-  - [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript)
-  - [Code Academy JavaScript Cheatsheet](https://www.codecademy.com/learn/introduction-to-javascript/modules/learn-javascript-introduction/cheatsheet)
-  - [FCC Beginner's Handbook 2020](https://www.freecodecamp.org/news/the-complete-javascript-handbook-f26b2c71719c/#objectproperties)
-  - [30 Seconds of Code](https://www.30secondsofcode.org/)
-  - [Medium JavaScript](https://medium.com/topic/javascript)
-  - [JavaScript Visualized](https://dev.to/lydiahallie/series/3341)
-  - [1 Line - JavaScript Utilities](https://1loc.dev/)
+- [JavaScript MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+- [Dev Docs](https://devdocs.io/javascript/)
+- [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript)
+- [Code Academy JavaScript Cheatsheet](https://www.codecademy.com/learn/introduction-to-javascript/modules/learn-javascript-introduction/cheatsheet)
+- [FCC Beginner's Handbook 2020](https://www.freecodecamp.org/news/the-complete-javascript-handbook-f26b2c71719c/#objectproperties)
+- [30 Seconds of Code](https://www.30secondsofcode.org/)
+- [Medium JavaScript](https://medium.com/topic/javascript)
+- [JavaScript Visualized](https://dev.to/lydiahallie/series/3341)
+- [1 Line - JavaScript Utilities](https://1loc.dev/)
 
 #### Misc Resources:
-  - [Fake API for testing and prototyping (JSON Placeholder)](https://jsonplaceholder.typicode.com/)
-  - [CSS -> JavaScript](https://css2js.dotenv.dev/)
-  - [Data Visualization - GoodData.UI](https://sdk.gooddata.com/gooddata-ui/)
-  - [GitHub Markdown Styling](https://guides.github.com/features/mastering-markdown/)
+- [Fake API for testing and prototyping (JSON Placeholder)](https://jsonplaceholder.typicode.com/)
+- [CSS -> JavaScript](https://css2js.dotenv.dev/)
+- [Data Visualization - GoodData.UI](https://sdk.gooddata.com/gooddata-ui/)
+- [GitHub Markdown Styling](https://guides.github.com/features/mastering-markdown/)
 
 ## 📓 Notes
 ### Table of Contents
 
-  1. [Running JavaScript](#running-javascript)
-  1. [Commenting](#commenting)
-  1. [Variables](#variables)
-  1. [Naming Conventions](#naming-conventions)
-  1. [Hoisting](#hoisting)
-  1. [Properties](#properties)
-  1. [For Loops](#for-loops)
-  1. [Math](#math)
-  1. [Conditionals](#conditionals)
-  1. [Ternary Operator](#ternary-operator)
-  1. [Objects](#objects)
-  1. [Methods](#methods)
-    * [Array Methods](#array-methods)
-    * [Object Methods](#object-methods)
-    * [String Methods](#string-methods)
-  1. [Functions](#functions)
-  1. [Destructuring](#destructuring)
-  1. [Spread](#spread)
-  1. [Rest](#rest)
-  1. [This](#this)
-  1. [The DOM](#the-document-object-model-dom)
-    * [DOM Methods and Properties](#dom-methods-and-properties)
+1. [Running JavaScript](#running-javascript)
+1. [Commenting](#commenting)
+1. [Variables](#variables)
+1. [Naming Conventions](#naming-conventions)
+1. [Hoisting](#hoisting)
+1. [Properties](#properties)
+1. [For Loops](#for-loops)
+1. [Math](#math)
+1. [Conditionals](#conditionals)
+1. [Ternary Operator](#ternary-operator)
+1. [Objects](#objects)
+1. [Methods](#methods)
+  * [Array Methods](#array-methods)
+  * [Object Methods](#object-methods)
+  * [String Methods](#string-methods)
+1. [Functions](#functions)
+1. [Destructuring](#destructuring)
+1. [Spread](#spread)
+1. [Rest](#rest)
+1. [This](#this)
+1. [The DOM](#the-document-object-model-dom)
+  * [DOM Methods and Properties](#dom-methods-and-properties)
 
   ----
 
