@@ -59,6 +59,7 @@ A quick look at the files and directories you'll see in the repo.
 - [CSS -> JavaScript](https://css2js.dotenv.dev/)
 - [Data Visualization - GoodData.UI](https://sdk.gooddata.com/gooddata-ui/)
 - [GitHub Markdown Styling](https://guides.github.com/features/mastering-markdown/)
+- [Screen to GIF](https://www.screentogif.com/)
 
 ## 📓 Notes
 ### Table of Contents
