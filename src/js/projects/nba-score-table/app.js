@@ -85,40 +85,59 @@ const warriorsGames = [
 	}
 ];
 
-// * Step 1: create the ul element and this is where we will append a bunch of li's to
-const ulParent = document.createElement('ul');
+// * Step 1: Wrap everything in a function
+const makeChart = (games, targetTeam) => {
+	const ulParent = document.createElement('ul');
 
-// * Step 2: iterate over all the games
-warriorsGames.forEach(game => {
-	// destructuring the variables
-	const { homeTeam, awayTeam } = game;
-	// * Step 3: create li's for each game
-	const gameLI = document.createElement('li');
-	// * Step 4: set the text of the li's to away team at home team format (dynamically with template literal)
-	// we can destructor awayTeam and homeTeam:
+	warriorsGames.forEach(game => {
+		const gameLI = document.createElement('li');
+		gameLI.innerHTML = getScoreLine(game);
+
+		gameLI.classList.add(
+			isWinner(game, targetTeam) ? 'win' : 'loss'
+		);
+
+		ulParent.append(gameLI);
+	});
+	return ulParent;
+};
+
+// * Step 2: Create a function that gets the winner
+// we can destructure "game" here:
+const isWinner = ({ homeTeam, awayTeam }, targetTeam) => {
+	const target = homeTeam.team === targetTeam ? homeTeam : awayTeam;
+	return target.isWinner;
+};
+
+// * Step 3: Create a function that determines the interior of the inner text (Golden State @ Houston: 119 - 106)
+// we can destructure the entire game here again:
+const getScoreLine = ({ homeTeam, awayTeam }) => {
 	const { team: hTeam, points: hPoints } = homeTeam;
 	const { team: aTeam, points: aPoints } = awayTeam;
 	const teamNames = `${aTeam} @ ${hTeam}`;
-	// * Step 5: we need to append the li's to the ul
-	ulParent.append(gameLI);
-	// * Step 6: show the li's on the page (prepend):
-	document.body.prepend(ulParent);
-
-	// * Step 7: displaying the scores and make winning score bold
 	let scoreLine;
+
 	if (aPoints > hPoints) {
 		scoreLine = `<b>${aPoints}</b> - ${hPoints}`;
 	} else {
 		scoreLine = `${aPoints} - <b>${hPoints}</b>`;
 	}
-	// * Step 8: add the scores to the li's
-	// this needs to be "innerHTML" not "innerText" to display the bold tags
-	gameLI.innerHTML = `${teamNames}: ${scoreLine}`;
-	// * Step 9: add a background color
-	// we need to identify Golden State (reference it)
-	const warriors = hTeam === 'Golden State' ? homeTeam : awayTeam;
-	// now we can access the "isWinner" attribute:
-	// if the "isWinner" is true then we apply the class "win", otherwise we apply the class of "loss"
-	// we can add this expression to the entire class
-	gameLI.classList.add(warriors.isWinner ? 'win' : 'loss');
-});
+	return `${teamNames}: ${scoreLine}`;
+};
+
+// Golden State as the targetTeam
+const gsSection = document.querySelector('#gs');
+const gsChart = makeChart(warriorsGames, 'Golden State');
+// adding the Warriors chart to the DOM
+gsSection.appendChild(gsChart);
+
+// Houston Rockets as the targetTeam
+const hrSection = document.querySelector('#hr');
+const hrChart = makeChart(warriorsGames, 'Houston');
+// adding the Houston chart to the DOM
+hrSection.appendChild(hrChart);
+
+/**
+ * In summary:
+ * We have the function MakeChart() that relies on two other functions, isWinner() and getScoreLine().
+ */

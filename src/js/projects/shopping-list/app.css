@@ -1,0 +1,14 @@
+h3 {
+	font-size: 1rem;
+	font-family: -apple-system, 'Open Sans';
+}
+
+.input-box {
+	padding: 5px;
+	width: auto;
+	font-size: 1rem;
+	border: 1px solid rgba(112, 128, 144, 0.158);
+	box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.06);
+	border-radius: 3px;
+	font-family: -apple-system, 'Open Sans';
+}

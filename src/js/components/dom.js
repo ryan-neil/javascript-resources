@@ -7,26 +7,26 @@ The Document Object Model
 ====================================
 The Dom
 ====================================
-- This is, fundamentally, connecting JavaScript to HTML and CSS.
-- It's our JavaScript window into the contents of a webpage.
-- It's just a bunch of objects that we can interact with via JavaScript.
+	* This is, fundamentally, connecting JavaScript to HTML and CSS.
+	* It's our JavaScript window into the contents of a webpage.
+	* It's just a bunch of objects that we can interact with via JavaScript.
 */
 
 /*
 ====================================
 The "Document" Object:
+	* The document object is our entry point into the world of the DOM. It contains representations of all the content on the page, plus tons of useful methods and properties.
+	* The document is the root of the entire webpage (<!document html>).
+	* All of the other pieces (objects) of the DOM are located within the "document" object.
+*/
 
-- The document object is our entry point into the world of the DOM. It contains representations of all the content on the page, plus tons of useful methods and properties.
-- The document is the root of the entire webpage (<!document html>).
-- All of the other pieces (objects) of the DOM are located within the "document" object.
+/**
+=====================================
+Selecting Methods:
 */
 
 /** 
- * Selecting Methods:
-*/
-
-/** 
- * document.getElementById()
+document.getElementById()
 */
 
 // Syntax:
@@ -48,7 +48,7 @@ function changeColor(newColor) {
 // -> When the "Blue" button is clicked, "Some text here" text changes color to blue and vice-versa with the "Red" button.
 
 /** 
- * document.getElementsByTagName()
+document.getElementsByTagName()
 */
 
 // Syntax:
@@ -71,9 +71,9 @@ function countPTags() {
 // -> Total p tags are: 3
 
 /** 
- * HTMLCollection:
- * The HTMLCollection is an array-like object that is not an array. It is a collection of objects that we can access using indeces.
- * Regular array methods like pop() or includes() don't work with HTMLCollection.
+HTMLCollection:
+	* The HTMLCollection is an array-like object that is not an array. It is a collection of objects that we can access using indeces.
+	* Regular array methods like pop() or includes() don't work with HTMLCollection.
 */
 
 // Example 1:
@@ -110,7 +110,7 @@ console.log(arr);
 // -> 2: <p>
 
 /** 
- * document.getElementsByClassName()
+document.getElementsByClassName()
 */
 
 // Syntax:
@@ -167,13 +167,13 @@ console.log(test); // -> HTMLCollection { 0: p.test, length: 1 }
 const testTarget = parentDOM.getElementsByClassName('test')[0];
 console.log(testTarget); // -> <p class="test">
 
-/**
- * document.querySelector()
- * This is a newer, all-in-one method to select a single element (at most).
- * It can select everything that we use to select elements (ID, class, tag, etc.)
- * We pass in a CSS selector as a string.
- * This will only pass us the very first match regardless of how many there are in the document.
- * It's important to note that "querySelector()" is less performant than the traditional "getElementById" or "getElementsByClassName/TagName". Depending on what we pass into it, it could have to do a lot of work.
+/** 
+document.querySelector():
+	* This is a newer, all-in-one method to select a single element (at most).
+	* It can select everything that we use to select elements (ID, class, tag, etc.)
+	* We pass in a CSS selector as a string.
+	* This will only pass us the very first match regardless of how many there are in the document.
+	* It's important to note that "querySelector()" is less performant than the traditional "getElementById" or "getElementsByClassName/TagName". Depending on what we pass into it, it could have to do a lot of work.
 */
 
 // finds first h1 element tag:
@@ -185,9 +185,9 @@ document.querySelector('#red');
 // finds first element with class of .big:
 document.querySelector('.big');
 
-/**
- * document.querySelectorAll()
- * This acts the same as document.querySelector(), but returns a collection of matching elements.
+/** 
+document.querySelectorAll():
+	* This acts the same as document.querySelector(), but returns a collection of matching elements.
 */
 
 // Example 1:
@@ -249,16 +249,17 @@ console.log(pTarget); // -> <p class="style1">hello world 4</p>
 const moreSpecificTarget = document.querySelector('section p.style1');
 console.log(moreSpecificTarget); // -> <p class="style1">hello world 5</p>
 
-/** 
- * Manipulating or "Accessing" Properties and Methods:
+/**
+==============================================
+Manipulating or "Accessing" Properties and Methods:
 */
 
 /** 
- * HTMLElement.innerText:
- * The innerText property of the HTMLElement interface represents the "rendered" text content of a node and its descendants.
- * Accessing text from an element (how we get the contents of an element)
- * innerText only shows “human-readable” elements.
- * We CANNOT create new elements with innerText.
+HTMLElement.innerText:
+	* The innerText property of the HTMLElement interface represents the "rendered" text content of a node and its descendants.
+	* Accessing text from an element (how we get the contents of an element)
+	* innerText only shows “human-readable” elements.
+	* We CANNOT create new elements with innerText.
 */
 
 // Example:
@@ -277,15 +278,15 @@ const insideElement = document.querySelector('p.test');
 console.log(insideElement.innerText); // -> hello world 2
 
 /** 
- * Node.textContent:
- * The textContent property of the Node interface represents the text content of the node and its descendants.
- * textContent gets the content of all elements, including <script> and <style> elements.
- * textContent will print out all text formatting (indenting), hidden code, tags, etc.
+Node.textContent:
+	* The textContent property of the Node interface represents the text content of the node and its descendants.
+	* textContent gets the content of all elements, including <script> and <style> elements.
+	* textContent will print out all text formatting (indenting), hidden code, tags, etc.
 */
 
 /** 
- * innerText vs. textContent:
- * "innerText" is defined only for HTMLElement objects, while "textContent" is defined for all Node objects.
+innerHTML vs. textContent:
+	* "innerText" is defined only for HTMLElement objects, while "textContent" is defined for all Node objects.
 */
 
 // HTML
@@ -301,9 +302,9 @@ console.log(element.textContent);
 // -> Hello World
 
 /** 
- * innerHTML:
- * innerHTML will return all of the text inside of an element as well as all other tags inside a given element.
- * When trying to update HTML, like adding an element we HAVE to use innerHTML. We CANNOT use innerText here.
+innerHTML:
+	* innerHTML will return all of the text inside of an element as well as all other tags inside a given element.
+	* When trying to update HTML, like adding an element we HAVE to use innerHTML. We CANNOT use innerText here.
 */
 
 // Example:
@@ -327,17 +328,22 @@ console.log(elements.innerText);
 // -> Second thing
 // -> Third thing"
 
-/** 
- * Accessing properties on individual elements:
- * They are all referred to as "attributes" which in JS is a word followed by an = and quotes (src="").
- * value
- * src
- * href
- * getAttribute
- * setAttribute ... etc.
+/**
+==============================================
+Accessing properties on individual elements:
+	* They are all referred to as "attributes" which in JS is a word followed by an = and quotes (src="").
+	* value
+	* src
+	* href
+	* getAttribute
+	* setAttribute ... etc.
 */
 
-// * Value Attribute (All attributes follow the same guidelines)
+/** 
+Value Attribute:
+	* All attributes follow the same guidelines
+*/
+
 // HTML
 <body>
 	<form>
@@ -367,7 +373,9 @@ const rangeSlider = inputs[3].value;
 // if user slides the knob halfway.
 console.log(rangeSlider); // -> "50" [incrementing by 10 (step)]
 
-// * getAttribute
+/** 
+getAttribute: 
+*/
 // HTML
 <body>
 	<form>
@@ -387,7 +395,9 @@ console.log(maxRange); // -> "100"
 const minRange = range.getAttribute('min');
 console.log(minRange); // -> 0
 
-// * setAttribute
+/** 
+setAttribute: 
+*/
 // HTML
 <body>
 	<form>
@@ -408,15 +418,18 @@ range.setAttribute('min', '-10');
 console.log(range.max); // -> 120
 console.log(range.min); // -> -10
 
-/** 
- * Accessing the parent, children or nearest sibling of a given element:
- * parentElement
- * children
- * nextSibling
- * previousSibling
+/**
+========================================
+Accessing the parent, children or nearest sibling of a given element:
+	* parentElement
+	* children
+	* nextSibling
+	* previousSibling
 */
 
-// * parentElement
+/** 
+parentElement: 
+*/
 // HTML
 <body>
 	<section>
@@ -434,7 +447,9 @@ console.log(firstP.parentElement); // -> <section>
 // we can chain the .parentElement
 console.log(firstP.parentElement.parentElement); // -> <body>
 
-// * children
+/** 
+children: 
+*/
 // HTML
 <body>
 	<section>
@@ -451,7 +466,9 @@ const sectionChild = document.querySelector('section');
 console.log(sectionChild.children); // -> HTMLCollection { 0: h2, 1: p, 2: p, 3: p }
 console.log(sectionChild.children[0]); // -> <h2>
 
-// * nextElementSibling
+/** 
+nextElementSibling: 
+*/
 // HTML
 <body>
 	<section>
@@ -466,7 +483,9 @@ console.log(sectionChild.children[0]); // -> <h2>
 const nextSib = document.querySelector('h2');
 console.log(nextSib.nextElementSibling); // -> <p>First paragraph</p>
 
-// * previousElementSibling
+/** 
+previousElementSibling: 
+*/
 // HTML
 <body>
 	<section>
@@ -484,9 +503,8 @@ console.log(previousSib.previousElementSibling); // -> <h2>Section Title</h2>
 /**
 ====================================
 Changing Multiple Elements:
-
-- We use querySelectorAll(), getElementsByClassName(), getElementsByTagName() to select all of the element and get an array-like object.
-- We then iterate over that object and call a method or property we want.
+	* We use querySelectorAll(), getElementsByClassName(), getElementsByTagName() to select all of the element and get an array-like object.
+	* We then iterate over that object and call a method or property we want.
 */
 
 // Example 1: Change the text inside all "p" elements
@@ -540,7 +558,8 @@ allPTags.forEach((p, idx) => {
 	p.style.color = newColors;
 });
 
-/** getComputedStyle
+/** 
+getComputedStyle
 	* a different way of accessing style values.
 	* Retrieving what the current value is for a color, backgroundColor, display, width, etc.
 */
@@ -564,11 +583,12 @@ console.log(styles.backgroundColor);
 console.log(styles.fontFamily);
 // -> "serif"
 
-/** classList
- * It is an object representation (DOM token list) that contains the classes on an element.
- * It also provides Methods (toggle, forEach, add, etc.) so we can do things with them.
- * If we're styling multiple styles at once or we plan on reusing this and styling multiple elements the same way, create a "class" and add or remove the "class" using the "classList" property and it's methods.
- */
+/**
+classList:
+	* It is an object representation (DOM token list) that contains the classes on an element.
+	* It also provides Methods (toggle, forEach, add, etc.) so we can do things with them.
+	* If we're styling multiple styles at once or we plan on reusing this and styling multiple elements the same way, create a "class" and add or remove the "class" using the "classList" property and it's methods.
+*/
 
 // Instead of doing this:
 const todo = document.querySelector('#todos .todo');
@@ -578,7 +598,7 @@ todo.style.textDecoration = 'line-through';
 todo.style.opacity = '50%';
 
 /**
- * The downside of this method is our styles end up all in our JavaScript file rather than neatly in our CSS stylesheet.
+	* The downside of this method is our styles end up all in our JavaScript file rather than neatly in our CSS stylesheet.
  */
 
 // We must add a "done" class to our CSS sheet with the above styles and then do this:
@@ -599,13 +619,18 @@ todo.setAttribute('class', todo.getAttribute('class') + ' done');
 // to toggle it again
 todo.getAttribute('class').includes('done');
 
-/** Creating Elements
- * Insert or add elements into the DOM.
- */
+/**
+====================================
+Creating Elements:
+	* Insert or add elements into the DOM.
+*/
 
 // Syntax:
 let element = document.createElement(tagName);
 
+/** 
+Creating an Element: 
+*/
 // Step 1: Create our element
 const newH2 = document.createElement('h2');
 console.log(newH2); // -> <h2> </h2>
@@ -622,7 +647,9 @@ const addedBodyElement = document.querySelector('body');
 // we append the element to the end of the body section
 addedBodyElement.appendChild(newH2);
 
-// * Creating an image:
+/** 
+Creating an image: 
+*/
 const newImg = document.createElement('img');
 // link the image
 newImg.src =
@@ -631,7 +658,9 @@ newImg.style.width = '500px';
 // now we need to append it to the DOM
 document.body.appendChild(newImg);
 
-// * Creating a link:
+/** 
+Creating a Link: 
+*/
 const newLink = document.createElement('a');
 newLink.innerText = 'Click here for more info';
 newLink.href = 'https://www.josephskycrest.com/';
@@ -639,11 +668,13 @@ newLink.href = 'https://www.josephskycrest.com/';
 const ulEnd = document.querySelector('ul');
 ulEnd.appendChild(newLink);
 
-/** Inserting elements in an order
- * appendChild = End
- * insertBefore = Start
- * insertAdjacentElement = String values of Start -> End
- */
+/**
+====================================
+Inserting elements in an order:
+	* appendChild = End
+	* insertBefore = Start
+	* insertAdjacentElement = String values of Start -> End
+*/
 
 // add an item to the front of the list
 const parentUL = document.querySelector('ul');
@@ -661,17 +692,24 @@ const firstLI = document.querySelector('li.todo');
 // next to insert it before we need to call the parent element and then our "newLI" and where we want to insert it:
 parentUL.insertBefore(newLI, firstLI);
 
-// * insertAdjacentElement: Slightly more efficient than the appendChild method
+/** 
+insertAdjacentElement: 
+	* Slightly more efficient than the appendChild method
+*/
+
 // Syntax:
 targetElement.insertAdjacentElement(position, element);
-// Visualization:
-// 		beforebegin
-//		<p>
-// 			afterbegin
-// 			foo (existing element)
-//			beforeend
-// 		</p>
-//		afterend
+
+/** 
+Visualization:
+	beforebegin
+	<p>
+ 		afterbegin
+ 		foo (existing element)
+		beforeend
+ 	</p>
+	afterend
+ */
 
 // Example:
 // create the new "i" tag:
@@ -684,12 +722,16 @@ const firstP = document.querySelector('p');
 // insert where and what we want to insert into the DOM:
 firstP.insertAdjacentElement('beforebegin', iTag);
 
-/** Removing elements from the DOM
- * removeChild = End
- * remove
- */
+/**
+====================================
+Removing elements from the DOM:
+	* removeChild = End
+	* remove
+*/
 
-// * removeChild
+/** 
+removeChild: 
+*/
 // select the parent:
 const ul = document.querySelector('ul');
 // select the child to be removed:
@@ -700,8 +742,154 @@ ul.removeChild(removeEle);
 // when we remove a child it returns the removed child which allows us to save it to a variable incase we want to do something with it:
 const deleted = ul.removeChild(removeEle);
 
-// * remove
-// remove method does not need the parent node.
-// what we do is select the target (what we want to remove) and then call remove on that node (the actual item we want to remove)
+/** 
+remove:
+	* remove method does not need the parent node.
+	* what we do is select the target (what we want to remove) and then call remove on that node (the actual item we want to remove)
+*/
+
 const h2 = document.querySelector('h2');
 h2.remove();
+
+/**
+====================================
+DOM Events:
+	* https://developer.mozilla.org/en-US/docs/Web/Events
+*/
+
+/**
+ * The Structure:
+the thing			the event type 			the code to run
+button				click					 			change the color
+input					hits "enter"				get search results
+image					mouseover						display img caption
+*/
+
+/** 
+addEventListener:
+*/
+const button = document.querySelector('h1');
+
+button.addEventListener('click', () => {
+	alert('You clicked me!');
+});
+
+/**
+================================================
+Attaching eventListeners to Multiple Elements:
+	* For this we use a loop.
+*/
+
+// HTML:
+<body>
+	<section id="cards" />
+</body>;
+
+// JavaScript:
+const colors = [
+	'red',
+	'orange',
+	'yellow',
+	'green',
+	'blue',
+	'purple',
+	'indigo',
+	'violet'
+];
+
+// loop over all the colors and create a div element on the page with the corresponding color:
+const container = document.querySelector('#cards');
+
+for (let color of colors) {
+	// create the "div" element:
+	const card = document.createElement('div');
+	// adding the background color to the created cards:
+	card.style.backgroundColor = color;
+	// add the .card class to the div elements:
+	card.classList.add('card');
+	// add the .card div to the DOM inside "container":
+	container.append(card);
+
+	// selecting the h1
+	const h1 = document.querySelector('h1');
+	// add event on click to change text color of h1 to match card color
+	card.addEventListener('click', function() {
+		h1.style.color = color;
+	});
+}
+
+// refactoring the above example a bit more:
+const container = document.querySelector('#cards');
+
+const changeColor = function() {
+	const h1 = document.querySelector('h1');
+	h1.style.color = this.style.backgroundColor; // "this" will refer to the individual element that the eventListener has been added to [card]
+};
+
+for (let color of colors) {
+	const card = document.createElement('div');
+	card.style.backgroundColor = color;
+	card.classList.add('card');
+	container.append(card);
+
+	// changing the h1 font color with an eventListener:
+	card.addEventListener('click', changeColor); // reference the changeColor function here
+}
+
+/**
+================================================
+The Event Object:
+	* Event Objects can be very useful to have access to in our callback or our event handler.
+	* The Event Object is used if we need to access information about what was clicked on, what key was pressed, what time after the page loaded, etc.
+*/
+
+// from the example above we can access the event object by passing a parameter to the changeColor function
+const changeColor = function(e) {
+	console.log(e);
+};
+// -> click { ... }
+
+// Example: Keyboard Event
+document.body.addEventListener('keypress', function(event) {
+	console.log(event);
+});
+// user pushes "a" anywhere on the body of the document
+// -> keypress { target: body, key: "a", charCode: 107, keyCode: 0 }
+
+/**
+================================================
+Key Events:
+	* keyup
+	* keydown
+	* keypress
+*/
+
+/**
+keyup:
+	* 
+*/
+const input = document.querySelector('#username');
+
+input.addEventListener('keyup', function(e) {
+	console.log(e);
+});
+
+/**
+keydown:
+	* This prints when any key on the keyboard is pushed.
+*/
+const input = document.querySelector('#username');
+
+input.addEventListener('keydown', function(e) {
+	console.log(e);
+});
+
+/**
+keypress:
+	* 
+*/
+const input = document.querySelector('#username');
+
+input.addEventListener('keypress', function(e) {
+	console.log(e);
+});

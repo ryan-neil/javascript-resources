@@ -1,11 +1,14 @@
 // Practice
 // Cmd + Option + K (Console Shortcut)
 
-const el = document.querySelector('#el');
+const thor = {
+	superhero : true,
+	age       : 1500
+};
 
-// Loop over each class
-el.classList; // DOMTokenList (pretty much an array)
-el.classList.forEach(className => {
-	// don't use "class" as that's a reserved word
-	console.log(className);
-});
+// bad
+const isSuperhero = thor['superhero'];
+
+// good
+// const isSuperhero = thor.superhero;
+console.log(isSuperhero); // -> true

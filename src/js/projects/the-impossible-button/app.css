@@ -1,0 +1,28 @@
+.btn {
+	/* functions */
+	position: absolute;
+	top: 10px;
+	left: 10px;
+
+	/* Styles */
+	font-family: -apple-system, sans-serif;
+	border: none;
+	border-radius: 5px;
+	font-size: 1rem;
+	padding: 11px 15px;
+	font-weight: bold;
+	width: auto;
+	cursor: pointer;
+	transition: all 0.2s ease-in-out;
+	text-align: center;
+	background-color: cornflowerblue;
+	color: #ffffff;
+	box-shadow: 0 12px 12px -11px #0400385e;
+}
+
+h2 {
+	font-family: -apple-system, sans-serif;
+	text-align: center;
+	color: #ffffff;
+	font-size: 3rem;
+}

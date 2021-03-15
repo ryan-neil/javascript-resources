@@ -1,0 +1,24 @@
+#cards {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	gap: 5px;
+}
+
+.card {
+	width: 200px;
+	height: 200px;
+	cursor: pointer;
+	border-radius: 5px;
+}
+.card:hover {
+	opacity: .8;
+}
+
+h1 {
+	font-size: 2.6rem;
+	color: #22262c;
+	text-align: center;
+	font-family: -apple-system, sans-serif;
+}
