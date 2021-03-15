@@ -128,7 +128,7 @@ Here's a curated list of some of the most used CLI shortcuts.
 `CTRL-Q`: Resume screen output. \
 `CTRL-D`: Exit shell (just like exit).
 ##### Accessing Command History
-`CTRL-R`: Search the command history. Accept with `ENTER`/`RETURN`, abort with CTRL-G. \
+`CTRL-R`: Search the command history. Accept with `ENTER`/`RETURN`, abort with `CTRL-G`. \
 `CTRL-P`/`UP`: The previous command in history. \
 `CTRL-N`/`DOWN`: The next command in history.
 
@@ -136,7 +136,7 @@ Here's a curated list of some of the most used CLI shortcuts.
 
 ### Commenting
 
-We want to use `/** ... */` for multiline comments.
+We use `/** ... */` for multiline comments.
 
 ```javascript
 /**
@@ -381,7 +381,7 @@ To avoid bugs, always declare all variables at the beginning of every scope.
 ----
 
 ### Properties
-We want to use dot notation when accessing properties.
+We use dot notation when accessing properties.
 
 ```javascript
 const thor = {
@@ -394,9 +394,10 @@ const isSuperhero = thor['superhero'];
 
 // good
 const isSuperhero = thor.superhero;
+console.log(isSuperhero); // -> true
 ```
 
-We want to use bracket notation `[]` when accessing properties with a variable.
+We use bracket notation `[]` when accessing properties with a variable.
 
 ```javascript
 const thor = {
@@ -409,6 +410,7 @@ function getProp(prop) {
 }
 
 const isSuperhero = getProp('superhero');
+console.log(isSuperhero); // -> true
 ```
 
 **[⬆ Top](#table-of-contents)**
@@ -544,14 +546,14 @@ for (let i of sports) {
 // -> soccer, football, basketball
 ```
 
-> We can remember this by: for "in" for `index` and for "of" would be the `values` of each index/key/item.
+> We can remember this by: `for ... in` for __index__ and `for ... of` would be the __values__ of each index/key/item.
 
 **[⬆ Top](#table-of-contents)**
 
 ----
 
 ### Math
-`Math` is a built-in object that has *properties* and *methods* for mathematical constants and functions. It’s not a function object.
+`Math` is a built-in object that has __properties__ and __methods__ for mathematical constants and functions. It’s not a function object.
 
 Value of pi:
 ```javascript
@@ -582,7 +584,7 @@ Math.random(); // -> 0.8165536795157997 etc.
 ```
 
 #### Random Integers:
-`Math.random()` times 10 gives us a random decimal number up to 9.999...
+`Math.random() * 10` gives us a random decimal number up to 9.999...
 ```javascript
 Math.random() * 10; // -> 1.373859877092636
 Math.random() * 10; // -> 5.467900649576393
@@ -610,8 +612,10 @@ Math.floor(Math.random() * 10) + 1; // -> 10 etc.
 ### Conditionals
 Conditional Statements are used for making decisions with code. They can have 3 different pieces, an __if__, an __else if__, and __else__.
 
-`if` = Run the code `if` a given condition is true \
-`else if` = if not the first thing, maybe this other thing?? \
+`if` = Run the code `if` a given condition is true
+
+`else if` = if not the first thing, maybe this other thing??
+
 `else` = if nothing `else` was true, run this...
 
 ```javascript
@@ -659,7 +663,7 @@ With the `and` logical operator, both sides of the && needs to be true for the e
 'abc'.length === 3 && 1 + 1 === 4; // -> false
 ```
 
-Example: Password checker
+__Example__: Password checker
 
 ```javascript
 let password = 'taco tuesday';
@@ -682,7 +686,7 @@ With the `or` logical operator, only one side of the "pipe" needs to be true for
 0 || undefined; // -> false
 ```
 
-Example: Community theater program
+__Example__: Community theater program
 
 ```javascript
 let age = 76;
@@ -705,7 +709,7 @@ With the `not` logical operator, the expression returns true if the expression i
 !45; // -> false (45 is truthy so not "true" [45] is falsy)
 ```
 
-Example: Online snow cone stand with only 2 flavors (grape and cherry)
+__Example__: Online snow cone stand with only 2 flavors (grape and cherry)
 
 ```javascript
 let flavor = strawberry;
@@ -787,7 +791,7 @@ switch (item) {
 ----
 
 ### Ternary Operator
-A shortcut syntax that we can use for certain conditionals. It basically takes an __if__ and an __else__ and turns them into a single line of code. This will only work if there are no __else if__ statements.
+A shortcut syntax that we can use for certain conditionals. It basically takes an `if` and an `else` and turns them into a single line of code. This will only work if there are no `else if` statements.
 
 Syntax:
 ```javascript 
@@ -817,9 +821,9 @@ if (status === 'offline') {
 ----
 
 ### Objects
-Objects are collections of *properties* which are a key value pair. Rather than accessing the data using an *index*, we use custom *keys*.
+In short, Objects allow us to keep properties and/or methods in the same data structure when convenient. We can then apply methods to the correct set of values inside of the Object.
 
-An object, compared to an array, is more like a container that holds different pieces of data called *key* and *value* pairs where there's not necessarily any order to them. It's more about storing pairs of information.
+An object, compared to an array, is more like a container that holds different pieces of data called __key__ and __value__ pairs where there's not necessarily any order to them. It's more about storing pairs of information.
 
 We do not use a number [`0`] to access our data out like with an array, we would directly call for the data we need (city, age, zip, etc.)
 
@@ -849,14 +853,15 @@ const numbers = {
   16  : 'sixteen'
 };
 
-// bad
-numbers.100; // -> SyntaxError!!!
 // good
 numbers[100]; // -> "one hundred"
+
+// bad
+numbers.100; // -> SyntaxError!!!
 ```
 
 #### Nested Objects and Arrays:
-Our *objects* and *arrays* can have other nested *objects* and *arrays*.
+Our objects and arrays can have other nested objects and arrays.
 
 ```javascript
 const student = {
@@ -1731,7 +1736,6 @@ const user = {
   nickName : '2 Sweet',
   fullName() {
     const { first, last, nickName } = this;
-
     console.log(`${first} ${last} aka ${nickName}`);
   },
   // here we add a second method
