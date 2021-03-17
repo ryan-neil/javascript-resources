@@ -43,7 +43,7 @@ A quick look at the files and directories you'll see in the repo.
         1. **`/console-testing`**: This directory contains a starting project boilerplate for testing JavaScript code.
         1. **`/projects`**: This directory contains some example JavaScript projects for reference.
 
-## 🔗 Resources
+## 🔗 JavaScript Resources
 - [JavaScript MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 - [Dev Docs](https://devdocs.io/javascript/)
 - [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript)
@@ -55,6 +55,9 @@ A quick look at the files and directories you'll see in the repo.
 - [1 Line - JavaScript Utilities](https://1loc.dev/)
 
 #### Misc Resources:
+- [Free for Dev](https://free-for.dev/#/)
+- [LitElement - Web Components](https://lit-element.polymer-project.org/)
+- [Shoelace - Web Components](https://shoelace.style/)
 - [Fake API for testing and prototyping (JSON Placeholder)](https://jsonplaceholder.typicode.com/)
 - [CSS -> JavaScript](https://css2js.dotenv.dev/)
 - [Data Visualization - GoodData.UI](https://sdk.gooddata.com/gooddata-ui/)
@@ -80,6 +83,7 @@ A quick look at the files and directories you'll see in the repo.
     * [Object Methods](#object-methods)
     * [String Methods](#string-methods)
 1. [Functions](#functions)
+    * [Higher-Order Functions](#higher-order-functions)
 1. [Destructuring](#destructuring)
 1. [Spread](#spread)
 1. [Rest](#rest)
@@ -381,7 +385,7 @@ To avoid bugs, always declare all variables at the beginning of every scope.
 ----
 
 ### Properties
-We use dot notation when accessing properties.
+We use dot notation `.` when accessing properties.
 
 ```javascript
 const thor = {
@@ -461,13 +465,13 @@ arr.forEach((item, idx) => {
 #### for:
 The __for statement__ creates a loop that consists of three optional expressions, enclosed in parentheses and separated by semicolons, followed by a statement (usually a block statement) to be executed in the loop.
 
-Syntax:
+__Syntax__:
 ```javascript
 for ([initialization]; [condition]; [final-expression])
   [statement];
 ```
 
-Example:
+__Example__:
 ```javascript
 const examScores = [ 98, 77, 84, 91 ];
 
@@ -480,14 +484,14 @@ for (let i = 0; i < examScores.length; i++) {
 #### for..in:
 A `for...in` loop only iterates over enumerable, non-Symbol properties. We're returned the indeces rather than the values.
 
-Syntax:
+__Syntax__:
 ```javascript
 for ( [variable] in [iterable] ) {
   [statement];
 }
 ```
 
-Example:
+__Example__:
 ```javascript
 let sports = [ 'soccer', 'football', 'basketball', 'baseball' ];
 
@@ -500,14 +504,14 @@ for (let sport in sports) {
 #### for..of:
 `for...of` is an easier way to iterate over arrays (or other iterable objects)
 
-Syntax:
+__Syntax__:
 ```javascript
 for ( [variable] of [iterable] ) {
   [statement];
 }
 ```
 
-Example:
+__Example__:
 ```javascript
 let sports = [ 'soccer', 'football', 'basketball', 'baseball' ];
 
@@ -531,7 +535,7 @@ Both `for..of` and `for..in` statements iterate over lists; the values iterated 
 * `for..in` returns a list of keys on the object being iterated. 
 * `for..of` returns a list of values of the numeric properties of the object being iterated.
 
-Example:
+__Example__:
 ```javascript
 let sports = [ 'soccer', 'football', 'basketball' ];
 
@@ -793,12 +797,12 @@ switch (item) {
 ### Ternary Operator
 A shortcut syntax that we can use for certain conditionals. It basically takes an `if` and an `else` and turns them into a single line of code. This will only work if there are no `else if` statements.
 
-Syntax:
+__Syntax__:
 ```javascript 
 condition ? expIfTrue : expIfFalse
 ```
 
-Example:
+__Example__:
 ```javascript
 // new
 let status = 'offline';
@@ -821,17 +825,28 @@ if (status === 'offline') {
 ----
 
 ### Objects
+#### What are Objects?
 In short, Objects allow us to keep properties and/or methods in the same data structure when convenient. We can then apply methods to the correct set of values inside of the Object.
 
-An object, compared to an array, is more like a container that holds different pieces of data called __key__ and __value__ pairs where there's not necessarily any order to them. It's more about storing pairs of information.
+We can think of an object as a collection of __properties__, where each property has a __key__ (name) and a __value__.
+
+Alternatively, we can think of them as an unordered collection of named values. This is because the order at which we place things inside an object, from a practical standpoint, does not matter. This is where Objects differ from Arrays.
 
 We do not use a number [`0`] to access our data out like with an array, we would directly call for the data we need (city, age, zip, etc.)
 
-Example of key-value pairs: \
-`key: value` \
-In the example below: \
-`totalSteps: 308727` - *totalSteps* would be a __key__ and *308727* would be a __value__
+#### So why are Objects useful?
+Objects allow us to store related values in a convenient structure, in the same way we would store our silverware in the kitchen and not in the bedroom.
 
+They also allow us to easily apply methods to the values the should operate on. This way we can have a method which can only be applied to a specific set of values without getting the individual object mixed up.
+
+__Syntax__:
+```js
+const myObj {
+  key: value
+}
+```
+
+__Example__:
 ```javascript
 const fitBitData = {
   totalSteps       : 308727,
@@ -844,8 +859,11 @@ const fitBitData = {
 fitBitData.totalFloors; // -> 1814
 fitBitData.totalMiles; // -> 211
 ```
+In the example above:
 
-It's important to remember that all __keys__ are converted to *strings*.
+`totalSteps` would be the __key__ and `308727` would be the __value__
+
+> Note: It's important to remember that all keys are converted to strings.
 
 ```javascript
 const numbers = {
@@ -854,7 +872,7 @@ const numbers = {
 };
 
 // good
-numbers[100]; // -> "one hundred"
+numbers[100]; // -> 'one hundred'
 
 // bad
 numbers.100; // -> SyntaxError!!!
@@ -902,6 +920,8 @@ JavaScript methods are actions that can be performed on objects. Methods are fun
 
 #### .map()
 This returns a new array with the result of a function for each element in another array. The array returned has the same length as the original array.
+
+> Note: This is a built in Higher-Order Function in JavaScript
 
 __Example__: Create an array that contains the square of each item of another array
 ```js
@@ -955,6 +975,8 @@ testScores.forEach((scores, index, array) => {
 #### .reduce()
 This executes a reducer function (that you provide) on each element of the array, resulting in a single output value.
 
+> Note: This is a built in Higher-Order Function in JavaScript
+
 __Example__: Sum all numbers of the array
 ```js
 const numbers = [ 1, 2, 3 ];
@@ -990,6 +1012,8 @@ Here, we’re multiplying each element of the array by 2. We have provided an `i
 
 #### .filter()
 This returns an array with all the elements of another array that meet a determined condition.
+
+> Note: This is a built in Higher-Order Function in JavaScript
 
 __Example__: Return numbers less than or equal to 100
 ```js
@@ -1349,9 +1373,13 @@ console.log(indexOfFirst); // -> 11
 ----
 
 ### Functions
-A __function__ is simply a reusable procedure. Functions allow us to write reusable, modular code. We define a *chunk* of code that we can then execute at a later time.
+A function is simply a reusable procedure. They also allow us to write modular code which keeps our codebase clean and organized. We define a chunk of code that we can then execute at a later time.
 
-Syntax:
+We can think of a vending machine... imagine you approach a vending machine, put in some coins and make a selection. You start to hear sounds and things going on in the vending machine but you're not really sure whats happening. Then all of a sudden something pop's out.
+
+So in a sense, the vending machine is like a black box at which we can control by inputs and receiving outputs.
+
+__Syntax__:
 ```javascript
 function name([param[, param[, ... param]]]) {
   [statements];
@@ -1371,6 +1399,13 @@ For the visual learners out there:
   <img src="/src/assets/function-definition.jpg" width="80%" alt="function-definition">
 </p>
 
+With functions in JavaScript, you can:
+  * Store them as variables (function expressions)
+  * Use them in arrays
+  * Assign them as object properties (methods)
+  * Pass them as arguments
+  * Return them from other functions
+
 #### Function Scope:
 In JavaScript there are two types of scope:
 * Local scope
@@ -1383,7 +1418,7 @@ Variables declared within a JavaScript function, become __local__ to the functio
 
 Local variables have __Function scope__: They can only be accessed from within the function.
 
-Example:
+__Example__:
 ```javascript
 // code here can NOT use carName
 
@@ -1403,7 +1438,7 @@ A variable declared outside a function, becomes __global__.
 
 A global variable has __global scope__: All scripts and functions on a web page can access it.
 
-Example:
+__Example__:
 ```javascript
 let carName = 'Toyota';
 
@@ -1419,7 +1454,7 @@ function myFunc() {
 #### Function Expressions:
 In JavaScript functions are objects which means we can store them in variables, arrays, and we can pass them around as arguments.
 
-Example 1: Storing a function in a `variable`
+__Example 1__: Storing a function in a __variable__
 ```javascript
 // old
 function square(num) {
@@ -1434,7 +1469,7 @@ const square = function(num) {
 square(7); // -> 49
 ```
 
-We can store our functions in an `array` like this:
+We can store our functions in an __array__ like this:
 ```javascript
 const add = function(x, y) {
   return x + y;
@@ -1463,7 +1498,7 @@ subtract(100 - 4); // -> 96
 multiply(100 - 4); // -> 400
 ```
 
-We can then loop over our `array` of functions like this:
+We can then loop over our __array__ of functions like this:
 ```javascript
 for (let func of operations) {
   let result = func(30, 5);
@@ -1475,7 +1510,7 @@ for (let func of operations) {
 // -> 6 (divide)
 ```
 
-To store functions in an `object` we do this:
+To store functions in an __object__ we do this:
 ```javascript
 const operationsObject = {
   add      : add,
@@ -1492,7 +1527,7 @@ A __parameter__ is the variable name, defined in the function signature, of the 
 
 It's important to distinguish them, as a __parameter__ can represent many different values or even types of values, while an __argument__ will only be that specific value at the time of evaluation.
 
-In this *square* function, *number* is the __parameter__ and *6* is the __argument__ being passed into the function:
+In this `square` function, `number` is the __parameter__ and `6` is the __argument__ being passed into the function:
 
 ```javascript
 function square(number) {
@@ -1502,7 +1537,9 @@ square(6); // -> 36
 ```
 
 #### Higher-Order Functions:
-A Higher-Order Function can take functions as arguments and/or return a function.
+Higher order functions are functions that operate on other functions, either by taking them as arguments or by returning them. 
+
+In simple words, A Higher-Order function is a function that receives a function as an argument or returns the function as output.
 
 ```javascript
 function randomNumGen() {
@@ -1516,11 +1553,17 @@ const userID = id('Ryan', randomNumGen);
 
 console.log(userID); // -> Ryan-766
 ```
+JavaScript ships with built in Higher-Order Functions for us to use:
+  * [Array.map()](#map)
+  * [Array.filter()](#filter)
+  * [Array.reduce()](#reduce)
+
+We can also write our own higher-order functions based on what we need!
 
 #### Arrow Functions:
 Arrow functions allow us to write shorter function syntax:
 
-Example:
+__Example__:
 ```javascript
 // old
 square = function(x) {
@@ -1673,12 +1716,12 @@ We can think of `this` as a reference to the current *execution scope*. It is go
 
 So depending on the scope and depending on the rules of how `this` works that `object` changes. It could even be a reference to the *global scope*.
 
-Syntax:
+__Syntax__:
 ```javascript
 this
 ```
 
-Example:
+__Example__:
 ```javascript
 // In web browsers, the window object is also the global object:
 console.log(this === window); // -> true
@@ -1698,7 +1741,7 @@ This means we can use `objects` not only to store different `methods` because th
 
 But now we have a way of also interacting with properties with other `values` or even other `methods`. This means our object can be a little self-contained world where we can have variables.
 
-Example 1:
+__Example 1__:
 ```javascript
 const user = {
   first    : 'Katie',
@@ -1728,7 +1771,7 @@ const user = {
 user.fullName(); // -> Katie Jane aka 2 Sweet
 ```
 
-Example 2: Adding multiple methods to an object
+__Example 2__: Adding multiple methods to an object
 ```javascript
 const user = {
   first    : 'Katie',
@@ -1765,7 +1808,7 @@ This is generally why we do not use arrow functions as methods because a lot of 
   * referencing properties
   * calling a different method like we did in `printBio()` (`this.fullName()`).
 
-Example:
+__Example__:
 ```javascript
 const person = {
   first    : 'Katie',
@@ -2024,7 +2067,7 @@ __Syntax__:
 ```javascript
 element = document.querySelector(selectors);
 ```
-__Examples__:
+__Example__:
 
 This will find the first `<h1>` element tag:
 ```javascript
@@ -2497,7 +2540,7 @@ __Syntax__:
 const elementClasses = elementNodeReference.classList;
 ```
 
-__Examples__:
+__Example__:
 
 Add an element to the DOM:
 ```html

@@ -1,5 +1,4 @@
-// Practice
-// Cmd + Option + K (Console Shortcut)
+// https://dev.to/damcosset/higher-order-functions-in-javascript-4j8b
 
 const grades = [
 	{ name: 'John', grade: 86, sex: 'M' },
