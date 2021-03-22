@@ -36,8 +36,8 @@ A quick look at the files and directories you'll see in the repo.
       └── projects
 ```
 
-1. **`/src`**: This directory contains all of the source files for the Github repo. \
-    1. **`/assets`**: This directory contains images for the repo. \
+1. **`/src`**: This directory contains all of the source files for the Github repo.
+    1. **`/assets`**: This directory contains images for the repo.
     1. **`/js`**: This directory contains all JavaScript component files.
         1. **`/components`**: This directory contains all the javascript repo files for the important features of JavaScript. Each file contains simple explanations along with example code for the features.
         1. **`/console-testing`**: This directory contains a starting project boilerplate for testing JavaScript code.
@@ -113,8 +113,6 @@ node yourJSfilename
 ```
 
 This method allows us to view the output of our JavaScript code without the need of an HTML file! Pretty sweet.
-
-#### From the Browser:
 
 #### Command-Line Keyboard Shortcuts:
 Here's a curated list of some of the most used CLI shortcuts.
@@ -206,8 +204,11 @@ We always want to use `const` or `let` to declare variables. Not doing so will r
 The `const` keyword works exactly the same as `let`, except that variables declared using `const` cannot be reassigned later in the code.
 
 ```javascript
+// const
 const daysInWeek = 7;
+const daysInWeek = 5; // -> SyntaxError: redeclaration of const daysInWeek
 
+// let
 let counter = 1;
 let counter = counter + 1; // -> 2
 ```
@@ -1541,17 +1542,40 @@ Higher order functions are functions that operate on other functions, either by 
 
 In simple words, A Higher-Order function is a function that receives a function as an argument or returns the function as output.
 
+__Examples__:
 ```javascript
-function randomNumGen() {
-  return Math.floor(Math.random() * 1000);
-}
+const grades = [
+	{ name: 'John', grade: 86, sex: 'M' },
+	{ name: 'Sarah', grade: 92, sex: 'F' },
+	{ name: 'Bob', grade: 94, sex: 'M' },
+	{ name: 'Jane', grade: 78, sex: 'F' }
+];
 
-function id(name, randFunc) {
-  return name + '-' + randFunc();
-}
-const userID = id('Ryan', randomNumGen);
+// function declarations
+let isBoy = student => student.sex === 'M';
 
-console.log(userID); // -> Ryan-766
+let isGirl = student => student.sex === 'F';
+
+let getBoys = grades => grades.filter(isBoy);
+
+let getGirls = grades => grades.filter(isGirl);
+
+let average = grades => grades.reduce((accumulator, currentValue) => accumulator + currentValue.grade, 0) / grades.length;
+
+let maxGrade = grades => Math.max(...grades.map(student => student.grade));
+
+let minGrade = grades => Math.min(...grades.map(student => student.grade));
+
+// results
+let classroomAverage = average(grades); // -> 87.5
+let boysAverage = average(getBoys(grades)); // -> 90
+let girlsAverage = average(getGirls(grades)); // -> 85
+let highestGrade = maxGrade(grades); // -> 94
+let lowestGrade = minGrade(grades); // -> 78
+let highestBoysGrade = maxGrade(getBoys(grades)); // -> 94
+let lowestBoysGrade = minGrade(getBoys(grades)); // -> 86
+let highestGirlsGrade = maxGrade(getGirls(grades)); // -> 92
+let lowestGirlsGrade = minGrade(getGirls(grades)); // -> 78
 ```
 JavaScript ships with built in Higher-Order Functions for us to use:
   * [Array.map()](#map)
