@@ -838,7 +838,7 @@ We do not use a number [`0`] to access our data out like with an array, we would
 #### So why are Objects useful?
 Objects allow us to store related values in a convenient structure, in the same way we would store our silverware in the kitchen and not in the bedroom.
 
-They also allow us to easily apply methods to the values the should operate on. This way we can have a method which can only be applied to a specific set of values without getting the individual object mixed up.
+They also allow us to easily apply methods to the values they should operate on. This way we can have a method which can only be applied to a specific set of values without getting the individual object mixed up.
 
 __Syntax__:
 ```js
@@ -912,14 +912,14 @@ This is a collection of the most commonly used ES5 and ES6+ methods for arrays, 
 
 JavaScript methods are actions that can be performed on objects. Methods are functions stored as object properties.
 
-[Useful Methods](https://dev.to/otamnitram/my-most-used-javascript-methods-1i64)
+* [Common JavaScript Methods](https://dev.to/otamnitram/my-most-used-javascript-methods-1i64)
 
-#### Array Methods:
+### Array Methods:
 
-##### Resources:
+#### Resources:
 * [Array Methods](https://www.w3schools.com/js/js_array_methods.asp)
 
-#### .map()
+### [Array].map()
 This returns a new array with the result of a function for each element in another array. The array returned has the same length as the original array.
 
 > Note: This is a built in Higher-Order Function in JavaScript
@@ -937,8 +937,10 @@ console.log(numbers); // -> [ 2, 4, 6 ]
 
 [.map MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map)
 
-#### .forEach()
+### [Array].forEach()
 This executes a provided function once for every element in the array.
+
+> Note: This is a built in Higher-Order Function in JavaScript
 
 __Example__: Loop through the array and print the numbers
 ```js
@@ -973,7 +975,7 @@ testScores.forEach((scores, index, array) => {
 
 [.forEach MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach)
 
-#### .reduce()
+### [Array].reduce()
 This executes a reducer function (that you provide) on each element of the array, resulting in a single output value.
 
 > Note: This is a built in Higher-Order Function in JavaScript
@@ -1011,7 +1013,7 @@ Here, we’re multiplying each element of the array by 2. We have provided an `i
 
 [.reduce MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce)
 
-#### .filter()
+### [Array].filter()
 This returns an array with all the elements of another array that meet a determined condition.
 
 > Note: This is a built in Higher-Order Function in JavaScript
@@ -1028,7 +1030,7 @@ console.log(result); // -> [ 20, 30, 45, 100 ]
 
 [.filter MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter)
 
-#### .some()
+### [Array].some()
 This tests whether __at least one__ element in the array passes the test condition given by the provided function and returns a boolean `true` or `false` value.
 
 __Example__: Return true if there is a positive number in the array
@@ -1043,7 +1045,7 @@ console.log(containsPositive); // -> true
 
 [.some MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some)
 
-#### .every()
+### [Array].every()
 This tests whether __all__ elements in the array pass the provided test conditions and returns a boolean `true` or `false` value.
 
 __Example__: Return true if all numbers in the array are positive
@@ -1058,7 +1060,7 @@ console.log(allPositive); // -> false
 
 [.every MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every)
 
-#### (Array).slice()
+### [Array].slice()
 This returns a shallow copy of a portion of an array into a new array object selected from start to end (end not included) where start and end represent the index of items in that array. The original array will not be modified.
 
 __Example__: Return superheros who are Gods from the array
@@ -1069,9 +1071,9 @@ const superheroGods = superheros.slice(0, 2);
 console.log(superheroGods); // -> [ 'thor', 'loki' ]
 ```
 
-[(Array).every MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every)
+[.slice MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice)
 
-#### (Array).indexOf()
+### [Array].indexOf()
 This returns the first index at which a given element can be found in the array, or -1 if it is not present.
 
 __Example__: Find the index of "tiger" from the array
@@ -1082,9 +1084,9 @@ console.log(animals.indexOf('tiger')); // -> 2
 console.log(animals.indexOf('lion')); // -> -1
 ``` 
 
-[(Array).indexOf MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf)
+[.indexOf MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf)
 
-#### Array.from()
+### [Array].from()
 This creates a new, shallow-copied Array instance from an array-like or iterable object.
 
 __Example__: Return an array with each letter of my last name.
@@ -1096,9 +1098,9 @@ console.log(lastNameLetters); // -> [ 'n', 'e', 'i', 'l' ]
 console.log(lastName); // -> 'neil'
 ```
 
-[Array.from MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from)
+[.from MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from)
 
-#### .pop()
+### [Array].pop()
 This __REMOVES__ an element from the __END__ of an array and returns that element. This method changes the length of the array.
 
 __Example__: Remove a todo task from the end of the array
@@ -1119,7 +1121,7 @@ console.log(completedTask); // -> 'take out trash'
 
 [.pop MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/pop)
 
-#### .push()
+### [Array].push()
 This __ADDS__ an element to the __END__ of an array.
 
 __Example__: Add a todo task to the end of the array
@@ -1140,7 +1142,7 @@ console.log(addedTask); // -> 4
 
 [.push MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/pop)
 
-#### .shift()
+### [Array].shift()
 This __REMOVES__ an element from the __START__ of an array and "shifts" all other elements to a lower index.
 
 __Example__: Remove a todo task from the start of the array
@@ -1161,7 +1163,7 @@ console.log(completedTask); // -> 'do laundry'
 
 [.shift MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/shift)
 
-#### .unshift()
+### [Array].unshift()
 This __ADDS__ an element to the __START__ of an array and "unshifts" older elements.
 
 __Example__: Add a todo task to the start of the array
@@ -1182,12 +1184,12 @@ console.log(addedTask); // -> 4
 
 [.unshift MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift)
 
-#### Object Methods:
+### Object Methods:
 
-##### Resources:
+#### Resources:
 * [Object Methods](https://www.w3schools.com/js/js_object_properties.asp)
 
-#### Object.values()
+### Object.values()
 Returns an array of the object's values.
 
 ```js
@@ -1202,7 +1204,7 @@ console.log(values); // -> ['Audi', 'a4', 2020]
 
 [Object.values MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_objects/Object/values)
 
-#### Object.keys()
+### Object.keys()
 Returns an array of the object's keys(names).
 
 ```js
@@ -1217,7 +1219,7 @@ console.log(keys); // -> ['name', 'model', 'year']
 
 [Object.keys MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys)
 
-#### Object.assign()
+### Object.assign()
 This is useful for merging or cloning objects.
 
 ```js
@@ -1240,7 +1242,7 @@ console.log(combined); // -> { name: 'Audi', model: 'a4', color: 'red', type: 'C
 
 [Object.assign MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
 
-#### Object.entries()
+### Object.entries()
 Returns an array for each of the key:value pairs in the object wrapped in array.
 
 ```js
@@ -1255,7 +1257,7 @@ console.log(items); // -> [ [ name:'Audi' ], [ model:'a4' ], [ year:2020 ] ]
 
 [Object.entries MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries)
 
-#### Object.freeze()
+### Object.freeze()
 This "freezes" the object and makes it so we can no longer change it.
 
 ```js
@@ -1274,7 +1276,7 @@ console.log(car); // -> { name: 'Audi', model: 'a4', year: 2020 }
 
 [Object.entries MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze)
 
-#### Object.seal()
+### Object.seal()
 This is similar to Object.freeze() but the difference is this lets you change the property of the object as long they are writeable (Not methods) But we CANNOT delete or add new properties.
 
 ```js
@@ -1298,12 +1300,12 @@ console.log(car.year); // -> 2021
 
 [Object.entries MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/seal)
 
-#### String Methods:
+### String Methods:
 
-##### Resources:
+#### Resources:
 * [String Methods](https://www.w3schools.com/js/js_string_methods.asp)
 
-#### .split()
+### [String].split()
 This divides a string with a `separator` into an ordered list of substrings, puts these substrings into an array, and returns the array. Use the second parameter (`limit`) to return a limited number of splits.
 
 __Example__: Separate the string with commas
@@ -1342,7 +1344,7 @@ console.log(strCopy); // -> [ 'JavaScript String split()' ]
 
 [.split MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split)
 
-#### (String).slice()
+### [String].slice()
 This extracts a section of a string and returns it as a new string, without modifying the original string.
 
 __Example__: Extract the last two words from the string
@@ -1353,9 +1355,9 @@ const strSlice = str.slice(10);
 console.log(strSlice); // ->  'String split()'
 ``` 
 
-[(String).slice MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/slice)
+[.slice MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/slice)
 
-#### (String).indexOf()
+### [String].indexOf()
 This returns the index within the calling String object of the first occurrence of the specified value, starting the search at fromIndex. Returns -1 if the value is not found.
 
 __Example__: Find the index of "String" from the string
@@ -1367,7 +1369,7 @@ const indexOfFirst = str.indexOf(searchTerm);
 console.log(indexOfFirst); // -> 11
 ``` 
 
-[(String).indexOf MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/indexOf)
+[.indexOf MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/indexOf)
 
 **[⬆ Top](#table-of-contents)**
 
@@ -1523,26 +1525,46 @@ operationsObject.add(50, 2); // -> 52
 operationsObject.subtract(50, 2); // -> 48
 ```
 
-#### Parameters vs. Arguments:
+#### Function Parameters vs. Arguments:
 A __parameter__ is the variable name, defined in the function signature, of the value which will be given as an __argument__. 
 
 It's important to distinguish them, as a __parameter__ can represent many different values or even types of values, while an __argument__ will only be that specific value at the time of evaluation.
 
-In this `square` function, `number` is the __parameter__ and `6` is the __argument__ being passed into the function:
-
+__Example__:
 ```javascript
 function square(number) {
   return number * number;
 }
 square(6); // -> 36
 ```
+In the example above, `number` is the __parameter__ and `6` is the __argument__ being passed into the function.
 
 #### Higher-Order Functions:
 Higher order functions are functions that operate on other functions, either by taking them as arguments or by returning them. 
 
-In simple words, A Higher-Order function is a function that receives a function as an argument or returns the function as output.
+In simple words, A Higher-Order function receives a function as an argument or returns the function as output.
 
-__Examples__:
+JavaScript ships with built in Higher-Order Functions for us to use:
+  * [Array.map()](#map)
+  * [Array.filter()](#filter)
+  * [Array.forEach()](#foreach)
+  * [Array.reduce()](#reduce)
+
+We can also write our own higher-order functions based on what we need!
+
+__Example__:
+```javascript
+const add = (a, b) => a + b;
+const isEven = num => num % 2 === 0;
+
+const data = [ 2, 3, 1, 5, 4, 6 ];
+
+const evenValues = data.filter(isEven); // [2, 4, 6]
+const evenSum = data.filter(isEven).reduce(add); // 12
+```
+In the example above, the variable `evenValues` is taking the built-in higher-order function `.filter()` and passing it the `isEven` function we created as an argument.
+
+Here's an example of how we can use `.filter()`, `.reduce()`, and `.map()` all together:
 ```javascript
 const grades = [
 	{ name: 'John', grade: 86, sex: 'M' },
@@ -1577,12 +1599,6 @@ let lowestBoysGrade = minGrade(getBoys(grades)); // -> 86
 let highestGirlsGrade = maxGrade(getGirls(grades)); // -> 92
 let lowestGirlsGrade = minGrade(getGirls(grades)); // -> 78
 ```
-JavaScript ships with built in Higher-Order Functions for us to use:
-  * [Array.map()](#map)
-  * [Array.filter()](#filter)
-  * [Array.reduce()](#reduce)
-
-We can also write our own higher-order functions based on what we need!
 
 #### Arrow Functions:
 Arrow functions allow us to write shorter function syntax:
