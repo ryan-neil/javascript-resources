@@ -55,6 +55,7 @@ A quick look at the files and directories you'll see in the repo.
 - [1 Line - JavaScript Utilities](https://1loc.dev/)
 
 #### Misc Resources:
+- [Big-O Cheatsheet](https://www.bigocheatsheet.com/)
 - [Free for Dev](https://free-for.dev/#/)
 - [LitElement - Web Components](https://lit-element.polymer-project.org/)
 - [Shoelace - Web Components](https://shoelace.style/)
