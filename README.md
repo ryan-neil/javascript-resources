@@ -91,6 +91,7 @@ A quick look at the files and directories you'll see in the repo.
 1. [This](#this)
 1. [The DOM](#the-document-object-model-dom)
     * [DOM Methods and Properties](#dom-methods-and-properties)
+    * [DOM Events](#dom-events)
 
   ----
 
@@ -2553,7 +2554,7 @@ __Syntax__:
 window.getComputedStyle(element);
 window.getComputedStyle(element, pseudoElt);
 ```
-
+__Example__:
 ```javascript
 document.querySelector('p').style.color;
 // -> "" (returns empty)
@@ -2785,6 +2786,64 @@ All we have to do is select the target (what we want to remove) and then call re
 const h2 = document.querySelector('h2');
 h2.remove();
 ```
+
+### DOM Events
+#### Resources:
+[MDN - DOM Events](https://developer.mozilla.org/en-US/docs/Web/Events)
+
+Event Structure:
+```
+the thing:      the event type:     the code to run:
+button          click               change the color
+input           hits "enter"        get search results
+img             mouseover           display image caption
+```
+
+#### addEventListener
+The __EventTarget__ method `addEventListener()` sets up a function that will be called whenever the specified event is delivered to the target. Common targets are __Element__, __Document__, and __Window__, but the target may be any object that supports events (such as __XMLHttpRequest__).
+
+__Syntax__:
+```javascript
+target.addEventListener(type, listener);
+```
+`type`: A case-sensitive string representing the event type to listen for (`click`, `mouseover`, `focus`, `submit`, etc.)
+
+`listener`: The object that receives a notification when an event of the specified type occurs. This must be an object implementing the __EventListener__ interface, or a JavaScript __function__.
+
+__Example__:
+```javascript
+const button = document.querySelector('h1');
+
+button.addEventListener('click', () => {
+	alert('You clicked me!');
+});
+```
+
+### The Event Object
+Event Objects can be very useful to have access to in our callback or our event handler.
+
+The Event Object is used if we need to access information about what was clicked on, what key was pressed, what time after the page loaded, etc.
+
+__Example__: Keyboard Event
+```js
+document.body.addEventListener('keypress', function(event) {
+	console.log(event);
+});
+// if the user pushes "a" anywhere on the body of the document
+// -> keypress { target: body, key: "a", charCode: 107, keyCode: 0 }
+```
+
+### Key Events
+When you interact with the keyboard, the keyboard events are fired. There are three main keyboard events:
+
+* `keydown` – fires when you press a key on the keyboard and it fires repeatedly while you holding down the key.
+* `keyup` – fires when you release a key on the keyboard.
+* `keypress` – fires when you press a character keyboard like a,b, or c, not the left arrow key, home, or end keyboard, … The keypress also fires repeatedly while you hold down the key on the keyboard.
+* `beforeinput` – fires when the value of an `<input>`, `<select>`, or `<textarea>` element is about to be modified.
+
+> Note: Look to use "beforeinput" or "keydown" instead of "keypress" since it has been deprecated.
+
+
 
 #### Helpful Resources:
 [Traversing the DOM](https://zellwk.com/blog/dom-traversals/)
