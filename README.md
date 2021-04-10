@@ -2799,7 +2799,7 @@ input           hits "enter"        get search results
 img             mouseover           display image caption
 ```
 
-#### addEventListener
+#### EventTarget.addEventListener()
 The __EventTarget__ method `addEventListener()` sets up a function that will be called whenever the specified event is delivered to the target. Common targets are __Element__, __Document__, and __Window__, but the target may be any object that supports events (such as __XMLHttpRequest__).
 
 __Syntax__:
@@ -2815,7 +2815,7 @@ __Example__:
 const button = document.querySelector('h1');
 
 button.addEventListener('click', () => {
-	alert('You clicked me!');
+  alert('You clicked me!');
 });
 ```
 
@@ -2827,7 +2827,7 @@ The Event Object is used if we need to access information about what was clicked
 __Example__: Keyboard Event
 ```js
 document.body.addEventListener('keypress', function(event) {
-	console.log(event);
+  console.log(event);
 });
 // if the user pushes "a" anywhere on the body of the document
 // -> keypress { target: body, key: "a", charCode: 107, keyCode: 0 }
