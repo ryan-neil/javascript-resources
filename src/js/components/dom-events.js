@@ -223,14 +223,15 @@ termsCheckbox.addEventListener("input", (e) => {
 // ** we need to add a "name" to each input in the html [name=""]
 
 const formData = {};
-// ** we need to add a "name" to each input in the html [name=""]
-// loop over the html names
 const inputs = [ creditCardInput, termsCheckbox, foodSelect ];
+
+// loop over the html names
 for (let input of inputs) {
 	input.addEventListener("input", (e) => {
 		formData[e.target.name] = e.target.value; // this is taking the "name" from the html document and the value of what the user inputs in
 	});
 }
+
 // we can destructure the above code like this:
 const formData = {};
 const inputs = [ creditCardInput, termsCheckbox, foodSelect ];

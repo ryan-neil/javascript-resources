@@ -2843,6 +2843,105 @@ When you interact with the keyboard, the keyboard events are fired. There are th
 
 > Note: Look to use "beforeinput" or "keydown" instead of "keypress" since it has been deprecated.
 
+### Form Events
+
+* preventDefault()
+
+This is used when we want to do something when a user submits and entire form. We have a special method called `preventDefault` which prevents the page from reloading when the user clicks the submit button.
+
+__Example__:
+```js
+const form = document.querySelector("#signup-form");
+
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+});
+```
+Instead of capturing each input as it changes each time, we could have a `keydown` or `keypress` event on the inputs and anytime it changes we can create a variable in our JS that is in sync with the change. This leaves us free to extract the data and do something with it, like sending it to an API.
+
+Also, anytime you select a different option we could immediately update the variable or create a new variable.
+
+By adding one event listener on the `submit` button we do not need to add event listeners on each of the inputs. The only event that runs is the event listener on `submit`.
+
+Doing something with the data:
+```js
+// to extract data we need to select the individual elements of the form
+const creditCardInput = document.querySelector("#cc");
+const termsCheckbox = document.querySelector("#terms");
+const foodSelect = document.querySelector("#food");
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  // We can then save the values to variables
+  const creditCardValue = creditCardInput.value;
+  const termsCheckboxValue = termsCheckbox.checked;
+  const foodSelectValue = foodSelect.value;
+});
+```
+
+### Input Event
+
+__Example__:
+```js
+const creditCardInput = document.querySelector("#cc");
+const termsCheckbox = document.querySelector("#terms");
+const foodSelect = document.querySelector("#food");
+
+const formData = {};
+
+creditCardInput.addEventListener("input", (e) => {
+  formData["creditCardInput"] = e.target.value;
+});
+
+foodSelect.addEventListener("input", (e) => {
+  formData["foodSelect"] = e.target.value;
+});
+
+termsCheckbox.addEventListener("input", (e) => {
+  formData["agreeToTerms"] = e.target.checked;
+});
+```
+Let's refactor the above code:
+> Note: We need to add a "name" to each input in the html document [name=""]
+
+```js
+const formData = {};
+const inputs = [ creditCardInput, termsCheckbox, foodSelect ];
+
+// loop over the html "names"
+for (let input of inputs) {
+  input.addEventListener("input", (e) => {
+    formData[e.target.name] = e.target.value; // this is taking the "name" from the html document and the value of what the user inputs in
+	});
+}
+```
+We can destructure the above code like this:
+```js
+const formData = {};
+const inputs = [ creditCardInput, termsCheckbox, foodSelect ];
+
+for (let input of inputs) {
+  input.addEventListener("input", ({ target }) => {
+    const { name, type, value, checked } = target;
+    // here we're checking if the input type is equal to checkbox. If it is, we store the "checked" value, if it isn't we store the "value" value.
+    formData[name] = type === "checkbox" ? checked : value;
+	});
+}
+```
+
+### Change Event
+The `change` event is very similar to the `input` event but the difference is text fields will not be updated until the field has lost `focus` (blurring) or `enter` is pressed
+
+__Example__:
+```js
+for (let input of inputs) {
+  // instead of "input" we use "change"
+  input.addEventListener("change", ({ target }) => {
+    const { name, type, value, checked } = target;
+    formData[name] = type === "checkbox" ? checked : value;
+	});
+}
+```
 
 
 #### Helpful Resources:
