@@ -21,9 +21,11 @@ A quick look at the files and directories you'll see in the repo.
       ├── components
         ├── arrays.js
         ├── arrow-functions.js
+        ├── asynchronous-callbacks.js
         ├── basics.js
         ├── callbacks.js
         ├── destructuring.js
+        ├── dom-events.js
         ├── dom.js
         ├── functions.js
         ├── json.js
@@ -92,6 +94,9 @@ A quick look at the files and directories you'll see in the repo.
 1. [The DOM](#the-document-object-model-dom)
     * [DOM Methods and Properties](#dom-methods-and-properties)
     * [DOM Events](#dom-events)
+1. [The Call Stack](#the-call-stack)
+1. [Asynchronous JavaScript](#asynchronous-javascript)
+    * [Asynchronous Callbacks](#asynchronous-callbacks)
 
   ----
 
@@ -2946,6 +2951,117 @@ for (let input of inputs) {
 
 #### Helpful Resources:
 [Traversing the DOM](https://zellwk.com/blog/dom-traversals/)
+
+**[⬆ Top](#table-of-contents)**
+
+----
+
+### The Call Stack
+The Call Stack is the mechanism the JavaScript interpreter uses to keep track of its place in a script that calls multiple functions.
+
+How JavaScript "knows" what function is currently being run and what functions are called from within that function, etc.
+
+__How it Works__:
+  1. When a script calls a function, the interpreter adds it to the call stack and then starts carrying out the function.
+
+  2. Any functions that are called by that function are added to the call stack further up, and run where their calls are reached.
+  
+  3. When the current function is finished, the interpreter takes it off the stack and resumes execution where it left off in the last code listing.
+
+__Example__:
+```js
+const multiply = (x, y) => x * y;
+
+const square = (x) => multiply(x, x);
+
+const isRightTriangle = (a, b, c) => {
+  return square(a) + square(b) === square(c);
+};
+
+isRightTriangle(3, 4, 5); // -> true (9 + 16 = 25)
+```
+In the above code, when the interpreter encounters the very first function call (`isRightTriangle(3, 4, 5)`) it gets added to the bottom of the call stack. But inside of `isRightTriangle` there are multiple function calls that need to happen first.
+
+The first is `square(a)`, which is 3 in our case. So `square(3)` is the next thing to be added to the call stack. But `square(3)` does not return anything either. It calls another function, `multiply(3, 3)`.
+
+The last thing to be added to the call stack is `multiply(3, 3)`.
+
+So what is happening is, `isRightTriangle` has not finished running...`square(3)` has not finished running and then `multiply(3, 3)` does not call any other functions so it returns 3 * 3 (`9`). When it returns a value it is removed from the stack. The last thing in is the first thing out.
+
+Next, `square(3)` now has a value back from `multiply(3, 3)` which is `9`. So it can return that value and be removed from the stack.
+
+Last, `isRightTriangle` returns with its new value of `9`.
+```js
+const isRightTriangle = (a, b, c) => {
+  return 9 + square(4) === square(5);
+};
+
+isRightTriangle(3, 4, 5);
+```
+Once all of this is complete it moves on to `square(b)` and repeats the same exact process as with `square(a)`. So then we get:
+```js
+const isRightTriangle = (a, b, c) => {
+  return 9 + 16 === square(5);
+};
+
+isRightTriangle(3, 4, 5);
+```
+The process is repeated one last time for `square(c)` and we get:
+```js
+const isRightTriangle = (a, b, c) => {
+  return 9 + 16 === 25;
+};
+
+isRightTriangle(3, 4, 5);
+```
+`isRightTriangle(3, 4, 5)` finally finishes running and returns `true` because 9 + 16 = 25 and `25 === 25`. `isRightTriangle(3, 4, 5)` is then removed from the call stack and we are finished.
+
+**[⬆ Top](#table-of-contents)**
+
+----
+
+### Asynchronous JavaScript
+JavaScript, fundamentally, is a [single-threaded](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Concepts) language. At any given point in time, that single JavaScript thread is running at most one line of JavaScript code.
+
+__How Asynchronous Callbacks Actually Work__:
+
+What happens when something takes a long time? Like, for example, a database call or API call:
+```js
+// get user input
+const newTodo = input.value;
+// this could take a while...
+saveToDatabase(newTodo);
+// reset form
+input.value = '';
+```
+
+For processes that take a long time (relatively) we pass a __callback__ function. Those functions will be executed at the appropriate time after the interval (set time) has passed.
+
+```js
+console.log("I happen first.");
+
+setTimeout( () => {
+  console.log("I happen third.");
+}, 3000);
+
+console.log("I happen second.");
+```
+
+In the code above, `setTimeout` will wait 3 seconds before running.
+
+But how does this actually happen if JavaScript is single-threaded and can only execute one thing at a time?
+
+The work-around for this is that the browser does the work. In the example above, JavaScript passes off the `setTimeout` function to the browser to run. The main takeaway here is that JavaScript is not setting a timer or keeping track of how many seconds have gone by, JavaScript is not sending a request to an API, the browser is handling these actions.
+
+__Okay, but how?__:
+* Browsers come with [Web APIs](https://developer.mozilla.org/en-US/docs/Web/API) that are able to handle certain tasks in the background (like making requests or `setTimeout`).
+
+* The JavaScript call stack recognizes these Web API functions and passes them off to the browser to take care of.
+
+* Once the browser finishes those tasks, they return and are pushed onto the stack as a __callback__.
+
+### Asynchronous Callbacks
+
 
 **[⬆ Top](#table-of-contents)**
 
