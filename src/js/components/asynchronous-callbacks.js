@@ -48,3 +48,122 @@ moveX(btn, 100, 1000, () => {
 		moveX(btn, 300, 1000);
 	});
 });
+
+// let's re-write our function to check if the element is going to go off screen
+const btn = document.querySelector("button");
+
+const moveX = (element, amount, delay, callback) => {
+	// we want to get the width of the screen
+	const bodyBoundary = document.body.clientWidth;
+	const elRight = element.getBoundingClientRect().right;
+	const currLeft = element.getBoundingClientRect().left;
+
+	// now to check if the element is going to go off the screen
+	if (elRight + amount > bodyBoundary) {
+		console.log("Done!");
+	} else {
+		setTimeout(() => {
+			// this makes it so we don't have to hard code in the pixel amount to move each time. This is done by calculating the current position on the screen [currLeft] and adding 100px to it
+			element.style.transform = `translateX(${currLeft + amount}px)`;
+			if (callback) callback();
+		}, delay);
+	}
+};
+
+moveX(btn, 100, 1000, () => {
+	moveX(btn, 100, 1000, () => {
+		moveX(btn, 100, 1000);
+	});
+});
+
+/**
+====================================
+Success and Failure Callbacks:
+*/
+
+// How we would structure this (and how a lot of older javascript libraries are written) we would have 2 callbacks we pass in:
+request(successCallback, failCallback);
+
+// now we wouldn't write it like this above...they would be structured like functions:
+request(
+	() => {
+		doSomething;
+	},
+	() => {
+		doSomethingElse;
+	}
+);
+
+/** In the example below:
+	* [Success] Here's what I want you to do IF we CAN keep moving.
+	* [Failure] Here's what I want you to do IF we CAN'T move anymore.
+*/
+
+const btn = document.querySelector("button");
+
+// add "onSuccess" and "onFailure" callbacks to moveX
+const moveX = (element, amount, delay, onSuccess, onFailure) => {
+	// we re-write to put the conditional in the "setTimeout" function
+	setTimeout(() => {
+		const bodyBoundary = document.body.clientWidth;
+		const elRight = element.getBoundingClientRect().right;
+		const currLeft = element.getBoundingClientRect().left;
+
+		if (elRight + amount > bodyBoundary) {
+			// add "onFailure" function here
+			onFailure();
+		} else {
+			element.style.transform = `translateX(${currLeft + amount}px)`;
+			// add "onSuccess" function here
+			onSuccess();
+		}
+	}, delay);
+};
+
+/*
+// now we need to re-write this chunk to have 2 callbacks every time:
+
+moveX(btn, 100, 1000, () => {
+	moveX(btn, 100, 1000, () => {
+		moveX(btn, 100, 1000);
+	});
+});
+*/
+
+moveX(
+	btn,
+	100,
+	1000,
+	() => {
+		// 1st success callback. we add another "moveX"
+		moveX(
+			btn,
+			400,
+			1000,
+			() => {
+				// 2nd success callback. we add another "moveX"
+				moveX(
+					btn,
+					700,
+					1000,
+					() => {
+						// success message
+						console.log("Whoa, we still have more screen?");
+					},
+					() => {
+						// 3rd fail callback
+						alert("Cannot move anymore!");
+					}
+				);
+			},
+			() => {
+				// 2nd fail callback
+				alert("Cannot move anymore!");
+			}
+		);
+	},
+	() => {
+		// 1st fail callback
+		alert("Cannot move anymore!");
+	}
+);
