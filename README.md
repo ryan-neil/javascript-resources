@@ -97,6 +97,7 @@ A quick look at the files and directories you'll see in the repo.
 1. [The Call Stack](#the-call-stack)
 1. [Asynchronous JavaScript](#asynchronous-javascript)
     * [Asynchronous Callbacks](#asynchronous-callbacks)
+1. [Promises](#promises)
 
   ----
 
@@ -3061,7 +3062,167 @@ __Okay, but how?__:
 * Once the browser finishes those tasks, they return and are pushed onto the stack as a __callback__.
 
 ### Asynchronous Callbacks
-// Coming soon
+Async callbacks are functions that are specified as arguments when calling a function which will start executing code in the background. When the background code finishes running, it calls the callback function to let you know the work is done, or to let you know that something of interest has happened.
+
+__Example__:
+```js
+const btn = document.querySelector("button");
+
+setTimeout(() => {
+  btn.style.transform = `translateX(100px)`;
+  // if we want to make the button move another 200px after 2 seconds we nest another "setTimeout" function
+  setTimeout(() => {
+    btn.style.transform = `translateX(200px)`;
+    // if we want to keep making the button move we just have to keep on nesting "setTimeout" functions
+    setTimeout(() => {
+      btn.style.transform = `translateX(300px)`;
+		}, 1000);
+  }, 1000);
+}, 1000);
+```
+
+Let's make the above code a function:
+```js
+const moveX = (element, amount, delay) => {
+  setTimeout(() => {
+    element.style.transform = `translateX(${amount}px)`;
+  }, delay);
+};
+moveX(btn, 600, 1000);
+```
+
+if we want to then replicate this before and have something happen after the delay we add another `setTimeout` function.
+
+In order to do this we need our `moveX` function to accept a `callback`:
+```js
+const moveX = (element, amount, delay, callback) => {
+  setTimeout(() => {
+    element.style.transform = `translateX(${amount}px)`;
+    // second, we need to execute the "callback" function inside the setTimeout
+    if (callback) callback();
+  }, delay);
+};
+// last, we need to pass in a callback [the arrow function in this case]
+moveX(btn, 100, 1000, () => {
+  // we could chain another callback...
+  moveX(btn, 200, 1000, () => {
+    // and another...
+    moveX(btn, 300, 1000);
+  });
+});
+```
+
+Now, let's re-write our `moveX` function to check if the element is going to go off screen:
+```js
+const btn = document.querySelector("button");
+
+const moveX = (element, amount, delay, callback) => {
+  // we want to get the width of the screen
+  const bodyBoundary = document.body.clientWidth;
+  const elRight = element.getBoundingClientRect().right;
+  const currLeft = element.getBoundingClientRect().left;
+
+  // now to check if the element is going to go off the screen
+  if (elRight + amount > bodyBoundary) {
+		console.log("Done!");
+  } else {
+    setTimeout(() => {
+      // this makes it so we don't have to hard code in the pixel amount to move each time. This is done by calculating the current position on the screen [currLeft] and adding 100px to it
+      element.style.transform = `translateX(${currLeft + amount}px)`;
+      if (callback) callback();
+    }, delay);
+  }
+};
+
+moveX(btn, 100, 1000, () => {
+  moveX(btn, 100, 1000, () => {
+    moveX(btn, 100, 1000);
+  });
+});
+```
+
+### Success and Failure Callbacks
+How we would structure this (and how a lot of older javascript libraries are written) we would have 2 callbacks we pass in:
+```js
+request(successCallback, failCallback);
+```
+Now, we wouldn't write it like this above...they would be structured like functions:
+```js
+request(() => { doSomething },() => { doSomethingElse });
+```
+
+__Example__:
+
+In the example below:
+* [Success] Here's what I want you to do IF we CAN keep moving.
+* [Failure] Here's what I want you to do IF we CAN'T move anymore.
+
+```js
+const btn = document.querySelector("button");
+
+// add "onSuccess" and "onFailure" callbacks to moveX
+const moveX = (element, amount, delay, onSuccess, onFailure) => {
+  // we re-write to put the conditional in the "setTimeout" function
+  setTimeout(() => {
+    const bodyBoundary = document.body.clientWidth;
+    const elRight = element.getBoundingClientRect().right;
+    const currLeft = element.getBoundingClientRect().left;
+
+    if (elRight + amount > bodyBoundary) {
+      // add "onFailure" function here
+      onFailure();
+        else {
+      element.style.transform = `translateX(${currLeft + amount}px)`;
+      // add "onSuccess" function here
+      onSuccess();
+    }
+  }, delay);
+};
+
+moveX(btn, 100, 1000, () => {
+  moveX(btn, 100, 1000, () => {
+    moveX(btn, 100, 1000);
+  });
+});
+```
+Now, we need to re-write this chunk from above:
+```js
+moveX(btn, 100, 1000, () => {
+  moveX(btn, 100, 1000, () => {
+    moveX(btn, 100, 1000);
+  });
+});
+```
+to have 2 callbacks every time:
+
+```js
+moveX(btn, 100, 1000, () => {
+  // 1st success callback. we add another "moveX"
+  moveX(btn, 400, 1000, () => {
+    // 2nd success callback. we add another "moveX"
+    moveX(btn, 700, 1000, () => {
+      // 3rd success message
+      console.log("Whoa, we still have more screen?");
+    }, () => {
+      // 3rd fail callback
+      alert("Cannot move anymore!");
+    });
+  }, () => {
+    // 2nd fail callback
+    alert("Cannot move anymore!");
+  });
+}, () => {
+  // 1st fail callback
+  alert("Cannot move anymore!");
+});
+```
+
+**[⬆ Top](#table-of-contents)**
+
+----
+
+### Promises
+
 
 **[⬆ Top](#table-of-contents)**
 
