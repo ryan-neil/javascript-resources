@@ -167,3 +167,61 @@ moveX(
 		alert("Cannot move anymore!");
 	}
 );
+
+// ** Re-factoring with Promises
+
+const btn = document.querySelector("button");
+
+// moveX no longer accepts an onSuccess and onFailure as callbacks
+const moveX = (element, amount, delay) => {
+	// we must return a new promise here
+	return new Promise((resolve, reject) => {
+		setTimeout(() => {
+			const bodyBoundary = document.body.clientWidth;
+			const elRight = element.getBoundingClientRect().right;
+			const currLeft = element.getBoundingClientRect().left;
+
+			if (elRight + amount > bodyBoundary) {
+				// instead of calling onFailure() here, we just reject the promise (if we cant move)
+				reject();
+			} else {
+				element.style.transform = `translateX(${currLeft + amount}px)`;
+				resolve();
+			}
+		}, delay);
+	});
+};
+
+// 1st Promise call
+moveX(btn, 200, 1000)
+	.then(() => {
+		// instead of typing .then again we can chain a 2nd Promise by just returning it
+		return moveX(btn, 200, 1000);
+	})
+	.then(() => {
+		// 3rd Promise call
+		return moveX(btn, 200, 1000);
+	})
+	.then(() => {
+		// 4rd Promise call
+		console.log("All finished moving!");
+	})
+	// we only need one .catch with this method
+	.catch(() => {
+		console.log("Oops you've gone too far!");
+	});
+
+// ** we can shorten the above code even more:
+// 	* with arrow functions if we are returning something and it's the only expression we can use an implicit return
+
+moveX(btn, 200, 1000)
+	// if there's only one expression we can remove the return keyword
+	.then(() => moveX(btn, 200, 1000))
+	.then(() => moveX(btn, 200, 1000))
+	.then(() => moveX(btn, 200, 1000))
+	.then(() => console.log("All finished moving!"))
+	// here we can destructure what we passed into our reject() call
+	.catch(({ bodyBoundary, elRight, amount }) => {
+		console.log(`Body is ${bodyBoundary}px wide`);
+		console.log(`Element is at ${elRight}px, ${amount}px is too large!`);
+	});

@@ -7,13 +7,12 @@ The goal of this document is to provide a quick reference guide for the main fea
 This guide is not intended to teach you the fundamentals of the JavaScript programming language but merely a reference guide to come back to for a quick refresher.
 
 ###### If you found this guide helpful give me a follow and let me know! 🤙🏻
-[![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/josephskycrest.svg?style=social&label=Follow%20%40josephskycrest)](https://twitter.com/josephskycrest)
+[![Twitter Badge](https://img.shields.io/badge/-Twitter-00acee?style=flat-square&logo=Twitter&logoColor=white)](https://twitter.com/home?lang=en)
 
 ## 🧐 What's inside?
 A quick look at the files and directories you'll see in the repo.
 
 ```bash
-  .
   ├── src
     ├── assets
       ├── repo image files
@@ -31,18 +30,18 @@ A quick look at the files and directories you'll see in the repo.
         ├── json.js
         ├── loops.js
         ├── objects.js
+        ├── promises.js
+        ├── requests.js
         ├── rest.js
         ├── spread.js
         └── this.js
-      ├── console-testing
       └── projects
 ```
 
 1. **`/src`**: This directory contains all of the source files for the Github repo.
     1. **`/assets`**: This directory contains images for the repo.
     1. **`/js`**: This directory contains all JavaScript component files.
-        1. **`/components`**: This directory contains all the javascript repo files for the important features of JavaScript. Each file contains simple explanations along with example code for the features.
-        1. **`/console-testing`**: This directory contains a starting project boilerplate for testing JavaScript code.
+        1. **`/components`**: This directory contains all the javascript repo files for important features of the JavaScript programming language. Each file contains simple explanations along with example code for the features.
         1. **`/projects`**: This directory contains some example JavaScript projects for reference.
 
 ## 🔗 JavaScript Resources
@@ -59,13 +58,9 @@ A quick look at the files and directories you'll see in the repo.
 #### Misc Resources:
 - [Big-O Cheatsheet](https://www.bigocheatsheet.com/)
 - [Free for Dev](https://free-for.dev/#/)
-- [LitElement - Web Components](https://lit-element.polymer-project.org/)
-- [Shoelace - Web Components](https://shoelace.style/)
 - [Fake API for testing and prototyping (JSON Placeholder)](https://jsonplaceholder.typicode.com/)
 - [CSS -> JavaScript](https://css2js.dotenv.dev/)
 - [Data Visualization - GoodData.UI](https://sdk.gooddata.com/gooddata-ui/)
-- [GitHub Markdown Styling](https://guides.github.com/features/mastering-markdown/)
-- [Screen to GIF](https://www.screentogif.com/)
 
 ## 📓 Notes
 ### Table of Contents
@@ -97,7 +92,8 @@ A quick look at the files and directories you'll see in the repo.
 1. [The Call Stack](#the-call-stack)
 1. [Asynchronous JavaScript](#asynchronous-javascript)
     * [Asynchronous Callbacks](#asynchronous-callbacks)
-1. [Promises](#promises)
+    * [Promises](#promises)
+    * [Requests](#requests)
 
   ----
 
@@ -3217,12 +3213,389 @@ moveX(btn, 100, 1000, () => {
 });
 ```
 
+Refactoring the above example using __Promises__:
+```js
+const btn = document.querySelector("button");
+
+// moveX no longer accepts an onSuccess and onFailure as callbacks
+const moveX = (element, amount, delay) => {
+  // we must return a new promise here
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const bodyBoundary = document.body.clientWidth;
+      const elRight = element.getBoundingClientRect().right;
+      const currLeft = element.getBoundingClientRect().left;
+
+      if (elRight + amount > bodyBoundary) {
+        // instead of calling onFailure() here, we just reject the promise (if we can continue to move)
+        reject();
+      } else {
+        element.style.transform = `translateX(${currLeft + amount}px)`;
+        resolve();
+      }
+    }, delay);
+  });
+};
+
+// 1st Promise call
+moveX(btn, 200, 1000)
+  .then(() => {
+    // instead of typing .then again we can chain a 2nd Promise by just returning it
+    return moveX(btn, 200, 1000);
+  })
+  .then(() => {
+    // 3rd Promise call
+    return moveX(btn, 200, 1000);
+  })
+  .then(() => {
+    // 4th Promise call
+    return moveX(btn, 200, 1000);
+  })
+  .then(() => {
+    // 5th Promise call
+    console.log("All finished moving!");
+  })
+  // we only need one .catch with this method
+  .catch(() => {
+    console.log("Oops you've gone too far!");
+  });
+```
+
+We can shorten the above code even more:
+
+> Note: with arrow functions if we are returning something and it's the only expression we can use an implicit return
+
+```js
+moveX(btn, 200, 1000)
+  // if there's only one expression we can remove the return keyword
+  .then(() => moveX(btn, 200, 1000))
+  .then(() => moveX(btn, 200, 1000))
+  .then(() => moveX(btn, 200, 1000))
+  .then(() => console.log("All finished moving!"))
+  // here we can destructure what we passed into our reject() call above
+  .catch(({ bodyBoundary, elRight, amount }) => {
+    console.log(`Body is ${bodyBoundary}px wide`);
+    console.log(`Element is at ${elRight}px, ${amount}px is too large!`);
+  });
+```
+
 **[⬆ Top](#table-of-contents)**
 
 ----
 
 ### Promises
+  * [How to Write JavaScript Promises](https://www.freecodecamp.org/news/how-to-write-a-javascript-promise-4ed8d44292b8/)
+  * [How to Resolve or Reject Promises in JS](https://www.freecodecamp.org/news/javascript-promise-tutorial-how-to-resolve-or-reject-promises-in-js/)
 
+A Promise is an object representing the eventual completion or failure of an asynchronous operation.
+
+A Promise is always in one of these states:
+  * _pending_: initial state, neither fulfilled nor rejected.
+  * _fulfilled_: meaning that the operation was completed successfully.
+  * _rejected_: meaning that the operation failed.
+
+__Syntax__:
+```js
+let promise = new Promise(function(resolve, reject) {
+  // Code to execute
+});
+```
+The 2 main ideas we need to understand about Promises are:
+  1. How we can create a Promise and how we can create a function that returns a promise.
+  2. How we consume or interact with Promises.
+
+__Example 1__: Create a Promise 
+
+The example below creates a Promise that is randomly resolved or rejected.
+
+```js
+const willGetADog = new Promise((resolve, reject) => {
+  const rand = Math.random();
+  if (rand < 0.5) {
+    resolve();
+  } else {
+    reject();
+  }
+});
+```
+
+__Example 2__: Interacting with a Promise 
+
+In the example below we see how we handle the Promise if it is resolved or rejected. We use `.then()` if our Promise is resolved and `.catch()` if our Promise is rejected.
+
+```js
+const willGetADog = new Promise((resolve, reject) => {
+  const rand = Math.random();
+  if (rand < 0.5) {
+    resolve();
+  } else {
+    reject();
+  }
+});
+
+// The ".then" method will run if our Promise is resolved
+willGetADog.then(() => {
+  console.log("Yay we got a dog!!!");
+});
+
+// The ".catch" method will run if our Promise is rejected
+willGetADog.catch(() => {
+  console.log("Aww we didn't get a dog.");
+});
+```
+
+### Returning Promises with Functions
+
+__Example__:
+```js
+// create the function and add the Promise inside
+const makeDogPromise = () => {
+  // we must return the Promise
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const rand = Math.random();
+      if (rand < 0.5) {
+        resolve();
+      } else {
+        reject();
+      }
+    }, 5000);
+  });
+};
+makeDogPromise()
+  .then(() => {
+    console.log("Yay we got a dog!!!");
+  })
+  // we can also just chain the .catch onto the .then
+  .catch(() => {
+    console.log("Aww we didn't get a dog.");
+  });
+```
+
+### Resolving/Rejecting with Values
+We're able to resolve and reject a Promise with a value. We can pass information in to the reject() or resolve() functions.
+
+__Example 1__:
+```js
+const fakeRequest = (url) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const rand = Math.random();
+      if (rand < 0.3) {
+        // pass in status information to reject()
+        reject({ status: 404 });
+      } else {
+        resolve();
+      }
+    }, 3000);
+  });
+};
+fakeRequest()
+  .then(() => {
+    console.log("Request worked!");
+  })
+  // we add a "response" parameter to .catch
+  .catch((response) => {
+    // log the "status" from the object we passed to reject() in fakeRequest above
+    console.log(response.status);
+    console.log("Request failed!");
+  });
+```
+
+__Example 2__: Passing in a URL to fakeRequest() function
+```js
+const fakeRequest = (url) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      // add a pages object with user information
+      const pages = {
+        users    : [
+          { id: 1, username: "Bilbo" },
+          { id: 5, username: "Katie" }
+        ],
+        "/about" : "This is the about page!"
+      };
+      // assign the data variable to the pages url array
+      const data = pages[url];
+      // check to see if the url was in pages
+      if (data) {
+        // resolve with a status code of "200", also include the data
+        resolve({ status: 200, data: data });
+      } else {
+        reject({ status: 404 });
+      }
+    }, 1000);
+  });
+};
+
+fakeRequest("/about")
+  .then((response) => {
+    console.log("Status Code: ", response.status);
+    console.log("Data: ", response.data);
+    console.log("Request worked!");
+  })
+  .catch((response) => {
+    console.log(response.status);
+    console.log("Request failed!");
+  });
+// -> Status Code: 200
+// -> Data:  This is the about page!
+// -> Request worked!
+
+fakeRequest("/contact")
+  .then((response) => {
+    console.log("Status Code: ", response.status);
+    console.log("Data: ", response.data);
+    console.log("Request worked!");
+  })
+  .catch((response) => {
+    console.log(response.status);
+    console.log("Request failed!");
+  });
+// -> 404
+// -> Request failed!
+```
+
+### Chaining Multiple Promises
+  * [Javascript Info - Promises chaining](https://javascript.info/promise-chaining)
+
+Promise Chaining is a simple concept by which we may initialize another promise inside our `.then()` method and accordingly we may execute our results.
+
+__Syntax__:
+```js
+new Promise(function(resolve, reject) {
+  // initial Promise
+  setTimeout(() => {
+    resolve(1);
+  }, 1000);
+})
+  // 1st .then handler
+  .then(function(result) {
+    console.log(result); // -> 1
+    return result * 2;
+  })
+  // 2nd .then handler
+  .then(function(result) {
+    console.log(result); // -> 2
+    return result * 2;
+  })
+  // 3rd .then handler
+  .then(function(result) {
+    console.log(result); // -> 4
+    return result * 2;
+  })
+  .catch(() => {
+    console.log("Failure");
+  });
+```
+The idea here is that the result is passed through the chain of `.then` handlers.
+
+The flow looks something like this:
+  1. The _initial_ Promise resolves in 1 second,
+  2. Then the _1st_ `.then` handler is called.
+  3. The value that it returns is passed to the _2nd_ `.then` handler
+  4. ...and so on and so forth.
+
+This whole thing works because a call to `promise.then` returns a promise, so that we can call the next `.then` on it.
+
+When a handler returns a value, it becomes the result of that promise, so the next `.then` is called with it.
+
+This method also allows use to only need one `.catch`.
+
+__Example__: Fake Http Request Function
+```js
+const fakeRequest = (url) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const pages = {
+        "/users" : [
+          { id: 1, username: "Bilbo" },
+          { id: 5, username: "Esmerelda" }
+        ],
+        "/users/1" : {
+          id        : 1,
+          username  : "Bilbo",
+          upvotes   : 360,
+          city      : "Lisbon",
+          topPostId : 454321
+        },
+        "/users/5" : {
+          id       : 5,
+          username : "Esmerelda",
+          upvotes  : 571,
+          city     : "Honolulu"
+        },
+        "/posts/454321" : {
+          id       : 454321,
+          title    : "Ladies & Gentlemen, may I introduce my pet pig, Hamlet"
+        },
+        "/about"   : "This is the about page!"
+      };
+
+      const data = pages[url];
+      if (data) {
+        resolve({ status: 200, data }); // resolve with a value!
+      } else {
+        reject({ status: 404 }); // reject with a value!
+      }
+    }, 1000);
+  });
+};
+
+// 1st request getting all users which gave us an ID we could use.
+fakeRequest("/users")
+  .then((resolve) => {
+    console.log(resolve); // -> /users info
+    const id = resolve.data[0].id;
+    // 2nd request dependent on the data we got back from the 1st request using the ID we got from the 1st request.
+    fakeRequest(`/users/${id}`).then((resolve) => {
+      console.log(resolve); // -> /users/1 info
+      const topPost = resolve.data.topPostId;
+      // 3rd request with the new topPostId data we got back from the 2nd request.
+      fakeRequest(`/posts/${topPost}`).then((resolve) => {
+        console.log(resolve); // -> /posts/454321 info
+      });
+    });
+  })
+  // this catch error only works for fakeRequest("/users")
+  .catch((error) => {
+		console.log("Error!!!", error);
+  });
+```
+We can refactor the above code:
+
+> Note: if we call a `.then()` and return a promise, we can call `.then` again immediately on the same level. We don't have to nest, we can just continue to chain them on.
+
+```js
+// Promise 1
+fakeRequest("/users")
+  // this only runs if fakeRequest("/users") is resolved...
+  .then((resolve) => {
+    const id = resolve.data[0].id;
+    // Promise 2
+    return fakeRequest(`/users/${id}`);
+	})
+	// this only runs if fakeRequest(`/users/${id}`) is resolved...
+	.then((resolve) => {
+    const topPost = resolve.data.topPostId;
+    // Promise 3
+    return fakeRequest(`/posts/${topPost}`);
+	})
+	// this only runs if fakeRequest(`/posts/${topPost}`) is resolved...
+	.then((resolve) => {
+    console.log(resolve);
+	})
+	// with this method we only need one .catch()
+	.catch((error) => {
+    console.log("Error!!!", error);
+	});
+```
+
+**[⬆ Top](#table-of-contents)**
+
+----
+
+### Requests
 
 **[⬆ Top](#table-of-contents)**
 

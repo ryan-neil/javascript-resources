@@ -173,7 +173,8 @@ fakeRequest("/contact")
 
 /**
 ====================================
-Chaining Multiple Promises:
+Chaining  Multiple Promises:
+	* 
 */
 
 // Example 1: Fake Http Request Function
@@ -205,30 +206,60 @@ const fakeRequest = (url) => {
 				},
 				"/about"        : "This is the about page!"
 			};
+
 			const data = pages[url];
 			if (data) {
-				resolve({ status: 200, data }); //resolve with a value!
+				resolve({ status: 200, data }); // resolve with a value!
 			} else {
-				reject({ status: 404 }); //reject with a value!
+				reject({ status: 404 }); // reject with a value!
 			}
 		}, 1000);
 	});
 };
 
+// 1st request getting all users which gave us an ID we could use.
 fakeRequest("/users")
-	.then((res) => {
-		console.log(res);
-		const id = res.data[0].id;
+	.then((resolve) => {
+		console.log(resolve); // -> /users info
+		const id = resolve.data[0].id;
+		// 2nd request dependent on the data we got back from the 1st request using the ID we got from the 1st request.
+		fakeRequest(`/users/${id}`).then((resolve) => {
+			console.log(resolve); // -> /users/1 info
+			const topPost = resolve.data.topPostId;
+			// 3rd request with the new topPostId data we got back from the 2nd request.
+			fakeRequest(`/posts/${topPost}`).then((resolve) => {
+				console.log(resolve); // -> /posts/454321 info
+			});
+		});
+	})
+	// this catch error only works for fakeRequest("/users")
+	.catch((error) => {
+		console.log("Error!!!", error);
+	});
+
+// ** refactoring the above code:
+
+// ** if we call a .then() and return a promise, we can call .then again immediately on the same level. We don't have to nest, we can just continue to chain them on. We also only need one .catch with this method.
+
+// Promise 1
+fakeRequest("/users")
+	// this only runs if fakeRequest("/users") is resolved...
+	.then((resolve) => {
+		const id = resolve.data[0].id;
+		// Promise 2
 		return fakeRequest(`/users/${id}`);
 	})
-	.then((res) => {
-		console.log(res);
-		const postId = res.data.topPostId;
-		return fakeRequest(`/posts/${postId}`);
+	// this only runs if fakeRequest(`/users/${id}`) is resolved...
+	.then((resolve) => {
+		const topPost = resolve.data.topPostId;
+		// Promise 3
+		return fakeRequest(`/posts/${topPost}`);
 	})
-	.then((res) => {
-		console.log(res);
+	// this only runs if fakeRequest(`/posts/${topPost}`) is resolved...
+	.then((resolve) => {
+		console.log(resolve);
 	})
-	.catch((err) => {
-		console.log("OH NO!", err);
+	// with this method we only need one .catch()
+	.catch((error) => {
+		console.log("Error!!!", error);
 	});
