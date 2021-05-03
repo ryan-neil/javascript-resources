@@ -46,6 +46,7 @@ A quick look at the files and directories you'll see in the repo.
 
 ## 🔗 JavaScript Resources
 - [JavaScript MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+- [JavaScript.info](https://javascript.info/)
 - [Dev Docs](https://devdocs.io/javascript/)
 - [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript)
 - [Code Academy JavaScript Cheatsheet](https://www.codecademy.com/learn/introduction-to-javascript/modules/learn-javascript-introduction/cheatsheet)
@@ -3373,7 +3374,7 @@ makeDogPromise()
 ```
 
 ### Resolving/Rejecting with Values
-We're able to resolve and reject a Promise with a value. We can pass information in to the reject() or resolve() functions.
+We're able to resolve and reject a Promise with a value. We can pass information in to the `reject()` or `resolve()` functions.
 
 __Example 1__:
 ```js
@@ -3397,12 +3398,12 @@ fakeRequest()
   // we add a "response" parameter to .catch
   .catch((response) => {
     // log the "status" from the object we passed to reject() in fakeRequest above
-    console.log(response.status);
-    console.log("Request failed!");
+    console.log(response.status); // -> 404
+    console.log("Request failed!"); // -> Request failed!
   });
 ```
 
-__Example 2__: Passing in a URL to fakeRequest() function
+__Example 2__: Passing in a URL to `fakeRequest()` function
 ```js
 const fakeRequest = (url) => {
   return new Promise((resolve, reject) => {
@@ -3463,25 +3464,25 @@ Promise Chaining is a simple concept by which we may initialize another promise 
 
 __Syntax__:
 ```js
-new Promise(function(resolve, reject) {
+new Promise((resolve, reject) => {
   // initial Promise
   setTimeout(() => {
     resolve(1);
   }, 1000);
 })
   // 1st .then handler
-  .then(function(result) {
-    console.log(result); // -> 1
+  .then((result) => {
+    console.log(result); // -> 1 (1*1)
     return result * 2;
   })
   // 2nd .then handler
-  .then(function(result) {
-    console.log(result); // -> 2
+  .then((result) => {
+    console.log(result); // -> 2 (1*2)
     return result * 2;
   })
   // 3rd .then handler
-  .then(function(result) {
-    console.log(result); // -> 4
+  .then((result) => {
+    console.log(result); // -> 4 (2*2)
     return result * 2;
   })
   .catch(() => {
@@ -3491,9 +3492,9 @@ new Promise(function(resolve, reject) {
 The idea here is that the result is passed through the chain of `.then` handlers.
 
 The flow looks something like this:
-  1. The _initial_ Promise resolves in 1 second,
-  2. Then the _1st_ `.then` handler is called.
-  3. The value that it returns is passed to the _2nd_ `.then` handler
+  1. The __initial__ Promise resolves in 1 second,
+  2. Then the __1st__ `.then` handler is called.
+  3. The value that it returns is passed to the __2nd__ `.then` handler
   4. ...and so on and so forth.
 
 This whole thing works because a call to `promise.then` returns a promise, so that we can call the next `.then` on it.
@@ -3557,9 +3558,9 @@ fakeRequest("/users")
       });
     });
   })
-  // this catch error only works for fakeRequest("/users")
+  // ** this catch error only works for fakeRequest("/users")
   .catch((error) => {
-		console.log("Error!!!", error);
+	  console.log("Error!!!", error);
   });
 ```
 We can refactor the above code:
@@ -3574,21 +3575,21 @@ fakeRequest("/users")
     const id = resolve.data[0].id;
     // Promise 2
     return fakeRequest(`/users/${id}`);
-	})
-	// this only runs if fakeRequest(`/users/${id}`) is resolved...
-	.then((resolve) => {
+  })
+  // this only runs if fakeRequest(`/users/${id}`) is resolved...
+  .then((resolve) => {
     const topPost = resolve.data.topPostId;
     // Promise 3
     return fakeRequest(`/posts/${topPost}`);
-	})
-	// this only runs if fakeRequest(`/posts/${topPost}`) is resolved...
-	.then((resolve) => {
+  })
+  // this only runs if fakeRequest(`/posts/${topPost}`) is resolved...
+  .then((resolve) => {
     console.log(resolve);
-	})
-	// with this method we only need one .catch()
-	.catch((error) => {
+  })
+  // with this method we only need one .catch()
+  .catch((error) => {
     console.log("Error!!!", error);
-	});
+  });
 ```
 
 **[⬆ Top](#table-of-contents)**
@@ -3596,6 +3597,91 @@ fakeRequest("/users")
 ----
 
 ### Requests
+Requests are used to send or receive data from a server side resource. Some ways we can achieve this are:
+  * [XMLHttp](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest) - Old school method
+  * [Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch) - Modern new school method
+  * [Axios](https://github.com/axios/axios) - Popular library for making requests
+
+#### AJAX or AJAJ
+  * Asynchronous
+  * JavaScript
+  * And
+  * XML / JSON
+    * XML and JSON are both ways of formatting data. This way we can send the data from one server to another server or a server to a browser.
+
+### XML (Extensible Markup Language)
+XML Looks very similar to html except the element names are very different. They're not actual elements. It's a way of grouping content and adding meaning to the data.
+
+XML documents must contain one `root` element that is the `parent` of all other elements:
+
+__Syntax__:
+```xml
+<root>
+  <child>
+    <subchild>...</subchild>
+  </child>
+</root> 
+```
+In this example `<note>` is the root element:
+
+__Example__:
+```xml
+<!-- This is a comment -->
+<?xml version="1.0" encoding="UTF-8"?>
+<note>
+  <to>Katie</to>
+  <from>Ryan</from>
+  <heading>Reminder</heading>
+  <body>Don't forget me this weekend!</body>
+</note> 
+```
+
+### JSON (Javascript Object Notation)
+JSON is a lightweight format for storing and transporting (exchanging) data. It is often used when data is sent from a server to a web page. 
+
+The JSON format is syntactically identical to the code for creating JavaScript objects. Because of this similarity, a JavaScript program can easily convert JSON data into native JavaScript objects.
+
+> The JSON syntax is derived from JavaScript object notation syntax, but the JSON format is text only. Code for reading and generating JSON data can be written in any programming language.
+
+__JSON Syntax Rules__:
+  * Data is in name/value pairs
+  * Data is separated by commas
+  * Curly braces hold objects
+  * Square brackets hold arrays
+
+__JSON Object Example__:
+```json
+{ 
+  "color" : "Purple", 
+  "id" : "210", 
+  "composition" : {
+    "R" : 70,
+    "G" : 39,
+    "B" : 89
+  }
+}
+```
+
+__JSON Array Example__:
+```json
+{
+  "colors" : 
+  [
+    { 
+      "color" : "Purple", 
+      "id" : "210"
+    },
+    { 
+      "color" : "Blue", 
+      "id" : "211"
+    },
+    { 
+      "color" : "Black", 
+      "id" : "212"
+    }
+  ]
+}
+```
 
 **[⬆ Top](#table-of-contents)**
 
