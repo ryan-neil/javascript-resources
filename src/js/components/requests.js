@@ -119,3 +119,59 @@ console.log("Request sent!");
 ====================================
 Chaining XMLHttp Requests:
 */
+
+// Example:
+const firstReq = new XMLHttpRequest();
+
+// firstReq success callback
+firstReq.addEventListener("load", function() {
+	console.log("It worked!");
+	// getting all of our initial data from the API
+	const data = JSON.parse(this.responseText);
+
+	// start by singling out the url we want to request which is "results":
+	data.results;
+	// next we want the first object of "results" so "0" [Tatooine]
+	data.results[0];
+	// then we want the "films"
+	data.results[0].films;
+	// and then we want the first url we get from the "films" array
+	console.log(data.results[0].films[0]); // -> http://swapi.dev/api/films/1/ (this is a url we can request to get more information from)
+
+	// now that we have the url we can save it to a variable [filmURL]
+	const filmURL = data.results[0].films[0];
+
+	// ** next we have to make a new XMLHttpRequest all over again...
+	const secondFilmReq = new XMLHttpRequest();
+
+	// secondFilmReq success callback
+	secondFilmReq.addEventListener("load", function() {
+		console.log("secondFilmReq load worked!");
+
+		// we access the data of our new url
+		const filmData = JSON.parse(this.responseText);
+		console.log(filmData.title); // -> A New Hope
+	});
+	// secondFilmReq error callback
+	secondFilmReq.addEventListener("error", function(e) {
+		console.log("secondFilmReq load Error!", e);
+	});
+
+	// we pass in "filmURL" which we got from our "firstReq"
+	secondFilmReq.open("GET", filmURL);
+	secondFilmReq.send();
+	console.log("secondFilmReq sent!");
+});
+// firstReq error callback
+firstReq.addEventListener("error", () => {
+	console.log("Error!");
+});
+
+firstReq.open("GET", "https://swapi.dev/api/planets/");
+firstReq.send();
+console.log("Request sent!");
+
+/**
+====================================
+Fetch:
+*/
