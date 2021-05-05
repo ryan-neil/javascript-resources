@@ -95,6 +95,7 @@ A quick look at the files and directories you'll see in the repo.
     * [Asynchronous Callbacks](#asynchronous-callbacks)
     * [Promises](#promises)
     * [Requests](#requests)
+      * [Fetch](#fetch)
 
   ----
 
@@ -3682,6 +3683,13 @@ __JSON Array Example__:
   ]
 }
 ```
+
+**[⬆ Top](#table-of-contents)**
+
+----
+
+### Fetch
+
 
 **[⬆ Top](#table-of-contents)**
 
