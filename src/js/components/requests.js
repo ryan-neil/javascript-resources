@@ -246,11 +246,11 @@ fetch("https://swapi.dev/api/planets/")
 	})
 	// .then is moved here
 	.then((data) => {
-		const film1URL = data.results[0].films[0];
-		console.log(film1URL); // -> http://swapi.dev/api/films/1/
+		const filmURL = data.results[0].films[0];
+		console.log(filmURL); // -> http://swapi.dev/api/films/1/
 		// now we can access the new url we got back
 		// and since it is a promise we can return the fetch
-		return fetch(film1URL);
+		return fetch(filmURL);
 	})
 	// we can then put another .then here since we returned the fetch from the previous promise
 	.then((response) => {
@@ -259,13 +259,14 @@ fetch("https://swapi.dev/api/planets/")
 
 		return response.json();
 	})
-	.then((filmData) => {
+	.then((data) => {
+		const filmTitle = data.title;
 		console.log(
-			`Fetched first film , based off of the first planet: ${filmData.title}`
+			`Fetched first film, based off of the first planet: ${filmTitle}`
 		); // -> Fetched first film , based off of the first planet: A New Hope
 
 		// In a galaxy far, far away...
-		console.log(`Film description: ${filmData.opening_crawl}`);
+		console.log(`Film description: ${data.opening_crawl}`);
 	})
 	.catch((err) => {
 		console.log("Error with Fetch!");
@@ -277,7 +278,7 @@ fetch("https://swapi.dev/api/planets/")
 Refactoring Fetch Chains:
 */
 
-// since we're repeating out logic with .then(response) and .then(data) logic we can create standalone functions for these actions:
+// since we're repeating our logic with .then(response) and .then(data) logic we can create standalone functions for these actions:
 
 // ** check status and parse json function
 // we must pass in "response" as the parameter

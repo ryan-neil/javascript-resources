@@ -3689,7 +3689,145 @@ __JSON Array Example__:
 ----
 
 ### Fetch
+`fetch()` allows you to make network requests similar to XMLHttpRequest (XHR). The main difference is that the Fetch API uses `Promises`, which enables a simpler and cleaner API, avoiding callback hell and having to remember the complex API of XMLHttpRequest.
 
+Let's start by comparing a simple example implemented with an `XMLHttpRequest` and then with `fetch`. All we're doing is requesting a URL, getting a response and parsing it as JSON.
+
+__XMLHttpRequest Example__:
+
+An `XMLHttpRequest` would need two listeners to be set to handle the success and error cases and a call to `open()` and `send()`.
+
+```js
+const myReq = new XMLHttpRequest();
+
+function reqListener() {
+  const data = JSON.parse(this.responseText);
+  console.log(data);
+}
+
+function reqError(err) {
+  console.log('Error!:', err);
+}
+
+myReq.onload = reqListener;
+myReq.onerror = reqError;
+myReq.open('get', './api/some.json', true);
+myReq.send();
+```
+
+__Fetch Example__:
+
+Our fetch request looks like this:
+
+```js
+fetch('./api/some.json')
+  .then((response) => {
+    if (response.status !== 200) {
+      console.log('Problem:', response.status);
+      return;
+    }
+
+    // Examine the text in the response
+    response.json().then((data) => {
+      console.log(data);
+    });
+  })
+  .catch((err) => {
+    console.log('Error:', err);
+  });
+```
+> Note: the .json() method takes a response stream and reads it to completion. The only downside to this method is it takes time (it's asynchronous).
+
+We start by checking that the response status is 200 before parsing the response as JSON.
+
+The response of a `fetch()` request is a [Stream](https://developer.mozilla.org/en-US/docs/Web/API/Streams_API) object, which means that when we call the `json()` method, a Promise is returned since the reading of the stream will happen asynchronously.
+
+### Chaining Fetch Promises
+One of the great features of promises is the ability to chain them together. For fetch, this allows you to share logic across fetch requests.
+
+If you are working with a JSON API, you'll need to check the status and parse the JSON for each response. 
+
+For this example we will be using the [SWAPI](https://swapi.dev/) API:
+```js
+fetch("https://swapi.dev/api/planets/")
+  .then((response) => {
+    if (response.status !== 200)
+      throw new Error(`Status Code Error: ${response.status}`);
+
+    // we return response.json() in order to chain the next .then()
+    return response.json();
+  })
+  .then((data) => {
+    // we save the new url we got back to a variable to re-use
+    const filmURL = data.results[0].films[0];
+    console.log(filmURL); // -> http://swapi.dev/api/films/1/
+
+    // since it is a promise we can return the fetch
+    return fetch(filmURL);
+  })
+  // we can then chain another .then() since we returned the fetch from the previous promise
+  .then((response) => {
+    if (response.status !== 200) {
+      throw new Error(`Status Code: ${response.status}`);
+    }
+
+    return response.json();
+  })
+  .then((data) => {
+    const filmTitle = data.title;
+    console.log(`Fetched first film, based off of the first planet: ${filmTitle}`); // -> Fetched first film , based off of the first planet: A New Hope
+  })
+  .catch((err) => {
+    console.log('Request failed', err);
+  });
+```
+
+Since we don't want to repeat ourselves (DRY) and we seem to be repeating our logic with .then(response) and .then(data) we can create standalone functions for these actions:
+
+```js
+// function that check's the status and parses the json
+const checkStatusAndParse = (response) => {
+  if (response.status !== 200) {
+    throw new Error(`Status Code: ${response.status}`);
+  }
+
+  return response.json();
+};
+
+// function that prints planet names
+const printPlanets = (data) => {
+  console.log("Loaded 10 more planets...");
+
+  for (let planet of data.results) {
+    console.log(planet.name);
+  }
+
+  // we resolve with "data.next" because the "fetchNextPlanets" function expects a url as a parameter
+  return Promise.resolve(data.next);
+};
+
+// function that fetches more planets 
+// fetch next planets is expecting a url as the parameter ("printPlanets" returns "data.next" which is a URL)
+const fetchNextPlanets = (url) => {
+  return fetch(url);
+};
+
+fetch("https://swapi.dev/api/planets/")
+  // 1st page of planets (10)
+  .then(checkStatusAndParse)
+  .then(printPlanets)
+  .then(fetchNextPlanets)
+  // 2nd page of planets (10)
+  .then(checkStatusAndParse)
+  .then(printPlanets)
+  .then(fetchNextPlanets)
+  // 3rd page of planets (10)
+  .then(checkStatusAndParse)
+  .then(printPlanets)
+  .catch((err) => {
+    console.log('Request failed', err);
+  });
+```
 
 **[⬆ Top](#table-of-contents)**
 
