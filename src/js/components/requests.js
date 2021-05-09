@@ -336,9 +336,3 @@ fetch("https://swapi.dev/api/planets/")
 		console.log("Error with Fetch!");
 		console.log(err);
 	});
-
-/**
-====================================
-Axios:
-	* A library for making http requests
-*/
