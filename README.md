@@ -32,6 +32,7 @@ A quick look at the files and directories you'll see in the repo.
         ├── objects.js
         ├── promises.js
         ├── requests.js
+        ├── requests-axios.js
         ├── rest.js
         ├── spread.js
         └── this.js
@@ -3689,6 +3690,8 @@ __JSON Array Example__:
 ----
 
 ### Fetch
+* [Fetch: Chrome Dev](https://developers.google.com/web/updates/2015/03/introduction-to-fetch)
+
 `fetch()` allows you to make network requests similar to XMLHttpRequest (XHR). The main difference is that the Fetch API uses `Promises`, which enables a simpler and cleaner API, avoiding callback hell and having to remember the complex API of XMLHttpRequest.
 
 Let's start by comparing a simple example implemented with an `XMLHttpRequest` and then with `fetch`. All we're doing is requesting a URL, getting a response and parsing it as JSON.
@@ -3829,9 +3832,14 @@ fetch("https://swapi.dev/api/planets/")
   });
 ```
 
-**[⬆ Top](#table-of-contents)**
+### Axios
+
 
 ----
 
 ### Contributing
 Contributions are always welcome! All I ask is that you open an issue and we discuss your proposed changes before you create a pull request.
+
+**[⬆ Top](#table-of-contents)**
+
+
