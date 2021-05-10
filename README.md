@@ -20,6 +20,7 @@ A quick look at the files and directories you'll see in the repo.
       ├── components
         ├── arrays.js
         ├── arrow-functions.js
+        ├── async-await.js
         ├── asynchronous-callbacks.js
         ├── basics.js
         ├── callbacks.js
@@ -97,6 +98,8 @@ A quick look at the files and directories you'll see in the repo.
     * [Promises](#promises)
     * [Requests](#requests)
       * [Fetch](#fetch)
+    * [Async](#async)
+    * [Await](#await)
 
   ----
 
@@ -476,7 +479,7 @@ The __for statement__ creates a loop that consists of three optional expressions
 __Syntax__:
 ```javascript
 for ([initialization]; [condition]; [final-expression])
-  [statement];
+  // Code to execute
 ```
 
 __Example__:
@@ -495,7 +498,7 @@ A `for...in` loop only iterates over enumerable, non-Symbol properties. We're re
 __Syntax__:
 ```javascript
 for ( [variable] in [iterable] ) {
-  [statement];
+  // Code to execute
 }
 ```
 
@@ -515,7 +518,7 @@ for (let sport in sports) {
 __Syntax__:
 ```javascript
 for ( [variable] of [iterable] ) {
-  [statement];
+  // Code to execute
 }
 ```
 
@@ -1392,7 +1395,7 @@ So in a sense, the vending machine is like a black box at which we can control b
 __Syntax__:
 ```javascript
 function name([param[, param[, ... param]]]) {
-  [statements];
+  // Code to execute
 }
 ```
 
@@ -3832,8 +3835,89 @@ fetch("https://swapi.dev/api/planets/")
   });
 ```
 
-### Axios
+### Async Functions
+Async functions are a nice, clean and easy syntax for working with promises. If the function returns a value, the promise will be resolved with that value. If the function throws an exception, the promise will be rejected.
 
+__Syntax__:
+```js
+async function name([param[, param[, ...param]]]) {
+  // Code to execute
+}
+```
+
+When we put an `async` in front of a function it's now going to behave differently. It will now return a `Promise`. So even though we don't call `new Promise()` or explicitly say to return a `Promise`, it will:
+
+```js
+async function hello() {
+  return "Hey guys!";
+}
+hello();
+// -> Promise { <state>: "fulfilled", <value>: "Hey guys!" }
+
+async function uhOh() {
+  throw new Error("Oh no!");
+}
+uhOh();
+// -> Promise { <state>: "rejected", <reason>: Error }
+```
+
+Here we can see this in action by examining the difference between a standard function and an async function:
+```js
+// standard function
+function greet() {
+  return "Hello!";
+}
+greet(); // -> Hello!
+
+// async function
+async function greet() {
+  return "Hello!";
+}
+greet(); // -> Promise { <state>: "fulfilled", <value>: "Hello!" }
+```
+
+Now, let's take a look at a more realistic example. Let's create a function called `add()` that, you guessed it, adds two numbers together. To see the power of `async`, inside the function let's add some logic that check's to see if the parameters given to the `add()` function are numbers. 
+```js
+async function add(x, y) {
+	
+  if (typeof x !== "number" || typeof y !== "number") {
+    throw "X and Y must both be numbers!";
+  }
+
+  return x + y;
+}
+
+add(5, "r")
+  .then((val) => {
+    console.log("Promise resolved with: ", val);
+  })
+  .catch((err) => {
+    console.log("Promise rejected with: ", err);
+  });
+// -> Promise rejected with: X and Y must both be numbers!
+```
+
+For comparison reasons let's re-write the above example as a standard `Promise`:
+```js
+function add(x, y) {
+  return new Promise((resolve, reject) => {
+    if (typeof x !== "number" || typeof y !== "number") {
+      reject("X and Y must both be numbers!");
+    }
+    resolve(x + y);
+  });
+}
+
+add(5, 10)
+  .then((val) => {
+    console.log("Promise resolved with: ", val);
+  })
+  .catch((err) => {
+    console.log("Promise rejected with: ", err);
+  });
+// -> Promise resolved with: 15
+```
+As you can see using `async` functions is a much cleaner and simpler method when creating a function that returns a `Promise`.
 
 ----
 
