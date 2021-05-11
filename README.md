@@ -98,8 +98,8 @@ A quick look at the files and directories you'll see in the repo.
     * [Promises](#promises)
     * [Requests](#requests)
       * [Fetch](#fetch)
-    * [Async](#async)
-    * [Await](#await)
+    * [Async Functions](#async-functions)
+    * [Await](#await-functions)
 
   ----
 
@@ -3918,6 +3918,75 @@ add(5, 10)
 // -> Promise resolved with: 15
 ```
 As you can see using `async` functions is a much cleaner and simpler method when creating a function that returns a `Promise`.
+
+### Await
+We can only use the `await` operator inside of functions declared with `async`. Await will pause the execution of the function, waiting for a Promise to be resolved.
+
+__Syntax__:
+```js
+async function funcName() {
+  // our created promise
+  let promise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve("Promise resolved!"), 1000;
+    });
+  });
+
+  let result = await promise; // (*)
+  console.log(result); // -> "Promise resolved!"
+}
+funcName();
+```
+
+The function execution “pauses” at the line with (*) and resumes when the promise settles, with `result` becoming its result. So the code above shows `Promise resolved!` in one second.
+
+Let’s emphasize: `await` literally suspends the function execution until the promise settles, and then resumes it with the promise result. That doesn’t cost any CPU resources, because the JavaScript engine can do other jobs in the meantime: execute other scripts, handle events, etc.
+
+> Note: `await` cannot be used in regular functions. They must be `async` functions.
+
+__Syntax Example__: Github API Call
+```js
+async function getGithubUser() {
+  try {
+    let response = await fetch("https://api.github.com/users/ryan-neil");
+
+    let userData = await response.json();
+
+    console.log(userData); // -> Object { user data }
+    console.log(userData.name); // -> "Ryan Neil"
+  } catch (err) {
+    console.log("Request error!", err);
+  }
+}
+
+getGithubUser();
+```
+
+Now, let's compare that to an example using a standard (non-asynchronous) function call:
+
+__Syntax Example__: Non async Github API Call
+```js
+function getGithubUser() {
+	fetch("https://api.github.com/users/ryan-neil")
+		.then((response) => {
+			if (response.status !== 200)
+				throw new Error(`Status Code Error: ${response.status}`);
+
+			return response.json();
+		})
+		.then((data) => {
+			let userData = data;
+
+			console.log(userData); // -> Object { user data }
+			console.log(userData.name); // -> "Ryan Neil"
+		})
+		.catch((err) => {
+			console.log("Request failed", err);
+		});
+}
+
+getGithubUser();
+```
 
 ----
 

@@ -83,6 +83,100 @@ add(5, "r")
 
 /*
 Await:
-	* We can only use the await keyword inside of functions declared with async.
+	* We can only use the await operator inside of functions declared with async.
   * Await will pause the execution of the function, waiting for a Promise to be resolved.
 */
+
+// Syntax:
+async function funcName() {
+	let promise = new Promise((resolve, reject) => {
+		setTimeout(() => resolve("Promise resolved!"), 1000);
+	});
+
+	let result = await promise;
+	console.log(result); // -> Promise resolved!
+}
+funcName();
+
+// Syntax (Axios):
+async function getPlanets() {
+	const res = await axios.get("https://swapi.dev/api/planets/");
+	console.log(res.data);
+}
+// no .then() needed with "await"
+getPlanets();
+
+// ** standard function (Axios)
+function getPlanets() {
+	return axios.get("https://swapi.dev/api/planets/");
+}
+getPlanets().then((res) => {
+	console.log(res.data);
+});
+
+// Example: with await method (Axios)
+async function getPlanets() {
+	const res = await axios.get("https://swapi.dev/api/planets/");
+
+	console.log(res.data); // this only runs once the previous line is complete (axios Promise is resolved)
+}
+getPlanets(); // -> [resolved] Object { data }
+
+// ** because of the "await" keyword JS waits for the Promise to be resolved before running the "console.log(res.data)"
+
+// Example: without await method (Axios)
+async function getPlanets() {
+	const res = axios.get("https://swapi.dev/api/planets/");
+
+	console.log(res.data);
+}
+getPlanets(); // -> [unresolved] undefined
+
+// ** without the "await" keyword JS runs the "console.log(res.data)" before the "axios.get()" Promise is resolved which leaves "data" undefined
+
+/*
+Error Handling in Async Functions:
+*/
+
+// Example:
+async function getPlanets() {
+	const res = await axios.get("https://swapi.dev/api/wrong-link/");
+
+	console.log(res.data);
+}
+
+getPlanets().catch((err) => {
+	console.log("Caught in catch!", err);
+});
+// -> Caught in catch! Error: Request failed with status code 404
+
+// ** we can just chain on a .catch() to the getPlanets() function call to catch the errors
+
+// ** the .catch() method is useful when we have multiple Promises being run.
+
+// Example Code: Github API
+async function showAvatar() {
+	// read our JSON
+	let response = await fetch("/article/promise-chaining/user.json");
+	let user = await response.json();
+
+	// read github user
+	let githubResponse = await fetch(
+		`https://api.github.com/users/${user.name}`
+	);
+	let githubUser = await githubResponse.json();
+
+	// show the avatar
+	let img = document.createElement("img");
+	img.src = githubUser.avatar_url;
+	img.className = "promise-avatar-example";
+	document.body.append(img);
+
+	// wait 3 seconds
+	await new Promise((resolve, reject) => setTimeout(resolve, 3000));
+
+	img.remove();
+
+	return githubUser;
+}
+showAvatar();

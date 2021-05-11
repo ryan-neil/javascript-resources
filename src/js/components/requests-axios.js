@@ -17,7 +17,7 @@ axios.get("/user?ID=12345");
 
 /* Axios simplifies things in 2 ways:
   1. We don't have to parse JSON data.
-  2. We don't have to weed out the bad status code responses. With a none 200 (OK), or at least just the bad ones, status code it will be rejected.
+  2. We don't have to weed out the bad status code responses. With a non 200 (OK), or at least just the bad ones, status code it will be rejected.
 */
 
 // Example: SWAPI

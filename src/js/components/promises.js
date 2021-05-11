@@ -173,7 +173,7 @@ fakeRequest("/contact")
 
 /**
 ====================================
-Chaining  Multiple Promises:
+Chaining Multiple Promises:
 	* 
 */
 
