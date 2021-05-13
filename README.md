@@ -4,7 +4,9 @@
 ## Introduction
 The goal of this document is to provide a quick reference guide for the main features of JavaScript along with simple to understand sample code.
 
-This guide is not intended to teach you the fundamentals of the JavaScript programming language but merely a reference guide to come back to for a quick refresher.
+I wanted to remove the bloat that comes with learning a programming language and provide the "juicy" parts as plainly as possible.
+
+> _“Any intelligent fool can make things bigger, more complex, and more violent. It takes a touch of genius—and a lot of courage—to move in the opposite direction.” —E.F. Schumacher_
 
 ###### If you found this guide helpful give me a follow and let me know! 🤙🏻
 [![Twitter Badge](https://img.shields.io/badge/-Twitter-00acee?style=flat-square&logo=Twitter&logoColor=white)](https://twitter.com/home?lang=en)
@@ -4015,11 +4017,11 @@ const moveX = (element, amount, delay) => {
 };
 ```
 
-The above `moveX()` function accepts an `element`, a pixel `amount` for each movement to the right, and a timed `delay` between each movement. Inside we have a `Promise` that checks if the `element` has gone passed the screen width.
+The above `moveX()` function accepts an `element`, a pixel `amount` for each movement to the right, and a timed `delay` between each movement. Inside we have a `Promise` that checks if the `element` has gone beyond the screen width.
 
 Below we will see how we can call our `moveX()` function the standard way and then asynchronously.
 
-Now our __non__ `async`/`await` method would look something like this:
+__Method 1__: Standard `Promise` chaining
 
 ```js
 const btn = document.querySelector("button");
@@ -4033,29 +4035,28 @@ moveX(btn, 200, 1000)
   });
 ```
 
-Using `async`/`await` our code now looks like this:
+__Method 2__: `async`/`await` `Promise` chaining
 
 ```js
 const btn = document.querySelector("button");
 
-// we create the async function in order to use "await"
-async function animateRight(element, amount) {
-  await moveX(element, amount, 1000); // this returns a Promise so we can "await" it
-  // we don't need .then()'s because we awaited it
-  await moveX(element, amount, 1000);
-  await moveX(element, amount, 1000);
+// we must create the async function in order to use "await"
+async function animateRight(element, amount, delay) {
+  await moveX(element, amount, delay); // this returns a Promise so we can "await" it
+  await moveX(element, amount, delay);
+  await moveX(element, amount, delay);
 }
 
-// pass in the "element" to "animateRight()" that we want to move ("btn")
-animateRight(btn, 200).catch((err) => {
-  console.log("You've reached the end!", err);
-});
+animateRight(btn, 200, 1000)
+  .catch((err) => {
+    console.log("You've reached the end!", err);
+  });
 ```
 
 ### Parallel and Sequential Await Requests
-Generally, if we don't need the requests to happen in sequence, use Parallel requests. __Parallel__ requests execute much faster than __Sequential__ requests.
+Generally, if we don't need the requests to happen in sequence, use Parallel requests. __Parallel__ requests are much more performant (faster) than __Sequential__ requests.
 
-__Example 1__: Sequential Requests
+__Method 1__: Sequential Requests
 ```js
 async function startingPokemon() {
   const starterPoke1 = await fetch("https://pokeapi.co/api/v2/pokemon/1");
@@ -4074,7 +4075,7 @@ async function startingPokemon() {
 startingPokemon();
 ```
 
-__Example 2__: Parallel Requests
+__Method 2__: Parallel Requests
 ```js
 async function startingPokemon() {
   const starterPoke1 = await fetch("https://pokeapi.co/api/v2/pokemon/1");
@@ -4085,13 +4086,13 @@ async function startingPokemon() {
   const pokeData2 = await starterPoke2.json();
   const pokeData3 = await starterPoke3.json();
 
-  const poke1 = await pokeData1;
-  const poke2 = await pokeData2;
-  const poke3 = await pokeData3;
+  const prom1 = await pokeData1;
+  const prom2 = await pokeData2;
+  const prom3 = await pokeData3;
 
-  console.log(poke1.name); // -> bulbasaur
-  console.log(poke2.name); // -> charmander
-  console.log(poke3.name); // -> squirtle
+  console.log(prom1.name); // -> bulbasaur
+  console.log(prom2.name); // -> charmander
+  console.log(prom3.name); // -> squirtle
 }
 
 startingPokemon();
@@ -4122,14 +4123,14 @@ async function startingPokemon() {
   const pokeData2 = await starterPoke2.json();
   const pokeData3 = await starterPoke3.json();
 
-  const prom_poke1 = await pokeData1;
-  const prom_poke2 = await pokeData2;
-  const prom_poke3 = await pokeData3;
+  const prom1 = await pokeData1;
+  const prom2 = await pokeData2;
+  const prom3 = await pokeData3;
 
   const allPromises = await Promise.all([
-    prom_poke1,
-    prom_poke2,
-    prom_poke3
+    prom1,
+    prom2,
+    prom3
   ]);
 
   printPokemonNames(allPromises);
