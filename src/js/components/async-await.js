@@ -221,14 +221,14 @@ moveX(btn, 200, 1000)
 // ** refactoring with async/await
 const btn = document.querySelector("button");
 
-async function animateRight(el) {
-	await moveX(el, 100, 1000); // this returns a Promise so we can "await" it
+async function animateRight(element, amount) {
+	await moveX(element, amount, 1000); // this returns a Promise so we can "await" it
 	// we don't need .then()'s because we awaited it
-	await moveX(el, 100, 1000);
-	await moveX(el, 100, 1000);
+	await moveX(element, amount, 1000);
+	await moveX(element, amount, 1000);
 }
-// pass in the "el" to "animateRight()" that we want to animate ("btn")
-animateRight(btn).catch((err) => {
+// pass in the "element" to "animateRight()" that we want to animate ("btn")
+animateRight(btn, 100).catch((err) => {
 	console.log("You've reached the end!", err);
 });
 
@@ -243,28 +243,28 @@ Parallel and Sequential Requests:
 // PokeAPI
 // https://pokeapi.co/api/v2/pokemon/
 
-// Example 1: Sequential Requests
+// Example 1: Sequential Requests (Axios)
 async function startingPokemon() {
-	const staterPoke1 = await axios.get("https://pokeapi.co/api/v2/pokemon/1");
-	const staterPoke2 = await axios.get("https://pokeapi.co/api/v2/pokemon/4");
-	const staterPoke3 = await axios.get("https://pokeapi.co/api/v2/pokemon/7");
+	const starterPoke1 = axios.get("https://pokeapi.co/api/v2/pokemon/1");
+	const starterPoke2 = axios.get("https://pokeapi.co/api/v2/pokemon/4");
+	const starterPoke3 = axios.get("https://pokeapi.co/api/v2/pokemon/7");
 
-	console.log(staterPoke1.data.name); // -> bulbasaur
-	console.log(staterPoke2.data.name); // -> charmander
-	console.log(staterPoke3.data.name); // -> squirtle
+	console.log(starterPoke1.data.name); // -> bulbasaur
+	console.log(starterPoke2.data.name); // -> charmander
+	console.log(starterPoke3.data.name); // -> squirtle
 }
 startingPokemon();
 
-// Example 2: Parallel Requests
+// Example 2: Parallel Requests (Axios)
 async function startingPokemon() {
 	// we remove the await's here
-	const staterPoke1 = axios.get("https://pokeapi.co/api/v2/pokemon/1");
-	const staterPoke2 = axios.get("https://pokeapi.co/api/v2/pokemon/4");
-	const staterPoke3 = axios.get("https://pokeapi.co/api/v2/pokemon/7");
+	const starterPoke1 = axios.get("https://pokeapi.co/api/v2/pokemon/1");
+	const starterPoke2 = axios.get("https://pokeapi.co/api/v2/pokemon/4");
+	const starterPoke3 = axios.get("https://pokeapi.co/api/v2/pokemon/7");
 
-	const poke1 = await staterPoke1;
-	const poke2 = await staterPoke2;
-	const poke3 = await staterPoke3;
+	const poke1 = await starterPoke1;
+	const poke2 = await starterPoke2;
+	const poke3 = await starterPoke3;
 
 	console.log(poke1.data.name); // -> bulbasaur
 	console.log(poke2.data.name); // -> charmander
@@ -276,17 +276,17 @@ startingPokemon();
 Promise.all:
 */
 
-// Example: Promise.all
+// Example: Promise.all (Axios)
 async function startingPokemon() {
 	// we remove the await's here
-	const staterPoke1 = axios.get("https://pokeapi.co/api/v2/pokemon/1");
-	const staterPoke2 = axios.get("https://pokeapi.co/api/v2/pokemon/4");
-	const staterPoke3 = axios.get("https://pokeapi.co/api/v2/pokemon/7");
+	const starterPoke1 = axios.get("https://pokeapi.co/api/v2/pokemon/1");
+	const starterPoke2 = axios.get("https://pokeapi.co/api/v2/pokemon/4");
+	const starterPoke3 = axios.get("https://pokeapi.co/api/v2/pokemon/7");
 
 	const allPromises = await Promise.all([
-		staterPoke1,
-		staterPoke2,
-		staterPoke3
+		starterPoke1,
+		starterPoke2,
+		starterPoke3
 	]);
 
 	printPokemonNames(allPromises);

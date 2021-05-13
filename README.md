@@ -3948,16 +3948,16 @@ Let’s emphasize: `await` literally suspends the function execution until the p
 __Syntax Example__: Async Github API Call
 ```js
 async function getGithubUser() {
-	let response = await fetch("https://api.github/users/ryan-neil");
+  let response = await fetch("https://api.github/users/ryan-neil");
 
-	let userData = await response.json();
+  let userData = await response.json();
 
-	console.log(userData); // -> Object { user data }
-	console.log(userData.name); // -> "Ryan Neil"
+  console.log(userData); // -> Object { user data }
+  console.log(userData.name); // -> "Ryan Neil"
 }
 
 getGithubUser().catch((err) => {
-	console.log("Request error!", err);
+  console.log("Request error!", err);
 });
 ```
 We can just chain on a `.catch()` to the `getGithubUser()` function call to catch the errors.
@@ -3990,6 +3990,162 @@ function getGithubUser() {
 getGithubUser();
 ```
 As we can see with `async` and `await` functions we no longer need to chain on the `.then()`'s. This allows our code to remain clean and concise.
+
+### Chaining Multiple Awaits
+We can chain multiple `await`'s quite easily. With the `async`/`await` method we don't need all the `.then()`'s and unnecessary callbacks.
+
+Let's look at a previous example back from our `Promises` section and refactor it using the `async`/`await` method:
+
+```js
+const moveX = (element, amount, delay) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const bodyBoundary = document.body.clientWidth;
+      const elRight = element.getBoundingClientRect().right;
+      const currLeft = element.getBoundingClientRect().left;
+
+      if (elRight + amount > bodyBoundary) {
+        reject({ bodyBoundary, elRight, amount });
+      } else {
+        element.style.transform = `translateX(${currLeft + amount}px)`;
+        resolve();
+      }
+    }, delay);
+  });
+};
+```
+
+The above `moveX()` function accepts an `element`, a pixel `amount` for each movement to the right, and a timed `delay` between each movement. Inside we have a `Promise` that checks if the `element` has gone passed the screen width.
+
+Below we will see how we can call our `moveX()` function the standard way and then asynchronously.
+
+Now our __non__ `async`/`await` method would look something like this:
+
+```js
+const btn = document.querySelector("button");
+
+moveX(btn, 200, 1000)
+  .then(() => moveX(btn, 200, 1000))
+  .then(() => moveX(btn, 200, 1000))
+  .then(() => moveX(btn, 200, 1000))
+  .catch((err) => {
+    console.log("You've reached the end!", err);
+  });
+```
+
+Using `async`/`await` our code now looks like this:
+
+```js
+const btn = document.querySelector("button");
+
+// we create the async function in order to use "await"
+async function animateRight(element, amount) {
+  await moveX(element, amount, 1000); // this returns a Promise so we can "await" it
+  // we don't need .then()'s because we awaited it
+  await moveX(element, amount, 1000);
+  await moveX(element, amount, 1000);
+}
+
+// pass in the "element" to "animateRight()" that we want to move ("btn")
+animateRight(btn, 200).catch((err) => {
+  console.log("You've reached the end!", err);
+});
+```
+
+### Parallel and Sequential Await Requests
+Generally, if we don't need the requests to happen in sequence, use Parallel requests. __Parallel__ requests execute much faster than __Sequential__ requests.
+
+__Example 1__: Sequential Requests
+```js
+async function startingPokemon() {
+  const starterPoke1 = await fetch("https://pokeapi.co/api/v2/pokemon/1");
+  const starterPoke2 = await fetch("https://pokeapi.co/api/v2/pokemon/4");
+  const starterPoke3 = await fetch("https://pokeapi.co/api/v2/pokemon/7");
+
+  const pokeData1 = await starterPoke1.json();
+  const pokeData2 = await starterPoke2.json();
+  const pokeData3 = await starterPoke3.json();
+
+  console.log(pokeData1.name); // -> bulbasaur
+  console.log(pokeData2.name); // -> charmander
+  console.log(pokeData3.name); // -> squirtle
+}
+
+startingPokemon();
+```
+
+__Example 2__: Parallel Requests
+```js
+async function startingPokemon() {
+  const starterPoke1 = await fetch("https://pokeapi.co/api/v2/pokemon/1");
+  const starterPoke2 = await fetch("https://pokeapi.co/api/v2/pokemon/4");
+  const starterPoke3 = await fetch("https://pokeapi.co/api/v2/pokemon/7");
+
+  const pokeData1 = await starterPoke1.json();
+  const pokeData2 = await starterPoke2.json();
+  const pokeData3 = await starterPoke3.json();
+
+  const poke1 = await pokeData1;
+  const poke2 = await pokeData2;
+  const poke3 = await pokeData3;
+
+  console.log(poke1.name); // -> bulbasaur
+  console.log(poke2.name); // -> charmander
+  console.log(poke3.name); // -> squirtle
+}
+
+startingPokemon();
+```
+
+### Promise.all
+The `Promise.all()` method takes an iterable of promises as an input, and returns a single Promise that resolves to an array of the results of the input promises. 
+
+This returned promise will resolve when all of the input's promises have resolved, or if the input iterable contains no promises. 
+
+It rejects immediately upon any of the input promises rejecting or non-promises throwing an error, and will reject with this first rejection message / error.
+
+__Syntax__:
+```js
+Promise.all(iterable);
+```
+
+This method can be useful for aggregating the results of multiple promises. It is typically used when there are multiple related asynchronous tasks that the overall code relies on to work successfully — all of whom we want to fulfill before the code execution continues.
+
+__Example__:
+```js
+async function startingPokemon() {
+  const starterPoke1 = await fetch("https://pokeapi.co/api/v2/pokemon/1");
+  const starterPoke2 = await fetch("https://pokeapi.co/api/v2/pokemon/4");
+  const starterPoke3 = await fetch("https://pokeapi.co/api/v2/pokemon/7");
+
+  const pokeData1 = await starterPoke1.json();
+  const pokeData2 = await starterPoke2.json();
+  const pokeData3 = await starterPoke3.json();
+
+  const prom_poke1 = await pokeData1;
+  const prom_poke2 = await pokeData2;
+  const prom_poke3 = await pokeData3;
+
+  const allPromises = await Promise.all([
+    prom_poke1,
+    prom_poke2,
+    prom_poke3
+  ]);
+
+  printPokemonNames(allPromises);
+}
+
+const printPokemonNames = (allPromises) => {
+  for (let pokemon of allPromises) {
+    console.log(pokemon.name);
+  }
+};
+
+startingPokemon();
+// -> bulbasaur
+// -> charmander
+// -> squirtle
+```
 
 ----
 
