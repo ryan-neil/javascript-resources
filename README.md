@@ -32,8 +32,9 @@ A quick look at the files and directories you'll see in the repo.
         ├── loops.js
         ├── objects.js
         ├── promises.js
-        ├── requests.js
+        ├── prototypes.js
         ├── requests-axios.js
+        ├── requests.js
         ├── rest.js
         ├── spread.js
         └── this.js
@@ -99,7 +100,7 @@ A quick look at the files and directories you'll see in the repo.
     * [Requests](#requests)
       * [Fetch](#fetch)
     * [Async Functions](#async-functions)
-    * [Await](#await-functions)
+    * [Await](#await)
 
   ----
 
@@ -3938,55 +3939,57 @@ async function funcName() {
 funcName();
 ```
 
-The function execution “pauses” at the line with (*) and resumes when the promise settles, with `result` becoming its result. So the code above shows `Promise resolved!` in one second.
+The function execution “pauses” at the line with (*) and resumes when the promise settles, with `result` becoming its result. So the code above outputs `Promise resolved!` in one second.
 
 Let’s emphasize: `await` literally suspends the function execution until the promise settles, and then resumes it with the promise result. That doesn’t cost any CPU resources, because the JavaScript engine can do other jobs in the meantime: execute other scripts, handle events, etc.
 
 > Note: `await` cannot be used in regular functions. They must be `async` functions.
 
-__Syntax Example__: Github API Call
+__Syntax Example__: Async Github API Call
 ```js
 async function getGithubUser() {
-  try {
-    let response = await fetch("https://api.github.com/users/ryan-neil");
+	let response = await fetch("https://api.github/users/ryan-neil");
 
-    let userData = await response.json();
+	let userData = await response.json();
 
-    console.log(userData); // -> Object { user data }
-    console.log(userData.name); // -> "Ryan Neil"
-  } catch (err) {
-    console.log("Request error!", err);
-  }
+	console.log(userData); // -> Object { user data }
+	console.log(userData.name); // -> "Ryan Neil"
 }
 
-getGithubUser();
+getGithubUser().catch((err) => {
+	console.log("Request error!", err);
+});
 ```
+We can just chain on a `.catch()` to the `getGithubUser()` function call to catch the errors.
+
+The `.catch()` method is useful when we have multiple Promises being run.
 
 Now, let's compare that to an example using a standard (non-asynchronous) function call:
 
-__Syntax Example__: Non async Github API Call
+__Syntax Example__: Standard Github API Call
 ```js
 function getGithubUser() {
-	fetch("https://api.github.com/users/ryan-neil")
-		.then((response) => {
-			if (response.status !== 200)
-				throw new Error(`Status Code Error: ${response.status}`);
+  fetch("https://api.github.com/users/ryan-neil")
+    .then((response) => {
+      if (response.status !== 200)
+        throw new Error(`Status Code Error: ${response.status}`);
 
-			return response.json();
-		})
-		.then((data) => {
-			let userData = data;
+      return response.json();
+    })
+    .then((data) => {
+      let userData = data;
 
-			console.log(userData); // -> Object { user data }
-			console.log(userData.name); // -> "Ryan Neil"
-		})
-		.catch((err) => {
-			console.log("Request failed", err);
-		});
+      console.log(userData); // -> Object { user data }
+      console.log(userData.name); // -> "Ryan Neil"
+    })
+    .catch((err) => {
+      console.log("Request failed", err);
+    });
 }
 
 getGithubUser();
 ```
+As we can see with `async` and `await` functions we no longer need to chain on the `.then()`'s. This allows our code to remain clean and concise.
 
 ----
 
