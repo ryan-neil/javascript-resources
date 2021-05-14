@@ -85,13 +85,12 @@ whiteColor.hex === blackColor.hex; // -> false
 
 /**
 ====================================
-Example: Constructor Functions 
+Example: Constructor Functions
 
-The "new" operator:
-
-The "new" operator lets developers create an instance of a user-defined object type or of one of the built-in object types that has a constructor function.
+A constructor function is a function that helps us create objects. 
 */
 
+// Demo 1:
 function Color(r, g, b) {
 	this.r = r;
 	this.g = g;
@@ -99,29 +98,70 @@ function Color(r, g, b) {
 }
 Color(255, 255, 255); // -> undefined
 
+// Demo 2:
+function Color(r, g, b) {
+	this.r = r;
+	this.g = g;
+	this.b = b;
+	// in this case "this" will refer to the global scope, the nearest object which is the "window" object
+	console.log(this); // -> Window
+}
+Color(255, 255, 255);
+
+// ** with constructor functions we generally capitalize the name of the function to symbolize that it is a constructor function.
+
+/** 
+====================================
+The "new" operator:
+
+ * The "new" operator lets developers create an instance of a user-defined object type or of one of the built-in object types that has a constructor function.
+*/
+
+// Syntax:
+new constructor[[ arguments ]]();
+
+// ** The "new" operator under the hood:
+
+// Demo
 function Color(r, g, b) {
 	this.r = r;
 	this.g = g;
 	this.b = b;
 	console.log(this);
 }
-Color(255, 255, 255); // -> Window
 
-/**
-The "new" keyword does the following things:
+new Color(255, 40, 100);
 
+/*
+When we call the "Color" function with "new" and pass in values it's going to do certain things behind the scenes.
+
+First:
   1. Creates a blank, plain JavaScript object.
- 
+
+Next:
   2. Adds a property to the new object (__proto__) that links to the constructor function's prototype object. 
     - Note: Properties/objects added to the construction function prototype are therefore accessible to all instances created from the constructor function (using new).
 
+Next:
   3. Binds the newly created object instance as the this context (i.e. all references to this in the constructor function now refer to the object created in the first step).
- 
+
+Lastly:
   4. Returns this if the function doesn't return an object.
 */
 
-// Syntax:
-new constructor[[ arguments ]]();
+// so behind the scenes, it really looks something like this:
+function Color(r, g, b) {
+	const newObj = {}; // (*1*) the "new" operator creates an object
+
+	// (*3*) "this" is bound to "newObj" so here we're adding r,g,b to the "newObj" object.
+	this.r = r;
+	this.g = g;
+	this.b = b;
+
+	return newObj; // (*4*) the "new" operator returns "this" which is referring to "newObj"
+}
+
+// ** if we don't use the "new" keyword, "this" will refer to the window object.
 
 // Example 1:
 function Color(r, g, b) {
@@ -130,20 +170,27 @@ function Color(r, g, b) {
 	this.b = b;
 }
 
+// instead of defining our functions inside the Color function, we add them to the Color.prototype outside the initial Color function call
+
+// here we add an "rgb" function method to the "Color" prototype
 Color.prototype.rgb = function() {
 	const { r, g, b } = this;
 	return `rgb(${r}, ${g}, ${b})`;
 };
 
+// here we add an "hex" function method to the "Color" prototype
 Color.prototype.hex = function() {
 	const { r, g, b } = this;
 	return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 };
 
+// here we add an "rgba" function method to the "Color" prototype
 Color.prototype.rgba = function(a = 1.0) {
 	const { r, g, b } = this;
 	return `rgba(${r}, ${g}, ${b}, ${a})`;
 };
+
+// now we have access to those Color prototype functions globally.
 
 const color1 = new Color(255, 255, 255);
 const color2 = new Color(0, 0, 0);
