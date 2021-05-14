@@ -3,6 +3,17 @@ JavaScript Notes and Documentation
 Prototypes
 */
 
+/** 
+Object Oriented Concepts:
+ * Factory Functions
+ * Constructor Functions
+ * "Class" Keyword
+ * "new" Keyword
+ * Super Inheritance
+
+All of this has to do with one central idea of organizing our code, designing and structuring our applications by breaking everything up into distinct patterns of objects (we can think, recipes for objects).
+*/
+
 /**
 ====================================
 Object Prototypes:
