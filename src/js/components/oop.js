@@ -103,7 +103,7 @@ function Color(r, g, b) {
 	this.r = r;
 	this.g = g;
 	this.b = b;
-	// in this case "this" will refer to the global scope, the nearest object which is the "window" object
+	// in this case "this" will refer to the global scope, the nearest object which is the "Window" object
 	console.log(this); // -> Window
 }
 Color(255, 255, 255);
@@ -127,7 +127,7 @@ function Color(r, g, b) {
 	this.r = r;
 	this.g = g;
 	this.b = b;
-	console.log(this);
+	console.log(this); // -> Object { r: 255, g: 40, b: 100 }
 }
 
 new Color(255, 40, 100);
@@ -172,6 +172,8 @@ function Color(r, g, b) {
 
 // instead of defining our functions inside the Color function, we add them to the Color.prototype outside the initial Color function call
 
+// ** we don't want to use arrow functions for these since they behave differently with "this"
+
 // here we add an "rgb" function method to the "Color" prototype
 Color.prototype.rgb = function() {
 	const { r, g, b } = this;
@@ -198,6 +200,7 @@ const color2 = new Color(0, 0, 0);
 color1.rgb === color2.rgb; // -> true
 color1.hex === color2.hex; // -> true
 
-// ** we don't want to use arrow functions for these since they behave differently with "this"
+color1.rgb() === color2.rgb(); // -> false
+color1.hex() === color2.hex(); // -> false
 
 document.body.style.backgroundColor = color1.rgba();
