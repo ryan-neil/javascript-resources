@@ -445,3 +445,134 @@ colorRed.oppositeColor(); // -> "hsl(187, 100%, 59.8%)"
 
 colorLightPink.hsl(); // -> "hsl(352, 81.6%, 82.9%)"
 colorLightPink.fullySaturated(); // -> "hsl(352, 100%, 82.9%)"
+
+/** 
+====================================
+Classes Continued: Extends, Super, and Subclasses
+
+	* The keywords extend and super both have to do with sub-classing (inheritance).
+		- A way of sharing functionality between classes.
+*/
+
+// Example:
+class Cat {
+	constructor(name, age) {
+		this.name = name;
+		this.age = age;
+	}
+	eat() {
+		return `${this.name} is eating!`;
+	}
+	meow() {
+		return "Meowww!";
+	}
+}
+
+const tigerLily = new Cat("Tiger Lily", 1);
+tigerLily.eat(); // -> "Tiger Lily is eating!"
+
+class Dog {
+	constructor(name, age) {
+		this.name = name;
+		this.age = age;
+	}
+	eat() {
+		return `${this.name} is eating!`;
+	}
+	bark() {
+		return "Ruff! Ruff!";
+	}
+}
+
+const harley = new Dog("Harley", 8);
+harley.bark(); // -> "Ruff! Ruff!"
+
+/**
+ Both of these classes have duplicate logic. What we can do is create a standalone class with the duplicate logic that both Cat and Dog classes can use. 
+ 
+ We can think of these as a parent -> child relationship. So we can have a parent class and a child class.
+ */
+
+/**
+	* Extends
+	
+	Let's re-factor the classes above using the "extends" keyword.
+ */
+
+class Pet {
+	constructor(name, age) {
+		this.name = name;
+		this.age = age;
+	}
+	eat() {
+		return `${this.name} is eating!`;
+	}
+}
+
+// ** we need to tell "Cat" and "Dog" to include the functionality of "Pet" to extend "Pet"
+
+// ** for this we add "extends Pet" after the class name. by adding the "extends Pet" we don't have to include the "constructor" function to "Cat" or "Dog".
+
+class Cat extends Pet {
+	meow() {
+		return "Meowww!";
+	}
+}
+
+const tigerLily = new Cat("Tiger Lily", 1);
+tigerLily.eat(); // -> "Tiger Lily is eating!"
+tigerLily.meow(); // -> "Meowww!"
+
+class Dog extends Pet {
+	bark() {
+		return "Ruff! Ruff!";
+	}
+}
+
+const harley = new Dog("Harley", 8);
+harley.eat(); // -> "Harley is eating!"
+harley.bark(); // -> "Ruff! Ruff!"
+
+// ** using this method the Cat and Dog classes have access to the eat() method even though we don't define it on Cat or Dog.
+
+/**
+	* Super
+
+	Super is going to reference the class that we are "extending" from.
+
+	Sometimes we want to rely on the exact same "constructor" from our "superclass" (parent class) from "Pet"
+ */
+
+class Pet {
+	constructor(name, age) {
+		this.name = name;
+		this.age = age;
+	}
+	eat() {
+		return `${this.name} is eating!`;
+	}
+}
+
+// Say we wanted some additional information for "Cat", like how many lives the cat has left (with a default of 9):
+
+class Cat extends Pet {
+	constructor(name, age, livesLeft = 9) {
+		super(name, age); // this is going to reference "name" and "age" from the (parent) "Pet" class
+		this.livesLeft = livesLeft;
+	}
+	meow() {
+		return "Meowww!";
+	}
+}
+
+const tigerLily = new Cat("Tiger Lily", 1);
+
+class Dog extends Pet {
+	bark() {
+		return "Ruff! Ruff!";
+	}
+}
+
+const harley = new Dog("Harley", 8);
+
+// ** At some point we can go really deep and have "Pet" extend from "Animal" and "Animal" extend from "LivingThing", etc. An example of this is the "HTMLElement" which extends from 5 or 6 different classes.
