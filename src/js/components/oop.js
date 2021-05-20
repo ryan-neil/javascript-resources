@@ -122,7 +122,7 @@ new constructor[[ arguments ]]();
 
 // ** The "new" operator under the hood:
 
-// Demo
+// Demo Syntax:
 function Color(r, g, b) {
 	this.r = r;
 	this.g = g;
@@ -136,7 +136,7 @@ new Color(255, 40, 100);
 When we call the "Color" function with "new" and pass in values it's going to do certain things behind the scenes.
 
 First:
-  1. Creates a blank, plain JavaScript object.
+  1. It creates a blank, plain JavaScript object.
 
 Next:
   2. Adds a property to the new object (__proto__) that links to the constructor function's prototype object. 
@@ -153,7 +153,7 @@ Lastly:
 function Color(r, g, b) {
 	const newObj = {}; // (*1*) the "new" operator creates an object
 
-	// (*3*) "this" is bound to "newObj" so here we're adding r,g,b to the "newObj" object.
+	// (*3*) "this" is bound to "newObj" so here we're adding r, g, b to the "newObj" object.
 	this.r = r;
 	this.g = g;
 	this.b = b;
@@ -170,29 +170,29 @@ function Color(r, g, b) {
 	this.b = b;
 }
 
-// instead of defining our functions inside the Color function, we add them to the Color.prototype outside the initial Color function call
+// instead of defining our functions inside the Color function, we add them to "Color.prototype" outside the initial "Color" function call
 
 // ** we don't want to use arrow functions for these since they behave differently with "this"
 
-// here we add an "rgb" function method to the "Color" prototype
+// here we add an "rgb" function method to "Color.prototype"
 Color.prototype.rgb = function() {
 	const { r, g, b } = this;
 	return `rgb(${r}, ${g}, ${b})`;
 };
 
-// here we add an "hex" function method to the "Color" prototype
+// here we add an "hex" function method to "Color.prototype"
 Color.prototype.hex = function() {
 	const { r, g, b } = this;
 	return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 };
 
-// here we add an "rgba" function method to the "Color" prototype
+// here we add an "rgba" function method to "Color.prototype"
 Color.prototype.rgba = function(a = 1.0) {
 	const { r, g, b } = this;
 	return `rgba(${r}, ${g}, ${b}, ${a})`;
 };
 
-// now we have access to those Color prototype functions globally.
+// now we have access to the Color.prototype functions globally.
 
 const color1 = new Color(255, 255, 255);
 const color2 = new Color(0, 0, 0);
@@ -203,4 +203,245 @@ color1.hex === color2.hex; // -> true
 color1.rgb() === color2.rgb(); // -> false
 color1.hex() === color2.hex(); // -> false
 
-document.body.style.backgroundColor = color1.rgba();
+/** 
+====================================
+Classes in JavaScript:
+
+	* Syntactic sugar for the "new" operator. A cleaner more concise way of creating "new" objects.
+	* The main benefits for this are: 
+		- that we don't have to add methods to the prototype manually (Color.prototype.rgb).
+		- We don't have to break up the constructor function and then separately add methods.
+*/
+
+// Class Syntax:
+class Rectangle {
+	constructor(height, width) {
+		this.height = height;
+		this.width = width;
+	}
+}
+
+// ** An important difference between function declarations and class declarations is that function declarations are hoisted and class declarations are not. You first need to declare your class and then access it.
+
+// Class Expression Syntax:
+// unnamed
+let Rectangle = class {
+	constructor(height, width) {
+		this.height = height;
+		this.width = width;
+	}
+};
+console.log(Rectangle.name); // -> "Rectangle"
+
+// named
+let Rectangle = class Rectangle2 {
+	constructor(height, width) {
+		this.height = height;
+		this.width = width;
+	}
+};
+console.log(Rectangle.name); // -> "Rectangle2"
+
+// Example 1: Previous section example
+class Color {
+	constructor(r, g, b, name) {
+		this.r = r;
+		this.g = g;
+		this.b = b;
+		this.name = name;
+	}
+}
+
+const colorTomato = new Color(255, 67, 89, "tomato");
+console.log(colorTomato); // -> Object { r: 255, g: 67, b: 89, name: "tomato" }
+
+// Example 2: adding methods to our new class with destructuring
+class Color {
+	constructor(r, g, b, name) {
+		this.r = r;
+		this.g = g;
+		this.b = b;
+		this.name = name;
+	}
+	rgb() {
+		const { r, g, b } = this;
+		return `rgb(${r}, ${g}, ${b})`;
+	}
+	hex() {
+		const { r, g, b } = this;
+		return (
+			"#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)
+		);
+	}
+}
+
+const colorRed = new Color(255, 75, 50, "red");
+const colorBlue = new Color(50, 75, 255, "blue");
+
+console.log(colorRed.hex()); // -> "#ff4b32"
+console.log(colorBlue.hex()); // -> "#324bff"
+
+colorRed.hex === colorBlue.hex; // -> true
+colorRed.hex() === colorBlue.hex(); // -> false
+
+// Example 2: Without destructuring our methods
+class Color {
+	constructor(r, g, b, name) {
+		this.r = r;
+		this.g = g;
+		this.b = b;
+		this.name = name;
+	}
+	rgb() {
+		return `rgb(${this.r}, ${this.g}, ${this.b})`;
+	}
+	hex() {
+		return (
+			"#" +
+			((1 << 24) + (this.r << 16) + (this.g << 8) + this.b)
+				.toString(16)
+				.slice(1)
+		);
+	}
+}
+
+const colorRed = new Color(255, 75, 50, "red");
+const colorBlue = new Color(50, 75, 255, "blue");
+
+console.log(colorRed.hex()); // -> "#ff4b32"
+console.log(colorBlue.hex()); // -> "#324bff"
+
+colorRed.hex === colorBlue.hex; // -> true
+colorRed.hex() === colorBlue.hex(); // -> false
+
+// Example 3: Calling methods from other instantiated methods
+class Color {
+	constructor(r, g, b, name) {
+		this.r = r;
+		this.g = g;
+		this.b = b;
+		this.name = name;
+	}
+	innerRGB() {
+		const { r, g, b } = this;
+		return `${r}, ${g}, ${b}`;
+	}
+	// here we're calling method [innerRGB()] from another instanced method [rgb()]
+	rgb() {
+		return `rgb(${this.innerRGB()})`;
+	}
+	// again, we call a method [innerRGB()] from another instanced method [rgba()]
+	rgba(a = 1.0) {
+		return `rgba(${this.innerRGB()}, ${a})`;
+	}
+	hex() {
+		const { r, g, b } = this;
+		return (
+			"#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)
+		);
+	}
+}
+
+const colorRed = new Color(255, 75, 50, "red");
+const colorBlue = new Color(50, 75, 255, "blue");
+
+colorRed.rgba(); // -> "rgba(255, 75, 50, 1)"
+colorBlue.rgba(0.5); // -> "rgba(50, 75, 255, 0.5)"
+
+// Example 4: Adding more methods to our Color class
+class Color {
+	constructor(r, g, b, name) {
+		this.r = r;
+		this.g = g;
+		this.b = b;
+		this.name = name;
+		this.calcHSL();
+	}
+	innerRGB() {
+		const { r, g, b } = this;
+		return `${r}, ${g}, ${b}`;
+	}
+	rgb() {
+		return `rgb(${this.innerRGB()})`;
+	}
+	rgba(a = 1.0) {
+		return `rgba(${this.innerRGB()}, ${a})`;
+	}
+	hex() {
+		const { r, g, b } = this;
+		return (
+			"#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)
+		);
+	}
+	hsl() {
+		const { h, s, l } = this;
+		return `hsl(${h}, ${s}%, ${l}%)`;
+	}
+	oppositeColor() {
+		const { h, s, l } = this;
+		// this adds 180 to the color hue, up to 360 and if it goes over 360 then the remainder is the new hue color (% [modulo])
+		const newHue = (h + 180) % 360;
+		return `hsl(${newHue}, ${s}%, ${l}%)`;
+	}
+	fullySaturated() {
+		const { h, l } = this;
+		return `hsl(${h}, 100%, ${l}%)`;
+	}
+
+	// This function converts an RGB color into an HSL color
+	calcHSL() {
+		let { r, g, b } = this;
+		// Make r, g, and b fractions of 1
+		r /= 255;
+		g /= 255;
+		b /= 255;
+
+		// Find greatest and smallest channel values
+		let cmin = Math.min(r, g, b),
+			cmax = Math.max(r, g, b),
+			delta = cmax - cmin,
+			h = 0,
+			s = 0,
+			l = 0;
+		if (delta == 0) h = 0;
+		else if (cmax == r)
+			// Red is max
+			h = ((g - b) / delta) % 6;
+		else if (cmax == g)
+			// Green is max
+			h = (b - r) / delta + 2;
+		else
+			// Blue is max
+			h = (r - g) / delta + 4;
+
+		h = Math.round(h * 60);
+
+		// Make negative hues positive behind 360°
+		if (h < 0) h += 360;
+		// Calculate lightness
+		l = (cmax + cmin) / 2;
+
+		// Calculate saturation
+		s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+
+		// Multiply l and s by 100
+		s = +(s * 100).toFixed(1);
+		l = +(l * 100).toFixed(1);
+		this.h = h;
+		this.s = s;
+		this.l = l;
+	}
+}
+
+const colorRed = new Color(255, 75, 50, "red");
+const colorBlue = new Color(50, 75, 255, "blue");
+const colorLightPink = new Color(247, 176, 186, "light pink");
+
+colorBlue.rgba(); // -> "rgba(50, 75, 255, 1)"
+colorBlue.rgba(0.5); // -> "rgba(50, 75, 255, 0.5)"
+
+colorRed.hsl(); // -> "hsl(7, 100%, 59.8%)"
+colorRed.oppositeColor(); // -> "hsl(187, 100%, 59.8%)"
+
+colorLightPink.hsl(); // -> "hsl(352, 81.6%, 82.9%)"
+colorLightPink.fullySaturated(); // -> "hsl(352, 100%, 82.9%)"
