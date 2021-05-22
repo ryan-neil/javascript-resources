@@ -8,6 +8,8 @@ I wanted to remove the bloat that comes with learning a programming language and
 
 > _“Any intelligent fool can make things bigger, more complex, and more violent. It takes a touch of genius—and a lot of courage—to move in the opposite direction.” —E.F. Schumacher_
 
+> ___Abstraction__ — creating a simple model of a more complex thing, which represents its most important aspects in a way that is easy to work with for our program's purposes._
+
 ###### If you found this guide helpful give me a follow and let me know! 🤙🏻
 [![Twitter Badge](https://img.shields.io/badge/-Twitter-00acee?style=flat-square&logo=Twitter&logoColor=white)](https://twitter.com/home?lang=en)
 
@@ -103,6 +105,11 @@ A quick look at the files and directories you'll see in the repo.
       * [Fetch](#fetch)
     * [Async Functions](#async-functions)
     * [Await](#await)
+1. [Object Oriented Programming](#object-oriented-programming)
+1. [OOP with JavaScript](#object-oriented-programming-with-javaScript)
+    * [Constructor Functions](#constructor-functions)
+    * ["new" Operator](#the-"new"-operator)
+    * [Classes](#classes-in-javascript)
 
   ----
 
@@ -4147,6 +4154,85 @@ startingPokemon();
 // -> charmander
 // -> squirtle
 ```
+
+**[⬆ Top](#table-of-contents)**
+
+----
+
+### Object Oriented Programming
+
+* [OOP Explained](https://www.educative.io/blog/object-oriented-programming)
+
+___What is Object Oriented Programming?___
+
+Object Oriented programming (OOP) is a programming paradigm that relies on the concept of __classes__ and __objects__. It is used to structure a software program into simple, reusable pieces of code blueprints (usually called classes), which are used to create individual instances of objects.
+
+A __class__ is an abstract blueprint used to create more specific, concrete objects. Classes often represent broad categories, like `Cat` or `Dog` that share __attributes__. These classes define what attributes an instance of this type will have, like `color`, but not the value of those attributes for a specific object.
+
+Classes can also contain functions, called `methods` available only to objects of that type. These functions are defined within the class and perform some action helpful to that specific type of object.
+
+
+### Object Oriented Programming with JavaScript
+
+* [OOP for JavaScript](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Object-oriented_JS)
+
+### Constructor Functions
+Constructor functions technically are regular functions. There are two conventions though:
+  1. They are named with capital letter first.
+  2. They should be executed only with "`new`" operator.
+
+__Example__:
+```js
+function User(name) {
+  this.name = name;
+  this.isAdmin = false;
+}
+
+let user1 = new User("Katie");
+
+console.log(user1.name); // -> Katie
+console.log(user1.isAdmin); // -> false
+```
+
+### The "new" Operator
+The `new` operator lets developers create an instance of a user-defined object type or of one of the built-in object types that has a constructor function.
+
+When a function is executed with `new`, it does the following steps:
+  1. A new empty object is created and assigned to `this`.
+  2. The function body executes. Usually it modifies `this`, adds new properties to it.
+  3. The value of `this` is returned.
+
+In other words, at run time `new User(...)` looks something like this:
+```js
+function User(name) {
+  // this = {}; (* 1) (implicitly creates an object)
+
+  // (* 2) (add properties to this)
+  this.name = name;
+  this.isAdmin = false;
+
+  // return this; (* 3) (implicitly returns "this")
+}
+```
+So `let user1 = new User("Katie")` gives the same result as:
+```js
+let user1 = {
+  name: "Katie",
+  isAdmin: false
+};
+```
+This method allows us to create other "users" very easily. All we need to do is call:
+```js
+let user2 = new User("Ryan");
+let user3 = new User("Kevin");
+```
+Much easier to read and shorter than using literals every time. That’s the main purpose of constructors – to implement reusable object creation code.
+
+> Note: technically, any function can be used as a constructor. That is: any function can be run with new, and it will execute the algorithm above. The “capital letter first” is a common agreement, to make it clear that a function is to be run with new.
+
+### Classes in Javascript
+
+**[⬆ Top](#table-of-contents)**
 
 ----
 

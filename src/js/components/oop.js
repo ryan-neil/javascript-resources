@@ -151,14 +151,14 @@ Lastly:
 
 // so behind the scenes, it really looks something like this:
 function Color(r, g, b) {
-	const newObj = {}; // (*1*) the "new" operator creates an object
+	// const newObj = {}; (* 1) the "new" operator creates an object
 
-	// (*3*) "this" is bound to "newObj" so here we're adding r, g, b to the "newObj" object.
+	// (* 3) "this" is bound to "newObj" so here we're adding r, g, b to the "newObj" object.
 	this.r = r;
 	this.g = g;
 	this.b = b;
 
-	return newObj; // (*4*) the "new" operator returns "this" which is referring to "newObj"
+	// return newObj; (* 4) the "new" operator returns "this" which is referring to "newObj"
 }
 
 // ** if we don't use the "new" keyword, "this" will refer to the window object.
