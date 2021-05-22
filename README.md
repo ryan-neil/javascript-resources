@@ -4163,14 +4163,486 @@ startingPokemon();
 
 * [OOP Explained](https://www.educative.io/blog/object-oriented-programming)
 
-___What is Object Oriented Programming?___
+### What is Object Oriented Programming?
+
+Alright, we got a big one here...maybe grab a cup of coffee.
 
 Object Oriented programming (OOP) is a programming paradigm that relies on the concept of __classes__ and __objects__. It is used to structure a software program into simple, reusable pieces of code blueprints (usually called classes), which are used to create individual instances of objects.
 
-A __class__ is an abstract blueprint used to create more specific, concrete objects. Classes often represent broad categories, like `Cat` or `Dog` that share __attributes__. These classes define what attributes an instance of this type will have, like `color`, but not the value of those attributes for a specific object.
+A __class__ is an abstract blueprint used to create more specific, concrete objects. Classes often represent broad categories, like `Car` or `Dog` that share __attributes__. These classes define what attributes an instance of this type will have, like `color`, `brand` or `model`, but not the value of those attributes for a specific object.
 
-Classes can also contain functions, called `methods` available only to objects of that type. These functions are defined within the class and perform some action helpful to that specific type of object.
+Classes can also contain functions, called `methods` available only to objects of that type. These functions are defined within the class and perform some action helpful to that specific type of object, like `start()` or `stop()`.
 
+Class templates are used as a blueprint to create individual objects. These represent specific examples of the abstract class, like `ryansCar` or `katiesCar`. Each object can have unique values to the properties defined in the class.
+
+For example, say we created a class, `Car`, to contain all the properties a car must have, `color`, `brand`, and `model`. We then create an instance of a `Car` type object, `ryansCar` to represent Ryan's specific car.
+
+We could then set the value of the properties defined in the class to describe Ryan's specific car, without affecting other objects or the class template.
+
+We could then reuse this class to represent any number of cars.
+
+Let's visualize this below:
+
+<img src="/src/assets/oop-diagram-01.png" width="800" alt="Object Oriented Programming Diagram 1">
+
+__So what's so great about OOP? What are it's benefits?__
+
+  * OOP models complex things as reproducible, simple structures
+  * Reusable, OOP objects can be used across programs
+  * Allows for class-specific behavior through polymorphism
+  * Easier to debug, classes often contain all applicable information to them
+  * Secure, protects information through encapsulation
+
+### Structuring OOP Programs
+
+Let's look at a real world problem, and conceptually design an OOP software program.
+
+Imagine running a car rental company, with hundreds of different cars, and you have to to keep track of the color, brand, model, type, days rented, etc. for each car. How could we design simple, reusable software to model the cars?
+
+With hundreds of cars, it would be inefficient to write unique code for each car. Below we see what that might look like with objects `ryansCar` and `katiesCar`.
+
+```js
+// Object of one car
+let ryansCar = {
+  color      : "red",
+  brand      : "toyota",
+  model      : "4runner",
+  type       : "suv",
+  daysRented : 10,
+  start = function() {
+    return console.log("Start the car!");
+  },
+  stop = function() {
+    return console.log("Stop the car!");
+  }
+};
+
+// Object of second car
+let katiesCar = {
+  color      : "blue",
+  brand      : "volkswagon",
+  model      : "tiguan",
+  type       : "suv",
+  daysRented : 7,
+  start = function() {
+    return console.log("Start the car!");
+  },
+  stop = function() {
+    return console.log("Stop the car!");
+  }
+};
+```
+As we can see above, there is a lot of duplicated code between both objects. The `start()` and `stop()` function appears in each object. Since we're capturing the same information for each car, we can use objects and classes instead.
+
+In the car rental example, here's how a programmer could think about organizing an OOP:
+
+  1. __Create a parent class for all cars__ as a blueprint of information and behaviors (methods) that all cars will have, regardless of color, model, etc.
+  2. __Create child classes__ to represent different subcategories of car under the generic parent blueprint.
+  3. __Add unique attributes and behaviors__ to the child classes to represent differences.
+  4. __Create objects from the child class__ that represent cars within that subgroup.
+
+The diagram below represents how to design an OOP program: grouping the related data and behaviors together to form a simple template then creating subgroups for specialized data and behavior.
+
+The `Car` class is a generic template, containing only the structure about data and behaviors common to all cars.
+
+We then create two child classes of `Car`, `LargeCar` and `SmallCar`. These have the inherited behaviors of `Car` (`start()`, `stop()`) but also have unique characteristics to cars of that subtype.
+
+Finally, we create objects of the `LargeCar` and `SmallCar` type to represent the individual cars `ryansCar` and `katiesCar`.
+
+<img src="/src/assets/oop-diagram-02.png" width="800" alt="Object Oriented Programming Diagram 2">
+
+### The Building Blocks of OOP
+
+Next, let's take a deeper dive into the fundamental building blocks of the OOP program used above.
+
+  * Class
+  * Objects
+  * Methods
+  * Attributes
+
+__Classes:__
+
+In a nutshell, classes are essentially __user defined data types__. Classes are where we create a blueprint for the structure of methods and attributes. Individual objects are instantiated, or created from this blueprint.
+
+Classes contain fields for attributes, and methods for behaviors. In our `Car` class example, attributes include `model` & `brand`, while methods include `start()` and `stop()`.
+
+Let's look at an example demonstrating how to program a `Car` class with JavaScript:
+
+```js
+class Car {
+  constructor(color, brand, type) {
+    this.color = color;
+    this.brand = brand;
+    this.type = type;
+  }
+
+  start() {
+    return console.log("Start the car!");
+  }
+
+  stop() {
+    return console.log("Stop the car!");
+  }
+
+  _milesPerDay = 0;
+
+  updateMilesPerDay() {
+    this._milesPerDay++;
+  }
+}
+```
+
+Remember the class is a template for modeling a car, and an object is instantiated from the class representing an individual real world thing.
+
+__Objects:__
+
+Objects are __instances of classes__ created with specific data, for example in the code snippet below `katiesCar` is an instance of the `Car` class.
+
+```js
+class Car {
+  constructor(color, brand, type) {
+    this.color = color;
+    this.brand = brand;
+    this.type = type;
+  }
+
+  start() {
+    return console.log("Start the car!");
+  }
+
+  stop() {
+    return console.log("Stop the car!");
+  }
+
+  _milesPerDay = 0;
+
+  updateMilesPerDay() {
+    this._milesPerDay++;
+  }
+}
+
+const katiesCar = new Car("blue", "tiguan", "suv")
+```
+
+When we call the new class `Car`:
+  * A new object is created named `katiesCar`.
+  * The constructor runs `color`, `brand`, and `type` arguments, and assigns values.
+
+__Attributes:__
+
+Attributes are the information that is stored. Attributes are defined in the `Class` template. When objects are instantiated individual objects contain data stored in the Attributes field.
+
+The state of an object is defined by the data in the object’s attributes fields. For example, maybe this is a bit of a stretch, but an electric car and a standard car might be treated differently at the rental car company. The miles per gallon attribute could define the state of an object, and allow the software to handle cars of different miles per gallon differently.
+
+__Methods:__
+
+Methods represent behaviors. Methods perform actions; methods might return information about an object, or update an object’s data. The method’s code is defined in the class definition.
+
+When individual objects are instantiated, these objects can call the methods defined in the class. In the code snippet below, the `start()` method is defined in `Car` class, and the `start()` method is called on the `katiesCar` object.
+
+```js
+class Car {
+  constructor(color, brand, type) {
+    this.color = color;
+    this.brand = brand;
+    this.type = type;
+  }
+
+  start() {
+    return console.log("Start the car!");
+  }
+
+  stop() {
+    return console.log("Stop the car!");
+  }
+  
+  _milesPerDay = 0;
+
+  updateMilesPerDay() {
+    this._milesPerDay++;
+  }
+}
+
+const katiesCar = new Car("blue", "tiguan", "suv")
+
+katiesCar.start(); // -> "Start the car!"
+```
+
+Methods often modify, update or delete data. Methods don’t have to update data though. For example the `start()` method doesn’t update any data because starting the car doesn’t modify any of the attributes of the `Car` class: `color`, `brand`, `type`.
+
+Let's say our car rental company charges our customers per mile. The `updateMilesPerDay()` method updates the `Car`'s total miles driven by the Customer. The miles per day attribute is important to keep track of for billing Customers at the end of their trips.
+
+Methods are how programmers promote reusability, and keep functionality encapsulated inside an object. This reusability is a great benefit when debugging. If there’s an error, there’s only one place to find it and fix it instead of many.
+
+The underscore in `_milesPerDay` denotes that the variable is protected, and shouldn’t be modified directly. The `updateMilesPerDay()` method is used to change `_milesPerDay`.
+
+### The Four Pillars (Principles) of OOP
+
+  * __Inheritance:__ child classes inherit data and behaviors from parent class.
+  * __Encapsulation:__ containing information in an object, exposing only selected information.
+  * __Abstraction:__ only exposing high level public methods for accessing an object.
+  * __Polymorphism:__ __poly__, meaning "many" and __morph__, meaning "forms". Polymorphism is when many methods can do the same task.
+
+### Inheritance
+
+Inheritance allows classes to inherit features of other classes. Put another way, parent classes extend attributes and behaviors to child classes. __Inheritance supports reusability__.
+
+If basic attributes and behaviors are defined in a parent class, child classes can be created extending the functionality of the parent class, and adding additional attributes and behaviors.
+
+For example, large cars have the unique ability to hold 8 passengers. In other words, all large cars are cars, but not all cars are large cars. We represent this difference by creating a child class `LargeCar` from the parent class `Car`, and then add the unique `seatEight()` behavior.
+
+The benefits of inheritance are programs can create a generic parent class, and then create more specific child classes as needed. This simplifies overall programming, because instead of recreating the structure of the `Car` class multiple times, __child classes automatically gain access to functionalities within their parent class__.
+
+In the example below, the child class `LargeCar` inherits the methods `start()` and `stop()` from the parent class `Car`, and the child class adds an additional method, `seatEight()`.
+
+```js
+class Car {
+	constructor(color, brand, type) {
+		this.color = color;
+		this.brand = brand;
+		this.type = type;
+	}
+
+	start() {
+		return console.log("Start the car!");
+	}
+
+	stop() {
+		return console.log("Stop the car!");
+	}
+
+	_milesPerDay = 0;
+
+	updateMilesPerDay() {
+		this._milesPerDay++;
+	}
+}
+
+class LargeCar extends Car {
+	constructor(color, brand, type, seats) {
+		super(color, brand, type);
+		this.seats = seats;
+	}
+
+	seatEight() {
+		return console.log("Eight people can get in!");
+	}
+}
+
+const katiesLargeCar = new LargeCar("blue", "tiguan", "suv", 8);
+
+katiesLargeCar.start(); // -> "Start the car!"
+katiesLargeCar.seatEight(); // -> "Eight people can get in!"
+```
+
+Notice that the `LargeCar` class does not have a copy of the `start()` method, it inherits the `start()` method defined in the parent `Car` class.
+
+When the code calls `katiesLargeCar.start()` method, the `start()` method walks up the chain of child to parent classes, to find where the `start()` method is defined.
+
+> Note: Parent class is also known as super class, or base class. Child class can also be called derived class, or extended class.
+
+In JavaScript, inheritance is also known as __prototyping__. A prototype object acts as a template for another object to inherit properties and behaviors from. There can be multiple prototype object templates, creating a prototype chain.
+
+### Encapsulation
+
+Encapsulation means containing all important information __inside an object__, and only exposing selected information to the outside world. Attributes and behaviors are defined by code inside the class template.
+
+Then, when an object is instantiated from the class, the data and methods are encapsulated in that object. Encapsulation hides the internal software code implementation inside a class, and hides internal data of inside objects.
+
+Encapsulation requires defining some fields as private and some as public.
+  * __Private/ Internal interface__: methods and properties, accessible from other methods of the same class.
+  * __Public / External Interface__: methods and properties, accessible also from outside the class.
+
+Let's continue our theme and use a car as a metaphor for encapsulation. The information the car shares with the outside world, using blinkers to indicate turns, are __public interfaces__. When you’re driving a car down the road, other drivers require information to make decisions, like whether you’re turning left or right.
+
+In contrast, private data like the engine temperature and current gas level are __private interfaces__ and would just confuse other drivers.
+
+<img src="/src/assets/oop-encapsulation-diagram.png" width="800" alt="Object Oriented Programming Encapsulation Diagram">
+
+Encapsulation adds __security__. Attributes and methods can be set to private, so they can’t be accessed outside the class. To get information about data in an object, public methods & properties are used to access or update that data.
+
+Within classes, most programming languages have public, protected, and private sections. __Public__ is the limited selection of methods available to the outside world, or other classes within the program. __Protected__ is only accessible to child classes. __Private__ code can only be accessed from within that class.
+
+Let's go back to our rental car company example, encapsulation is ideal so customers can't access private information about other customer's cars.
+
+> Note: JavaScript has private and protected properties and methods. Protected Fields are prefixed with a `_` ; private fields are prefixed with a `#`. Protected fields are inherited, private ones aren’t.
+
+In the example below, the `calcPrice()` calculation details are hidden inside the `Car` class. The `katiesCar` object uses the `getPrice()` method to calculate `katiesCar`'s price.
+
+```js
+class Car {
+  constructor(color, brand, type, days) {
+    this.color = color;
+    this.brand = brand;
+    this.type = type;
+    this.days = days;
+  }
+
+  // Declare protected (private) fields
+  _milesPerDay = 0;
+
+  updateMilesPerDay() {
+    this._milesPerDay++;
+  }
+
+  calcPrice() {
+    // calculate price by using number of days customer is renting the car and projected miles per day to be driven
+    return this.days * this._milesPerDay;
+  }
+
+  getPrice() {
+    // getter method
+    return this.calcPrice();
+  }
+}
+
+// instantiate a new instance of Car class, an individual car named katiesCar
+const katiesCar = new Car("blue", "tiguan", "suv", 7);
+
+// use getter method to calculate katiesCars' price
+katiesCar.getPrice();
+```
+
+__Encapsulating and updating data:__ Since methods can also update an object's data, the developer controls what value can be changed through public methods. This allows us to __hide important information__ that should not be changed from both phishing and the more likely scenario of other developers mistakenly changing important data.
+
+Encapsulation adds security to code and makes it easier to collaborate with external developers. When you're programming to share information with an external company, you wouldn't want to expose the classes' templates or private data because your company owns that intellectual property.
+
+Instead, developers create public methods that allow other developers to call methods on an object. Ideally, these public methods come with documentation for the external developers.
+
+Encapsulation summary:
+  * __Adds security:__ Only public methods and attributes are accessible from the outside.
+  * __Protects against common mistakes:__ Only public fields and methods accessible, so developers don't accidentally change something dangerous.
+  * __Protects IP:__ Code is hidden in a class, only public methods are accessible by the outside developers.
+  * __Supportable:__ Most code undergoes updates and improvements.
+  * __Hides complexity:__ No one can see what's behind the objects curtain.
+
+### Abstraction
+
+Abstraction means that the user interacts with only selected attributes and methods of an object. Abstraction uses simplified, high level tools, to access a complex object.
+
+The main take away's for abstraction are:
+  * Using simple things to represent complexity.
+  * Hide complex details from the user.
+
+Abstraction is an extension of encapsulation. For example, you don't have to know all the details of how the motor works to drive the car. A driver only uses a small selection of tools: like gas pedal, brake, steering wheel, blinker, etc. The engineering is hidden from the driver.
+
+To make a car work, a lot of pieces have to work under the hood (literally), but exposing that information to the driver would be extremely confusing and just dangerous.
+
+<img src="/src/assets/oop-abstraction-diagram.png" width="800" alt="Object Oriented Programming Abstraction Diagram">
+
+Abstraction also serves an important security role. By only displaying selected pieces of data, and only allowing data to be __accessed through classes__ and __modified through methods__, we protect the data from exposure. To continue with our car example again, you wouldn't want an open gas tank while driving a car.
+
+Abstraction summary:
+  * Simple, high level user interfaces.
+  * Complex code is hidden.
+  * Security.
+  * Easier software maintenance.
+  * Code updates rarely change abstraction.
+
+### Polymorphism
+
+Polymorphism means to design objects so that they can __share behaviors__. Using inheritance, objects can override shared parent behaviors, with specific child behaviors. Polymorphism allows the same method to execute different behaviors in two ways: __method overriding__ and __method overloading__.
+
+__Method Overriding__
+
+Runtime polymorphism uses method overriding. In method overriding, a child class can provide a different implementation than its parent class. In our car example, we may want to give `LargeCar` a specific type of `start()` different than the generic `Car` class.
+
+```js
+class Car {
+	constructor(color, brand, type) {
+		this.color = color;
+		this.brand = brand;
+		this.type = type;
+	}
+
+	start() {
+		return console.log("Start the car!");
+	}
+
+	stop() {
+		return console.log("Stop the car!");
+	}
+
+	_milesPerDay = 0;
+
+	updateMilesPerDay() {
+		this._milesPerDay++;
+	}
+}
+
+class LargeCar extends Car {
+	constructor(color, brand, type, seats) {
+		super(color, brand, type);
+		this.seats = seats;
+	}
+
+	seatEight() {
+		return console.log("Eight people can get in!");
+	}
+
+  // this method will override the parent start() method
+  start() {
+    return console.log("This car has a push to start!");
+  }
+}
+
+const katiesLargeCar = new LargeCar("blue", "tiguan", "suv", 8);
+katiesLargeCar.start(); // -> "This car has a push to start!"
+```
+
+Method overriding could create a `start()` method in the child `LargeCar` class that overrides the `start()` method in the parent `Car` class.
+
+__Method Overriding__
+
+__Compile Time polymorphism__ uses method overloading. Methods or functions may have the same name, but a different number of parameters passed into the method call. Different results may occur depending on the number of parameters passed in.
+
+In the code example below, if no parameters are passed into the `updateMilesPerDay()` method. One miles is added to the count. If a parameter is passed in `updateMilesPerDay(25)`, then 25 is passed into the `miles` parameter in `updateMilesPerDay(miles)`, and 25 miles are added to the count.
+
+```js
+class Car {
+	constructor(color, brand, type) {
+		this.color = color;
+		this.brand = brand;
+		this.type = type;
+	}
+
+	start() {
+		return console.log("Start the car!");
+	}
+
+	stop() {
+		return console.log("Stop the car!");
+	}
+
+	_milesPerDay = 0;
+
+	updateMilesPerDay() {
+		this._milesPerDay++;
+	}
+
+	updateMilesPerDay(miles) {
+		this._milesPerDay = this._milesPerDay + miles;
+		return miles;
+	}
+}
+
+const katiesCar = new Car("blue", "tiguan", "suv");
+katiesCar.updateMilesPerDay(); // -> milesPerDay = 0
+katiesCar.updateMilesPerDay(25); // -> milesPerDay = 25
+```
+
+The benefits of Polymorphism are:
+  * Objects of different types can be passed through the same interface
+  * Method overriding
+  * Method overloading
+
+### OOP Conclusion
+
+Object Oriented programming requires thinking about the structure of the program and planning at the beginning of coding. Looking at how to break up the requirements into simple, reusable classes that can be used to blueprint instances of objects. Overall, implementing OOP allows for better data structures and reusability, saving time in the long run.
+
+**[⬆ Top](#table-of-contents)**
+
+----
 
 ### Object Oriented Programming with JavaScript
 
