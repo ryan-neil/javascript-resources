@@ -4177,9 +4177,7 @@ Class templates are used as a blueprint to create individual objects. These repr
 
 For example, say we created a class, `Car`, to contain all the properties a car must have, `color`, `brand`, and `model`. We then create an instance of a `Car` type object, `ryansCar` to represent Ryan's specific car.
 
-We could then set the value of the properties defined in the class to describe Ryan's specific car, without affecting other objects or the class template.
-
-We could then reuse this class to represent any number of cars.
+We could then set the value of the properties defined in the class to describe Ryan's specific car, without affecting other objects or the class template. We could then reuse this class to represent any number of cars.
 
 Let's visualize this below:
 
@@ -4283,12 +4281,6 @@ class Car {
   stop() {
     return console.log("Stop the car!");
   }
-
-  _milesPerDay = 0;
-
-  updateMilesPerDay() {
-    this._milesPerDay++;
-  }
 }
 ```
 
@@ -4313,14 +4305,9 @@ class Car {
   stop() {
     return console.log("Stop the car!");
   }
-
-  _milesPerDay = 0;
-
-  updateMilesPerDay() {
-    this._milesPerDay++;
-  }
 }
 
+// our new object
 const katiesCar = new Car("blue", "tiguan", "suv")
 ```
 
@@ -4364,13 +4351,12 @@ class Car {
 }
 
 const katiesCar = new Car("blue", "tiguan", "suv")
-
 katiesCar.start(); // -> "Start the car!"
 ```
 
 Methods often modify, update or delete data. Methods don’t have to update data though. For example the `start()` method doesn’t update any data because starting the car doesn’t modify any of the attributes of the `Car` class: `color`, `brand`, `type`.
 
-Let's say our car rental company charges our customers per mile. The `updateMilesPerDay()` method updates the `Car`'s total miles driven by the Customer. The miles per day attribute is important to keep track of for billing Customers at the end of their trips.
+Let's say our car rental company charges our customers per mile. The `updateMilesPerDay()` method updates the `Car`'s total miles driven by the customer. The miles per day attribute is important to keep track of for billing customers at the end of their trips.
 
 Methods are how programmers promote reusability, and keep functionality encapsulated inside an object. This reusability is a great benefit when debugging. If there’s an error, there’s only one place to find it and fix it instead of many.
 
@@ -4397,40 +4383,39 @@ In the example below, the child class `LargeCar` inherits the methods `start()` 
 
 ```js
 class Car {
-	constructor(color, brand, type) {
-		this.color = color;
-		this.brand = brand;
-		this.type = type;
-	}
+  constructor(color, brand, type) {
+    this.color = color;
+    this.brand = brand;
+    this.type = type;
+  }
 
-	start() {
-		return console.log("Start the car!");
-	}
+  start() {
+    return console.log("Start the car!");
+  }
 
-	stop() {
-		return console.log("Stop the car!");
-	}
+  stop() {
+    return console.log("Stop the car!");
+  }
 
-	_milesPerDay = 0;
+  _milesPerDay = 0;
 
-	updateMilesPerDay() {
-		this._milesPerDay++;
-	}
+  updateMilesPerDay() {
+    this._milesPerDay++;
+  }
 }
 
 class LargeCar extends Car {
-	constructor(color, brand, type, seats) {
-		super(color, brand, type);
-		this.seats = seats;
-	}
+  constructor(color, brand, type, seats) {
+    super(color, brand, type);
+    this.seats = seats;
+  }
 
-	seatEight() {
-		return console.log("Eight people can get in!");
-	}
+  seatEight() {
+    return console.log("Eight people can get in!");
+  }
 }
 
 const katiesLargeCar = new LargeCar("blue", "tiguan", "suv", 8);
-
 katiesLargeCar.start(); // -> "Start the car!"
 katiesLargeCar.seatEight(); // -> "Eight people can get in!"
 ```
@@ -4549,36 +4534,36 @@ Runtime polymorphism uses method overriding. In method overriding, a child class
 
 ```js
 class Car {
-	constructor(color, brand, type) {
-		this.color = color;
-		this.brand = brand;
-		this.type = type;
-	}
+  constructor(color, brand, type) {
+    this.color = color;
+    this.brand = brand;
+    this.type = type;
+  }
 
-	start() {
-		return console.log("Start the car!");
-	}
+  start() {
+    return console.log("Start the car!");
+  }
 
-	stop() {
-		return console.log("Stop the car!");
-	}
+  stop() {
+    return console.log("Stop the car!");
+  }
 
-	_milesPerDay = 0;
+  _milesPerDay = 0;
 
-	updateMilesPerDay() {
-		this._milesPerDay++;
-	}
+  updateMilesPerDay() {
+    this._milesPerDay++;
+  }
 }
 
 class LargeCar extends Car {
-	constructor(color, brand, type, seats) {
-		super(color, brand, type);
-		this.seats = seats;
-	}
+  constructor(color, brand, type, seats) {
+    super(color, brand, type);
+    this.seats = seats;
+  }
 
-	seatEight() {
-		return console.log("Eight people can get in!");
-	}
+  seatEight() {
+    return console.log("Eight people can get in!");
+  }
 
   // this method will override the parent start() method
   start() {
@@ -4600,30 +4585,30 @@ In the code example below, if no parameters are passed into the `updateMilesPerD
 
 ```js
 class Car {
-	constructor(color, brand, type) {
-		this.color = color;
-		this.brand = brand;
-		this.type = type;
-	}
+  constructor(color, brand, type) {
+    this.color = color;
+    this.brand = brand;
+    this.type = type;
+  }
 
-	start() {
-		return console.log("Start the car!");
-	}
+  start() {
+    return console.log("Start the car!");
+  }
 
-	stop() {
-		return console.log("Stop the car!");
-	}
+  stop() {
+    return console.log("Stop the car!");
+  }
 
-	_milesPerDay = 0;
+  _milesPerDay = 0;
 
-	updateMilesPerDay() {
-		this._milesPerDay++;
-	}
+  updateMilesPerDay() {
+    this._milesPerDay++;
+  }
 
-	updateMilesPerDay(miles) {
-		this._milesPerDay = this._milesPerDay + miles;
-		return miles;
-	}
+  updateMilesPerDay(miles) {
+    this._milesPerDay = this._milesPerDay + miles;
+    return miles;
+  }
 }
 
 const katiesCar = new Car("blue", "tiguan", "suv");
