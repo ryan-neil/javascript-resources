@@ -8,8 +8,6 @@ I wanted to remove the bloat that comes with learning a programming language and
 
 > _“Any intelligent fool can make things bigger, more complex, and more violent. It takes a touch of genius—and a lot of courage—to move in the opposite direction.” —E.F. Schumacher_
 
-> ___Abstraction__ — creating a simple model of a more complex thing, which represents its most important aspects in a way that is easy to work with for our program's purposes._
-
 ###### If you found this guide helpful give me a follow and let me know! 🤙🏻
 [![Twitter Badge](https://img.shields.io/badge/-Twitter-00acee?style=flat-square&logo=Twitter&logoColor=white)](https://twitter.com/home?lang=en)
 
@@ -106,9 +104,11 @@ A quick look at the files and directories you'll see in the repo.
     * [Async Functions](#async-functions)
     * [Await](#await)
 1. [Object Oriented Programming](#object-oriented-programming)
+    * [Inheritance](#inheritance)
+    * [Encapsulation](#encapsulation)
+    * [Abstraction](#abstraction)
+    * [Polymorphism](#polymorphism)
 1. [OOP with JavaScript](#object-oriented-programming-with-javaScript)
-    * [Constructor Functions](#constructor-functions)
-    * ["new" Operator](#the-"new"-operator)
     * [Classes](#classes-in-javascript)
 
   ----
@@ -1565,10 +1565,10 @@ Higher order functions are functions that operate on other functions, either by 
 In simple words, A Higher-Order function receives a function as an argument or returns the function as output.
 
 JavaScript ships with built in Higher-Order Functions for us to use:
-  * [Array.map()](#map)
-  * [Array.filter()](#filter)
-  * [Array.forEach()](#foreach)
-  * [Array.reduce()](#reduce)
+  * [Array.map()](#[Array].map())
+  * [Array.filter()](#[Array].filter())
+  * [Array.forEach()](#[Array].forEach())
+  * [Array.reduce()](#[Array].reduce())
 
 We can also write our own higher-order functions based on what we need!
 
@@ -1587,10 +1587,10 @@ In the example above, the variable `evenValues` is taking the built-in higher-or
 Here's an example of how we can use `.filter()`, `.reduce()`, and `.map()` all together:
 ```javascript
 const grades = [
-	{ name: 'John', grade: 86, sex: 'M' },
-	{ name: 'Sarah', grade: 92, sex: 'F' },
-	{ name: 'Bob', grade: 94, sex: 'M' },
-	{ name: 'Jane', grade: 78, sex: 'F' }
+  { name: 'John', grade: 86, sex: 'M' },
+  { name: 'Sarah', grade: 92, sex: 'F' },
+  { name: 'Bob', grade: 94, sex: 'M' },
+  { name: 'Jane', grade: 78, sex: 'F' }
 ];
 
 // function declarations
@@ -1642,7 +1642,7 @@ We can shorten this even more if the function has *only* one statement, and the 
 square = (x) => x + x; 
 ```
 
-> When dealing with arrow functions it's important to remember that the keyword `this` behaves differently than it does in traditional functions. *See the "this" section for more details*.
+> When dealing with arrow functions it's important to remember that the keyword `this` behaves differently than it does in traditional functions. *See the "[this](#this-and-arrow-functions)" section for more details*.
 
 **[⬆ Top](#table-of-contents)**
 
@@ -1732,7 +1732,7 @@ Math.max(...a); // -> 3
 // Clone an array
 const b = [4, 5, 6];
 const c = [...b];
-console.log(c); // -> [4, 5, 6], b !== c
+console.log(c); // -> [4, 5, 6] (Note: b !== c)
 
 // Concatenate two arrays
 const d = [...a, ...b]; 
@@ -1776,11 +1776,6 @@ We can think of `this` as a reference to the current *execution scope*. It is go
 
 So depending on the scope and depending on the rules of how `this` works that `object` changes. It could even be a reference to the *global scope*.
 
-__Syntax__:
-```javascript
-this
-```
-
 __Example__:
 ```javascript
 // In web browsers, the window object is also the global object:
@@ -1821,8 +1816,7 @@ const user = {
   last     : 'Jane',
   nickName : '2 Sweet',
   fullName() {
-
-    // destructuring "this"
+    // destructuring
     const { first, last, nickName } = this;
     // we can then remove the "this" and simply call the keys
     console.log(`${first} ${last} aka ${nickName}`);
@@ -1843,7 +1837,7 @@ const user = {
   },
   // here we add a second method
   printBio() {
-    // we need to use "this" to reference the whole object,    only using fullName() throws a reference error
+    // we need to use "this" to reference the whole object, only using fullName() throws a reference error
     const fullName = this.fullName();
     console.log(`${fullName} is awesome!`);
   }
@@ -1862,7 +1856,7 @@ In short, the value of `this` does not change in arrow functions.
 
 In regular functions the `this` keyword represented the object that called the function, which could be the window, the document, a button or whatever.
 
-With arrow functions the `this` keyword *always* represents the object that defined the arrow function.
+With arrow functions the `this` keyword __always__ represents the object that defined the arrow function.
 
 This is generally why we do not use arrow functions as methods because a lot of the methods we write, we want to have access to the parent object of the containing object to do things like:
   * referencing properties
@@ -2812,6 +2806,7 @@ h2.remove();
 Event Structure:
 ```
 the thing:      the event type:     the code to run:
+
 button          click               change the color
 input           hits "enter"        get search results
 img             mouseover           display image caption
@@ -2920,6 +2915,7 @@ termsCheckbox.addEventListener("input", (e) => {
 });
 ```
 Let's refactor the above code:
+
 > Note: We need to add a "name" to each input in the html document [name=""]
 
 ```js
@@ -3306,9 +3302,9 @@ moveX(btn, 200, 1000)
 A Promise is an object representing the eventual completion or failure of an asynchronous operation.
 
 A Promise is always in one of these states:
-  * _pending_: initial state, neither fulfilled nor rejected.
-  * _fulfilled_: meaning that the operation was completed successfully.
-  * _rejected_: meaning that the operation failed.
+  * __pending__: initial state, neither fulfilled nor rejected.
+  * __fulfilled__: meaning that the operation was completed successfully.
+  * __rejected__: meaning that the operation failed.
 
 __Syntax__:
 ```js
@@ -3752,6 +3748,7 @@ fetch('./api/some.json')
     console.log('Error:', err);
   });
 ```
+
 > Note: the .json() method takes a response stream and reads it to completion. The only downside to this method is it takes time (it's asynchronous).
 
 We start by checking that the response status is 200 before parsing the response as JSON.
@@ -4367,7 +4364,7 @@ The underscore in `_milesPerDay` denotes that the variable is protected, and sho
   * __Inheritance:__ child classes inherit data and behaviors from parent class.
   * __Encapsulation:__ containing information in an object, exposing only selected information.
   * __Abstraction:__ only exposing high level public methods for accessing an object.
-  * __Polymorphism:__ __poly__, meaning "many" and __morph__, meaning "forms". Polymorphism is when many methods can do the same task.
+  * __Polymorphism:__ _poly_, meaning "many" and _morph_, meaning "forms". Polymorphism is when many methods can do the same task.
 
 ### Inheritance
 
@@ -4502,6 +4499,8 @@ Encapsulation summary:
   * __Hides complexity:__ No one can see what's behind the objects curtain.
 
 ### Abstraction
+
+> ___Abstraction__ — creating a simple model of a more complex thing, which represents its most important aspects in a way that is easy to work with for our program's purposes._
 
 Abstraction means that the user interacts with only selected attributes and methods of an object. Abstraction uses simplified, high level tools, to access a complex object.
 
@@ -4671,23 +4670,94 @@ function User(name) {
   // return this; (* 3) (implicitly returns "this")
 }
 ```
-So `let user1 = new User("Katie")` gives the same result as:
+So `const user1 = new User("Katie")` gives the same result as:
 ```js
-let user1 = {
+const user1 = {
   name: "Katie",
   isAdmin: false
 };
 ```
 This method allows us to create other "users" very easily. All we need to do is call:
 ```js
-let user2 = new User("Ryan");
-let user3 = new User("Kevin");
+const user2 = new User("Ryan");
+const user3 = new User("Kevin");
 ```
 Much easier to read and shorter than using literals every time. That’s the main purpose of constructors – to implement reusable object creation code.
 
 > Note: technically, any function can be used as a constructor. That is: any function can be run with new, and it will execute the algorithm above. The “capital letter first” is a common agreement, to make it clear that a function is to be run with new.
 
 ### Classes in Javascript
+Classes in JavaScript are syntactic "sugar" for the `new` operator. It is a cleaner and more concise way of creating `new` objects.
+
+The main benefits for this are:
+  * We don't have to add methods to the prototype object manually (Color.prototype.rgb).
+  * We don't have to have to break up the constructor function and then separately add methods.
+
+__Demo Syntax:__
+```js
+class Car {
+  constructor(brand, year) {
+    this.brand = brand;
+    this.year = year;
+  }
+}
+```
+
+> Note: An important difference between function declarations and class declarations is that __class declarations are not hoisted__ and function declarations are. You first need to declare your class and then access it.
+
+__Class Expression Syntax:__
+```js
+// unnamed
+const Car = class {
+  constructor(brand, year) {
+    this.brand = brand;
+    this.year = year;
+  }
+};
+console.log(Car.name); // -> "Car"
+
+// named
+const Car = class Car2 {
+  constructor(brand, year) {
+    this.brand = brand;
+    this.year = year;
+  }
+};
+console.log(Car.name); // -> "Car2"
+```
+
+Once we have a class, we can use the class to create objects:
+```js
+const car1 = new Car("Toyota", 2006);
+const car2 = new Car("Audi", 2015);
+```
+
+### Classes Methods
+Class methods are created with the same syntax as object methods. We use the keyword `class` to create a class.
+
+Always add a `constructor()` method. Then add any number of methods.
+
+__Example:__
+```js
+class Car {
+  constructor(brand, year) {
+    this.brand = brand;
+    this.year = year;
+  }
+
+  calcAge() {
+    let date = new Date();
+    return date.getFullYear() - this.year;
+  }
+
+  getAge() {
+    return this.calcAge();
+  }
+}
+
+const car1 = new Car("Toyota", 2006);
+console.log(`My car is ${car1.getAge()} years old!`); // -> "My car is 15 years old!"
+```
 
 **[⬆ Top](#table-of-contents)**
 
