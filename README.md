@@ -4759,6 +4759,94 @@ const car1 = new Car("Toyota", 2006);
 console.log(`My car is ${car1.getAge()} years old!`); // -> "My car is 15 years old!"
 ```
 
+### Classes Extends
+
+The `extends` keyword is used in class declarations or class expressions to create a class that is a child of another class.
+
+__Syntax:__
+```js
+class ChildClass extends ParentClass { ... }
+```
+
+Let's look at a very simple cat and dog example of this. In the example below, both cats and dogs eat so we can add the `eat()` method inside the parent class `Pet` and then have the child classes `Cat` and `Dog` access that method from the same parent (`Pet`).
+```js
+class Pet {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+	}
+
+  eat() {
+    console.log(`${this.name} is eating!`);
+  }
+}
+
+class Cat extends Pet {
+  meow() {
+    console.log("Meowww!");
+  }
+}
+
+const tigerLily = new Cat("Tiger Lily", 1);
+tigerLily.eat(); // -> "Tiger Lily is eating!"
+tigerLily.meow(); // -> "Meowww!"
+
+class Dog extends Pet {
+  bark() {
+    console.log("Woof! Woof!");
+  }
+}
+
+const harley = new Dog("Harley", 8);
+harley.eat(); // -> "Harley is eating!"
+harley.bark(); // -> "Woof! Woof!"
+```
+In the example above, we must include `extends Pet` after the class names. By doing this we don't have to include the `constructor` function to `Cat` or `Dog`. The `Cat` and `Dog` classes now both have access to the `eat()` method even though we don't define it on the `Cat` or `Dog` objects. Pretty sweet!
+
+### Classes Super
+The `super` keyword is used to access and call functions on an object's parent.
+
+The `super` keyword is always going to reference the class that we are "extending" from. Sometimes we want to rely on the exact same `constructor` from our "super" class (the parent class). From our previous example the "super" was the `Pet` class.
+
+Let's build upon our previous cat and dog example and add some additional information for our `Cat` class, like how many lives the cat has left (we will default to 9):
+```js
+class Pet {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+	}
+
+  eat() {
+    console.log(`${this.name} is eating!`);
+  }
+}
+
+class Cat extends Pet {
+  constructor(name, age, livesLeft = 9) {
+    super(name, age); // this is going to reference "name" and "age" from the parent class "Pet"
+    this.livesLeft = livesLeft;
+  }
+
+  meow() {
+    console.log("Meowww!");
+  }
+
+  calcLivesLeft() {
+    console.log(`${this.name} has died!`);
+    return this.livesLeft - 1;
+  }
+
+  getLivesLeft() {
+    return this.calcLivesLeft();
+  }
+}
+
+const cat1 = new Cat("Tiger Lily", 1);
+console.log(cat1.getLivesLeft()); // -> 8
+```
+
+We can take this concept as deep as we want and maybe have `Pet` extend from `Animal` and `Animal` extend from `LivingThing`, etc. An example of this from the web API is `HTMLElement` which extends from 5 or 6 different classes.
+
 **[⬆ Top](#table-of-contents)**
 
 ----
