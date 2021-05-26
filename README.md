@@ -4855,5 +4855,3 @@ We can take this concept as deep as we want and maybe have `Pet` extend from `An
 Contributions are always welcome! All I ask is that you open an issue and we discuss your proposed changes before you create a pull request.
 
 **[⬆ Top](#table-of-contents)**
-
-

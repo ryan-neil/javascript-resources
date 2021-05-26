@@ -1,0 +1,32 @@
+:root {
+	--color-white: #ffffff;
+	--color-light1: #f8f9fa;
+	--color-light2: #fef8ec;
+	--color-dark: #21252b;
+	--color-dark-light: #282c34;
+	--color-red: #ff4000;
+	--color-green: #63d000;
+	--color-blue: #00aff5;
+	--color-yellow: #ffbb00;
+	--color-box-shadow: #2b2d34;
+	--color-text-dark: #202124;
+	--color-text-light: #5f6369;
+	--color-border: #dadcdf;
+	--box-shadow-sm: 0px 2px 4px 0px rgba(14, 30, 37, 0.12);
+	--box-shadow-md: 0px 4px 20px 0px rgba(0, 0, 0, 0.12);
+	--box-shadow-lg: -10px 10px 80px 0px rgba(0, 0, 0, 0.1);
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html {
+	font-family: 'Noto Sans JP', -apple-system, sans-serif;
+}
+
+body {
+	background-color: var(--color-light1);
+}
