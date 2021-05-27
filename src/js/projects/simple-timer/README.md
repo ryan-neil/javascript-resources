@@ -2,9 +2,9 @@
 <!-- <img src="" width="800" alt=""> -->
 
 ## Introduction
-A very simple countdown timer to practice Vanilla JavaScript.
+A very simple countdown timer to practice System/Application Design and Vanilla JavaScript.
 
-## File Tree
+## 📂 File Tree
 ```bash
 └─ simple-timer
   ├─ index.html
@@ -12,11 +12,17 @@ A very simple countdown timer to practice Vanilla JavaScript.
   ├─ app.js
 ```
 
-## Main Features
+----
+
+## ⚒️ Main Application Features
 1. Timer display
 2. Animated border around timer
 
-## Architecture (Psuedo Code)
+----
+
+## 🗒️ Application Architecture
+
+### The Psuedo Code
 ```bash
 └─ Event listener to watch for a click on "start" button
   ├─ Draw a full border around the timer
@@ -60,7 +66,10 @@ By implementing our simple timer application this way we could possibly reuse ou
 
 Additionally, we would have some implementation of updating our border that wouldn't really care about whether we are having to work with a timer or some other thing, like the progress of making a network request or downloading a file, etc.
 
-  ----
+### The Implementation
+
+
+----
 
 ### Section Title
 

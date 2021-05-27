@@ -92,6 +92,7 @@ A quick look at the files and directories you'll see in the repo.
 1. [Spread](#spread)
 1. [Rest](#rest)
 1. [This](#this)
+1. [Getters and Setters](#getters-and-setters)
 1. [The DOM](#the-document-object-model-dom)
     * [DOM Methods and Properties](#dom-methods-and-properties)
     * [DOM Events](#dom-events)
@@ -1885,6 +1886,172 @@ console.log(person.sayHello());
 // -> Window
 // -> undefined says hi there!!
 ```
+
+### Determining the Value of "this"
+
+We have 3 different ways at which we can determine the value of `this` inside of a function:
+  1. We ask ourselves, did I define the function with an arrow function?
+      * If this is true, write "console.log(this)" on the first __valid__ line above the arrow function. Value of "this" in teh arrow function will be equal to that console log.
+```js
+console.log(this); // -> Window
+const printThis = () => {
+  console.log(this); // -> Window
+};
+printThis();
+```
+Another example:
+```js
+const colors = {
+  printColor() {
+    console.log(this); // -> Object { printColor: printColor() }
+    const printThis = () => {
+      console.log(this); // -> Object { printColor: printColor() }
+    };
+    printThis();
+  }
+};
+colors.printColor();
+```
+
+  2. We ask ourselves, did I call "bind", "call" or "apply" on the function when you invoked it?
+      * "this" is equal to the first argument of "bind", "call" or "apply".
+```js
+const printThis = function() {
+  console.log(this); // -> Object { color: "red" }
+};
+printThis.call({ color: "red" });
+```
+
+  3. All other cases:
+      * "this" is equal to whatever is to the left of the "." in the method call.
+```js
+const colors = {
+  printColor() {
+    console.log(this); // -> Object { printColor: printColor() }
+  }
+};
+// Because the "colors" object is to the left of the period, the value of "this" inside "printColor" is going to be equal to whatever is inside the "colors" object.
+colors.printColor();
+```
+Another example:
+```js
+const colors = {
+  printColor() {
+    console.log(this); // -> Object { a: 1, printColor: printColor() }
+  }
+};
+const randomObject = {
+	a : 1
+};
+randomObject.printColor = colors.printColor;
+randomObject.printColor();
+```
+
+**[⬆ Top](#table-of-contents)**
+
+----
+
+### Getters and Setters
+  * [Property Getters and Setters](https://javascript.info/property-accessors)
+
+Getters and setters allow you to define Object Accessors (Computed Properties).
+
+In JavaScript we have two kinds of object properties, _data properties_ and _accessor properties_. 
+
+Accessor properties are essentially functions that execute on getting and setting a value, but look like regular properties to an external code.
+
+Accessor properties are represented by “getter” and “setter” methods. In an object literal they are denoted by `get` and `set`.
+
+Now let's look at one method in which we can access `fullName()` from the `person` object:
+
+__Method 1:__
+```js
+const person = {
+  firstName : "Katie",
+  lastName  : "Jane",
+  fullName() {
+    return `${person.firstName} ${person.lastName}`;
+  }
+};
+
+console.log(person.fullName()); // -> "Katie Jane"
+```
+
+The issue with this approach is we cannot set the full name from outside the object. Also, it would be much better if we didn't have to call fullName like a method (`fullName()`). Instead, we could treat it like a property and drop the parenthesis (`fullName`).
+
+This is where getters and setters come in:
+  * Getters: access properties
+  * Setters: change (mutate) them
+
+__Method 2:__
+```js
+const person = {
+  firstName : "Katie",
+  lastName  : "Jane",
+  get fullName() {
+    return `${person.firstName} ${person.lastName}`;
+  }
+};
+
+console.log(person.fullName); // -> "Katie Jane"
+```
+
+Now, to be able to access `fullName` from the outside, we need to add a "setter". It's important to note that our "setter" method must have a parameter passed in. This parameter is going to be what we have on the right side of the assignment operator (`=`).
+
+In the example below, outside of the object we call `person.fullName = "Ryan Neil"` and since `"Ryan Neil"` is to the right side of the assignment operator that becomes the new value.
+
+```js
+const person = {
+  firstName : "Katie",
+  lastName  : "Jane",
+  get fullName() {
+    return `${person.firstName} ${person.lastName}`;
+  },
+  set fullName(value) {
+    const nameParts = value.split(" ");
+    console.log(nameParts); // -> Array [ "Ryan", "Neil" ]
+    this.firstName = nameParts[0];
+    this.lastName = nameParts[1];
+  }
+};
+
+person.fullName = "Ryan Neil"; // Here we're changing the value of the person object
+
+console.log(person); // -> Object { firstName: "Ryan", lastName: "Neil", fullName: Getter & Setter }
+console.log(person.fullName); // -> Ryan Neil
+```
+
+### Function or Getter?
+Let's look at two examples and try and figure out what their differences are.
+
+__Example 1:__
+```js
+const person = {
+  firstName : "Katie",
+  lastName  : "Jane",
+  fullName  : function() {
+    return `${this.firstName} ${this.lastName}`;
+  }
+};
+
+console.log(person.fullName()); // -> "Katie Jane"
+```
+
+In the Example 1 code above, we're accessing fullName as a __function__: `person.fullName()`.
+
+__Example 2:__
+```js
+const person = {
+  firstName : "Katie",
+  lastName  : "Jane",
+  get fullName() {
+    return `${this.firstName} ${this.lastName}`;
+  }
+};
+
+console.log(person.fullName); // -> "Katie Jane"
+```
+In the Example 2 code above, we're accessing fullName as a __property__: `person.fullName`.
 
 **[⬆ Top](#table-of-contents)**
 
@@ -4639,13 +4806,12 @@ Constructor functions technically are regular functions. There are two conventio
 
 __Example__:
 ```js
-function User(name) {
+class User(name) {
   this.name = name;
   this.isAdmin = false;
 }
 
-let user1 = new User("Katie");
-
+const user1 = new User("Katie");
 console.log(user1.name); // -> Katie
 console.log(user1.isAdmin); // -> false
 ```
@@ -4663,7 +4829,7 @@ In other words, at run time `new User(...)` looks something like this:
 function User(name) {
   // this = {}; (* 1) (implicitly creates an object)
 
-  // (* 2) (add properties to this)
+  // (* 2) (add properties to "this")
   this.name = name;
   this.isAdmin = false;
 
@@ -4726,7 +4892,7 @@ const Car = class Car2 {
 console.log(Car.name); // -> "Car2"
 ```
 
-Once we have a class, we can use the class to create objects:
+Once we have a class object, we can use the class to create objects:
 ```js
 const car1 = new Car("Toyota", 2006);
 const car2 = new Car("Audi", 2015);
