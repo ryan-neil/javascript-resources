@@ -2053,6 +2053,31 @@ console.log(person.fullName); // -> "Katie Jane"
 ```
 In the Example 2 code above, we're accessing fullName as a __property__: `person.fullName`.
 
+### Setters and Getter with Classes
+
+__Example:__
+```js
+class User {
+  constructor(name) {
+    this.name = name;
+  }
+
+  get name() {
+    return this._name;
+  }
+
+  set name(value) {
+    this._name = value;
+  }
+}
+
+let user1 = new User("Katie");
+console.log(user1.name); // -> "Katie"
+
+user1 = new User("Ryan");
+console.log(user1); // -> Object { _name: "Ryan" }
+```
+
 **[⬆ Top](#table-of-contents)**
 
 ----
