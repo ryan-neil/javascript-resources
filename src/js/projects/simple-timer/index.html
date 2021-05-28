@@ -14,14 +14,22 @@
   <!-- CSS -->
   <link rel="stylesheet" href="style.css">
   <!-- JavaScript -->
+  <script src="timer.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 
 <body>
-  <input id="duration" value="30" />
-  <button id="start">Start</button>
-  <button id="pause">Pause</button>
+  <div class="timer-container">
 
+    <svg height="200" width="200">
+      <circle r="90" cx="100" cy="100" fill="transparent" stroke="#ff4000" stroke-width="6" />
+    </svg>
+
+    <input id="duration" value="30"> </input>
+    <button id="start">Start</button>
+    <button id="pause">Pause</button>
+
+  </div>
 </body>
 
 </html>
