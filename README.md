@@ -41,6 +41,7 @@ A quick look at the files and directories you'll see in the repo.
         ├── spread.js
         └── this.js
       └── projects
+        ├── simpler-timer
 ```
 
 1. **`/src`**: This directory contains all of the source files for the Github repo.
