@@ -20,3 +20,6 @@ const timer = new Timer(durationInput, startButton, pauseButton, {
 		console.log("Timer is completed!");
 	}
 });
+
+// if we take a circle and measure it's radius, so it's center point to the circles outside edge, we can calculate the entire perimeter of the circle.
+// * We do this by using the formula: 2 * PI * r
