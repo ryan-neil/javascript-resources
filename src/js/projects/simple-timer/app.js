@@ -1,6 +1,7 @@
 const durationInput = document.querySelector("#duration");
 const startButton = document.querySelector("#start");
 const pauseButton = document.querySelector("#pause");
+const resetButton = document.querySelector("#reset");
 
 const circle = document.querySelector("circle");
 // if we take a circle and measure it's radius, so it's center point to the circle's outside edge, we can calculate the entire perimeter of the circle. We do this by using the formula: 2 * PI * r.

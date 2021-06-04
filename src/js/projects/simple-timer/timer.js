@@ -1,9 +1,16 @@
 class Timer {
-	constructor(durationInput, startButton, pauseButton, callbacks) {
+	constructor(
+		durationInput,
+		startButton,
+		pauseButton,
+		resetButton,
+		callbacks
+	) {
 		// Here we store a reference to our arguments. This way we can easily work with them in the future.
 		this.durationInput = durationInput;
 		this.startButton = startButton;
 		this.pauseButton = pauseButton;
+		this.resetButton = resetButton;
 
 		// We add a 4th argument to the constructor from our instanced timer's 4th argument with all the callbacks.
 		// We also add a check to make this "callbacks" argument optional.
@@ -17,6 +24,7 @@ class Timer {
 		// Here we bind some event listeners to those elements. This is how we will call the methods that are defined inside of our Timer class.
 		this.startButton.addEventListener("click", this.start);
 		this.pauseButton.addEventListener("click", this.pause);
+		this.resetButton.addEventListener("click", this.reset); // ERROR!
 	}
 
 	// Here we make the start function an arrow functions. By doing this, the start function gets inserted into the constructor function which gives us access to the Timer object and all its properties.
@@ -36,6 +44,10 @@ class Timer {
 
 	pause = () => {
 		clearInterval(this.interval);
+	};
+
+	reset = () => {
+		console.log("Clicked reset!");
 	};
 
 	// This function is going to reach into the text input, get the current value out of it, subtract 1 from it and then pass that updated value back into the input.
