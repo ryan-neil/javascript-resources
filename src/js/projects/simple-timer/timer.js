@@ -25,11 +25,11 @@ class Timer {
 		// We check if "this.onStart" is defined because it's possible that it won't be defined if we don't pass in any callbacks.
 		if (this.onStart) {
 			// if we do have a callback, then we're going to invoke it inside here.
-			this.onStart();
+			this.onStart(this.timeRemaining);
 		}
 
 		this.tick(); // This makes the timer start right away without having to wait a full second before it starts the tick function.
-		this.interval = setInterval(this.tick, 1000); // This run's this.tick once every 1 second.
+		this.interval = setInterval(this.tick, 50);
 	};
 
 	// * In order to share information between different methods, we assign that information to an instance variable. To do this, in the start function we assign "this.interval" equal to the "setInterval" method.
@@ -49,10 +49,11 @@ class Timer {
 				this.onComplete();
 			}
 		} else {
-			this.timeRemaining = this.timeRemaining - 1; // this.timeRemaining => (setter) = this.timeRemaining - 1 => (getter)
+			this.timeRemaining = this.timeRemaining - 0.05; // this.timeRemaining => (setter) = this.timeRemaining - 1 => (getter)
 			// Here we invoke the onTick callback
 			if (this.onTick) {
-				this.onTick();
+				// pass in this.timeRemaining so our onTick function has access to it
+				this.onTick(this.timeRemaining);
 			}
 		}
 	};
@@ -65,7 +66,8 @@ class Timer {
 	// setter function
 	// This setter function changes the value inside the input.
 	set timeRemaining(time) {
-		this.durationInput.value = time;
+		// we add "toFixed(2)" to our time which will round the decimal to just 2 decimal places
+		this.durationInput.value = time.toFixed(2);
 	}
 
 	// * we have hidden away all the complexity inside the getter and setter functions.

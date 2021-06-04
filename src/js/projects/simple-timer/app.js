@@ -1,25 +1,38 @@
-// Select our 3 elements from the index.html file
 const durationInput = document.querySelector("#duration");
 const startButton = document.querySelector("#start");
 const pauseButton = document.querySelector("#pause");
 
-// We create our instance of the Timer and pass in the 3 elements we just created
-// We need to add an optional 4th argument to our Timer instance, meaning we will still be able to use our timer with or without the 4th argument.
-// Inside the argument object, we're going to pass in a series of different callbacks that we're going to make sure get invoked at very specific times during our timers life cycle.
+const circle = document.querySelector("circle");
+// if we take a circle and measure it's radius, so it's center point to the circle's outside edge, we can calculate the entire perimeter of the circle. We do this by using the formula: 2 * PI * r.
+const perimeter = circle.getAttribute("r") * 2 * Math.PI;
+circle.setAttribute("stroke-dasharray", perimeter);
+
 const timer = new Timer(durationInput, startButton, pauseButton, {
-	// We need to make sure that these 3 callbacks are all optional.
-	// This is how we are going to hook up our timer to the outside world and allow us to react to the timer starting, a second ticking down, or the timer completing.
-	// This is going to also allow us to segment (isolate) the different parts of our code base.
-	onStart() {
-		console.log("Timer started!");
+	onStart(totalDuration) {
+		console.log("Timer Started!");
+		this.totalDuration = totalDuration;
+		console.log(`this.totalDuration is: ${this.totalDuration}`);
+		let currentOffset = -(perimeter / (totalDuration * 20));
+		// The value 20 is a result of 1000ms divided by 50ms used in the setInterval
+		this.currentOffset = currentOffset;
 	},
 	onTick() {
-		console.log("Timer just ticked down!");
+		circle.setAttribute("stroke-dashoffset", this.currentOffset);
+		this.currentOffset =
+			this.currentOffset - perimeter / (this.totalDuration * 20);
 	},
 	onComplete() {
-		console.log("Timer is completed!");
+		console.log("Timer completed!");
 	}
 });
 
-// if we take a circle and measure it's radius, so it's center point to the circles outside edge, we can calculate the entire perimeter of the circle.
-// * We do this by using the formula: 2 * PI * r
+/**
+Better to think about it logically than depend on code to understand.
+
+You want the visible perimeter remaining to be proportional to the time remaining. If 50% of the time is up, then you expect 50% of the perimeter to have disappeared.
+
+This proportion is easy to get by dividing the time remaining by total time. It's like getting a test back out of 30 and you say "what percent did i get?" so you divide your mark by 30.
+
+
+The reason you subtract the perimeter is because you need the offset to go clockwise. So say the perimeter was 100. Half the time went up so the offset is 50. We need -50 though. 50 - 100 = -50.
+ */

@@ -8,7 +8,12 @@
 	--color-green: #63d000;
 	--color-blue: #00aff5;
 	--color-yellow: #ffbb00;
-	--color-gradient: linear-gradient(135deg, #abdcff 10%, #0396ff 100%);
+	--color-gradient: linear-gradient(
+		to bottom right,
+		#12c2e9,
+		#c471ed,
+		#f64f59
+	);
 	--color-box-shadow: #2b2d34;
 	--color-text-dark: #202124;
 	--color-text-light: #5f6369;
@@ -32,6 +37,7 @@ html {
 body {
 	background-image: var(--color-gradient);
 	height: 100vh;
+	padding: 1rem;
 
 	display: flex;
 	justify-content: center;
