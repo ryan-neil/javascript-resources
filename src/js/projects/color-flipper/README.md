@@ -14,4 +14,4 @@ Extra Credit:
 4. Add a text box that updates the text to match the background color.
 5. The text color in the textbox should match the color being displayed.
 
-[Solution]()
+[Solution](https://github.com/ryan-neil/JavaScript-Resources/blob/main/src/js/projects/color-flipper/app.js)

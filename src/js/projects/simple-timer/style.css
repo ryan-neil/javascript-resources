@@ -4,10 +4,6 @@
 	--color-light2: #fef8ec;
 	--color-dark: #21252b;
 	--color-dark-light: #282c34;
-	--color-red: #ff4000;
-	--color-green: #63d000;
-	--color-blue: #00aff5;
-	--color-yellow: #ffbb00;
 	--color-gradient: linear-gradient(
 		to bottom right,
 		#12c2e9,
@@ -15,8 +11,7 @@
 		#f64f59
 	);
 	--color-box-shadow: #2b2d34;
-	--color-text-dark: #202124;
-	--color-text-light: #5f6369;
+	--color-text: #202124;
 	--color-border: #dadcdf;
 	--box-shadow-sm: 0px 2px 4px 0px rgba(14, 30, 37, 0.12);
 	--box-shadow-md: 0px 4px 20px 0px rgba(0, 0, 0, 0.12);
@@ -43,6 +38,17 @@ body {
 	justify-content: center;
 	align-items: center;
 }
+input {
+	display: block;
+	border: none;
+	outline: none;
+	background: none;
+}
+button {
+	background: none;
+	border: none;
+	cursor: pointer;
+}
 
 .timer-container {
 	position: relative;
@@ -54,4 +60,43 @@ body {
 	box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);
 	background-color: rgba(255, 255, 255, 0.3);
 	backdrop-filter: blur(10px) saturate(100%) contrast(45%) brightness(130%);
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+.ticker-wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+.countdown {
+	position: absolute;
+	width: 70%;
+	font-size: 5rem;
+	text-align: center;
+	color: var(--color-text);
+}
+.btn-container {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	margin-top: 1rem;
+}
+.icon {
+	fill: var(--color-white);
+	padding: 0.35rem;
+	border-radius: 2rem;
+}
+.icon:hover {
+	transition: 0.1s ease-in;
+	background-color: rgba(255, 255, 255, 0.2);
+}
+.icon.sm {
+	width: 3rem;
+}
+.icon.md {
+	width: 4rem;
 }
