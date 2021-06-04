@@ -88,6 +88,7 @@ A quick look at the files and directories you'll see in the repo.
     * [Object Methods](#object-methods)
     * [String Methods](#string-methods)
 1. [Functions](#functions)
+    * [Callback Functions](#callback-functions)
     * [Higher-Order Functions](#higher-order-functions)
 1. [Destructuring](#destructuring)
 1. [Spread](#spread)
@@ -1431,14 +1432,14 @@ With functions in JavaScript, you can:
   * Pass them as arguments
   * Return them from other functions
 
-#### Function Scope:
+### Function Scope:
 In JavaScript there are two types of scope:
 * Local scope
 * Global scope
 
 With function scope, each function creates a new scope and scope determines the accessibility (visibility) of these variables. Variables defined inside a function are not accessible (visible) from outside the function.
 
-#### Local Variables:
+### Local Variables:
 Variables declared within a JavaScript function, become __local__ to the function.
 
 Local variables have __Function scope__: They can only be accessed from within the function.
@@ -1458,7 +1459,7 @@ Since __local__ variables are only recognized inside their functions, variables 
 
 __Local__ variables are created when a function starts, and deleted when the function is completed.
 
-#### Global Variables:
+### Global Variables:
 A variable declared outside a function, becomes __global__.
 
 A global variable has __global scope__: All scripts and functions on a web page can access it.
@@ -1476,7 +1477,7 @@ function myFunc() {
 }
 ```
 
-#### Function Expressions:
+### Function Expressions:
 In JavaScript functions are objects which means we can store them in variables, arrays, and we can pass them around as arguments.
 
 __Example 1__: Storing a function in a __variable__
@@ -1547,7 +1548,7 @@ operationsObject.add(50, 2); // -> 52
 operationsObject.subtract(50, 2); // -> 48
 ```
 
-#### Function Parameters vs. Arguments:
+### Function Parameters vs. Arguments:
 A __parameter__ is the variable name, defined in the function signature, of the value which will be given as an __argument__. 
 
 It's important to distinguish them, as a __parameter__ can represent many different values or even types of values, while an __argument__ will only be that specific value at the time of evaluation.
@@ -1561,7 +1562,36 @@ square(6); // -> 36
 ```
 In the example above, `number` is the __parameter__ and `6` is the __argument__ being passed into the function.
 
-#### Higher-Order Functions:
+### Callback Functions:
+* [Callback Functions Tutorial](https://www.youtube.com/watch?v=pTbSfCT42_M)
+
+A callback function is a function passed into another function as an argument or parameter, which is then invoked inside the outer function to complete some kind of routine or action.
+
+__Example__:
+```javascript
+function doSomething(otherFunction, name) {
+  otherFunction(name);
+  return "Success!";
+}
+
+function logSomething(word) {
+  console.log(word);
+}
+
+doSomething(logSomething, "Apple");
+// -> "Apple"
+```
+
+Callback functions can be thought of as the flip side of higher order functions. We'll learn more about higher order functions in the section below, but real quickly, a higher order function is a function that takes another function as an __argument__ and uses it in it's __parameters__. So a __callback__ is THAT function.
+
+In the example above, `otherFunction` is the callback because we're calling it inside our `doSomething` function (it's being used inside another function).
+
+It's important to understand that when we use callback functions you do not want to use brackets. This is because when you do use the brackets you're actually calling the function.
+
+
+
+
+### Higher-Order Functions:
 Higher order functions are functions that operate on other functions, either by taking them as arguments or by returning them. 
 
 In simple words, A Higher-Order function receives a function as an argument or returns the function as output.
