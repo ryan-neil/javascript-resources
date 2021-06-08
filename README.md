@@ -3917,6 +3917,26 @@ __JSON Array Example__:
 }
 ```
 
+__Example:__ Fetching a local JSON file
+```js
+// function: fetch our json file
+const fetchJSON = (file) => {
+  fetch(file)
+    .then((response) => {
+      // error checking
+      if (response.status !== 200) {
+        console.log("Problem:", response.status);
+        return;
+      }
+
+      // Examine the text in the response
+      response.json().then((data) => console.log(data));
+    })
+    .catch((err) => console.log("Error:", err));
+};
+fetchJSON("/some.json");
+```
+
 **[⬆ Top](#table-of-contents)**
 
 ----

@@ -36,6 +36,5 @@ const debounce = (callbackFunc, delay) => {
 const onInput = (event) => {
 	fetchData(event.target.value);
 };
-
 // input field event listener
 input.addEventListener("input", debounce(onInput, 1000));

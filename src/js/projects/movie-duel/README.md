@@ -29,7 +29,7 @@ The last feature to our practice application will be a "smart search" feature th
 ## 🗒️ Application Architecture 
 
 ### UI
-__Search box__
+__Search Box__
 ```bash
 └─ search-box
   ├─ default-state
@@ -46,11 +46,11 @@ Steps:
 
 ### Logic
 
-__Fetching data:__
+__Fetching Data:__
 
 We start by defining our helper async function. For this project we will be using Axios to help us make these requests.
 
-For our project we're using the OMDb API. We need to pass in that API URL to our `axios.get()` method. Along with the API URL we also need to pass in a second argument. This argument with be an object with a property called `params`.
+For our project we're using the OMDb API. We need to pass in that API URL to our `axios.get()` method. Along with the API URL, we also need to pass in a second argument. This argument with be an object with a property called `params`.
 
 It should look something like this:
 ```js
@@ -62,11 +62,11 @@ const fetchData = async () => {
     }
   });
 
-	response.data; // the data property is going to be the information we get back from the API.
+  response.data; // the data property is going to be the information we get back from the API.
 };
 fetchData();
 ```
-Inside that `params` property object, we list out all the different query string parameters that we want to pass along with the request. We can imagine this `params` object is going to be turned into a string and appended to the end of our URL, `http://www.omdbapi.com/[appended params]`.
+Inside that `params` property object, we list out all the different query string parameters that we want to pass along with the request. We can imagine this `params` object is going to be turned into a string and appended to the end of our URL, like so: `http://www.omdbapi.com/[appended params]`.
 
 Let's try this out by querying a response:
 ```js
@@ -78,17 +78,17 @@ const fetchData = async () => {
     }
   });
 
-  console.log(response.data); // -> Object { Search: (10) } [we receive 10 movies that match "avengers" in an array]
+  console.log(response.data); // -> Object { Search: (10) } [we receive 10 movies that match the search term "avengers" in an array]
 };
 fetchData();
 ```
-And voilà! We're returned an object with an array of objects with all the movies that have "avengers" in the title.
+And voilà! We're returned an object with an array of objects with all the movies that match the search term "avengers" in the title.
 
-__Searching the API on input change:__
+__Searching the API on Input Change:__
 
 Now that we know how to receive data back from the API, we need to create an input box that the user can use to search for movies. 
 
-First things first, we need to create the input element in our html document and then select it with JavaScript. We will then need to attach an event listener to the input element and watch for an `input` event.
+First things first, we need to create the input element in our `index.html` file and then select it with JavaScript. We will then need to attach an event listener to the input element and watch for an `input` event.
 
 The `input` event is triggered anytime the user changes the text inside the input element. As the second argument we need to add in our callback function that is going to be called with some `event` object.
 
@@ -101,15 +101,15 @@ const fetchData = async () => {
     }
   });
 
-  const data = response.data;
+  console.log(response.data);
 };
 
-// select the input element and assign to a variable.
+// select the input element and assign to a variable
 const input = document.querySelector("input");
 
-// add our event listener listening for the "input" event.
+// add our event listener listening for the "input" event
 input.addEventListener("input", (event) => {
-  event.target.value; // this reference allows us access to that change text. this will be whatever the user just typed into the input.
+  event.target.value; // this reference allows us access to that change text (this will be whatever the user just typed into the input) 
 });
 ```
 > Note: We delete our `fetchData()` call because we no longer want to run our `fetchData()` function and search the API automatically when our application first starts.
@@ -122,7 +122,7 @@ const fetchData = async (searchTerm) => { // 2. receive "event.target.value" as 
   const response = await axios.get("http://www.omdbapi.com/", {
     params: {
       apikey: "abc12345",
-      s: searchTerm // 3. pass our "searchTerm" argument as a value to "s" (search key). this will now search the API for whatever the user types into the input
+      s: searchTerm // 3. pass our "searchTerm" argument as a value to "s" (the API search key) (this will now search the API for whatever the user types into the input)
     }
   });
 
@@ -136,13 +136,13 @@ input.addEventListener("input", (event) => {
   fetchData(event.target.value); // 1. call fetchData with the value from the input inside our event listener
 });
 ```
-This is working well except we have one issue. Our issue is we're doing a search of the API for every single key press. This is not ideal because we're only allowed access to the API 1,000 times per day. Let's explore how we're going to solve this below.
+This is working well except we have one issue. Our issue is we're fetching a search of the API for every single key press. This is not ideal because we're only allowed access to the API 1,000 times per day. It's also not optimal for performance. Let's explore how we're going to solve this in the next section.
 
-__Delaying search input:__
+__Delaying Search Input:__
 
 An ideal solution would be to allow the user to press a key inside the input field as many times as they want without triggering an API call. Only after we have about one second or so of nothing happening do we want to call search and send a request to the API.
 
-To accomplish this we will be harnessing the power of the `setTimeout` function. Let's break this down. 
+To accomplish this we will be harnessing the power of the `setTimeout` function. Let's break this down:
 
 The first thing we want to do is save our `setTimeout` function to a variable called `onInput` and pass `onInput` into our event listener as the second argument. Let's have a look below:
 
@@ -158,11 +158,11 @@ const onInput = (event) => {
 input.addEventListener("input", onInput);
 ```
 
-We now need to add some logic to make sure we don't call input too often. For this, we will declare a variable called `timeoutID` directly above our `onInput` function. Our `timeoutID` variable will eventually take one of the ID's we get from calling `setTimeout` and we're going to assign one of those ID's to `timeoutID`.
+We now need to add some logic to make sure we don't call input too often. For this, we will declare an empty variable called `timeoutID` directly above our `onInput` function. Our `timeoutID` variable will eventually take on one of the ID's we get from calling `setTimeout` and we'll assign one of those ID's to `timeoutID`.
 
 Next, inside our `onInput` function we need to wrap our `fetchData` function with a `setTimeout` and as the second argument to `setTimeout` we will add 1000ms (1sec).
 
-The last thing we need to do for this step is to make sure that we don't run any code until the user stops typing for a set amount of time. To implement this, we're going to take the timer that is returned from calling `setTimeout`, assign it to `timeoutID` and then set `timeoutID` equal to our `setTimeout`. Let's see this below:
+The last thing we need to do for this step is to make sure that we don't run any code until the user stops typing for a set amount of time. To implement this, we're going to take the timer that is returned from calling `setTimeout`, assign it to `timeoutID` and then set `timeoutID` equal to our `setTimeout`. This was a lot of logic so let's break it down below:
 
 ```js
 const input = document.querySelector("input");
@@ -199,29 +199,59 @@ const onInput = (event) => {
 input.addEventListener("input", onInput);
 ```
 
-So behind the scenes, we will be calling `onInput` many times in a row (a user typing into the input field something like, "avengers", however many characters that is we will be calling `onInput` that number of times).
+So behind the scenes, we will be calling `onInput` many times in a row. It could be a user typing into the input field something like, "avengers", however many characters that is, we will be calling `onInput` that number of times).
 
-So the very first time `onInput` is going to be called, we will enter our `onInput` function and look and see if `timeoutID` is defined (our `if` statement). The first time we call `onInput`, `timeoutID` will return `undefined` so we are going to skip over our `if` statement entirely.
+So the very __first time__ `onInput` is going to be called, we will enter our `onInput` function and look and see if `timeoutID` is defined (our `if` statement). The __first time__ we call `onInput`, `timeoutID` will return `undefined` so we are going to skip over our `if` statement entirely.
 
 After skipping over our `if` statement we go down to our `setTimeout` and set up a timer and say, in one second call `fetchData`. We then assign that timer to `timeoutID`.
 
-The user will then press on the second key on their keyboard, the second time they press the key, we will once again enter the `onInput` function. This time when we hit our `if` statement, `timeoutID` will be defined. So we enter the `if` statement and stop the pending timer at which point the `setTimeout` is going to be set up with a brand new timer. The brand new `fetchData` timer is going to have a new `value` that it will fetch data from the API with ("`a`", "`av`", "`ave`", "`aven`", etc...). This process with repeat itself over and over again until we eventually go one full second without typing inside the input field. At that point the API will be called with out `searchTerm`.
+The user will then press on the second key on their keyboard, the __second time__ they press the key, we will once again enter the `onInput` function. This time when we hit our `if` statement, `timeoutID` will be defined. So we enter the `if` statement and stop the pending timer at which point the `setTimeout` is going to be set up with a brand new timer. The brand new `fetchData` timer is going to have a new `value` that it will fetch data from the API with ("`a`", "`av`", "`ave`", "`aven`", etc...). This process with repeat itself over and over again until we eventually go one full second without typing inside the input field. At that point the API will be called with our `searchTerm`.
 
-__Understanding debounce:__
+Here's where we're at:
+```js
+const fetchData = async (searchTerm) => { 
+  const response = await axios.get("http://www.omdbapi.com/", {
+    params: {
+      apikey: "abc12345",
+      s: searchTerm
+    }
+  });
 
-Debouncing an input is when we are waiting for some time to pass after the last event to actually do something. In the life span of an application there can be many different scenarios in which we might want to bounce some events. This doesn't have to only be for text inputs either.
+  const data = response.data;
+  console.log(data);
+};
+
+const input = document.querySelector("input");
+
+let timeoutID;
+const onInput = (event) => {
+  if (timeoutID) {
+    clearTimeout(timeoutID);
+  }
+
+  timeoutID = setTimeout(() => {
+    fetchData(event.target.value);
+  }, 1000);
+};
+
+input.addEventListener("input", onInput);
+```
+
+__Understanding Debounce:__
+
+__Debouncing__ an input is when we are waiting for some time to pass after the last event to actually do something. In the life span of an application there can be many different scenarios in which we might want to bounce some events. This doesn't just have to be for text inputs either.
 
 There may be some other scenarios that we would want to limit how often we make calls to our API for performance reasons. Because of this, it could be very useful for us to think of a way to refactor the code we just wrote to make it more usable by nature. It may turn out that we need to debounce other things inside our application at a future time.
 
 Let's refactor our above code into more reusable code. This way we can also make the code more readable and hide the complexity of the logic as well.
 
-For this we need to create a debounce helper function. This will take an argument of a function called `callbackFunc`. We also need to add all of our old code into our new `debounce` function.
+For this we need to create a debounce helper function. This will take an argument of a callback function called `func`. We also need to add all of our old code into our new `debounce` function.
 
 ```js
 const input = document.querySelector("input");
 
 // debounce helper function
-const debounce = (callbackFunc) => {
+const debounce = (func) => {
   let timeoutID;
 
   // our wrapper function (this is the function we will be calling many times (our old "onInput" function))
@@ -232,7 +262,7 @@ const debounce = (callbackFunc) => {
 
     timeoutID = setTimeout(() => {
       // call our callback function from "debounce"
-      callbackFunc();
+      func();
     }, 1000);
   };
 };
@@ -244,39 +274,39 @@ const onInput = (event) => {
 input.addEventListener("input", onInput);
 ```
 
-There's one more thing we need to add to our code. In the future, the function callback (`callbackFunc`) that we pass in to our `debounce` function may need to receive some kind of arguments. 
+There's one more thing we need to add to our code. In the future, the function callback (`func`) that we pass in to our `debounce` function may need to receive some kind of arguments. 
 
-For this, we need to make sure that if we ever pass any arguments to our `return` wrapper function we have to essentially take the arguments that are being passed to the wrapper function and forward them on to our `callbackFunc` inside our `setTimeout`. Let's have a look at this below:
+For this, we need to make sure that if we ever pass any arguments to our `return` wrapper function we have to essentially take the arguments that are being passed to the wrapper function and forward them on to our `func` callback function inside our `setTimeout`. Let's have a look at this below:
 
 ```js
 const input = document.querySelector("input");
 
-const debounce = (callbackFunc) => {
+const debounce = (func) => {
   let timeoutID;
 
-  // here we're adding "...args" to be sure it works incase multiple arguments are passed in
+  // here we're adding "...args" to be sure it works if multiple arguments are passed in
   return (...args) => {
     if (timeoutID) {
       clearTimeout(timeoutID);
     }
 
     timeoutID = setTimeout(() => {
-      // here we add "apply()" to handle those multiple arguments
-      callbackFunc.apply(null, args);
+      // here we add "apply()" to handle multiple arguments
+      func.apply(null, args);
     }, 1000);
   };
 };
 
-// we're now left will a really clean and easy to read "onInput" function
+// we're now left with a really clean and easy to read "onInput" function
 const onInput = (event) => {
   fetchData(event.target.value);
 };
 
 input.addEventListener("input", onInput);
 ```
-> Note: If we are only passing in one argument we would just pass `arg` to the wrapper function and also pass `arg` to our `callbackFunc` inside the `setTimeout`.
+> Note: If we are only passing in one argument we would just pass `arg` to the wrapper function (`return (arg) => {`) and also pass `arg` to our `func` inside the `setTimeout` (`func(arg);`).
 
-In the above code, `.apply()` is basically saying call the function as we normally would and take all the arguments inside of `...args` and pass them in as separate arguments to the original function (`callbackFunc`). Instead of hard coding in the number of arguments we're going to pass to our `callbackFunc` function (`arg1 , arg2, arg3`, etc.), the `apply()` method is going to automatically keep track of however many arguments we need to actually pass through.
+In the above code, `.apply()` is basically saying call the function as we normally would and take all the arguments inside of `...args` and pass them in as separate arguments to the original function (`func`). Instead of hard coding in the number of arguments we're going to pass to our `func` function (`arg1 , arg2, arg3`, etc.), the `apply()` method is going to automatically keep track of however many arguments we pass through.
 
 > Note: The `apply()` method takes arguments as an array. `call()` will take arguments separately.
 
@@ -285,7 +315,7 @@ So the last thing we need to do is apply the `debounce` function onto our `onInp
 ```js
 const input = document.querySelector("input");
 
-const debounce = (callbackFunc) => {
+const debounce = (func) => {
   let timeoutID;
 
   return (...args) => {
@@ -294,7 +324,7 @@ const debounce = (callbackFunc) => {
     }
 
     timeoutID = setTimeout(() => {
-      callbackFunc.apply(null, args);
+      func.apply(null, args);
     }, 1000);
   };
 };
@@ -307,7 +337,7 @@ const onInput = (event) => {
 input.addEventListener("input", debounce(onInput));
 ```
 
-We can imagine that our `onInput` function is going to be received into `debounce` as `callbackFunc`. And we are going to rate limit it on how often it can be invoked.
+We can imagine that our `onInput` function is going to be received into `debounce` as `func`. And we are going to rate limit it on how often it can be invoked.
 
 Lastly, we currently have a hard coded delay in our `setTimeout` for `1000`ms. We might want this delay to be easily changed by other developers working on our code. An easy way to accomplish this would be do pass in another argument to our `debounce` function. We'll call it `delay`.
 
@@ -315,7 +345,7 @@ Lastly, we currently have a hard coded delay in our `setTimeout` for `1000`ms. W
 const input = document.querySelector("input");
 
 // add the second argument of "delay"
-const debounce = (callbackFunc, delay) => {
+const debounce = (func, delay) => {
   let timeoutID;
 
   return (...args) => {
@@ -324,7 +354,7 @@ const debounce = (callbackFunc, delay) => {
     }
 
     timeoutID = setTimeout(() => {
-      callbackFunc.apply(null, args);
+      func.apply(null, args);
     }, delay); // replace the hard coded 1000 with just "delay"
   };
 };
@@ -338,3 +368,5 @@ input.addEventListener("input", debounce(onInput, 1000));
 ```
 
 And thats it! We can now use our `debounce` function anywhere inside of our code whenever we need to introduce some type of rate limiting on how often a function can be invoked.
+
+__Extracting Utility Functions:__
