@@ -186,11 +186,10 @@ const input = document.querySelector("input");
 
 let timeoutID;
 const onInput = (event) => {
-  
-	// "if" statement
-	if (timeoutID) {
-		clearTimeout(timeoutID);
-	}
+  // "if" statement
+  if (timeoutID) {
+    clearTimeout(timeoutID);
+  }
 
   timeoutID = setTimeout(() => {
     fetchData(event.target.value);
@@ -223,21 +222,119 @@ const input = document.querySelector("input");
 
 // debounce helper function
 const debounce = (callbackFunc) => {
-	let timeoutID;
+  let timeoutID;
 
-	// our wrapper function (this is the function we will be calling many times (our old "onInput" function))
-	return () => {
-		if (timeoutID) {
-			clearTimeout(timeoutID);
-		}
+  // our wrapper function (this is the function we will be calling many times (our old "onInput" function))
+  return () => {
+    if (timeoutID) {
+      clearTimeout(timeoutID);
+    }
 
-		timeoutID = setTimeout(() => {
-			// call our callback function from "debounce"
-			callbackFunc();
-		}, 1000);
-	};
+    timeoutID = setTimeout(() => {
+      // call our callback function from "debounce"
+      callbackFunc();
+    }, 1000);
+  };
+};
+
+const onInput = (event) => {
+  fetchData(event.target.value);
 };
 
 input.addEventListener("input", onInput);
 ```
-Add multiple arguments logic here...(1:54 minute mark)
+
+There's one more thing we need to add to our code. In the future, the function callback (`callbackFunc`) that we pass in to our `debounce` function may need to receive some kind of arguments. 
+
+For this, we need to make sure that if we ever pass any arguments to our `return` wrapper function we have to essentially take the arguments that are being passed to the wrapper function and forward them on to our `callbackFunc` inside our `setTimeout`. Let's have a look at this below:
+
+```js
+const input = document.querySelector("input");
+
+const debounce = (callbackFunc) => {
+  let timeoutID;
+
+  // here we're adding "...args" to be sure it works incase multiple arguments are passed in
+  return (...args) => {
+    if (timeoutID) {
+      clearTimeout(timeoutID);
+    }
+
+    timeoutID = setTimeout(() => {
+      // here we add "apply()" to handle those multiple arguments
+      callbackFunc.apply(null, args);
+    }, 1000);
+  };
+};
+
+// we're now left will a really clean and easy to read "onInput" function
+const onInput = (event) => {
+  fetchData(event.target.value);
+};
+
+input.addEventListener("input", onInput);
+```
+> Note: If we are only passing in one argument we would just pass `arg` to the wrapper function and also pass `arg` to our `callbackFunc` inside the `setTimeout`.
+
+In the above code, `.apply()` is basically saying call the function as we normally would and take all the arguments inside of `...args` and pass them in as separate arguments to the original function (`callbackFunc`). Instead of hard coding in the number of arguments we're going to pass to our `callbackFunc` function (`arg1 , arg2, arg3`, etc.), the `apply()` method is going to automatically keep track of however many arguments we need to actually pass through.
+
+> Note: The `apply()` method takes arguments as an array. `call()` will take arguments separately.
+
+So the last thing we need to do is apply the `debounce` function onto our `onInput` function. Let's do this now:
+
+```js
+const input = document.querySelector("input");
+
+const debounce = (callbackFunc) => {
+  let timeoutID;
+
+  return (...args) => {
+    if (timeoutID) {
+      clearTimeout(timeoutID);
+    }
+
+    timeoutID = setTimeout(() => {
+      callbackFunc.apply(null, args);
+    }, 1000);
+  };
+};
+
+const onInput = (event) => {
+  fetchData(event.target.value);
+};
+
+// here we wrap "onInput" with our "debounce" function
+input.addEventListener("input", debounce(onInput));
+```
+
+We can imagine that our `onInput` function is going to be received into `debounce` as `callbackFunc`. And we are going to rate limit it on how often it can be invoked.
+
+Lastly, we currently have a hard coded delay in our `setTimeout` for `1000`ms. We might want this delay to be easily changed by other developers working on our code. An easy way to accomplish this would be do pass in another argument to our `debounce` function. We'll call it `delay`.
+
+```js
+const input = document.querySelector("input");
+
+// add the second argument of "delay"
+const debounce = (callbackFunc, delay) => {
+  let timeoutID;
+
+  return (...args) => {
+    if (timeoutID) {
+      clearTimeout(timeoutID);
+    }
+
+    timeoutID = setTimeout(() => {
+      callbackFunc.apply(null, args);
+    }, delay); // replace the hard coded 1000 with just "delay"
+  };
+};
+
+const onInput = (event) => {
+  fetchData(event.target.value);
+};
+
+// we add the second argument to "debounce" with how many milliseconds we want our "delay" to be for
+input.addEventListener("input", debounce(onInput, 1000));
+```
+
+And thats it! We can now use our `debounce` function anywhere inside of our code whenever we need to introduce some type of rate limiting on how often a function can be invoked.
