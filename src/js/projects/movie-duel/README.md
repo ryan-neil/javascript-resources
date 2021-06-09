@@ -8,17 +8,18 @@ Once the user has searched for two different movies we will display data from bo
 
 The last feature to our practice application will be a "smart search" feature that shows suggestions for what the user is searching.
 
-## 📂 File Tree
+### 📂 File Tree
 ```bash
 └─ movie-duel
   ├─ index.html
   ├─ style.css
   ├─ app.js
+  ├─ utils.js
 ```
 
 ----
  
-## ⚒️ Main Application Features
+### ⚒️ Application Features
 1. Smart search bar
 2. Display real world data from movie searches
     * Harnessing [OMDb API](https://www.omdbapi.com/)
@@ -26,9 +27,15 @@ The last feature to our practice application will be a "smart search" feature th
 
 ----
 
-## 🗒️ Application Architecture 
+### 🗒️ Table of Contents
+1. [Application Architecture](#application-architecture)
+1. [Logic](#logic)
+    * [Autocomplete Input](#autocomplete-input)
 
-### UI
+----
+
+### 📝 Application Architecture 
+
 __Search Box__
 ```bash
 └─ search-box
@@ -40,17 +47,17 @@ __Search Box__
     ├─ user clicks an entry -> update text, close menu
     ├─ user clicks outside the dropdown -> close menu
 ```
-Steps:
-  1. Show user a plain text input
-    * Anytime the user types inside the text input we're going to initiate a search of our API and try and find some corresponding list of movies
+----
 
-### Logic
+### 💭 Logic
 
-__Fetching Data:__
+#### __Autocomplete Input:__
+
+#### __Fetching Data:__
 
 We start by defining our helper async function. For this project we will be using Axios to help us make these requests.
 
-For our project we're using the OMDb API. We need to pass in that API URL to our `axios.get()` method. Along with the API URL, we also need to pass in a second argument. This argument with be an object with a property called `params`.
+For our project we're using the [OMDb API](https://www.omdbapi.com/). We need to pass in that API URL to our `axios.get()` method. Along with the API URL, we also need to pass in a second argument. This argument with be an object with a property called `params`.
 
 It should look something like this:
 ```js
@@ -84,7 +91,7 @@ fetchData();
 ```
 And voilà! We're returned an object with an array of objects with all the movies that match the search term "avengers" in the title.
 
-__Searching the API on Input Change:__
+#### __Searching the API on Input Change:__
 
 Now that we know how to receive data back from the API, we need to create an input box that the user can use to search for movies. 
 
@@ -138,7 +145,7 @@ input.addEventListener("input", (event) => {
 ```
 This is working well except we have one issue. Our issue is we're fetching a search of the API for every single key press. This is not ideal because we're only allowed access to the API 1,000 times per day. It's also not optimal for performance. Let's explore how we're going to solve this in the next section.
 
-__Delaying Search Input:__
+#### __Delaying Search Input:__
 
 An ideal solution would be to allow the user to press a key inside the input field as many times as they want without triggering an API call. Only after we have about one second or so of nothing happening do we want to call search and send a request to the API.
 
@@ -237,7 +244,7 @@ const onInput = (event) => {
 input.addEventListener("input", onInput);
 ```
 
-__Understanding Debounce:__
+#### __Understanding Debounce:__
 
 __Debouncing__ an input is when we are waiting for some time to pass after the last event to actually do something. In the life span of an application there can be many different scenarios in which we might want to bounce some events. This doesn't just have to be for text inputs either.
 
@@ -369,4 +376,46 @@ input.addEventListener("input", debounce(onInput, 1000));
 
 And thats it! We can now use our `debounce` function anywhere inside of our code whenever we need to introduce some type of rate limiting on how often a function can be invoked.
 
-__Extracting Utility Functions:__
+#### __Awaiting Async Functions:__
+
+Let's return some usable data from `fetchData`. Once we get this "usable" data back, we will then make sure we can iterate over the data. For every movie we fetch, we will try and render out some content to the DOM.
+
+Once we've done this, we will start to think about how we can select a video (movie?) by actually clicking on it.
+
+Let's try and fetch only the data we want, movie data. 
+
+> Note: We have moved our "debounce" function out to the `utils.js` file
+
+First thing we want to do is replace our `console.log` with a `return` statement in `fetchData`. In our return statement we only want the `Search` results.
+
+Next we're going to assign our `fetchData` function inside `onInput` to a variable we'll call `movies`. We must remember that `fetchData` is an async function. if we want to somehow wait on `fetchData` to actually get some data and get access to the `response` we need to treat it as if it were an async function. for this we add `await` keyword in-front of it.
+
+Because we are using the `await` keyword inside `onInput`  we have to mark that `onInput` `event` as `async` as well.
+
+Let's have a look:
+
+```js
+const fetchData = async (searchTerm) => {
+  const response = await axios.get("http://www.omdbapi.com/", {
+    params: {
+      apikey: "1da41525",
+      s: searchTerm
+    }
+  });
+
+  // 1. replace the console.log with a return statement
+  return response.data.Search;
+};
+
+const input = document.querySelector("input");
+
+// 4. add "async" keyword to "event" inside "onInput"
+const onInput = async (event) => {
+  // 2. assign variable to "fetchData"
+  // 3. add "await" keyword to "fetchData"
+  const movies = await fetchData(event.target.value);
+  console.log(movies);
+};
+
+input.addEventListener("input", debounce(onInput, 1000));
+```

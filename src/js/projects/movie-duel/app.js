@@ -9,32 +9,27 @@ const fetchData = async (searchTerm) => {
 		}
 	});
 
-	// data (info) back from the API
-	const data = response.data;
-	console.log(data);
+	return response.data.Search;
 };
 
-// selecting the input field
 const input = document.querySelector("input");
 
-// debounce function
-const debounce = (callbackFunc, delay) => {
-	let timeoutID;
+const onInput = async (event) => {
+	const movies = await fetchData(event.target.value);
+	// 1. now we iterate over the movies and for every movie we're going to try and create a div element that summarizes the movie
+	for (let movie of movies) {
+		// 2. we create our div
+		const div = document.createElement("div");
 
-	return (...args) => {
-		if (timeoutID) {
-			clearTimeout(timeoutID);
-		}
+		// 3. set inner html on the div
+		div.innerHTML = `
+		<img src="${movie.Poster}" />
+		<h2>${movie.Title}</h2>
+		`;
 
-		timeoutID = setTimeout(() => {
-			callbackFunc.apply(null, args);
-		}, delay);
-	};
+		// 4. we need to append the "div" we created above to the "target" div we created in our "index.html" file
+		document.querySelector("#target").appendChild(div);
+	}
 };
 
-// user typed word to be searched by the API
-const onInput = (event) => {
-	fetchData(event.target.value);
-};
-// input field event listener
 input.addEventListener("input", debounce(onInput, 1000));
