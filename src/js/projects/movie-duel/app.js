@@ -1,6 +1,5 @@
 // http://www.omdbapi.com/?apikey=1da41525&
 
-// fetched data from our API
 const fetchData = async (searchTerm) => {
 	const response = await axios.get("http://www.omdbapi.com/", {
 		params: {
@@ -9,27 +8,55 @@ const fetchData = async (searchTerm) => {
 		}
 	});
 
+	if (response.data.Error) {
+		return [];
+	}
+
 	return response.data.Search;
 };
 
+const root = document.querySelector(".autocomplete");
+root.innerHTML = `
+  <label><b>Search For a Movie</b></label>
+  <input class="input" placeholder="Search movie" />
+  <div class="dropdown">
+    <div class="dropdown-menu">
+      <div class="dropdown-content results"></div>
+    </div>
+  </div>
+`;
+
 const input = document.querySelector("input");
+const dropdown = document.querySelector(".dropdown");
+const resultsWrapper = document.querySelector(".results");
 
 const onInput = async (event) => {
 	const movies = await fetchData(event.target.value);
-	// 1. now we iterate over the movies and for every movie we're going to try and create a div element that summarizes the movie
+
+	// 1. reset the results list on new search
+	resultsWrapper.innerHTML = "";
+
+	dropdown.classList.add("is-active");
 	for (let movie of movies) {
-		// 2. we create our div
-		const div = document.createElement("div");
+		const option = document.createElement("a");
+		// 2. check to see if the API poster has a link or not
+		const imgSrc = movie.Poster === "N/A" ? "" : movie.Poster;
 
-		// 3. set inner html on the div
-		div.innerHTML = `
-		<img src="${movie.Poster}" />
-		<h2>${movie.Title}</h2>
-		`;
+		option.classList.add("dropdown-item");
+		// 2.1 update the img src to take "imgSrc"
+		option.innerHTML = `
+      <img src="${imgSrc}" />
+      <p>${movie.Title}</p>
+    `;
 
-		// 4. we need to append the "div" we created above to the "target" div we created in our "index.html" file
-		document.querySelector("#target").appendChild(div);
+		resultsWrapper.appendChild(option);
 	}
 };
+input.addEventListener("input", debounce(onInput, 500));
 
-input.addEventListener("input", debounce(onInput, 1000));
+// 3. hide the dropdown if user clicks out of dropdown list
+document.addEventListener("click", (event) => {
+	if (!root.contains(event.target)) {
+		dropdown.classList.remove("is-active");
+	}
+});

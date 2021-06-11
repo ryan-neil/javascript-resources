@@ -1,14 +1,21 @@
 :root {
 	--color-white: #ffffff;
 	--color-light: #f8f9fa;
+	--colorSupaLight: #736ffe;
 	--color-dark: #21252b;
 	--color-dark-light: #282c34;
 	--color-red: #ff4000;
 	--color-green: #63d000;
 	--color-blue: #00aff5;
 	--color-yellow: #ffbb00;
-	--color-text: #202124;
+	--color-text: #2b2b2b;
+	--color-text-light: #9b9b9b;
 	--color-border: #dadcdf;
+	/* Gradients */
+	--colorGradient1: linear-gradient(270deg, #f6d242 10%, #ff52e5 100%);
+	--colorGradient2: linear-gradient(270deg, #fccf31 10%, #f55555 100%);
+	--colorGradient3: linear-gradient(270deg, #5efce8 10%, #736efe 100%);
+
 	--box-shadow-sm: 0px 2px 4px 0px rgba(14, 30, 37, 0.12);
 	--box-shadow-md: 0px 4px 20px 0px rgba(0, 0, 0, 0.12);
 	--box-shadow-lg: -10px 10px 80px 0px rgba(0, 0, 0, 0.1);
@@ -20,48 +27,80 @@
 	box-sizing: border-box;
 }
 html {
-	font-family: -apple-system, sans-serif;
-}
-body {
-	background-color: var(--color-light);
+	font-family: 'Roboto', -apple-system, sans-serif;
 }
 
 /* Start Styles */
+.navbar {
+	background-image: var(--colorGradient3);
+	padding: 0.75rem 1rem 0.25rem 1rem;
+	display: flex;
+	align-items: center;
+}
+.navbar-logo {
+	display: inline-block;
+	font-family: 'Josefin Sans', sans-serif;
+	font-size: 2rem;
+	font-weight: 500;
+	letter-spacing: -3px;
+	color: var(--color-white);
+	cursor: pointer;
+}
+.navbar-logo:hover {
+	transition: ease .2s;
+	opacity: 0.8;
+}
+.container {
+	padding: 1rem;
+}
+.label-heading {
+	font-weight: 500;
+}
+.input {
+	font-size: 0.9rem;
+}
+.dropdown {
+	display: block !important;
+}
 .tutorial {
 	width: 600px;
 	text-align: center;
 	margin: auto;
 }
+
 figure.image {
 	display: flex;
 	justify-content: center;
 	background-color: black;
 }
+
 figure .image img {
 	width: 128px;
 }
+
 .notification {
 	margin-top: 20px !important;
 }
-.results {
-	max-height: 500px;
-	overflow-y: scroll;
-}
+
 .title .icon {
 	margin-left: 15px;
 }
+
 .hero {
 	margin-bottom: 20px;
 }
+
 .forms {
 	display: flex;
 	justify-content: space-around;
 }
+
 .dropdown-item {
 	display: flex;
 	align-items: center;
 	height: 60px;
 }
+
 .dropdown-item img {
 	height: 50px;
 	margin-right: 10px;
