@@ -680,3 +680,103 @@ document.addEventListener("click", (event) => {
   }
 });
 ```
+
+#### 😶 __Handling Empty Responses:__
+
+The next minor fix we are going to want to fix is, if a user searches for something but then deletes their input text, the dropdown stays open. We want the dropdown to close if this happens.
+
+So to do this, we want to add our code right after we fetch the data in our `onInput` function. Let's take a look at `movies` and let's say that if there are no movies being returned, let's `return` early and don't run anything else inside of `onInput`.
+
+Let's fix this now:
+```js
+const input = document.querySelector("input");
+const dropdown = document.querySelector(".dropdown");
+const resultsWrapper = document.querySelector(".results");
+
+const onInput = async (event) => {
+  const movies = await fetchData(event.target.value);
+
+  // 1. check and see if there are any movies being returned
+  if (!movies.length) {
+    dropdown.classList.remove("is-active");
+    return;
+  }
+
+  resultsWrapper.innerHTML = "";
+
+  dropdown.classList.add("is-active");
+  for (let movie of movies) {
+    const option = document.createElement("a");
+
+    const imgSrc = movie.Poster === "N/A" ? "" : movie.Poster;
+
+    option.classList.add("dropdown-item");
+    option.innerHTML = `
+    <img src="${imgSrc}" />
+    <p>${movie.Title}</p>
+    `;
+    resultsWrapper.appendChild(option);
+  }
+};
+
+input.addEventListener("input", debounce(onInput, 1000));
+
+document.addEventListener("click", (event) => {
+  if (!root.contains(event.target)) {
+    dropdown.classList.remove("is-active");
+  }
+});
+```
+
+#### 👋 __Handling Movie Selection:__
+
+We just have one lsat major user interaction we need to handle and that's if the user wants to actually click on a movie.
+
+One thing that we would like to happen is, when the user selects a movie, we want the input field text to match exactly what the user clicked on. In addition to this, we want to also make sure that when a user clicks a movie, we want to close the dropdown.
+
+Let's take care of this now:
+```js
+const input = document.querySelector("input");
+const dropdown = document.querySelector(".dropdown");
+const resultsWrapper = document.querySelector(".results");
+
+const onInput = async (event) => {
+  const movies = await fetchData(event.target.value);
+
+  if (!movies.length) {
+    dropdown.classList.remove("is-active");
+    return;
+  }
+
+  resultsWrapper.innerHTML = "";
+
+  dropdown.classList.add("is-active");
+  for (let movie of movies) {
+    const option = document.createElement("a");
+
+    const imgSrc = movie.Poster === "N/A" ? "" : movie.Poster;
+
+    option.classList.add("dropdown-item");
+    option.innerHTML = `
+    <img src="${imgSrc}" />
+    <p>${movie.Title}</p>
+    `;
+
+    // 1. add selected movie title to text input field
+    option.addEventListener("click", () => {
+      input.value = movie.Title;
+      dropdown.classList.remove("is-active");
+    });
+
+    resultsWrapper.appendChild(option);
+  }
+};
+
+input.addEventListener("input", debounce(onInput, 1000));
+
+document.addEventListener("click", (event) => {
+  if (!root.contains(event.target)) {
+    dropdown.classList.remove("is-active");
+  }
+});
+```

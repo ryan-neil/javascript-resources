@@ -33,28 +33,46 @@ const resultsWrapper = document.querySelector(".results");
 const onInput = async (event) => {
 	const movies = await fetchData(event.target.value);
 
-	// 1. reset the results list on new search
+	if (!movies.length) {
+		dropdown.classList.remove("is-active");
+		return;
+	}
+
 	resultsWrapper.innerHTML = "";
 
 	dropdown.classList.add("is-active");
 	for (let movie of movies) {
 		const option = document.createElement("a");
-		// 2. check to see if the API poster has a link or not
 		const imgSrc = movie.Poster === "N/A" ? "" : movie.Poster;
 
 		option.classList.add("dropdown-item");
-		// 2.1 update the img src to take "imgSrc"
 		option.innerHTML = `
       <img src="${imgSrc}" />
       <p>${movie.Title}</p>
     `;
+
+		// 1. add exact movie title to selected movie option
+		option.addEventListener("click", () => {
+			input.value = movie.Title;
+			dropdown.classList.remove("is-active");
+
+			// 2. render selected movie to dom
+			const renderedMovie = document.querySelector(".renderedMovie");
+			const selectedMovie = document.createElement("div");
+
+			selectedMovie.innerHTML = `
+			<img src="${imgSrc}" />
+			<h2>${movie.Title}</h2>
+			`;
+
+			renderedMovie.appendChild(selectedMovie);
+		});
 
 		resultsWrapper.appendChild(option);
 	}
 };
 input.addEventListener("input", debounce(onInput, 500));
 
-// 3. hide the dropdown if user clicks out of dropdown list
 document.addEventListener("click", (event) => {
 	if (!root.contains(event.target)) {
 		dropdown.classList.remove("is-active");
