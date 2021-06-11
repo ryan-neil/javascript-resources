@@ -4670,6 +4670,8 @@ In JavaScript, inheritance is also known as __prototyping__. A prototype object 
 
 ### Encapsulation
 
+The notion of __encapsulation__ refers to the bundling of data, along with the methods that operate on that data, into a single unit. Many programming languages use __encapsulation__ frequently in the form of __classes__.
+
 Encapsulation means containing all important information __inside an object__, and only exposing selected information to the outside world. Attributes and behaviors are defined by code inside the class template.
 
 Then, when an object is instantiated from the class, the data and methods are encapsulated in that object. Encapsulation hides the internal software code implementation inside a class, and hides internal data of inside objects.
