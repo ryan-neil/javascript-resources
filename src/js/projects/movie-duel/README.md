@@ -464,7 +464,7 @@ const onInput = async (event) => {
     // 2. create a "div" element
     const div = document.createElement("div");
 
-		// 3. set inner content of "div" element
+    // 3. set inner content of "div" element
     div.innerHTML = `
     <img src="${movie.Poster}" />
     <h2>${movie.Title}</h2>
@@ -533,13 +533,13 @@ const fetchData = async (searchTerm) => {
 const root = document.querySelector(".autocomplete");
 // 2. add html content to the root div container
 root.innerHTML = `
-	<label class="label-heading">Search for a movie</label>
-	<input class="input" placeholder="Search movie" />
-	<div class="dropdown">
-		<div class="dropdown-menu">
-			<div class="dropdown-content results"></div>
-		</div>
-	</div>
+  <label class="label-heading">Search for a movie</label>
+  <input class="input" placeholder="Search movie" />
+  <div class="dropdown">
+    <div class="dropdown-menu">
+      <div class="dropdown-content results"></div>
+    </div>
+  </div>
 `;
 ```
 
@@ -609,7 +609,7 @@ const onInput = async (event) => {
   const movies = await fetchData(event.target.value);
 
   // 1. reset the results list on new search
-	resultsWrapper.innerHTML = "";
+  resultsWrapper.innerHTML = "";
 
   dropdown.classList.add("is-active");
   for (let movie of movies) {
