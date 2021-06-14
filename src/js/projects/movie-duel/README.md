@@ -13,7 +13,7 @@ The last feature to our practice application will be a "smart search" feature th
 └─ movie-duel
   ├─ index.html
   ├─ style.css
-  ├─ app.js
+  ├─ index.js
   ├─ utils.js
 ```
 
@@ -511,7 +511,7 @@ We want to try and reduce the coupling of our `index.html` file and our `app.js`
 
 Generally, what we want to do is push off as much of the html generation to JavaScript as we can. Leaving our `index.html` as minimal as possible. For our project, what we're going to try and do is create one single `div` inside our `index.html` file and then in our `app.js` file we will append all our autocomplete widget html and JavaScript code inside of that single `div`.
 
-With this approach we can easily create reusable widgets that we can interchange between different projects. It also much it much easier to share our code with other developers.
+With this approach we can easily create reusable widgets that we can interchange between different projects. Also, it makes it much easier to share our code with other developers.
 
 #### 🪄 __Rendering HTML with JavaScript:__
 
@@ -730,7 +730,7 @@ document.addEventListener("click", (event) => {
 
 #### 👋 __Handling Movie Selection:__
 
-We just have one lsat major user interaction we need to handle and that's if the user wants to actually click on a movie.
+We just have one last major user interaction we need to handle and that's if the user wants to actually click on a movie.
 
 One thing that we would like to happen is, when the user selects a movie, we want the input field text to match exactly what the user clicked on. In addition to this, we want to also make sure that when a user clicks a movie, we want to close the dropdown.
 
@@ -763,6 +763,7 @@ const onInput = async (event) => {
     `;
 
     // 1. add selected movie title to text input field
+    // 2. close the dropdown
     option.addEventListener("click", () => {
       input.value = movie.Title;
       dropdown.classList.remove("is-active");

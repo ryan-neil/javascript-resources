@@ -80,6 +80,7 @@ A quick look at the files and directories you'll see in the repo.
 1. [Properties](#properties)
 1. [For Loops](#for-loops)
 1. [Math](#math)
+1. [Date & Time](#date-and-time)
 1. [Conditionals](#conditionals)
 1. [Ternary Operator](#ternary-operator)
 1. [Objects](#objects)
@@ -631,6 +632,53 @@ Adding `+1` to `Math.floor(Math.random() * 10)` gives us a number from 0 to 10.
 Math.floor(Math.random() * 10) + 1; // -> 7
 Math.floor(Math.random() * 10) + 1; // -> 3
 Math.floor(Math.random() * 10) + 1; // -> 10 etc.
+```
+
+**[⬆ Top](#table-of-contents)**
+
+----
+
+### Date and Time
+
+Let's have a look at how we can get todays date and time:
+```js
+const today = new Date();
+
+console.log(today);
+// -> Sun Jun 13 2021 10:17:31 GMT-1000 (Hawaii-Aleutian Standard Time)
+```
+> Note: The only correct way to instantiate a new `Date` object is by using the `new` operator. If you call the `Date` object directly, such as `today = Date()`, the returned value is a string rather than a `Date` object.
+
+Let's get tomorrow's date and time:
+```js
+const tomorrow = new Date(today.getTime() + 86400000);
+
+console.log(tomorrow);
+// -> Sun Jun 13 2021 10:17:31 GMT-1000 (Hawaii-Aleutian Standard Time)
+```
+In the example above, the `getTime()` method returns the number of milliseconds since the [Unix Epoch](https://en.wikipedia.org/wiki/Unix_time). Also, `86400000` represents one full day in milliseconds.
+
+So we're getting today's date in milliseconds (`today.getTime()`) and then we're adding `86400000` milliseconds to it (1 full day) to get tomorrow's date.
+
+__Formatting:__
+The `toLocaleDateString()` method returns a string with a language sensitive representation of the date portion of this date. The new `locales` and `options` arguments let applications specify the language whose formatting conventions should be used and allow to customize the behavior of the function.
+
+```js
+const today = new Date();
+const tomorrow = new Date(today.getTime() + 86400000);
+
+const options = {
+  weekday: "long",
+  year: "numeric",
+  month: "long",
+  day: "numeric"
+};
+
+today.toLocaleDateString(); // -> 6/13/2021
+today.toLocaleDateString("en-US", options); // -> Sunday, June 13, 2021
+
+tomorrow.toLocaleDateString(); // -> 6/14/2021
+tomorrow.toLocaleDateString("de-DE", options); // -> Montag, 14. Juni 2021
 ```
 
 **[⬆ Top](#table-of-contents)**
