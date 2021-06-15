@@ -10,11 +10,11 @@ The last feature to our practice application will be a "smart search" feature th
 
 ### 📂 File Tree
 ```bash
-└─ movie-duel
-  ├─ index.html
-  ├─ style.css
-  ├─ index.js
-  ├─ utils.js
+├─ movie-duel
+│  ├─ index.html
+│  ├─ style.css
+│  ├─ index.js
+│  └─ utils.js
 ```
 
 ----
@@ -28,9 +28,9 @@ The last feature to our practice application will be a "smart search" feature th
 ----
 
 ### 🗒️ Table of Contents
-1. [Application Architecture](#application-architecture)
-1. [Logic](#logic)
-    * [Autocomplete Input](#autocomplete-input)
+1. [Application Architecture](#📝-application-architecture)
+1. [Logic](#💭-logic)
+1. [Issues with the Code Base](#🚨-issues-with-the-code-base)
 
 ----
 
@@ -38,14 +38,14 @@ The last feature to our practice application will be a "smart search" feature th
 
 __Search Box__
 ```bash
-└─ search-box
-  ├─ default-state
-  ├─ user starts typing...
-  ├─ user finishes typing and we find matching movies -> show menu, display results
-    ├─ user finishes typing and we find no results -> hide menu
-  ├─ user presses "Enter" -> do nothing
-    ├─ user clicks an entry -> update text, close menu
-    ├─ user clicks outside the dropdown -> close menu
+├─ search-box
+│  ├─ default-state
+│  ├─ user starts typing...
+│  ├─ user finishes typing and we find matching movies -> show menu, display results
+│  │  └─ user finishes typing and we find no results -> hide menu
+│  └─ user presses "Enter" -> do nothing
+│    ├─ user clicks an entry -> update text, close menu
+│    └─ user clicks outside the dropdown -> close menu
 ```
 ----
 
@@ -89,6 +89,10 @@ const fetchData = async () => {
 fetchData();
 ```
 And voilà! We're returned an object with an array of objects with all the movies that match the search term "avengers" in the title.
+
+[⬆️ Top](#🗒️-table-of-contents)
+
+---
 
 #### 💭 __Searching the API on Input Change:__
 
@@ -144,6 +148,10 @@ input.addEventListener("input", (event) => {
 });
 ```
 This is working well except we have one issue. Our issue is we're fetching a search of the API for every single key press. This is not ideal because we're only allowed access to the API 1,000 times per day. It's also not optimal for performance. Let's explore how we're going to solve this in the next section.
+
+[⬆️ Top](#🗒️-table-of-contents)
+
+---
 
 #### ⏸️ __Delaying Search Input:__
 
@@ -255,6 +263,10 @@ const onInput = (event) => {
 
 input.addEventListener("input", onInput);
 ```
+
+[⬆️ Top](#🗒️-table-of-contents)
+
+---
 
 #### ♻️ __Understanding Debounce:__
 
@@ -401,6 +413,10 @@ input.addEventListener("input", debounce(onInput, 1000));
 
 And thats it! We can now use our `debounce` function anywhere inside of our code whenever we need to introduce some type of rate limiting on how often a function can be invoked.
 
+[⬆️ Top](#🗒️-table-of-contents)
+
+---
+
 #### 💬 __Awaiting Async Functions:__
 
 Let's return some usable data from `fetchData`. Once we get this "usable" data back, we will then make sure we can iterate over the data. For every movie we fetch, we will try and render out some content to the DOM.
@@ -444,7 +460,11 @@ const onInput = async (event) => {
 input.addEventListener("input", debounce(onInput, 1000));
 ```
 
-#### 🖼️ __Rendering Movies:__
+[⬆️ Top](#🗒️-table-of-contents)
+
+---
+
+#### 🖍️ __Rendering Movies:__
 Alright, now it's time to render some content onto the screen. For our project when a user searches for a movie we want to render content based on that search. When a user searches for a movie we will display:
   * The poster as an image for each movie
   * The title
@@ -479,6 +499,10 @@ input.addEventListener("input", debounce(onInput, 1000));
 ```
 Pretty cool!
 
+[⬆️ Top](#🗒️-table-of-contents)
+
+---
+
 #### ❗ __Error Handling:__
 
 Let's do some error handling. How we want our specific search bar to work is, if we don't get any data (information) back from the search, we won't display anything.
@@ -505,6 +529,10 @@ const fetchData = async (searchTerm) => {
 ```
 We are using `Error` because that is the way the API calls it's errors.
 
+[⬆️ Top](#🗒️-table-of-contents)
+
+---
+
 #### 🎨 __Widget Styling:__
 
 We want to try and reduce the coupling of our `index.html` file and our `app.js` file. In other words, we don't want these two files to rely on each other too much. This will make our lives a lot easier in the long run.
@@ -513,7 +541,11 @@ Generally, what we want to do is push off as much of the html generation to Java
 
 With this approach we can easily create reusable widgets that we can interchange between different projects. Also, it makes it much easier to share our code with other developers.
 
-#### 🪄 __Rendering HTML with JavaScript:__
+[⬆️ Top](#🗒️-table-of-contents)
+
+---
+
+#### 🌈 __Rendering HTML with JavaScript:__
 
 For our project, since we have two identical autocomplete search widgets, it would be a better strategy to implement the html code inside of our javascript file. This way we don't need a bunch of extra html code inside our `index.html` file and we can just create a function inside our `app.js` and reuse it throughout the project.
 
@@ -552,7 +584,7 @@ So the order of events should look something like this:
   * Open up the `dropdown`.
   * Then add all of our movies to the `dropdown`.
 
-Next, we need to create a tag elements for all of our movie results. The [Bulma docs](https://bulma.io/documentation/components/dropdown/#dropdown-content) say it can be a `<a>` or a `<div>` tag. We will give our newly created `<a>` elements the class name of `dropdown-item`s in order to style them nicely per the [Bulma docs](https://bulma.io/documentation/components/dropdown/#dropdown-content).
+Next, we need to create a tag elements for all of our movie results. The [Bulma docs](https://bulma.io/documentation/components/dropdown/#dropdown-content) say it can be a `<a>` or a `<div>` tag. We will give our newly created `<a>` elements the class name of `dropdown-item` in order to style them nicely per the [Bulma docs](https://bulma.io/documentation/components/dropdown/#dropdown-content).
 
 Lastly, all we need to do is append our created `<a>` tags, which we will call `option`, to `resultsWrapper`. I'm choosing to call our `<a>` tags `option` because that's essentially what they are when we search for a movie. The `<a>` tags will be displayed as search "options" we get to choose from.
 
@@ -587,7 +619,11 @@ const onInput = async (event) => {
 input.addEventListener("input", debounce(onInput, 1000));
 ```
 
-#### 🪄 __Cleaning up our Autocomplete Widget:__
+[⬆️ Top](#🗒️-table-of-contents)
+
+---
+
+#### 🧹 __Cleaning up our Autocomplete Widget:__
 
 The first thing we need to cleanup is when we search for a new movie, the results get listed under our old search results. We don't want this. What we're going to do is make sure that whenever we fetch a new list of movies, we clear out the existing movies inside our dropdown.
 
@@ -597,7 +633,7 @@ Another feature we need to add to our `dropdown` is, if the user clicks anywhere
 
 In the global document space we're going to add another `eventListener` to the `document`. We're going to watch for anytime the user clicks on any element in the document. We're then going to look at our `root` element because the `root` element encapsulates everything that has to do with our autocomplete widget. So we're going to check and see if the element that was clicked on is contained inside of `root`.
 
-So essentially, if the user clicks on any of the elements inside of the `root` then when want the dropdown to stay open. But if the user clicks on any elements that are not contained in `root`, we want to close the dropdown.
+So essentially, if the user clicks on any of the elements inside of the `root` then we want the dropdown to stay open. But if the user clicks on any elements that are not contained in `root`, we want to close the dropdown.
 
 Let's do that now:
 ```js
@@ -642,7 +678,7 @@ __Ternary Operator Syntax:__
 ```js
 condition ? expIfTrue : expIfFalse
 ``` 
-__So what we are trying to check for is__: if `movie.Poster` = `N/A` (the image source our API gives us if the movie does not have a poster), return an empty string (`" "`) and if `movie.Poster` does not equal `N/A` return the `movie.Poster` image source. So basically if there is no movie poster than just don't show anything.
+__So what we are trying to check for is__: if `movie.Poster` = `N/A` (the image source our API gives us if the movie does not have a poster), return an empty string (`""`) and if `movie.Poster` does not equal `N/A` return the `movie.Poster` image source. So basically if there is no movie poster then we wont show anything.
 
 Let's have a look at this below:
 ```js
@@ -681,13 +717,17 @@ document.addEventListener("click", (event) => {
 });
 ```
 
+[⬆️ Top](#🗒️-table-of-contents)
+
+---
+
 #### 😶 __Handling Empty Responses:__
 
 The next minor fix we are going to want to fix is, if a user searches for something but then deletes their input text, the dropdown stays open. We want the dropdown to close if this happens.
 
 So to do this, we want to add our code right after we fetch the data in our `onInput` function. Let's take a look at `movies` and let's say that if there are no movies being returned, let's `return` early and don't run anything else inside of `onInput`.
 
-Let's fix this now:
+Let's add this now:
 ```js
 const input = document.querySelector("input");
 const dropdown = document.querySelector(".dropdown");
@@ -727,6 +767,10 @@ document.addEventListener("click", (event) => {
   }
 });
 ```
+
+[⬆️ Top](#🗒️-table-of-contents)
+
+---
 
 #### 👋 __Handling Movie Selection:__
 
@@ -781,3 +825,372 @@ document.addEventListener("click", (event) => {
   }
 });
 ```
+
+[⬆️ Top](#🗒️-table-of-contents)
+
+---
+
+#### 🙇 __Making a Follow-up Request:__
+The next thing we need to do is, take the movie the user has selected and render out some details to the DOM.
+
+In order to do this, we need to remember that the API we're using has two different endpoints we're making use of. So far, we've been getting some results back from the "by search" method `s:` and that only gives us some very limited pieces of information about each movie.
+
+So when a user selects an actual movie, we're going to need to make a follow-up request to the API. This time we need to fetch the selected movie's ID in order to get much more information back for that specific movie.
+
+So what we're going to do is, once a user clicks on a movie:
+  * We detect it with our `option.addEventListener`
+  * We then need to make a follow-up request
+  * Get more information about the movie
+  * Use this information to update some content on the screen
+
+Since our file is already becoming bloated with code, instead of adding the logic for this code inside our `option.addEventListener`, we're going to make a helper function to store it in. We'll call this new helper function `onMovieSelect()`. We can then pass in `onMovieSelect()` to the `option.addEventListener`.
+
+Let's do this now:
+```js
+const input = document.querySelector("input");
+const dropdown = document.querySelector(".dropdown");
+const resultsWrapper = document.querySelector(".results");
+
+const onInput = async (event) => {
+  const movies = await fetchData(event.target.value);
+
+  if (!movies.length) {
+    dropdown.classList.remove("is-active");
+    return;
+  }
+
+  resultsWrapper.innerHTML = "";
+
+  dropdown.classList.add("is-active");
+  for (let movie of movies) {
+    const option = document.createElement("a");
+
+    const imgSrc = movie.Poster === "N/A" ? "" : movie.Poster;
+
+    option.classList.add("dropdown-item");
+    option.innerHTML = `
+    <img src="${imgSrc}" />
+    <p>${movie.Title}</p>
+    `;
+
+    option.addEventListener("click", () => {
+      input.value = movie.Title;
+      dropdown.classList.remove("is-active");
+
+      // 2. pass in "onMovieSelect()" with a "movie" object as the parameter
+      onMovieSelect(movie);
+    });
+
+    resultsWrapper.appendChild(option);
+  }
+};
+
+input.addEventListener("input", debounce(onInput, 1000));
+
+document.addEventListener("click", (event) => {
+  if (!root.contains(event.target)) {
+    dropdown.classList.remove("is-active");
+  }
+});
+
+// 1. add our movie select helper function to the bottom of the page
+const onMovieSelect = async (movie) => {
+  const response = await axios.get("http://www.omdbapi.com/", {
+    params: {
+      apikey: "abc12345",
+      i: movie.imdbID
+    }
+  });
+
+  return response.data;
+};
+```
+
+Let's break down our `onMovieSelect()` function logic. First things first, we isolate the function to the bottom of the page. Inside the function we're passing in a `movie` object as the parameter, this will be the movie the user selects. 
+
+Next, we can essentially replicate the structure of our `fetchData()` asynchronous function at the top of our file. The only adjustment we need to make is to substitute the `s:` key and `searchTerm` value with, `i:` and `movie.imdbID`. 
+
+Again, `movie` is going to be which ever movie our user selects from the search. This `movie` is then being passed in as an object as the parameter to `onMovieSelect()` and from that movie object we are targeting the movies `imdbID` so we can receive a lot more data on that particular movie.
+
+[⬆️ Top](#🗒️-table-of-contents)
+
+---
+
+#### 🖼️ __Rendering an Expanded Summary:__
+What we now want to do is render out some content we are now getting back from our `onMovieSelect()` function. Since, this is going to end up being a lot of HTML, instead of cramming it all inside of the `onMovieSelect()` function, we're going to create another helper function for all this logic. We'll call this helper function `movieTemplate()`.
+
+Let's build our `movieTemplate()` helper function below:
+```js
+const onMovieSelect = async (movie) => {
+  const response = await axios.get("http://www.omdbapi.com/", {
+    params: {
+      apikey: "abc12345",
+      i: movie.imdbID
+    }
+  });
+
+  // 3. target the div with id of "summary" from index.html and set the inner html
+  document.querySelector("#summary").innerHTML = movieTemplate(response.data);
+};
+
+// 1. add "movieTemplate" helper function with "movieDetail" parameter.
+const movieTemplate = (movieDetail) => {
+  // 2. add the html
+  return `
+  <article class="media">
+    <figure class="media-left">
+      <p class="image">
+        <img src="${movieDetail.Poster}" alt="movie poster" />
+      </p>
+    </figure>
+
+    <div class="media-content">
+      <div class="content">
+        <h1>${movieDetail.Title}</h1>
+        <h4>${movieDetail.Genre}</h4>
+        <p>${movieDetail.Plot}</p>
+      </div>
+    </div>
+  </article>
+  `;
+};
+```
+
+Let's break down the above code. The first thing we're doing is creating our `movieTemplate()` helper function. This function with house all of our html and rendered content. `movieTemplate()` is going to receive a parameter called `movieDetail`. We chose this name because that parameter is going to be the really big object of specific properties we get back from `onMovieSelect`'s `response.data`.
+
+Next, we are going to add all the html we need in order to display and style the rendered content. 
+
+Now that all the html has been added to `movieTemplate()`, inside of `onMovieSelect()` we target our div with id of `summary` from `index.html` and set the inner html equal to `movieTemplate()`. Then all we need to do is pass in `response.data` to the parameter of `movieTemplate()`.
+
+[⬆️ Top](#🗒️-table-of-contents)
+
+---
+
+#### 🦄 __Rendering Additional Information:__
+Now that we have a good grasp of how we can request information from our API and display it on the screen, let's render out some additional information about the selected movie.
+
+For this, we will just be working with our `movieTemplate()` function. And all we're doing is adding more html to the function. 
+
+Let's do that now:
+```js
+const movieTemplate = (movieDetail) => {
+  return `
+  <!-- Movie Poster -->
+  <article class="media">
+    <figure class="media-left">
+      <p class="image">
+        <img src="${movieDetail.Poster}" alt="movie poster" />
+      </p>
+    </figure>
+
+    <!-- Movie Content -->
+    <div class="media-content">
+      <div class="content">
+        <h1>${movieDetail.Title}</h1>
+        <h4>${movieDetail.Genre}</h4>
+        <p>${movieDetail.Plot}</p>
+      </div>
+    </div>
+  </article>
+
+  <!-- 1. add more html content to the function. -->
+  <!-- Awards -->
+  <article class="notification is-primary">
+    <p class="subtitle">Awards</p>
+    <p class="title">${movieDetail.Awards}</p>
+  </article>
+
+  <!-- Box Office -->
+  <article class="notification is-primary">
+    <p class="subtitle">Box Office</p>
+    <p class="title">${movieDetail.BoxOffice}</p>
+  </article>
+
+  <!-- Metascore -->
+  <article class="notification is-primary">
+    <p class="subtitle">Metascore</p>
+    <p class="title">${movieDetail.Metascore}</p>
+  </article>
+
+  <!-- IMDB Rating -->
+  <article class="notification is-primary">
+    <p class="subtitle">IMDB Rating</p>
+    <p class="title">${movieDetail.imdbRating}</p>
+  </article>
+
+  <!-- IMDB Votes -->
+  <article class="notification is-primary">
+    <p class="subtitle">IMDB Votes</p>
+    <p class="title">${movieDetail.imdbVotes}</p>
+  </article>
+  `;
+};
+```
+
+[⬆️ Top](#🗒️-table-of-contents)
+
+---
+
+#### ✅ __Code Base Before the Refactor:__
+Now that we've wrapped up phase 1 of the project, let's see where our code base currently stands:
+
+```js
+const fetchData = async (searchTerm) => {
+  const response = await axios.get("http://www.omdbapi.com/", {
+    params: {
+      apikey: "abc12345",
+      s: searchTerm
+    }
+  });
+
+  if (response.data.Error) {
+    return [];
+  }
+
+  return response.data.Search;
+};
+
+const root = document.querySelector(".autocomplete");
+root.innerHTML = `
+  <label class="label-heading">Search for a movie</label>
+  <input class="input" placeholder="Search movie" />
+  <div class="dropdown">
+    <div class="dropdown-menu">
+      <div class="dropdown-content results"></div>
+    </div>
+  </div>
+`;
+
+const input = document.querySelector("input");
+const dropdown = document.querySelector(".dropdown");
+const resultsWrapper = document.querySelector(".results");
+
+const onInput = async (event) => {
+  const movies = await fetchData(event.target.value);
+
+  if (!movies.length) {
+    dropdown.classList.remove("is-active");
+    return;
+  }
+
+  resultsWrapper.innerHTML = "";
+
+  dropdown.classList.add("is-active");
+  for (let movie of movies) {
+    const option = document.createElement("a");
+
+    const imgSrc = movie.Poster === "N/A" ? "" : movie.Poster;
+
+    option.classList.add("dropdown-item");
+    option.innerHTML = `
+    <img src="${imgSrc}" />
+    <p>${movie.Title}</p>
+    `;
+
+    option.addEventListener("click", () => {
+      input.value = movie.Title;
+      dropdown.classList.remove("is-active");
+
+      onMovieSelect(movie);
+    });
+
+    resultsWrapper.appendChild(option);
+  }
+};
+
+input.addEventListener("input", debounce(onInput, 1000));
+
+document.addEventListener("click", (event) => {
+  if (!root.contains(event.target)) {
+    dropdown.classList.remove("is-active");
+  }
+});
+
+const onMovieSelect = async (movie) => {
+  const response = await axios.get("http://www.omdbapi.com/", {
+    params: {
+      apikey: "abc12345",
+      i: movie.imdbID
+    }
+  });
+
+  document.querySelector("#summary").innerHTML = movieTemplate(response.data);
+};
+
+const movieTemplate = (movieDetail) => {
+  return `
+  <!-- Movie Poster -->
+  <article class="media">
+    <figure class="media-left">
+      <p class="image">
+        <img src="${movieDetail.Poster}" alt="movie poster" />
+      </p>
+    </figure>
+
+    <!-- Movie Content -->
+    <div class="media-content">
+      <div class="content">
+        <h1>${movieDetail.Title}</h1>
+        <h4>${movieDetail.Genre}</h4>
+        <p>${movieDetail.Plot}</p>
+      </div>
+    </div>
+  </article>
+
+  <!-- 1. add more html content to the function. -->
+  <!-- Awards -->
+  <article class="notification is-primary">
+    <p class="subtitle">Awards</p>
+    <p class="title">${movieDetail.Awards}</p>
+  </article>
+
+  <!-- Box Office -->
+  <article class="notification is-primary">
+    <p class="subtitle">Box Office</p>
+    <p class="title">${movieDetail.BoxOffice}</p>
+  </article>
+
+  <!-- Metascore -->
+  <article class="notification is-primary">
+    <p class="subtitle">Metascore</p>
+    <p class="title">${movieDetail.Metascore}</p>
+  </article>
+
+  <!-- IMDB Rating -->
+  <article class="notification is-primary">
+    <p class="subtitle">IMDB Rating</p>
+    <p class="title">${movieDetail.imdbRating}</p>
+  </article>
+
+  <!-- IMDB Votes -->
+  <article class="notification is-primary">
+    <p class="subtitle">IMDB Votes</p>
+    <p class="title">${movieDetail.imdbVotes}</p>
+  </article>
+  `;
+};
+```
+
+[⬆️ Top](#🗒️-table-of-contents)
+
+---
+
+#### 🚨 __Issues with the Code Base:__
+The way we've written our code so far has some pretty big issues with the current implementation. The goal of this section is to figure out some ways we can fix the current implementation before we move on to phase 2 of our project.
+
+So at this point we are going to do some really big refactors. The goal of these refactors is to help us get an idea of how to write more reusable code.
+
+Let's take a look at some current overwhelming issues with our code base:
+
+__Issues with Implementation:__
+
+  * All our code touches everything
+  * Autocomplete widget is suppose to be reusable
+  * Autocomplete has knowledge of what a movie object is
+  * Autocomplete has knowledge of what to show for each option
+  * Autocomplete has knowledge of what to do when a movie is clicked
+  * Many global variables refer to specific elements - it will be really hard to show a _second_ autocomplete on the screen
+
+[⬆️ Top](#🗒️-table-of-contents)
+
+---

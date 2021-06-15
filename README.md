@@ -15,33 +15,35 @@ I wanted to remove the bloat that comes with learning a programming language and
 A quick look at the files and directories you'll see in the repo.
 
 ```bash
-  ├── src
-    ├── assets
-      ├── repo image files
-    └── js
-      ├── components
-        ├── arrays.js
-        ├── arrow-functions.js
-        ├── async-await.js
-        ├── asynchronous-callbacks.js
-        ├── basics.js
-        ├── callbacks.js
-        ├── destructuring.js
-        ├── dom-events.js
-        ├── dom.js
-        ├── functions.js
-        ├── json.js
-        ├── loops.js
-        ├── objects.js
-        ├── promises.js
-        ├── prototypes.js
-        ├── requests-axios.js
-        ├── requests.js
-        ├── rest.js
-        ├── spread.js
-        └── this.js
-      └── projects
-        ├── simpler-timer
+├── src
+│  ├── assets
+│  │  └── repo image files
+│  └── js
+│     ├── components
+│     │  ├── arrays.js
+│     │  ├── arrow-functions.js
+│     │  ├── async-await.js
+│     │  ├── asynchronous-callbacks.js
+│     │  ├── basics.js
+│     │  ├── callbacks.js
+│     │  ├── destructuring.js
+│     │  ├── dom-events.js
+│     │  ├── dom.js
+│     │  ├── functions.js
+│     │  ├── json.js
+│     │  ├── loops.js
+│     │  ├── objects.js
+│     │  ├── promises.js
+│     │  ├── prototypes.js
+│     │  ├── requests-axios.js
+│     │  ├── requests.js
+│     │  ├── rest.js
+│     │  ├── spread.js
+│     │  └── this.js
+│     └── projects
+│        ├── color-flipper
+│        ├── movie-duel
+│        └── simpler-timer
 ```
 
 1. **`/src`**: This directory contains all of the source files for the Github repo.
