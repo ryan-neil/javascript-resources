@@ -15,42 +15,38 @@ I wanted to remove the bloat that comes with learning a programming language and
 A quick look at the files and directories you'll see in the repo.
 
 ```bash
-├── src
-│  ├── assets
-│  │  └── repo image files
-│  └── js
-│     ├── components
-│     │  ├── arrays.js
-│     │  ├── arrow-functions.js
-│     │  ├── async-await.js
-│     │  ├── asynchronous-callbacks.js
-│     │  ├── basics.js
-│     │  ├── callbacks.js
-│     │  ├── destructuring.js
-│     │  ├── dom-events.js
-│     │  ├── dom.js
-│     │  ├── functions.js
-│     │  ├── json.js
-│     │  ├── loops.js
-│     │  ├── objects.js
-│     │  ├── promises.js
-│     │  ├── prototypes.js
-│     │  ├── requests-axios.js
-│     │  ├── requests.js
-│     │  ├── rest.js
-│     │  ├── spread.js
-│     │  └── this.js
-│     └── projects
-│        ├── color-flipper
-│        ├── movie-duel
-│        └── simpler-timer
+├─ src
+│ ├─ assets
+│ │ └─ repo image files
+│ └─ js
+│   ├─ components
+│   │ ├─ arrays.js
+│   │ ├─ arrow-functions.js
+│   │ ├─ async-await.js
+│   │ ├─ asynchronous-callbacks.js
+│   │ ├─ basics.js
+│   │ ├─ callbacks.js
+│   │ ├─ destructuring.js
+│   │ ├─ dom-events.js
+│   │ ├─ dom.js
+│   │ ├─ functions.js
+│   │ ├─ json.js
+│   │ ├─ loops.js
+│   │ ├─ objects.js
+│   │ ├─ promises.js
+│   │ ├─ prototypes.js
+│   │ ├─ requests-axios.js
+│   │ ├─ requests.js
+│   │ ├─ rest.js
+│   │ ├─ spread.js
+│   │ └─ this.js
+│   └── projects
+│     ├─ color-flipper
+│     ├─ movie-duel
+│     └─ simpler-timer
 ```
 
-1. **`/src`**: This directory contains all of the source files for the Github repo.
-    1. **`/assets`**: This directory contains images for the repo.
-    1. **`/js`**: This directory contains all JavaScript component files.
-        1. **`/components`**: This directory contains all the javascript repo files for important features of the JavaScript programming language. Each file contains simple explanations along with example code for the features.
-        1. **`/projects`**: This directory contains some example JavaScript projects for reference.
+----
 
 ## 🔗 JavaScript Resources
 - [JavaScript MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
@@ -64,15 +60,17 @@ A quick look at the files and directories you'll see in the repo.
 - [JavaScript Visualized](https://dev.to/lydiahallie/series/3341)
 - [1 Line - JavaScript Utilities](https://1loc.dev/)
 
-#### Misc Resources:
+__Misc Resources:__
+
 - [Big-O Cheatsheet](https://www.bigocheatsheet.com/)
 - [Free for Dev](https://free-for.dev/#/)
 - [Fake API for testing and prototyping (JSON Placeholder)](https://jsonplaceholder.typicode.com/)
 - [CSS -> JavaScript](https://css2js.dotenv.dev/)
 - [Data Visualization - GoodData.UI](https://sdk.gooddata.com/gooddata-ui/)
 
-## 📓 Notes
-### Table of Contents
+----
+
+### 📝 Table of Contents
 
 1. [Running JavaScript](#running-javascript)
 1. [Commenting](#commenting)
@@ -117,7 +115,9 @@ A quick look at the files and directories you'll see in the repo.
 1. [OOP with JavaScript](#object-oriented-programming-with-javaScript)
     * [Classes](#classes-in-javascript)
 
-  ----
+----
+
+## 📓 Notes
 
 ### Running JavaScript
 
