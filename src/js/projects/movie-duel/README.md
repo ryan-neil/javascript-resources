@@ -11,10 +11,10 @@ The last feature to our practice application will be a "smart search" feature th
 ### 📂 File Tree
 ```bash
 ├─ movie-duel
-│  ├─ index.html
-│  ├─ style.css
-│  ├─ index.js
-│  └─ utils.js
+│ ├─ index.html
+│ ├─ style.css
+│ ├─ index.js
+│ └─ utils.js
 ```
 
 ----
@@ -30,7 +30,26 @@ The last feature to our practice application will be a "smart search" feature th
 ### 🗒️ Table of Contents
 1. [Application Architecture](#📝-application-architecture)
 1. [Logic](#💭-logic)
-1. [Issues with the Code Base](#🚨-issues-with-the-code-base)
+    * [Fetching Data](#fetching-data)
+    * [Searching the API on Input Change](#searching-the-api-on-input-change)
+    * [Delaying Search Input](#delaying-the-search-input)
+    * [Understanding Debounce](#understanding-debounce)
+    * [Awaiting Async Functions](#awaiting-async-functions)
+    * [Rendering Movies](#rendering-movies)
+    * [Error Handling](#error-handling)
+    * [Widget Styling](#widget-styling)
+    * [Rendering HTML with JavaScript](#rendering-html-with-javascript)
+    * [Cleaning up our Autocomplete Widget](#cleaning-up-our-autocomplete-widget)
+    * [Handling Empty Responses](#handling-empty-responses)
+    * [Handling Movie Selection](#handling-movie-selection)
+    * [Making a Follow-up Request](#making-a-follow-up-request)
+    * [Rendering an Expanded Summary](#rendering-an-expanded-summary)
+    * [Rendering Additional Information](#rendering-additional-information)
+    * [Code Base Before the Refactor](#code-base-before-the-refactor)
+    * [Issues with the Code Base](#issues-with-the-code-base)
+    * [Displaying Multiple Autocomplete's](#displaying-multiple-autocomplete's)
+    * [Extracting Rendering Logic](#extracting-rendering-logic)
+    * [Extracting Selection Logic](#extracting-selection-logic)
 
 ----
 
@@ -51,9 +70,7 @@ __Search Box__
 
 ### 💭 Logic
 
-#### __Autocomplete Text Input:__
-
-#### ✅ __Fetching Data:__
+#### Fetching Data
 
 We start by defining our helper async function. For this project we will be using Axios to help us make these requests.
 
@@ -94,7 +111,7 @@ And voilà! We're returned an object with an array of objects with all the movie
 
 ---
 
-#### 💭 __Searching the API on Input Change:__
+#### Searching the API on Input Change
 
 Now that we know how to receive data back from the API, we need to create an input box that the user can use to search for movies. 
 
@@ -115,12 +132,12 @@ const fetchData = async () => {
   console.log(response.data);
 };
 
-// select the input element and assign to a variable
+// 1. select the input element and assign to a variable
 const input = document.querySelector("input");
 
-// add our event listener listening for the "input" event
+// 2. add our event listener listening for the "input" event
 input.addEventListener("input", (event) => {
-  event.target.value; // this reference allows us access to that change text (this will be whatever the user just typed into the input) 
+  event.target.value; // 3. this reference allows us access to that change text (this will be whatever the user just typed into the input) 
 });
 ```
 > Note: We delete our `fetchData()` call because we no longer want to run our `fetchData()` function and search the API automatically when our application first starts.
@@ -129,11 +146,13 @@ Now, if we want to try and search the API, we can take `event.target.value` and 
 
 Let's update our code and implement this:
 ```js
-const fetchData = async (searchTerm) => { // 2. receive "event.target.value" as an argument to this function, we'll call it "searchTerm"
+// 2. receive "event.target.value" as a parameter to this function, we'll call it "searchTerm"
+const fetchData = async (searchTerm) => { 
   const response = await axios.get("http://www.omdbapi.com/", {
     params: {
       apikey: "abc12345",
-      s: searchTerm // 3. pass our "searchTerm" argument as a value to "s" (the API search key) (this will now search the API for whatever the user types into the input)
+      // 3. pass our "searchTerm" argument as a value to "s" (the API search key) (this will now search the API for whatever the user types into the input)
+      s: searchTerm
     }
   });
 
@@ -144,7 +163,8 @@ const fetchData = async (searchTerm) => { // 2. receive "event.target.value" as 
 const input = document.querySelector("input");
 
 input.addEventListener("input", (event) => {
-  fetchData(event.target.value); // 1. call fetchData and pass in the value from the input (this will be what the user types into the input field)
+  // 1. call fetchData and pass in the value from the input (this will be what the user types into the input field)
+  fetchData(event.target.value);
 });
 ```
 This is working well except we have one issue. Our issue is we're fetching a search of the API for every single key press. This is not ideal because we're only allowed access to the API 1,000 times per day. It's also not optimal for performance. Let's explore how we're going to solve this in the next section.
@@ -153,7 +173,7 @@ This is working well except we have one issue. Our issue is we're fetching a sea
 
 ---
 
-#### ⏸️ __Delaying Search Input:__
+#### Delaying Search Input
 
 An ideal solution would be to allow the user to press a key inside the input field as many times as they want without triggering an API call. Only after we have about one second or so of nothing happening do we want to call search and send a request to the API.
 
@@ -168,12 +188,12 @@ const fetchData = async (searchTerm) => {
 
 const input = document.querySelector("input");
 
-// assign our event function to a variable
+// 1. assign our event function to a variable
 const onInput = (event) => {
   fetchData(event.target.value);
 };
 
-// we then pass it in as our second argument to the event listener
+// 2. we then pass it in as our second argument to the event listener
 input.addEventListener("input", onInput);
 ```
 
@@ -190,10 +210,10 @@ const fetchData = async (searchTerm) => {
 
 const input = document.querySelector("input");
 
-// declare our variable
+// 3. declare our variable
 let timeoutID;
 const onInput = (event) => {
-  // assign "timeoutID" to "setTimeout"
+  // 4. assign "timeoutID" to "setTimeout"
   timeoutID = setTimeout(() => {
     fetchData(event.target.value);
   }, 1000);
@@ -213,7 +233,7 @@ const input = document.querySelector("input");
 
 let timeoutID;
 const onInput = (event) => {
-  // "if" statement
+  // 5. add in our "if" statement
   if (timeoutID) {
     clearTimeout(timeoutID);
   }
@@ -228,7 +248,7 @@ input.addEventListener("input", onInput);
 
 So behind the scenes, we will be calling `onInput` many times in a row. It could be a user typing into the input field something like, "avengers", however many characters that is, we will be calling `onInput` that number of times.
 
-So the very __first time__ `onInput` is going to be called, we will enter our `onInput` function and look and see if `timeoutID` is defined (our `if` statement). The __first time__ we call `onInput`, `timeoutID` will return `undefined` so we are going to skip over our `if` statement entirely.
+So the very __first time__ `onInput` is going to be called, we will enter our `onInput` function and look and see if `timeoutID` is defined (this is being checked by our `if` statement). The __first time__ we call `onInput`, `timeoutID` will return `undefined` so we are going to skip over the `if` statement entirely.
 
 After skipping over our `if` statement we go down to our `setTimeout` and set up a timer and say, in one second call `fetchData`. We then assign that timer to `timeoutID`.
 
@@ -268,7 +288,7 @@ input.addEventListener("input", onInput);
 
 ---
 
-#### ♻️ __Understanding Debounce:__
+#### Understanding Debounce
 
 __Debouncing__ an input is when we are waiting for some time to pass after the last event to actually do something. In the life span of an application there can be many different scenarios in which we might want to bounce some events. This doesn't just have to be for text inputs either.
 
@@ -285,18 +305,18 @@ const fetchData = async (searchTerm) => {
 
 const input = document.querySelector("input");
 
-// debounce helper function
+// 1. create our debounce helper function
 const debounce = (func) => {
   let timeoutID;
 
-  // our wrapper function (this is the function we will be calling many times)
+  // 2. our wrapper function (this is the function we will be calling many times)
   return () => {
     if (timeoutID) {
       clearTimeout(timeoutID);
     }
 
     timeoutID = setTimeout(() => {
-      // call our callback function from "debounce"
+      // 3. call our callback function from "debounce"
       func();
     }, 1000);
   };
@@ -323,14 +343,14 @@ const input = document.querySelector("input");
 const debounce = (func) => {
   let timeoutID;
 
-  // here we're adding "...args" to be sure it works if multiple arguments are passed in
+  // 4. here we're adding "...args" to be sure it works if multiple arguments are passed in
   return (...args) => {
     if (timeoutID) {
       clearTimeout(timeoutID);
     }
 
     timeoutID = setTimeout(() => {
-      // here we add "apply()" to handle multiple arguments
+      // 5. here we add "apply()" to handle multiple arguments
       func.apply(null, args);
     }, 1000);
   };
@@ -358,7 +378,7 @@ const fetchData = async (searchTerm) => {
 
 const input = document.querySelector("input");
 
-// 2. "onInput" gets passed into our "debounce" callback function ("func")
+// 7. "onInput" gets passed into our "debounce" callback function ("func")
 const debounce = (func) => {
   let timeoutID;
 
@@ -377,7 +397,7 @@ const onInput = (event) => {
   fetchData(event.target.value);
 };
 
-// 1. here we wrap "onInput" with our "debounce" function
+// 6. here we wrap "onInput" with our "debounce" function
 input.addEventListener("input", debounce(onInput));
 ```
 
@@ -388,7 +408,7 @@ Lastly, we currently have a hard coded delay in our `setTimeout` for `1000`ms. W
 ```js
 const input = document.querySelector("input");
 
-// add the second argument of "delay"
+// 8. add the second argument of "delay"
 const debounce = (func, delay) => {
   let timeoutID;
 
@@ -399,7 +419,7 @@ const debounce = (func, delay) => {
 
     timeoutID = setTimeout(() => {
       func.apply(null, args);
-    }, delay); // replace the hard coded 1000 with just "delay"
+    }, delay); // 9. replace the hard coded 1000 with just "delay"
   };
 };
 
@@ -407,7 +427,7 @@ const onInput = (event) => {
   fetchData(event.target.value);
 };
 
-// we add the second argument to "debounce" with how many milliseconds we want our "delay" to be for
+// 10. now we add the second argument to "debounce" with how many milliseconds we want our "delay" to be for
 input.addEventListener("input", debounce(onInput, 1000));
 ```
 
@@ -417,7 +437,7 @@ And thats it! We can now use our `debounce` function anywhere inside of our code
 
 ---
 
-#### 💬 __Awaiting Async Functions:__
+#### Awaiting Async Functions
 
 Let's return some usable data from `fetchData`. Once we get this "usable" data back, we will then make sure we can iterate over the data. For every movie we fetch, we will try and render out some content to the DOM.
 
@@ -464,7 +484,8 @@ input.addEventListener("input", debounce(onInput, 1000));
 
 ---
 
-#### 🖍️ __Rendering Movies:__
+#### Rendering Movies
+
 Alright, now it's time to render some content onto the screen. For our project when a user searches for a movie we want to render content based on that search. When a user searches for a movie we will display:
   * The poster as an image for each movie
   * The title
@@ -503,7 +524,7 @@ Pretty cool!
 
 ---
 
-#### ❗ __Error Handling:__
+#### Error Handling
 
 Let's do some error handling. How we want our specific search bar to work is, if we don't get any data (information) back from the search, we won't display anything.
 
@@ -533,7 +554,7 @@ We are using `Error` because that is the way the API calls it's errors.
 
 ---
 
-#### 🎨 __Widget Styling:__
+#### Widget Styling
 
 We want to try and reduce the coupling of our `index.html` file and our `app.js` file. In other words, we don't want these two files to rely on each other too much. This will make our lives a lot easier in the long run.
 
@@ -545,7 +566,7 @@ With this approach we can easily create reusable widgets that we can interchange
 
 ---
 
-#### 🌈 __Rendering HTML with JavaScript:__
+#### Rendering HTML with JavaScript
 
 For our project, since we have two identical autocomplete search widgets, it would be a better strategy to implement the html code inside of our javascript file. This way we don't need a bunch of extra html code inside our `index.html` file and we can just create a function inside our `app.js` and reuse it throughout the project.
 
@@ -623,7 +644,7 @@ input.addEventListener("input", debounce(onInput, 1000));
 
 ---
 
-#### 🧹 __Cleaning up our Autocomplete Widget:__
+#### Cleaning up our Autocomplete Widget
 
 The first thing we need to cleanup is when we search for a new movie, the results get listed under our old search results. We don't want this. What we're going to do is make sure that whenever we fetch a new list of movies, we clear out the existing movies inside our dropdown.
 
@@ -721,7 +742,7 @@ document.addEventListener("click", (event) => {
 
 ---
 
-#### 😶 __Handling Empty Responses:__
+#### Handling Empty Responses
 
 The next minor fix we are going to want to fix is, if a user searches for something but then deletes their input text, the dropdown stays open. We want the dropdown to close if this happens.
 
@@ -772,7 +793,7 @@ document.addEventListener("click", (event) => {
 
 ---
 
-#### 👋 __Handling Movie Selection:__
+#### Handling Movie Selection
 
 We just have one last major user interaction we need to handle and that's if the user wants to actually click on a movie.
 
@@ -830,7 +851,8 @@ document.addEventListener("click", (event) => {
 
 ---
 
-#### 🙇 __Making a Follow-up Request:__
+#### Making a Follow-up Request
+
 The next thing we need to do is, take the movie the user has selected and render out some details to the DOM.
 
 In order to do this, we need to remember that the API we're using has two different endpoints we're making use of. So far, we've been getting some results back from the "by search" method `s:` and that only gives us some very limited pieces of information about each movie.
@@ -916,7 +938,8 @@ Again, `movie` is going to be which ever movie our user selects from the search.
 
 ---
 
-#### 🖼️ __Rendering an Expanded Summary:__
+#### Rendering an Expanded Summary
+
 What we now want to do is render out some content we are now getting back from our `onMovieSelect()` function. Since, this is going to end up being a lot of HTML, instead of cramming it all inside of the `onMovieSelect()` function, we're going to create another helper function for all this logic. We'll call this helper function `movieTemplate()`.
 
 Let's build our `movieTemplate()` helper function below:
@@ -966,7 +989,8 @@ Now that all the html has been added to `movieTemplate()`, inside of `onMovieSel
 
 ---
 
-#### 🦄 __Rendering Additional Information:__
+#### Rendering Additional Information
+
 Now that we have a good grasp of how we can request information from our API and display it on the screen, let's render out some additional information about the selected movie.
 
 For this, we will just be working with our `movieTemplate()` function. And all we're doing is adding more html to the function. 
@@ -1031,7 +1055,8 @@ const movieTemplate = (movieDetail) => {
 
 ---
 
-#### ✅ __Code Base Before the Refactor:__
+#### Code Base Before the Refactor
+
 Now that we've wrapped up phase 1 of the project, let's see where our code base currently stands:
 
 ```js
@@ -1175,7 +1200,8 @@ const movieTemplate = (movieDetail) => {
 
 ---
 
-#### 🚨 __Issues with the Code Base:__
+#### Issues with the Code Base
+
 The way we've written our code so far has some pretty big issues with the current implementation. The goal of this section is to figure out some ways we can fix the current implementation before we move on to phase 2 of our project.
 
 So at this point we are going to do some really big refactors. The goal of these refactors is to help us get an idea of how to write more reusable code.
@@ -1190,6 +1216,285 @@ __Issues with Implementation:__
   * Autocomplete has knowledge of what to show for each option
   * Autocomplete has knowledge of what to do when a movie is clicked
   * Many global variables refer to specific elements - it will be really hard to show a _second_ autocomplete on the screen
+
+__Solution:__
+
+Now that we have a better understanding of what's wrong with our current code implementation. Let's discuss how we can fix all of these issues.
+
+At the moment we have a lot of un-reusable code inside our `index.js` file. What we want is for our `index.js` file to be strictly used for non-reusable code for our very specific project. We then want another separate file called `autocomplete.js` for our reusable code to get an autocomplete to work. 
+
+This `autocomplete.js` file should work without any knowledge of "movies", "recipes", "blogs", etc. It must also be able to be called multiple times throughout the application.
+
+Let's breakdown our two new files a bit more:
+
+`index.js`: Specific non-reusable code
+```bash
+├─ Configuration for Autocomplete
+│ ├─ fetchData() - function to find movies
+│ ├─ renderOption() - function that knows how to render a movie
+│ ├─ onOptionSelect() - function that gets invoked when a user clicks an option
+│ └─ root - element that the autocomplete should be rendered into
+```
+
+`autocomplete.js`: Unspecific reusable code
+```bash
+└─ function that will take the autocomplete configuration and render an autocomplete on the screen
+```
+
+[⬆️ Top](#🗒️-table-of-contents)
+
+---
+
+#### Displaying Multiple Autocomplete's
+
+Our goal for right now is the ability to show multiple, different autocomplete's on the screen at the same time. So we should be able to create multiple configuration objects and pass each of them into some autocomplete function. The autocomplete function should then create the autocomplete in those different root elements.
+
+First thing we do is create a function called `createAutoComplete()` inside our `autocomplete.js` file. Next, we pass in all of the logic having to do with our autocomplete widget from the `index.js` file.
+
+We will be calling `createAutoComplete()` multiple times throughout the application. When we call it, we will be passing in some "configuration" object as a parameter. This "configuration" object is going to have all the custom functionality that specify how the autocomplete should work.
+
+In order to make our `createAutoComplete` function more usable we want to destructure the `root` object. Now, since `{ root }` is being provided as an option, the `createAutoComplete` function no longer has to figure out where to render the autocomplete on it's own.
+
+Let's look at this below:
+```js
+// ** autocomplete.js file
+
+// 1. create "createAutoComplete" function
+// 1.1 destructure the root element property out as the parameter
+const createAutoComplete = ({ root }) => {
+  root.innerHTML = `
+    <label><b>Search For a Movie</b></label>
+    <input class="input" placeholder="Search movie" />
+    <div class="dropdown">
+      <div class="dropdown-menu">
+        <div class="dropdown-content results"></div>
+      </div>
+    </div>
+  `;
+
+  const input = document.querySelector("input");
+  const dropdown = document.querySelector(".dropdown");
+  const resultsWrapper = document.querySelector(".results");
+
+  const onInput = async (event) => {
+    // onInput logic...
+  };
+  input.addEventListener("input", debounce(onInput, 500));
+
+  document.addEventListener("click", (event) => {
+    if (!root.contains(event.target)) {
+      dropdown.classList.remove("is-active");
+    }
+  });
+};
+```
+
+Our next step to make this more reusable is to refactor our `input`, `dropdown`, and `resultsWrapper` variables.
+
+Right now, the `input`, `dropdown` and `resultsWrapper` are trying to find just some `input`/`dropdown`/`resultsWrapper` in the whole document. We don't want this. Instead, we want to try and find these elements that are just inside the `root` element.
+
+To do this, instead at looking at the entire `document`, we're going to look specifically inside the `root` element.
+
+We'll handle this now:
+```js
+// ** autocomplete.js file
+
+const createAutoComplete = ({ root }) => {
+  root.innerHTML = `
+    <label><b>Search For a Movie</b></label>
+    <input class="input" placeholder="Search movie" />
+    <div class="dropdown">
+      <div class="dropdown-menu">
+        <div class="dropdown-content results"></div>
+      </div>
+    </div>
+  `;
+
+  // 2. change the "document.querySelector" to "root.querySelector"
+  const input = root.querySelector("input");
+  const dropdown = root.querySelector(".dropdown");
+  const resultsWrapper = root.querySelector(".results");
+
+  const onInput = async (event) => {
+    // onInput logic...
+  };
+  input.addEventListener("input", debounce(onInput, 500));
+
+  document.addEventListener("click", (event) => {
+    if (!root.contains(event.target)) {
+      dropdown.classList.remove("is-active");
+    }
+  });
+};
+```
+
+Now that we've updated our `createAutoComplete` function a bit more, we can head back over to our `index.js` file and we can try and call `createAutoComplete()` multiple times. Each time we call it, we're going to form up a different "configuration" object that has a different `root` element to render the autocomplete into.
+
+Before we can do this though we need to head over to our `index.html` file and make sure that there are different elements that we can render these separate autocomplete's into.
+
+For this, we'll create three different `autocomplete` div classes like this:
+```html
+<!-- ** index.html file -->
+
+<div class="container">
+  <div class="autocomplete"></div>
+  <div class="autocomplete-two"></div>
+  <div class="autocomplete-three"></div>
+  <div id="summary"></div>
+</div>
+```
+
+> Note: This exercise is just for testing purposes. We will remove the two additional `autocomplete`'s when we're done here.
+
+Then, in our `index.js` file we can call `createAutoComplete()` three separate times and pass in our target div element classes from `index.html`
+
+```js
+// ** index.js file
+
+const fetchData = async (searchTerm) => {
+  // fetchData logic
+};
+
+// 1. call "createAutoComplete" and pass in the configuration objects
+createAutoComplete({
+  root: document.querySelector(".autocomplete")
+});
+createAutoComplete({
+  root: document.querySelector(".autocomplete-two")
+});
+createAutoComplete({
+  root: document.querySelector(".autocomplete-three")
+});
+
+const onMovieSelect = async (movie) => {
+  // onMovieSelect logic
+};
+
+const movieTemplate = (movieDetail) => {
+  // movieTemplate logic
+};
+```
+
+Okay! So this is working really well. We will continue to refactor our code in the sections below.
+
+[⬆️ Top](#🗒️-table-of-contents)
+
+---
+
+#### Extracting Rendering Logic
+
+We want to continue to add some additional functions to that "configuration" object that we're passing to the `createAutoComplete` function. We're then going to refactor the function to make sure it uses the functions we had provided instead of locating all the logic directly inside of the `createAutoComplete` function. 
+
+The first function we're going to add is our `renderOption` function. So we pass in `renderOption` as the second configuration object. In this function we expect to receive some object that represents some possible movie or whatever else. For our example we will refer to it as `movie`.
+
+Next, inside `renderOption` we're going to generate some html and `return` it. This will be the html that gets shown for each individual `movie` option.
+
+Let's do this now:
+```js
+// ** index.js file
+
+const fetchData = async (searchTerm) => {
+  // fetchData logic
+};
+
+createAutoComplete({
+  root: document.querySelector(".autocomplete"),
+  // 1. pass in a second configuration object
+  renderOption(movie) {
+    // 2. generate and return the html for each "movie" option
+    const imgSrc = movie.Poster === "N/A" ? "" : movie.Poster;
+    return `
+      <img src="${imgSrc}" />
+      <p>${movie.Title}</p>
+    `;
+  }
+});
+
+const onMovieSelect = async (movie) => {
+  // onMovieSelect logic
+};
+
+const movieTemplate = (movieDetail) => {
+  // movieTemplate logic
+};
+```
+
+Now we have extracted all of our rendering logic into the `renderOption` function and it will now be called many times automatically with each movie that autocomplete fetches.
+
+So now with that out of the way, we just need to make sure that the `createAutoComplete` function references the `renderOption` function to figure out what each movie option should look like.
+
+To do this, we need to go back to our `autocomplete.js` file and at the top in our `createAutoComplete` function, we need to destructure out the `renderOption` function.
+
+Next, inside the `for` loop, we set our `option.innerHTML` to equal `renderOption()` with `movie` as the parameter that we will be iterating over.
+
+Let's add this now:
+```js
+// ** autocomplete.js file
+
+// 1. we destructure off the "renderOption" function
+const createAutoComplete = ({ root, renderOption }) => {
+  root.innerHTML = `
+    <label><b>Search For a Movie</b></label>
+    <input class="input" placeholder="Search movie" />
+    <div class="dropdown">
+      <div class="dropdown-menu">
+        <div class="dropdown-content results"></div>
+      </div>
+    </div>
+  `;
+
+  const input = document.querySelector("input");
+  const dropdown = document.querySelector(".dropdown");
+  const resultsWrapper = document.querySelector(".results");
+
+  const onInput = async (event) => {
+    const movies = await fetchData(event.target.value);
+
+    if (!movies.length) {
+      dropdown.classList.remove("is-active");
+      return;
+    }
+
+    resultsWrapper.innerHTML = "";
+
+    dropdown.classList.add("is-active");
+    for (let movie of movies) {
+      const option = document.createElement("a");
+
+      option.classList.add("dropdown-item");
+      // 2. now in the "innerHTML" we're going to call "renderOption" with "movie" as the parameter
+      option.innerHTML = renderOption(movie);
+      option.addEventListener("click", () => {
+        input.value = movie.Title;
+        dropdown.classList.remove("is-active");
+
+        onMovieSelect(movie);
+      });
+
+      resultsWrapper.appendChild(option);
+    }
+  };
+  input.addEventListener("input", debounce(onInput, 500));
+
+  document.addEventListener("click", (event) => {
+    if (!root.contains(event.target)) {
+      dropdown.classList.remove("is-active");
+    }
+  });
+};
+```
+
+And there we go! We've extracted some custom logic that is only appropriate for this movie related information. The benefit of this is that if we ever decide we want the autocomplete to look different, we only need to update the `renderOption` function back inside of our `index.js` file.
+
+[⬆️ Top](#🗒️-table-of-contents)
+
+---
+
+#### Extracting Selection Logic
+
+The next refactor we're going to implement if for `onOptionSelect()` (was `onMovieSelect()`). So for this function, we're going to pull out all the logic that decides what function to run whenever a user selects an option.
+
+First, we head over to `autocomplete.js` and ...
 
 [⬆️ Top](#🗒️-table-of-contents)
 

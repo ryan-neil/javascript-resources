@@ -11,7 +11,7 @@ I wanted to remove the bloat that comes with learning a programming language and
 ###### If you found this guide helpful give me a follow and let me know! 🤙🏻
 [![Twitter Badge](https://img.shields.io/badge/-Twitter-00acee?style=flat-square&logo=Twitter&logoColor=white)](https://twitter.com/home?lang=en)
 
-## 🧐 What's inside?
+### 🧐 What's inside?
 A quick look at the files and directories you'll see in the repo.
 
 ```bash
@@ -46,8 +46,6 @@ A quick look at the files and directories you'll see in the repo.
 │     └─ simpler-timer
 ```
 
-----
-
 ## 🔗 JavaScript Resources
 - [JavaScript MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 - [JavaScript.info](https://javascript.info/)
@@ -70,7 +68,8 @@ __Misc Resources:__
 
 ----
 
-### 📝 Table of Contents
+### 📓 Notes
+### Table of Contents
 
 1. [Running JavaScript](#running-javascript)
 1. [Commenting](#commenting)
@@ -116,8 +115,6 @@ __Misc Resources:__
     * [Classes](#classes-in-javascript)
 
 ----
-
-## 📓 Notes
 
 ### Running JavaScript
 
