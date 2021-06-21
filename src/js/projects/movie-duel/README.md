@@ -11,10 +11,13 @@ The last feature to our practice application will be a "smart search" feature th
 ### 📂 File Tree
 ```bash
 ├─ movie-duel
+│ ├─ js
+│ │ ├─ autocomplete.js
+│ │ ├─ index.js
+│ │ └─ utils.js
 │ ├─ index.html
-│ ├─ style.css
-│ ├─ index.js
-│ └─ utils.js
+│ ├─ README.md
+│ └─ style.css
 ```
 
 ----
