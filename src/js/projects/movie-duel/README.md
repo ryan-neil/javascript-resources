@@ -1063,6 +1063,7 @@ const movieTemplate = (movieDetail) => {
 Now that we've wrapped up phase 1 of the project, let's see where our code base currently stands:
 
 ```js
+// Fetch data from the API
 const fetchData = async (searchTerm) => {
   const response = await axios.get("http://www.omdbapi.com/", {
     params: {
@@ -1071,13 +1072,16 @@ const fetchData = async (searchTerm) => {
     }
   });
 
+  // If we don't receive any data back from the API, display nothing
   if (response.data.Error) {
     return [];
   }
 
+  // Return [Search] data from the API
   return response.data.Search;
 };
 
+// Select our root element where all our autocomplete widget content will go in
 const root = document.querySelector(".autocomplete");
 root.innerHTML = `
   <label class="label-heading">Search for a movie</label>
@@ -1093,20 +1097,28 @@ const input = document.querySelector("input");
 const dropdown = document.querySelector(".dropdown");
 const resultsWrapper = document.querySelector(".results");
 
+// 
 const onInput = async (event) => {
+  // Fetch data from the API for the movie the user typed into the input
   const movies = await fetchData(event.target.value);
 
+  // If no movies are returned from the search, close the dropdown
   if (!movies.length) {
     dropdown.classList.remove("is-active");
     return;
   }
 
+  // Reset the results list on new search
   resultsWrapper.innerHTML = "";
 
+  // Add the class of "is-active" to "dropdown"
   dropdown.classList.add("is-active");
-  for (let movie of movies) {
-    const option = document.createElement("a");
 
+  // Loop through our returned movies 
+  for (let movie of movies) {
+    // For each movie create an <a> element
+    const option = document.createElement("a");
+    // Check to see if the returned movie has a poster, if not display nothing
     const imgSrc = movie.Poster === "N/A" ? "" : movie.Poster;
 
     option.classList.add("dropdown-item");
@@ -1115,25 +1127,45 @@ const onInput = async (event) => {
     <p>${movie.Title}</p>
     `;
 
+    // If a movie is selected (clicked) set the input text to the exact movie title and close the dropdown
     option.addEventListener("click", () => {
       input.value = movie.Title;
       dropdown.classList.remove("is-active");
 
+      // Pass in "onMovieSelect()" with a "movie" object as the parameter
       onMovieSelect(movie);
     });
 
+    // Append our "option" selection to our results wrapper element in the DOM
     resultsWrapper.appendChild(option);
   }
 };
 
+// Our debounce function from utils.js file
+const debounce = (callbackFunc, delay) => {
+  let timeoutID;
+
+  return (...args) => {
+    if (timeoutID) {
+      clearTimeout(timeoutID);
+    }
+
+    timeoutID = setTimeout(() => {
+      callbackFunc.apply(null, args);
+    }, delay);
+  };
+};
+
 input.addEventListener("input", debounce(onInput, 1000));
 
+// If user clicks anywhere outside of the root dropdown element, close the dropdown
 document.addEventListener("click", (event) => {
   if (!root.contains(event.target)) {
     dropdown.classList.remove("is-active");
   }
 });
 
+// Helper function for our follow up request to get the specific movie ID
 const onMovieSelect = async (movie) => {
   const response = await axios.get("http://www.omdbapi.com/", {
     params: {
@@ -1142,9 +1174,11 @@ const onMovieSelect = async (movie) => {
     }
   });
 
+  // Set the inner HTML of our target element (summary) to the content we added to our helper function "movieTemplate". The parameter to "movieTemplate" is going to be the specific ID we got back from our second API request.
   document.querySelector("#summary").innerHTML = movieTemplate(response.data);
 };
 
+// Helper function that renders out all of our HTML to be displayed on the screen once a movie is selected
 const movieTemplate = (movieDetail) => {
   return `
   <!-- Movie Poster -->
@@ -1165,7 +1199,6 @@ const movieTemplate = (movieDetail) => {
     </div>
   </article>
 
-  <!-- 1. add more html content to the function. -->
   <!-- Awards -->
   <article class="notification is-primary">
     <p class="subtitle">Awards</p>
