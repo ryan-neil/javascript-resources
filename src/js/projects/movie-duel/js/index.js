@@ -1,32 +1,34 @@
 // http://www.omdbapi.com/?apikey=1da41525&
 
-const fetchData = async (searchTerm) => {
-	const response = await axios.get("http://www.omdbapi.com/", {
-		params: {
-			apikey: "1da41525",
-			s: searchTerm
-		}
-	});
-
-	const data = response.data;
-
-	if (data.Error) {
-		return [];
-	}
-
-	return data.Search;
-};
-
 createAutoComplete({
 	root: document.querySelector(".autocomplete"),
-	// 1. pass in a second configuration object
 	renderOption(movie) {
-		// 2. generate and return the html for each "movie" option
 		const imgSrc = movie.Poster === "N/A" ? "" : movie.Poster;
 		return `
       <img src="${imgSrc}" />
       <p>${movie.Title} (${movie.Year})</p>
     `;
+	},
+	onOptionSelect(movie) {
+		onMovieSelect(movie);
+	},
+	inputValue(movie) {
+		return movie.Title;
+	},
+	async fetchData(searchTerm) {
+		const response = await axios.get("http://www.omdbapi.com/", {
+			params: {
+				apikey: "1da41525",
+				s: searchTerm
+			}
+		});
+
+		const data = response.data;
+		if (data.Error) {
+			return [];
+		}
+
+		return data.Search;
 	}
 });
 

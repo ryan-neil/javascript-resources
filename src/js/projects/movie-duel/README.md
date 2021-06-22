@@ -53,6 +53,7 @@ The last feature to our practice application will be a "smart search" feature th
     * [Displaying Multiple Autocomplete's](#displaying-multiple-autocomplete's)
     * [Extracting Rendering Logic](#extracting-rendering-logic)
     * [Extracting Selection Logic](#extracting-selection-logic)
+    * [Removing Movie References](#removing-movie-references)
 
 ----
 
@@ -1081,7 +1082,7 @@ const fetchData = async (searchTerm) => {
   return response.data.Search;
 };
 
-// Select our root element where all our autocomplete widget content will go in
+// Select our root element that all our autocomplete widget content will go in
 const root = document.querySelector(".autocomplete");
 root.innerHTML = `
   <label class="label-heading">Search for a movie</label>
@@ -1097,7 +1098,7 @@ const input = document.querySelector("input");
 const dropdown = document.querySelector(".dropdown");
 const resultsWrapper = document.querySelector(".results");
 
-// 
+// All the logic for when the user types into the input search field
 const onInput = async (event) => {
   // Fetch data from the API for the movie the user typed into the input
   const movies = await fetchData(event.target.value);
@@ -1116,11 +1117,13 @@ const onInput = async (event) => {
 
   // Loop through our returned movies 
   for (let movie of movies) {
-    // For each movie create an <a> element
+
+    // For each movie create an anchor element
     const option = document.createElement("a");
     // Check to see if the returned movie has a poster, if not display nothing
     const imgSrc = movie.Poster === "N/A" ? "" : movie.Poster;
 
+    // add the class of "dropdown-item" to our new option elements being created and set the inner HTML
     option.classList.add("dropdown-item");
     option.innerHTML = `
     <img src="${imgSrc}" />
@@ -1293,10 +1296,10 @@ In order to make our `createAutoComplete` function more usable we want to destru
 
 Let's look at this below:
 ```js
-// ** autocomplete.js file
+// ** autocomplete.js **
 
 // 1. create "createAutoComplete" function
-// 1.1 destructure the root element property out as the parameter
+// 1.1 extract "root" from configuration object
 const createAutoComplete = ({ root }) => {
   root.innerHTML = `
     <label><b>Search For a Movie</b></label>
@@ -1333,7 +1336,7 @@ To do this, instead at looking at the entire `document`, we're going to look spe
 
 We'll handle this now:
 ```js
-// ** autocomplete.js file
+// ** autocomplete.js **
 
 const createAutoComplete = ({ root }) => {
   root.innerHTML = `
@@ -1385,7 +1388,7 @@ For this, we'll create three different `autocomplete` div classes like this:
 Then, in our `index.js` file we can call `createAutoComplete()` three separate times and pass in our target div element classes from `index.html`
 
 ```js
-// ** index.js file
+// ** index.js **
 
 const fetchData = async (searchTerm) => {
   // fetchData logic
@@ -1427,7 +1430,7 @@ Next, inside `renderOption` we're going to generate some html and `return` it. T
 
 Let's do this now:
 ```js
-// ** index.js file
+// ** index.js **
 
 const fetchData = async (searchTerm) => {
   // fetchData logic
@@ -1465,9 +1468,9 @@ Next, inside the `for` loop, we set our `option.innerHTML` to equal `renderOptio
 
 Let's add this now:
 ```js
-// ** autocomplete.js file
+// ** autocomplete.js **
 
-// 1. we destructure off the "renderOption" function
+// 1. extract "renderOption" from configuration object
 const createAutoComplete = ({ root, renderOption }) => {
   root.innerHTML = `
     <label><b>Search For a Movie</b></label>
@@ -1501,8 +1504,8 @@ const createAutoComplete = ({ root, renderOption }) => {
       // 2. now in the "innerHTML" we're going to call "renderOption" with "movie" as the parameter
       option.innerHTML = renderOption(movie);
       option.addEventListener("click", () => {
-        input.value = movie.Title;
         dropdown.classList.remove("is-active");
+        input.value = movie.Title;
 
         onMovieSelect(movie);
       });
@@ -1530,7 +1533,346 @@ And there we go! We've extracted some custom logic that is only appropriate for 
 
 The next refactor we're going to implement if for `onOptionSelect()` (was `onMovieSelect()`). So for this function, we're going to pull out all the logic that decides what function to run whenever a user selects an option.
 
-First, we head over to `autocomplete.js` and ...
+First, in our `index.js` file, we head over to where we call our `createAutoComplete` function and inside there we need to pass in another configuration function called `onOptionSelect`. `onOptionSelect` is going to take a parameter of `movie`, this will be whatever object the user clicks on from the dropdown. Inside `onOptionSelect`, we need to call `onMovieSelect` and also pass in `movie` for the parameter.
+
+We'll do that now:
+```js
+// ** index.js **
+
+const fetchData = async (searchTerm) => {
+  // fetchData logic
+};
+
+createAutoComplete({
+  root: document.querySelector(".autocomplete"),
+  renderOption(movie) {
+    const imgSrc = movie.Poster === "N/A" ? "" : movie.Poster;
+    return `
+      <img src="${imgSrc}" />
+      <p>${movie.Title}</p>
+    `;
+  },
+  // 1. pass in 3rd configuration function to createAutoComplete
+  onOptionSelect(movie) {
+    // 2. call "onMovieSelect" with parameter of "movie"
+    onMovieSelect(movie);
+  }
+});
+
+const onMovieSelect = async (movie) => {
+  // onMovieSelect logic
+};
+
+const movieTemplate = (movieDetail) => {
+  // movieTemplate logic
+};
+```
+
+Next, we head over to `autocomplete.js` and inside of `onInput` and inside there we have our `for` loop, after we created our `option` we have the `option.eventListener` which has a function that is going to run after a user clicks on the individual option. Inside this function, instead of calling `onMovieSelect`, we are now going to call `onOptionSelect`.
+
+Note, this may seem like a very insignificant change, just changing the name of the callback function? Big deal, right? The point of this is, if we had some scenario where we wanted to call a different function there, like if we were using our autocomplete on another application, we would have to open the source code for "`onMovieSelect`" and change that line of code. 
+
+This is not ideal. We don't want to have to edit the source code of `autocomplete.js`. So, by making this change, we have extracted deciding what to do when a user clicks on an option into this "configuration" object over in our `index.js` file. Which is going to contain all of our application specific code.
+
+Let's add this step now:
+```js
+// ** autocomplete.js **
+
+// 3. extract "onOptionSelect" from configuration object
+const createAutoComplete = ({ root, renderOption, onOptionSelect }) => {
+  root.innerHTML = `
+    <label><b>Search For a Movie</b></label>
+    <input class="input" placeholder="Search movie" />
+    <div class="dropdown">
+      <div class="dropdown-menu">
+        <div class="dropdown-content results"></div>
+      </div>
+    </div>
+  `;
+
+  const input = document.querySelector("input");
+  const dropdown = document.querySelector(".dropdown");
+  const resultsWrapper = document.querySelector(".results");
+
+  const onInput = async (event) => {
+    const movies = await fetchData(event.target.value);
+
+    if (!movies.length) {
+      dropdown.classList.remove("is-active");
+      return;
+    }
+
+    resultsWrapper.innerHTML = "";
+
+    dropdown.classList.add("is-active");
+    for (let movie of movies) {
+      const option = document.createElement("a");
+
+      option.classList.add("dropdown-item");
+      option.innerHTML = renderOption(movie);
+      option.addEventListener("click", () => {
+        dropdown.classList.remove("is-active");
+        input.value = movie.Title;
+        // 4. change callback function name to "onOptionSelect" from index.js
+        onOptionSelect(movie);
+      });
+
+      resultsWrapper.appendChild(option);
+    }
+  };
+  input.addEventListener("input", debounce(onInput, 500));
+
+  document.addEventListener("click", (event) => {
+    if (!root.contains(event.target)) {
+      dropdown.classList.remove("is-active");
+    }
+  });
+};
+```
+
+The next thing we need to be aware of is our line of code inside of our `for` loop in `onInput`, `input.value = movie.Title`. This can be tricky because the left hand side, `input.value` needs to happen for every instance in-which we use an autocomplete widget. But the source of information, `movie.Title` is very application specific.
+
+To handle this, let's pass in another helper function to our "configuration" object. So back inside of `index.js` let's add our "configuration" helper function to `createAutoComplete()`. We'll call this `inputValue`.
+
+The goal of `inputValue` is going to be to take a `movie` (the parameter we're giving it) and after a user clicks on an option of movie, we're going to call `inputValue` with the movie and we're going to return whatever value that should show up inside of the input, which for our application is `movie.Title`.
+
+Let's update our code:
+```js
+// ** index.js **
+
+createAutoComplete({
+  root: document.querySelector(".autocomplete"),
+  renderOption(movie) {
+    const imgSrc = movie.Poster === "N/A" ? "" : movie.Poster;
+    return `
+      <img src="${imgSrc}" />
+      <p>${movie.Title} (${movie.Year})</p>
+    `;
+  },
+	onOptionSelect(movie) {
+    onMovieSelect(movie);
+  },
+  // 1. add 3rd configuration helper function
+  inputValue(movie) {
+    return movie.Title;
+  }
+});
+```
+
+Now let's move over to our `autocomplete.js` file and revise our code there:
+```js
+// ** autocomplete.js **
+
+// 2. extract "inputValue" from configuration object
+const createAutoComplete = ({ root, renderOption, onOptionSelect, inputValue }) => {
+  root.innerHTML = `
+    <label><b>Search For a Movie</b></label>
+    <input class="input" placeholder="Search movie" />
+    <div class="dropdown">
+      <div class="dropdown-menu">
+        <div class="dropdown-content results"></div>
+      </div>
+    </div>
+  `;
+
+  const input = document.querySelector("input");
+  const dropdown = document.querySelector(".dropdown");
+  const resultsWrapper = document.querySelector(".results");
+
+  const onInput = async (event) => {
+    const movies = await fetchData(event.target.value);
+
+    if (!movies.length) {
+      dropdown.classList.remove("is-active");
+      return;
+    }
+
+    resultsWrapper.innerHTML = "";
+
+    dropdown.classList.add("is-active");
+    for (let movie of movies) {
+      const option = document.createElement("a");
+
+      option.classList.add("dropdown-item");
+      option.innerHTML = renderOption(movie);
+      option.addEventListener("click", () => {
+        dropdown.classList.remove("is-active");
+        // 3. set input.value equal to our new config helper function
+        input.value = inputValue(movie);
+        onOptionSelect(movie);
+      });
+
+      resultsWrapper.appendChild(option);
+    }
+  };
+  input.addEventListener("input", debounce(onInput, 500));
+
+  document.addEventListener("click", (event) => {
+    if (!root.contains(event.target)) {
+      dropdown.classList.remove("is-active");
+    }
+  });
+};
+```
+
+You may have noticed we're still referencing `movie` a lot throughout our `autocomplete.js` file which seem counterintuitive for making our autocomplete widget reusable but we will be coming back and refactoring that so it receives a more universal keyword in a bit.
+
+[⬆️ Top](#🗒️-table-of-contents)
+
+---
+
+### Removing Movie References
+
+The last thing we need to extract is `fetchData()`. Currently, `fetchData()` is being used inside of our `autocomplete.js` file directly. Inside of out `onInput` callback function we're calling `fetchData()`. When we call `fetchData()` there in `onInput`, that is a reference back to the `fetchData` that we define inside our `index.js` file.
+
+So this means we have a direct link between these two files, which is not what we want. We want both files to live on their own. So what we can do to fix this is take `fetchData` from the `index.js` file and throw it as another argument (option) to our `createAutoComplete` "configuration" object.
+
+Next, we will update our `autocomplete.js` file and make sure that it references the `fetchData` that is being passed on that "configuration" object instead if the direct global scope between the two files.
+
+Let's take care of this now:
+```js
+// ** autocomplete.js **
+
+// 1. extract "fetchData" from configuration object
+const createAutoComplete = ({ root, renderOption, onOptionSelect, inputValue, fetchData }) => {
+  root.innerHTML = `
+    <label><b>Search For a Movie</b></label>
+    <input class="input" placeholder="Search movie" />
+    <div class="dropdown">
+      <div class="dropdown-menu">
+        <div class="dropdown-content results"></div>
+      </div>
+    </div>
+  `;
+
+  const input = document.querySelector("input");
+  const dropdown = document.querySelector(".dropdown");
+  const resultsWrapper = document.querySelector(".results");
+
+  const onInput = async (event) => {
+    // onInput logic
+  };
+  input.addEventListener("input", debounce(onInput, 500));
+
+  document.addEventListener("click", (event) => {
+    if (!root.contains(event.target)) {
+      dropdown.classList.remove("is-active");
+    }
+  });
+};
+```
+
+Now over in `index.js`:
+```js
+// ** index.js **
+
+// 2. cut the fetchData function and remove the variable name
+
+createAutoComplete({
+  root: document.querySelector(".autocomplete"),
+  renderOption(movie) {
+    const imgSrc = movie.Poster === "N/A" ? "" : movie.Poster;
+    return `
+      <img src="${imgSrc}" />
+      <p>${movie.Title} (${movie.Year})</p>
+    `;
+  },
+	onOptionSelect(movie) {
+    onMovieSelect(movie);
+  },
+  inputValue(movie) {
+    return movie.Title;
+  },
+  // 3. add a 4th configuration object, "fetchData" and pass in the function logic from our old fetchData global function
+  // 3.1 cleanup the syntax from previous fetchData function
+  async fetchData(searchTerm) {
+    const response = await axios.get("http://www.omdbapi.com/", {
+      params: {
+        apikey: "1da41525",
+        s: searchTerm
+      }
+    });
+
+    if (response.data.Error) {
+      return [];
+    }
+
+    return response.data.Search;
+  }
+});
+```
+
+Okay so that's working nicely. There's one last thing for us to take care of before we move on from this section. We need to go through our `autocomplete.js` file and find any reference to `movie`. In order to really make this code reusable, we need to refrain from making any assumptions about the kind of data we are working with.
+
+So, to do this we're just going to comb through our `createAutoComplete` function and change the words "movie" or "movies" to another appropriate term, in our application we'll change `movie` to `item` and `movies` to `items`.
+
+Let's do this now:
+```js
+// ** autocomplete.js **
+
+const createAutoComplete = ({ root, renderOption, onOptionSelect, inputValue }) => {
+  root.innerHTML = `
+    <label><b>Search</b></label>
+    <input class="input" placeholder="i.e. avengers" />
+    <div class="dropdown">
+      <div class="dropdown-menu">
+        <div class="dropdown-content results"></div>
+      </div>
+    </div>
+  `;
+
+  const input = document.querySelector("input");
+  const dropdown = document.querySelector(".dropdown");
+  const resultsWrapper = document.querySelector(".results");
+
+  const onInput = async (event) => {
+    // 1. change all references of "movie(s)" to "item(s)"
+    const items = await fetchData(event.target.value);
+
+    if (!items.length) {
+      dropdown.classList.remove("is-active");
+      return;
+    }
+
+    resultsWrapper.innerHTML = "";
+
+    dropdown.classList.add("is-active");
+    // 2. change all references of "movie" to "item"
+    for (let item of items) {
+      const option = document.createElement("a");
+
+      option.classList.add("dropdown-item");
+      option.innerHTML = renderOption(item);
+      option.addEventListener("click", () => {
+        dropdown.classList.remove("is-active");
+        input.value = inputValue(item);
+        onOptionSelect(item);
+      });
+
+      resultsWrapper.appendChild(option);
+    }
+  };
+  input.addEventListener("input", debounce(onInput, 500));
+
+  document.addEventListener("click", (event) => {
+    if (!root.contains(event.target)) {
+      dropdown.classList.remove("is-active");
+    }
+  });
+};
+```
+
+There we go! We now have a fully reusable function called `createAutoComplete`. We can take `createAutoComplete` and we can use it on any other project we can think of and we'll get the exact same behavior as the one we have in our current application.
+
+For future use, all we need to do is:
+
+  1. call the function (`createAutoComplete()`)
+  2. pass in the appropriate properties:
+      * `root` - specify where to render the autocomplete to.
+      * `renderOption()` - how to show an individual item.
+      * `onOptionSelect()` - what to do when a user clicks on an item.
+      * `inputValue()` - what to backfill the input with when a user clicks on an item.
+      * `fetchData()` - how to actually fetch the data from the api or JSON file.
 
 [⬆️ Top](#🗒️-table-of-contents)
 
