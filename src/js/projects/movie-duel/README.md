@@ -30,30 +30,32 @@ The last feature to our practice application will be a "smart search" feature th
 
 ----
 
-### 🗒️ Table of Contents
+### Table of Contents
 1. [Application Architecture](#📝-application-architecture)
-1. [Logic](#💭-logic)
-    * [Fetching Data](#fetching-data)
-    * [Searching the API on Input Change](#searching-the-api-on-input-change)
-    * [Delaying Search Input](#delaying-the-search-input)
-    * [Understanding Debounce](#understanding-debounce)
-    * [Awaiting Async Functions](#awaiting-async-functions)
-    * [Rendering Movies](#rendering-movies)
-    * [Error Handling](#error-handling)
-    * [Widget Styling](#widget-styling)
-    * [Rendering HTML with JavaScript](#rendering-html-with-javascript)
-    * [Cleaning up our Autocomplete Widget](#cleaning-up-our-autocomplete-widget)
-    * [Handling Empty Responses](#handling-empty-responses)
-    * [Handling Movie Selection](#handling-movie-selection)
-    * [Making a Follow-up Request](#making-a-follow-up-request)
-    * [Rendering an Expanded Summary](#rendering-an-expanded-summary)
-    * [Rendering Additional Information](#rendering-additional-information)
-    * [Code Base Before the Refactor](#code-base-before-the-refactor)
-    * [Issues with the Code Base](#issues-with-the-code-base)
-    * [Displaying Multiple Autocomplete's](#displaying-multiple-autocomplete's)
-    * [Extracting Rendering Logic](#extracting-rendering-logic)
-    * [Extracting Selection Logic](#extracting-selection-logic)
-    * [Removing Movie References](#removing-movie-references)
+1. [Application Logic](#💭-application-logic)<br>
+  2.1 [Fetching Data](#2.1-fetching-data)<br>
+  2.2 [Searching the API on Input Change](#2.2-searching-the-api-on-input-change)<br>
+  2.3 [Delaying Search Input](#2.3-delaying-the-search-input)<br>
+  2.4 [Understanding Debounce](#2.4-understanding-debounce)<br>
+  2.5 [Awaiting Async Functions](#2.5-awaiting-async-functions)<br>
+  2.6 [Rendering Movies](#2.6-rendering-movies)<br>
+  2.7 [Error Handling](#2.7-error-handling)<br>
+  2.8 [Widget Styling](#2.8-widget-styling)<br>
+  2.9 [Rendering HTML with JavaScript](#2.9-rendering-html-with-javascript)<br>
+  2.10 [Cleaning up our Autocomplete Widget](#2.10-cleaning-up-our-autocomplete-widget)<br>
+  2.11 [Handling Empty Responses](#2.11-handling-empty-responses)<br>
+  2.12 [Handling Movie Selection](#2.12-handling-movie-selection)<br>
+  2.13 [Making a Follow-up Request](#2.13-making-a-follow-up-request)<br>
+  2.14 [Rendering an Expanded Summary](#2.14-rendering-an-expanded-summary)<br>
+  2.15 [Rendering Additional Information](#2.15-rendering-additional-information)<br>
+  2.16 [Code Base Before the Refactor](#2.16-code-base-before-the-refactor)<br>
+  2.17 [Issues with the Code Base](#2.17-issues-with-the-code-base)<br>
+  2.18 [Displaying Multiple Autocomplete's](#2.18-displaying-multiple-autocomplete's)<br>
+  2.19 [Extracting Rendering Logic](#2.19-extracting-rendering-logic)<br>
+  2.20 [Extracting Selection Logic](#2.20-extracting-selection-logic)<br>
+  2.21 [Removing Movie References](#2.21-removing-movie-references)<br>
+  2.22 [Consuming a Different Source of Data](#2.22-consuming-a-different-source-of-data)<br>
+  2.23 [Refreshed HTML Structure](#2.23-refreshed-html-structure)<br>
 
 ----
 
@@ -72,9 +74,9 @@ __Search Box__
 ```
 ----
 
-### 💭 Logic
+### 💭 Application Logic
 
-#### Fetching Data
+#### 2.1 Fetching Data
 
 We start by defining our helper async function. For this project we will be using Axios to help us make these requests.
 
@@ -111,11 +113,11 @@ fetchData();
 ```
 And voilà! We're returned an object with an array of objects with all the movies that match the search term "avengers" in the title.
 
-[⬆️ Top](#🗒️-table-of-contents)
+[⬆️ Top](#table-of-contents)
 
 ---
 
-#### Searching the API on Input Change
+#### 2.2 Searching the API on Input Change
 
 Now that we know how to receive data back from the API, we need to create an input box that the user can use to search for movies. 
 
@@ -173,11 +175,11 @@ input.addEventListener("input", (event) => {
 ```
 This is working well except we have one issue. Our issue is we're fetching a search of the API for every single key press. This is not ideal because we're only allowed access to the API 1,000 times per day. It's also not optimal for performance. Let's explore how we're going to solve this in the next section.
 
-[⬆️ Top](#🗒️-table-of-contents)
+[⬆️ Top](#table-of-contents)
 
 ---
 
-#### Delaying Search Input
+#### 2.3 Delaying Search Input
 
 An ideal solution would be to allow the user to press a key inside the input field as many times as they want without triggering an API call. Only after we have about one second or so of nothing happening do we want to call search and send a request to the API.
 
@@ -288,11 +290,11 @@ const onInput = (event) => {
 input.addEventListener("input", onInput);
 ```
 
-[⬆️ Top](#🗒️-table-of-contents)
+[⬆️ Top](#table-of-contents)
 
 ---
 
-#### Understanding Debounce
+#### 2.4 Understanding Debounce
 
 __Debouncing__ an input is when we are waiting for some time to pass after the last event to actually do something. In the life span of an application there can be many different scenarios in which we might want to bounce some events. This doesn't just have to be for text inputs either.
 
@@ -437,11 +439,11 @@ input.addEventListener("input", debounce(onInput, 1000));
 
 And thats it! We can now use our `debounce` function anywhere inside of our code whenever we need to introduce some type of rate limiting on how often a function can be invoked.
 
-[⬆️ Top](#🗒️-table-of-contents)
+[⬆️ Top](#table-of-contents)
 
 ---
 
-#### Awaiting Async Functions
+#### 2.5 Awaiting Async Functions
 
 Let's return some usable data from `fetchData`. Once we get this "usable" data back, we will then make sure we can iterate over the data. For every movie we fetch, we will try and render out some content to the DOM.
 
@@ -484,11 +486,11 @@ const onInput = async (event) => {
 input.addEventListener("input", debounce(onInput, 1000));
 ```
 
-[⬆️ Top](#🗒️-table-of-contents)
+[⬆️ Top](#table-of-contents)
 
 ---
 
-#### Rendering Movies
+#### 2.6 Rendering Movies
 
 Alright, now it's time to render some content onto the screen. For our project when a user searches for a movie we want to render content based on that search. When a user searches for a movie we will display:
   * The poster as an image for each movie
@@ -524,11 +526,11 @@ input.addEventListener("input", debounce(onInput, 1000));
 ```
 Pretty cool!
 
-[⬆️ Top](#🗒️-table-of-contents)
+[⬆️ Top](#table-of-contents)
 
 ---
 
-#### Error Handling
+#### 2.7 Error Handling
 
 Let's do some error handling. How we want our specific search bar to work is, if we don't get any data (information) back from the search, we won't display anything.
 
@@ -554,11 +556,11 @@ const fetchData = async (searchTerm) => {
 ```
 We are using `Error` because that is the way the API calls it's errors.
 
-[⬆️ Top](#🗒️-table-of-contents)
+[⬆️ Top](#table-of-contents)
 
 ---
 
-#### Widget Styling
+#### 2.8 Widget Styling
 
 We want to try and reduce the coupling of our `index.html` file and our `app.js` file. In other words, we don't want these two files to rely on each other too much. This will make our lives a lot easier in the long run.
 
@@ -566,11 +568,11 @@ Generally, what we want to do is push off as much of the html generation to Java
 
 With this approach we can easily create reusable widgets that we can interchange between different projects. Also, it makes it much easier to share our code with other developers.
 
-[⬆️ Top](#🗒️-table-of-contents)
+[⬆️ Top](#table-of-contents)
 
 ---
 
-#### Rendering HTML with JavaScript
+#### 2.9 Rendering HTML with JavaScript
 
 For our project, since we have two identical autocomplete search widgets, it would be a better strategy to implement the html code inside of our javascript file. This way we don't need a bunch of extra html code inside our `index.html` file and we can just create a function inside our `app.js` and reuse it throughout the project.
 
@@ -644,11 +646,11 @@ const onInput = async (event) => {
 input.addEventListener("input", debounce(onInput, 1000));
 ```
 
-[⬆️ Top](#🗒️-table-of-contents)
+[⬆️ Top](#table-of-contents)
 
 ---
 
-#### Cleaning up our Autocomplete Widget
+#### 2.10 Cleaning up our Autocomplete Widget
 
 The first thing we need to cleanup is when we search for a new movie, the results get listed under our old search results. We don't want this. What we're going to do is make sure that whenever we fetch a new list of movies, we clear out the existing movies inside our dropdown.
 
@@ -742,11 +744,11 @@ document.addEventListener("click", (event) => {
 });
 ```
 
-[⬆️ Top](#🗒️-table-of-contents)
+[⬆️ Top](#table-of-contents)
 
 ---
 
-#### Handling Empty Responses
+#### 2.11 Handling Empty Responses
 
 The next minor fix we are going to want to fix is, if a user searches for something but then deletes their input text, the dropdown stays open. We want the dropdown to close if this happens.
 
@@ -793,11 +795,11 @@ document.addEventListener("click", (event) => {
 });
 ```
 
-[⬆️ Top](#🗒️-table-of-contents)
+[⬆️ Top](#table-of-contents)
 
 ---
 
-#### Handling Movie Selection
+#### 2.12 Handling Movie Selection
 
 We just have one last major user interaction we need to handle and that's if the user wants to actually click on a movie.
 
@@ -851,11 +853,11 @@ document.addEventListener("click", (event) => {
 });
 ```
 
-[⬆️ Top](#🗒️-table-of-contents)
+[⬆️ Top](#table-of-contents)
 
 ---
 
-#### Making a Follow-up Request
+#### 2.13 Making a Follow-up Request
 
 The next thing we need to do is, take the movie the user has selected and render out some details to the DOM.
 
@@ -938,11 +940,11 @@ Next, we can essentially replicate the structure of our `fetchData()` asynchrono
 
 Again, `movie` is going to be which ever movie our user selects from the search. This `movie` is then being passed in as an object as the parameter to `onMovieSelect()` and from that movie object we are targeting the movies `imdbID` so we can receive a lot more data on that particular movie.
 
-[⬆️ Top](#🗒️-table-of-contents)
+[⬆️ Top](#table-of-contents)
 
 ---
 
-#### Rendering an Expanded Summary
+#### 2.14 Rendering an Expanded Summary
 
 What we now want to do is render out some content we are now getting back from our `onMovieSelect()` function. Since, this is going to end up being a lot of HTML, instead of cramming it all inside of the `onMovieSelect()` function, we're going to create another helper function for all this logic. We'll call this helper function `movieTemplate()`.
 
@@ -989,11 +991,11 @@ Next, we are going to add all the html we need in order to display and style the
 
 Now that all the html has been added to `movieTemplate()`, inside of `onMovieSelect()` we target our div with id of `summary` from `index.html` and set the inner html equal to `movieTemplate()`. Then all we need to do is pass in `response.data` to the parameter of `movieTemplate()`.
 
-[⬆️ Top](#🗒️-table-of-contents)
+[⬆️ Top](#table-of-contents)
 
 ---
 
-#### Rendering Additional Information
+#### 2.15 Rendering Additional Information
 
 Now that we have a good grasp of how we can request information from our API and display it on the screen, let's render out some additional information about the selected movie.
 
@@ -1055,11 +1057,11 @@ const movieTemplate = (movieDetail) => {
 };
 ```
 
-[⬆️ Top](#🗒️-table-of-contents)
+[⬆️ Top](#table-of-contents)
 
 ---
 
-#### Code Base Before the Refactor
+#### 2.16 Code Base Before the Refactor
 
 Now that we've wrapped up phase 1 of the project, let's see where our code base currently stands:
 
@@ -1235,11 +1237,11 @@ const movieTemplate = (movieDetail) => {
 };
 ```
 
-[⬆️ Top](#🗒️-table-of-contents)
+[⬆️ Top](#table-of-contents)
 
 ---
 
-#### Issues with the Code Base
+#### 2.17 Issues with the Code Base
 
 The way we've written our code so far has some pretty big issues with the current implementation. The goal of this section is to figure out some ways we can fix the current implementation before we move on to phase 2 of our project.
 
@@ -1280,11 +1282,11 @@ Let's breakdown our two new files a bit more:
 └─ function that will take the autocomplete configuration and render an autocomplete on the screen
 ```
 
-[⬆️ Top](#🗒️-table-of-contents)
+[⬆️ Top](#table-of-contents)
 
 ---
 
-#### Displaying Multiple Autocomplete's
+#### 2.18 Displaying Multiple Autocomplete's
 
 Our goal for right now is the ability to show multiple, different autocomplete's on the screen at the same time. So we should be able to create multiple configuration objects and pass each of them into some autocomplete function. The autocomplete function should then create the autocomplete in those different root elements.
 
@@ -1416,11 +1418,11 @@ const movieTemplate = (movieDetail) => {
 
 Okay! So this is working really well. We will continue to refactor our code in the sections below.
 
-[⬆️ Top](#🗒️-table-of-contents)
+[⬆️ Top](#table-of-contents)
 
 ---
 
-#### Extracting Rendering Logic
+#### 2.19 Extracting Rendering Logic
 
 We want to continue to add some additional functions to that "configuration" object that we're passing to the `createAutoComplete` function. We're then going to refactor the function to make sure it uses the functions we had provided instead of locating all the logic directly inside of the `createAutoComplete` function. 
 
@@ -1525,11 +1527,11 @@ const createAutoComplete = ({ root, renderOption }) => {
 
 And there we go! We've extracted some custom logic that is only appropriate for this movie related information. The benefit of this is that if we ever decide we want the autocomplete to look different, we only need to update the `renderOption` function back inside of our `index.js` file.
 
-[⬆️ Top](#🗒️-table-of-contents)
+[⬆️ Top](#table-of-contents)
 
 ---
 
-#### Extracting Selection Logic
+#### 2.20 Extracting Selection Logic
 
 The next refactor we're going to implement if for `onOptionSelect()` (was `onMovieSelect()`). So for this function, we're going to pull out all the logic that decides what function to run whenever a user selects an option.
 
@@ -1717,11 +1719,11 @@ const createAutoComplete = ({ root, renderOption, onOptionSelect, inputValue }) 
 
 You may have noticed we're still referencing `movie` a lot throughout our `autocomplete.js` file which seem counterintuitive for making our autocomplete widget reusable but we will be coming back and refactoring that so it receives a more universal keyword in a bit.
 
-[⬆️ Top](#🗒️-table-of-contents)
+[⬆️ Top](#table-of-contents)
 
 ---
 
-### Removing Movie References
+#### 2.21 Removing Movie References
 
 The last thing we need to extract is `fetchData()`. Currently, `fetchData()` is being used inside of our `autocomplete.js` file directly. Inside of out `onInput` callback function we're calling `fetchData()`. When we call `fetchData()` there in `onInput`, that is a reference back to the `fetchData` that we define inside our `index.js` file.
 
@@ -1777,7 +1779,7 @@ createAutoComplete({
       <p>${movie.Title} (${movie.Year})</p>
     `;
   },
-	onOptionSelect(movie) {
+  onOptionSelect(movie) {
     onMovieSelect(movie);
   },
   inputValue(movie) {
@@ -1874,6 +1876,103 @@ For future use, all we need to do is:
       * `inputValue()` - what to backfill the input with when a user clicks on an item.
       * `fetchData()` - how to actually fetch the data from the api or JSON file.
 
-[⬆️ Top](#🗒️-table-of-contents)
+[⬆️ Top](#table-of-contents)
+
+---
+
+### 2.22 Consuming a Different Source of Data
+
+To understand how we made our autocomplete widget more reusable let's substitute the data we're fetching with new data and a new data source.
+
+For this we will be using JSONPlaceholder which is a free fake API for testing and prototyping.
+  * [JSONPlaceholder](https://jsonplaceholder.typicode.com/)
+
+What we will be doing for this quick example is sending a request to:
+```js
+fetch('https://jsonplaceholder.typicode.com/photos')
+```
+
+ We will request 50 photos from the API and for each of the photos we're going to try and render them into the autocomplete widget we just built.
+
+ To only get 50 photos back from the API we can request:
+ ```js
+fetch('https://jsonplaceholder.typicode.com/photos?albumid=1')
+```
+
+Let's start updating our search autocomplete widget now. Let's make some changes to our autocomplete widget code now:
+```js
+// ** index.js file **
+
+createSearchComponent({
+  root: document.querySelector(".autocomplete"),
+  // 1. update axios.get URL
+  async fetchData() {
+    const response = await axios.get("https://jsonplaceholder.typicode.com/photos?albumId=1");
+
+    if (response.data.error) {
+      return [];
+    }
+
+    return response.data;
+  },
+  // 2. update content that is being rendered in the dropdown
+  renderOption(item) {
+    return `
+      <img src="${item.thumbnailUrl}" />
+      <p>${item.title}</p>
+    `;
+  },
+  onOptionSelect(item) {
+    onDropdownItemSelect(item);
+  },
+  // 3. update input value on click
+  inputValue(item) {
+    return item.title;
+  }
+});
+
+// 4. update our second API fetch function
+const onDropdownItemSelect = async (item) => {
+  const response = await axios.get("https://jsonplaceholder.typicode.com/photos?albumId=1", {
+    params: {
+      id: item.id
+    }
+  });
+
+  const data = response.data[0];
+  const targetElement = document.querySelector("#summary");
+
+  targetElement.innerHTML = itemDisplay(data);
+};
+
+// 5. Update content to be displayed on the screen once a selection is made
+const itemDisplay = (itemData) => {
+  return `
+  <article class="media">
+    <figure class="media-left">
+      <p class="image">
+        <img src="${itemData.thumbnailUrl}" />
+      </p>
+    </figure>
+
+    <div class="media-content">
+      <div class="content">
+        <h1>${itemData.title}</h1>
+      </div>
+    </div>
+  </article>
+  `;
+};
+```
+
+> Note: Our `autocomplete.js` file can stay exactly the same. We're only updating the `index.js` file to make these changes.
+
+[⬆️ Top](#table-of-contents)
+
+---
+
+### 2.23 Refreshed HTML Structure
+
+[⬆️ Top](#table-of-contents)
 
 ---
