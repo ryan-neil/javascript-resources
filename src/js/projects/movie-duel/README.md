@@ -1887,19 +1887,19 @@ To understand how we made our autocomplete widget more reusable let's substitute
 For this we will be using JSONPlaceholder which is a free fake API for testing and prototyping.
   * [JSONPlaceholder](https://jsonplaceholder.typicode.com/)
 
-What we will be doing for this quick example is sending a request to:
+What we will be doing for this quick example is sending a request to the `photos` endpoint of the API:
 ```js
 fetch('https://jsonplaceholder.typicode.com/photos')
 ```
 
- We will request 50 photos from the API and for each of the photos we're going to try and render them into the autocomplete widget we just built.
+ We will request 50 photos from the API and for each of the photos we're going to try and render them into the autocomplete dropdown we just built.
 
- To only get 50 photos back from the API we can request:
+ To only get 50 photos back from the API we can send a request to:
  ```js
 fetch('https://jsonplaceholder.typicode.com/photos?albumid=1')
 ```
 
-Let's start updating our search autocomplete widget now. Let's make some changes to our autocomplete widget code now:
+Let's start updating our search autocomplete dropdown now:
 ```js
 // ** index.js file **
 

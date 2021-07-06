@@ -58,14 +58,6 @@ A quick look at the files and directories you'll see in the repo.
 - [JavaScript Visualized](https://dev.to/lydiahallie/series/3341)
 - [1 Line - JavaScript Utilities](https://1loc.dev/)
 
-__Misc Resources:__
-
-- [Big-O Cheatsheet](https://www.bigocheatsheet.com/)
-- [Free for Dev](https://free-for.dev/#/)
-- [Fake API for testing and prototyping (JSON Placeholder)](https://jsonplaceholder.typicode.com/)
-- [CSS -> JavaScript](https://css2js.dotenv.dev/)
-- [Data Visualization - GoodData.UI](https://sdk.gooddata.com/gooddata-ui/)
-
 ----
 
 ### 📓 Notes
