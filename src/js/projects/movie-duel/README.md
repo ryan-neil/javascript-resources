@@ -33,29 +33,29 @@ The last feature to our practice application will be a "smart search" feature th
 ### Table of Contents
 1. [Application Architecture](#📝-application-architecture)
 1. [Application Logic](#💭-application-logic)<br>
-  2.1 [Fetching Data](#2.1-fetching-data)<br>
-  2.2 [Searching the API on Input Change](#2.2-searching-the-api-on-input-change)<br>
-  2.3 [Delaying Search Input](#2.3-delaying-the-search-input)<br>
-  2.4 [Understanding Debounce](#2.4-understanding-debounce)<br>
-  2.5 [Awaiting Async Functions](#2.5-awaiting-async-functions)<br>
-  2.6 [Rendering Movies](#2.6-rendering-movies)<br>
-  2.7 [Error Handling](#2.7-error-handling)<br>
-  2.8 [Widget Styling](#2.8-widget-styling)<br>
-  2.9 [Rendering HTML with JavaScript](#2.9-rendering-html-with-javascript)<br>
-  2.10 [Cleaning up our Autocomplete Widget](#2.10-cleaning-up-our-autocomplete-widget)<br>
-  2.11 [Handling Empty Responses](#2.11-handling-empty-responses)<br>
-  2.12 [Handling Movie Selection](#2.12-handling-movie-selection)<br>
-  2.13 [Making a Follow-up Request](#2.13-making-a-follow-up-request)<br>
-  2.14 [Rendering an Expanded Summary](#2.14-rendering-an-expanded-summary)<br>
-  2.15 [Rendering Additional Information](#2.15-rendering-additional-information)<br>
-  2.16 [Code Base Before the Refactor](#2.16-code-base-before-the-refactor)<br>
-  2.17 [Issues with the Code Base](#2.17-issues-with-the-code-base)<br>
-  2.18 [Displaying Multiple Autocomplete's](#2.18-displaying-multiple-autocomplete's)<br>
-  2.19 [Extracting Rendering Logic](#2.19-extracting-rendering-logic)<br>
-  2.20 [Extracting Selection Logic](#2.20-extracting-selection-logic)<br>
-  2.21 [Removing Movie References](#2.21-removing-movie-references)<br>
-  2.22 [Consuming a Different Source of Data](#2.22-consuming-a-different-source-of-data)<br>
-  2.23 [Refreshed HTML Structure](#2.23-refreshed-html-structure)<br>
+  2.1 [Fetching Data](#21-fetching-data)<br>
+  2.2 [Searching the API on Input Change](#22-searching-the-api-on-input-change)<br>
+  2.3 [Delaying Search Input](#23-delaying-the-search-input)<br>
+  2.4 [Understanding Debounce](#24-understanding-debounce)<br>
+  2.5 [Awaiting Async Functions](#25-awaiting-async-functions)<br>
+  2.6 [Rendering Movies](#26-rendering-movies)<br>
+  2.7 [Error Handling](#27-error-handling)<br>
+  2.8 [Widget Styling](#28-widget-styling)<br>
+  2.9 [Rendering HTML with JavaScript](#29-rendering-html-with-javascript)<br>
+  2.10 [Cleaning up our Autocomplete Widget](#210-cleaning-up-our-autocomplete-widget)<br>
+  2.11 [Handling Empty Responses](#211-handling-empty-responses)<br>
+  2.12 [Handling Movie Selection](#212-handling-movie-selection)<br>
+  2.13 [Making a Follow-up Request](#213-making-a-follow-up-request)<br>
+  2.14 [Rendering an Expanded Summary](#214-rendering-an-expanded-summary)<br>
+  2.15 [Rendering Additional Information](#215-rendering-additional-information)<br>
+  2.16 [Code Base Before the Refactor](#216-code-base-before-the-refactor)<br>
+  2.17 [Issues with the Code Base](#217-issues-with-the-code-base)<br>
+  2.18 [Displaying Multiple Autocomplete's](#218-displaying-multiple-autocomplete's)<br>
+  2.19 [Extracting Rendering Logic](#219-extracting-rendering-logic)<br>
+  2.20 [Extracting Selection Logic](#220-extracting-selection-logic)<br>
+  2.21 [Removing Movie References](#221-removing-movie-references)<br>
+  2.22 [Consuming a Different Source of Data](#222-consuming-a-different-source-of-data)<br>
+  2.23 [Refreshed HTML Structure](#223-refreshed-html-structure)<br>
 
 ----
 
