@@ -1,20 +1,7 @@
 // http://www.omdbapi.com/?apikey=1da41525&
 
-createAutoComplete({
-	root: document.querySelector(".autocomplete"),
-	renderOption(movie) {
-		const imgSrc = movie.Poster === "N/A" ? "" : movie.Poster;
-		return `
-      <img src="${imgSrc}" />
-      <p>${movie.Title} (${movie.Year})</p>
-    `;
-	},
-	onOptionSelect(movie) {
-		onMovieSelect(movie);
-	},
-	inputValue(movie) {
-		return movie.Title;
-	},
+// 1. Reusable search bar widget logic
+const autoCompleteConfig = {
 	async fetchData(searchTerm) {
 		const response = await axios.get("http://www.omdbapi.com/", {
 			params: {
@@ -22,17 +9,51 @@ createAutoComplete({
 				s: searchTerm
 			}
 		});
-
 		const data = response.data;
 		if (data.Error) {
 			return [];
 		}
 
 		return data.Search;
+	},
+	renderOption(movie) {
+		const imgSrc = movie.Poster === "N/A" ? "" : movie.Poster;
+		return `
+		<img src="${imgSrc}" />
+		<p>${movie.Title} (${movie.Year})</p>
+		`;
+	},
+	inputValue(movie) {
+		return movie.Title;
+	}
+};
+
+// 2. Custom search bar widget logic for the left side
+createAutoComplete({
+	// Left side
+	...autoCompleteConfig,
+	root: document.querySelector("#left-autocomplete"),
+	onOptionSelect(movie) {
+		document.querySelector(".tutorial").classList.add("is-hidden");
+		// add second parameter to left side
+		onMovieSelect(movie, document.querySelector("#left-summary"));
+	}
+});
+// 3. Custom search bar widget logic for the right side
+createAutoComplete({
+	// Right side
+	...autoCompleteConfig,
+	root: document.querySelector("#right-autocomplete"),
+	onOptionSelect(movie) {
+		document.querySelector(".tutorial").classList.add("is-hidden");
+		// add second parameter to right side
+		onMovieSelect(movie, document.querySelector("#right-summary"));
 	}
 });
 
-const onMovieSelect = async (movie) => {
+// 4. Get id of selected movie
+// a. pass in "summaryElement" parameter
+const onMovieSelect = async (movie, summaryElement) => {
 	const response = await axios.get("http://www.omdbapi.com/", {
 		params: {
 			apikey: "1da41525",
@@ -40,9 +61,11 @@ const onMovieSelect = async (movie) => {
 		}
 	});
 
-	document.querySelector("#summary").innerHTML = movieTemplate(response.data);
+	// b. update to set "summaryElement"'s innerHTML
+	summaryElement.innerHTML = movieTemplate(response.data);
 };
 
+// 5. HTML rendering when user selects movie
 const movieTemplate = (movieDetail) => {
 	return `
 	<article class="media">

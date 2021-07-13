@@ -12,7 +12,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
   <!-- App Links -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" />
@@ -31,8 +31,24 @@
 
   <!-- Project Code -->
   <div class="container">
-    <div class="autocomplete"></div>
-    <div id="summary"></div>
+    <div class="columns">
+      <!-- Left search widget -->
+      <div class="column">
+        <div id="left-autocomplete"></div>
+        <div id="left-summary"></div>
+      </div>
+      <!-- Right search widget -->
+      <div class="column">
+        <div id="right-autocomplete"></div>
+        <div id="right-summary"></div>
+      </div>
+    </div>
+
+    <!-- Tutorial for user -->
+    <div class="column is-half notification is-primary tutorial">
+      <h1 class="title">Search For a Movie on Both Sides</h1>
+      <p class="subtitle">We will tell you which is best!</p>
+    </div>
   </div>
 
   <!-- JavaScript -->

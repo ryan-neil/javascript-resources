@@ -1,3 +1,4 @@
+// 1. Logic for the autoComplete Search Widget
 const createAutoComplete = ({
 	root,
 	renderOption,
@@ -14,13 +15,13 @@ const createAutoComplete = ({
       </div>
     </div>
   `;
-
+	// 2. Variables to target our index.html elements for manipulation
 	const input = root.querySelector("input");
 	const dropdown = root.querySelector(".dropdown");
 	const resultsWrapper = root.querySelector(".results");
 
+	// 2.1 Logic for when the user types into the search bar
 	const onInput = async (event) => {
-		// 1. change "movies" term to "items"
 		const items = await fetchData(event.target.value);
 
 		if (!items.length) {
@@ -47,8 +48,10 @@ const createAutoComplete = ({
 		}
 	};
 
+	// 2.2 Call our debounce function from utils.js
 	input.addEventListener("input", debounce(onInput, 500));
 
+	// 2.3 Close the dropdown if user clicks outside dropdown
 	document.addEventListener("click", (event) => {
 		if (!root.contains(event.target)) {
 			dropdown.classList.remove("is-active");

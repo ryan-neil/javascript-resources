@@ -56,6 +56,11 @@ The last feature to our practice application will be a "smart search" feature th
   2.21 [Removing Movie References](#221-removing-movie-references)<br>
   2.22 [Consuming a Different Source of Data](#222-consuming-a-different-source-of-data)<br>
   2.23 [Refreshed HTML Structure](#223-refreshed-html-structure)<br>
+  2.24 [Avoiding Duplication of Config](#224-avoiding-duplication-of-config)<br>
+  2.25 [Hiding the Tutorial](#225-hiding-the-tutorial)<br>
+  2.26 [Showing Two Summaries](#226-showing-two-summaries)<br>
+  2.27 [When to Compare Our Stats](#227-when-to-compare-our-stats)<br>
+  2.28 [How to Compare Our Stats](#228-how-to-compare-our-stats)<br>
 
 ----
 
@@ -1972,6 +1977,179 @@ const itemDisplay = (itemData) => {
 ---
 
 ### 2.23 Refreshed HTML Structure
+We are now going to add two different autocomplete search widgets to the screen. We will also be adding a tutorial messages telling the user what to do.
+
+We need to update the HTML code in our `index.html` file.
+```html
+<div class="container">
+  <div class="columns">
+    <!-- Left search widget -->
+    <div class="column">
+      <div id="left-autocomplete"></div>
+    </div>
+    <!-- Right search widget -->
+    <div class="column">
+      <div id="right-autocomplete"></div>
+    </div>
+  </div>
+  <!-- Tutorial for user -->
+  <div class="column is-half notification is-primary tutorial">
+    <h1 class="title">Search For a Movie on Both Sides</h1>
+    <p class="subtitle">We will tell you which is best!</p>
+  </div>
+</div>
+```
+
+Now, back in our `index.js` file, inside our `createAutoComplete` function we need to update the `root` key.
+```js
+createAutoComplete({
+  root: document.querySelector("#left-autocomplete"),
+  ...
+```
+
+[⬆️ Top](#table-of-contents)
+
+---
+
+### 2.24 Avoiding Duplication of Code
+
+Now let's add another search widget to the right-hand side as well. To do this we're going to go to the top of our `index.js` file and add a variable called `autoCompleteConfig`. 
+
+This variable is going to hold all of our logic from `createAutoComplete` that can be duplicated between our two search widgets.
+
+When looking through `createAutoComplete`, every function is reusable except for the `root` element. Let's add all the duplicate logic to `createAutoComplete`.
+```js
+const autoCompleteConfig = {
+  async fetchData(searchTerm) {
+    const response = await axios.get("http://www.omdbapi.com/", {
+      params: {
+        apikey: "1da41525",
+        s: searchTerm
+      }
+    });
+    const data = response.data;
+    if (data.Error) {
+      return [];
+    }
+
+    return data.Search;
+  },
+  renderOption(movie) {
+    const imgSrc = movie.Poster === "N/A" ? "" : movie.Poster;
+    return `
+    <img src="${imgSrc}" />
+    <p>${movie.Title} (${movie.Year})</p>
+    `;
+  },
+  onOptionSelect(movie) {
+    onMovieSelect(movie);
+  },
+  inputValue(movie) {
+    return movie.Title;
+  }
+};
+```
+
+Next, inside `createAutoComplete` we're going to add `...autoCompleteConfig`. So the `...` is saying, make a copy of everything inside that object, or essentially take all the different functions inside the object and throw them into the `createAutoComplete` object.
+
+Let's do this now:
+```js
+createAutoComplete({
+  ...autoCompleteConfig,
+  root: document.querySelector("#left-autocomplete")
+});
+```
+
+And also with the right search widget:
+```js
+createAutoComplete({
+  ...autoCompleteConfig,
+  root: document.querySelector("#right-autocomplete")
+});
+```
+
+[⬆️ Top](#table-of-contents)
+
+---
+
+### 2.25 Hiding the Tutorial
+
+Now that we have that working, when a user selects a movie, let's hide the tutorial element and just show the summary of the movies on their appropriate sides.
+
+To hide our user tutorial element we're going to go inside our `autoCompleteConfig` object and find `onOptionSelect`. Inside `onOptionSelect` we will add a selector for the `<div>` with the class of `tutorial` and then add a class to it that is going to hide the tutorial from the screen.
+
+```js
+// index.js file
+onOptionSelect(movie) {
+  document.querySelector(".tutorial").classList.add("is-hidden");
+  onMovieSelect(movie);
+}
+```
+> Note: The class `is-hidden` is coming from Bulma CSS.
+
+[⬆️ Top](#table-of-contents)
+
+---
+
+### 2.26 Showing Two Summaries
+
+The next thing we need to do is when a user selects a movie, we show a summary on the appropriate side of the screen.
+
+Right now we're using the same `onOptionSelect` for our `createAutoComplete` function. We need to change this in order to get our two summaries showing up on their correct sides.
+
+So let's add `onOptionSelect` to each of our calls to `createAutoComplete`. This will allow us to make a customized version of each one. Now, in-order to render the summary in the appropriate element on the page, we have to be sure that when we call `onMovieSelect(movie)` as a second element we're going to pass in a reference to an element where we want to render the summary to.
+```js
+// left search autocomplete
+createAutoComplete({
+  ...autoCompleteConfig,
+  root: document.querySelector("#left-autocomplete"),
+  onOptionSelect(movie) {
+    document.querySelector(".tutorial").classList.add("is-hidden");
+    // 1. add second argument to left side
+    onMovieSelect(movie, document.querySelector("#left-summary"));
+  }
+});
+// right search autocomplete
+createAutoComplete({
+  ...autoCompleteConfig,
+  root: document.querySelector("#right-autocomplete"),
+  onOptionSelect(movie) {
+    document.querySelector(".tutorial").classList.add("is-hidden");
+    // 2. add second argument to right side
+    onMovieSelect(movie, document.querySelector("#right-summary"));
+  }
+});
+```
+
+Now inside of onMovieSelect we can receive that second argument (`summaryElement`):
+```js
+// 1. pass in "summaryElement" parameter
+const onMovieSelect = async (movie, summaryElement) => {
+  const response = await axios.get("http://www.omdbapi.com/", {
+    params: {
+      apikey: "1da41525",
+      i: movie.imdbID
+    }
+  });
+
+  // 2. update to set "summaryElement"'s innerHTML
+  summaryElement.innerHTML = movieTemplate(response.data);
+};
+```
+
+[⬆️ Top](#table-of-contents)
+
+---
+
+### 2.27 When to Compare Our Stats
+
+
+[⬆️ Top](#table-of-contents)
+
+---
+
+### 2.28 How to Compare Our Stats
+
 
 [⬆️ Top](#table-of-contents)
 
