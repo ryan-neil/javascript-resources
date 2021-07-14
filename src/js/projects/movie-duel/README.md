@@ -61,6 +61,9 @@ The last feature to our practice application will be a "smart search" feature th
   2.26 [Showing Two Summaries](#226-showing-two-summaries)<br>
   2.27 [When to Compare Our Stats](#227-when-to-compare-our-stats)<br>
   2.28 [How to Compare Our Stats](#228-how-to-compare-our-stats)<br>
+  2.29 [Extracting Statistic Values](#229-extracting-statistic-values)<br>
+  2.30 [Parsing Number of Awards](#230-parsing-number-of-awards)<br>
+  2.31 [Applying Parsed Properties](#231-applying-parsed-properties)<br>
 
 ----
 
@@ -967,22 +970,22 @@ const onMovieSelect = async (movie) => {
   document.querySelector("#summary").innerHTML = movieTemplate(response.data);
 };
 
-// 1. add "movieTemplate" helper function with "movieDetail" parameter.
-const movieTemplate = (movieDetail) => {
+// 1. add "movieTemplate" helper function with "movieData" parameter.
+const movieTemplate = (movieData) => {
   // 2. add the html
   return `
   <article class="media">
     <figure class="media-left">
       <p class="image">
-        <img src="${movieDetail.Poster}" alt="movie poster" />
+        <img src="${movieData.Poster}" alt="movie poster" />
       </p>
     </figure>
 
     <div class="media-content">
       <div class="content">
-        <h1>${movieDetail.Title}</h1>
-        <h4>${movieDetail.Genre}</h4>
-        <p>${movieDetail.Plot}</p>
+        <h1>${movieData.Title}</h1>
+        <h4>${movieData.Genre}</h4>
+        <p>${movieData.Plot}</p>
       </div>
     </div>
   </article>
@@ -990,7 +993,7 @@ const movieTemplate = (movieDetail) => {
 };
 ```
 
-Let's break down the above code. The first thing we're doing is creating our `movieTemplate()` helper function. This function with house all of our html and rendered content. `movieTemplate()` is going to receive a parameter called `movieDetail`. We chose this name because that parameter is going to be the really big object of specific properties we get back from `onMovieSelect`'s `response.data`.
+Let's break down the above code. The first thing we're doing is creating our `movieTemplate()` helper function. This function with house all of our html and rendered content. `movieTemplate()` is going to receive a parameter called `movieData`. We chose this name because that parameter is going to be the really big object of specific properties we get back from `onMovieSelect`'s `response.data`.
 
 Next, we are going to add all the html we need in order to display and style the rendered content. 
 
@@ -1008,22 +1011,22 @@ For this, we will just be working with our `movieTemplate()` function. And all w
 
 Let's do that now:
 ```js
-const movieTemplate = (movieDetail) => {
+const movieTemplate = (movieData) => {
   return `
   <!-- Movie Poster -->
   <article class="media">
     <figure class="media-left">
       <p class="image">
-        <img src="${movieDetail.Poster}" alt="movie poster" />
+        <img src="${movieData.Poster}" alt="movie poster" />
       </p>
     </figure>
 
     <!-- Movie Content -->
     <div class="media-content">
       <div class="content">
-        <h1>${movieDetail.Title}</h1>
-        <h4>${movieDetail.Genre}</h4>
-        <p>${movieDetail.Plot}</p>
+        <h1>${movieData.Title}</h1>
+        <h4>${movieData.Genre}</h4>
+        <p>${movieData.Plot}</p>
       </div>
     </div>
   </article>
@@ -1032,31 +1035,31 @@ const movieTemplate = (movieDetail) => {
   <!-- Awards -->
   <article class="notification is-primary">
     <p class="subtitle">Awards</p>
-    <p class="title">${movieDetail.Awards}</p>
+    <p class="title">${movieData.Awards}</p>
   </article>
 
   <!-- Box Office -->
   <article class="notification is-primary">
     <p class="subtitle">Box Office</p>
-    <p class="title">${movieDetail.BoxOffice}</p>
+    <p class="title">${movieData.BoxOffice}</p>
   </article>
 
   <!-- Metascore -->
   <article class="notification is-primary">
     <p class="subtitle">Metascore</p>
-    <p class="title">${movieDetail.Metascore}</p>
+    <p class="title">${movieData.Metascore}</p>
   </article>
 
   <!-- IMDB Rating -->
   <article class="notification is-primary">
     <p class="subtitle">IMDB Rating</p>
-    <p class="title">${movieDetail.imdbRating}</p>
+    <p class="title">${movieData.imdbRating}</p>
   </article>
 
   <!-- IMDB Votes -->
   <article class="notification is-primary">
     <p class="subtitle">IMDB Votes</p>
-    <p class="title">${movieDetail.imdbVotes}</p>
+    <p class="title">${movieData.imdbVotes}</p>
   </article>
   `;
 };
@@ -1189,22 +1192,22 @@ const onMovieSelect = async (movie) => {
 };
 
 // Helper function that renders out all of our HTML to be displayed on the screen once a movie is selected
-const movieTemplate = (movieDetail) => {
+const movieTemplate = (movieData) => {
   return `
   <!-- Movie Poster -->
   <article class="media">
     <figure class="media-left">
       <p class="image">
-        <img src="${movieDetail.Poster}" alt="movie poster" />
+        <img src="${movieData.Poster}" alt="movie poster" />
       </p>
     </figure>
 
     <!-- Movie Content -->
     <div class="media-content">
       <div class="content">
-        <h1>${movieDetail.Title}</h1>
-        <h4>${movieDetail.Genre}</h4>
-        <p>${movieDetail.Plot}</p>
+        <h1>${movieData.Title}</h1>
+        <h4>${movieData.Genre}</h4>
+        <p>${movieData.Plot}</p>
       </div>
     </div>
   </article>
@@ -1212,31 +1215,31 @@ const movieTemplate = (movieDetail) => {
   <!-- Awards -->
   <article class="notification is-primary">
     <p class="subtitle">Awards</p>
-    <p class="title">${movieDetail.Awards}</p>
+    <p class="title">${movieData.Awards}</p>
   </article>
 
   <!-- Box Office -->
   <article class="notification is-primary">
     <p class="subtitle">Box Office</p>
-    <p class="title">${movieDetail.BoxOffice}</p>
+    <p class="title">${movieData.BoxOffice}</p>
   </article>
 
   <!-- Metascore -->
   <article class="notification is-primary">
     <p class="subtitle">Metascore</p>
-    <p class="title">${movieDetail.Metascore}</p>
+    <p class="title">${movieData.Metascore}</p>
   </article>
 
   <!-- IMDB Rating -->
   <article class="notification is-primary">
     <p class="subtitle">IMDB Rating</p>
-    <p class="title">${movieDetail.imdbRating}</p>
+    <p class="title">${movieData.imdbRating}</p>
   </article>
 
   <!-- IMDB Votes -->
   <article class="notification is-primary">
     <p class="subtitle">IMDB Votes</p>
-    <p class="title">${movieDetail.imdbVotes}</p>
+    <p class="title">${movieData.imdbVotes}</p>
   </article>
   `;
 };
@@ -1416,7 +1419,7 @@ const onMovieSelect = async (movie) => {
   // onMovieSelect logic
 };
 
-const movieTemplate = (movieDetail) => {
+const movieTemplate = (movieData) => {
   // movieTemplate logic
 };
 ```
@@ -1460,7 +1463,7 @@ const onMovieSelect = async (movie) => {
   // onMovieSelect logic
 };
 
-const movieTemplate = (movieDetail) => {
+const movieTemplate = (movieData) => {
   // movieTemplate logic
 };
 ```
@@ -1570,7 +1573,7 @@ const onMovieSelect = async (movie) => {
   // onMovieSelect logic
 };
 
-const movieTemplate = (movieDetail) => {
+const movieTemplate = (movieData) => {
   // movieTemplate logic
 };
 ```
@@ -2142,7 +2145,118 @@ const onMovieSelect = async (movie, summaryElement) => {
 ---
 
 ### 2.27 When to Compare Our Stats
+We now want to get a comparison of the two different user selected movies. Eventually we will make a request inside of `onMovieSelect` in-order to get some follow up details about a particular movie.
 
+One of the first thing we should do is store a reference to the response that comes back. That way we can hold on to that reference to that movie and all the different statistics. This will allow us to do an easier comparison between the movies further down the road.
+
+Once we receive data back from axios, let's be sure we store the movie we just fetched on to the appropriate variable. In order to do this we need to pass in an additional parameter to `onMovieSelect()`. This is to indicate whether we are receiving the movie on the left side or the right side.
+
+```js
+createAutoComplete({
+  ...autoCompleteConfig,
+  root: document.querySelector("#left-autocomplete"),
+  onOptionSelect(movie) {
+    document.querySelector(".tutorial").classList.add("is-hidden");
+
+    // 1. pass in an additional argument to onMovieSelect call ("left")
+    onMovieSelect(movie, document.querySelector("#left-summary"), "left");
+  }
+});
+createAutoComplete({
+  ...autoCompleteConfig,
+  root: document.querySelector("#right-autocomplete"),
+  onOptionSelect(movie) {
+    document.querySelector(".tutorial").classList.add("is-hidden");
+
+    // 2. pass in an additional argument to onMovieSelect call ("right")
+    onMovieSelect(movie, document.querySelector("#right-summary"), "right");
+  }
+});
+
+// 3. pass in the "side" parameter to onMovieSelect declaration
+const onMovieSelect = async (movie, summaryElement, side) => {
+  const response = await axios.get("http://www.omdbapi.com/", {
+    params: {
+      apikey: "1da41525",
+      i: movie.imdbID
+    }
+  });
+
+  const data = await response.data;
+
+  summaryElement.innerHTML = movieTemplate(data);
+};
+```
+
+Next, let's add the logic to check which side the user selected on and if both movies are defined.
+
+```js
+// 1. define two global "let" variables
+let leftMovie;
+let rightMovie;
+
+const onMovieSelect = async (movie, summaryElement, side) => {
+  const response = await axios.get("http://www.omdbapi.com/", {
+    params: {
+      apikey: "1da41525",
+      i: movie.imdbID
+    }
+  });
+
+  const data = await response.data;
+
+  summaryElement.innerHTML = movieTemplate(data);
+
+  // 2. check which side the user selected (must be after we render the selection content from "movieTemplate")
+  if (side === "left") {
+    leftMovie = response.data;
+  } else {
+    rightMovie = response.data;
+  }
+};
+```
+
+Now, let's check to see if leftMovie and rightMovie are both defined and if they are, let's run the comparison between them. For that we will have to create a `runComparison` helper function.
+
+Our `runComparison` helper function will be able to:
+  * iterate through the two different movies
+  * run all the comparisons
+  * update the appropriate statistics on both sides of the screen
+
+```js
+let leftMovie;
+let rightMovie;
+
+const onMovieSelect = async (movie, summaryElement, side) => {
+  const response = await axios.get("http://www.omdbapi.com/", {
+    params: {
+      apikey: "1da41525",
+      i: movie.imdbID
+    }
+  });
+
+  const data = await response.data;
+
+  summaryElement.innerHTML = movieTemplate(data);
+
+  if (side === "left") {
+    leftMovie = response.data;
+  } else {
+    rightMovie = response.data;
+  }
+
+  // 1. check if both the left and the right movie are defined
+  if (leftMovie && rightMovie) {
+    // 3. run the comparison
+    runComparison();
+  }
+};
+
+// 2. add comparison helper function
+const runComparison = () => {
+  // future logic
+};
+```
 
 [⬆️ Top](#table-of-contents)
 
@@ -2150,6 +2264,124 @@ const onMovieSelect = async (movie, summaryElement) => {
 
 ### 2.28 How to Compare Our Stats
 
+This poses a bit of a challenge because the metrics we're comparing aren't always plain numbers, some are strings too (like in our "Awards" card comparison).
+
+Another reason this is challenging is because when we think about the logic of how we're rendering our comparison cards to the DOM, the first statistic we render out is the "Awards" card, then "Box Office", then "Metascore", etc.
+
+So we need to "reach" into the DOM and select the element "Awards" on both sides of the screen (we're rendering two to the screen). To do this we are going to add a "number version" "data" property to all of the `<article>`'s in our `movieTemplate` rendering function.
+
+> Note: The "number version" of the "data" property allows us to easily compare versions of each other.
+
+So what we're trying to do is, whenever we run `movieTemplate` for each of the `<article>` elements we want to add a `data-value` property to it. 
+
+Then, inside that `data-value` property we can assign it a unique value. That way, when calling our `runComparison` function, rather than comparing the order of articles in can just compare the `data-value` values of the first article on the other side.
+
+In other words, we're throwing away the idea that the first article is the "Awards" card when running `runComparison()` and just looking at the `data-value` property on those articles and determine which one is greater. Last, we need to apply the appropriate styling to those results (green or red).
+
+[⬆️ Top](#table-of-contents)
+
+---
+
+### 2.29 Extracting Statistic Values
+
+In this section, we will be updating our `movieTemplate` function. We're going to checkout some of the different _properties_ inside our `movieData` parameter object.
+
+Remember, `movieData` is an object with some expanded properties that describe a particular movie. For each of the statistic cards we're printing out we're going to turn each of them into an easy to represent number value. We will then add these values as a data property for each of the different article cards.
+
+The first thing we're going to do is, at the top of the function we're going to take a look at some of the different _properties_ in `movieData` and then turn them into an easy to compute number format.
+
+```js
+const movieTemplate = (movieData) => {
+	console.log(movieData);
+	// a. number representation of the box office value
+	const dollars = parseInt(
+		movieData.BoxOffice.replace(/\,/g, "").replace(/\$/g, "")
+	);
+	// b. number value for meta score
+	const metaScore = parseInt(movieData.Metascore);
+	// c. number value for imdb rating
+	const imdbRating = parseFloat(movieData.imdbRating);
+	// d. number value for imdb rating
+	const imdbVotes = parseInt(movieData.imdbVotes.replace(/,/g, ""));
+
+...
+```
+
+In the above code, we need to remove the `$` and `,` and replace with an empty string. We can then wrap that code in `parseInt()` which will turn it into a number value. `parseFloat()` will remove the decimal.
+
+[⬆️ Top](#table-of-contents)
+
+---
+
+### 2.30 Parsing Number of Awards
+
+For this section we're just going to take all the awards and add them together to determine the winner of the section.
+
+```js
+const movieTemplate = (movieData) => {
+  const dollars = parseInt(
+    movieData.BoxOffice.replace(/\,/g, "").replace(/\$/g, "")
+  );
+  const metaScore = parseInt(movieData.Metascore);
+  const imdbRating = parseFloat(movieData.imdbRating);
+  const imdbVotes = parseInt(movieData.imdbVotes.replace(/,/g, ""));
+
+  // 1. add count variable
+  let count = 0;
+  // 2. add "awards" variable
+  const awards = movieData.Awards.split(" ").forEach((word) => {
+    // 3. check if we're working with a number or not
+    const value = parseInt(word); // parseInt on a string will return NaN
+
+    // 4. check to see if value = NaN
+    if (isNaN(value)) {
+      return;
+    } else {
+      // 5. otherwise add the numbers
+      count = count + value;
+    }
+  });
+
+...
+```
+
+Let's now refactor `awards` with `reduce()`. 
+
+The first argument to reduce is the actual function we want to run and the first parameter will be `prevValue`. The second parameter is going to be the `word` we're currently iterating over.
+
+The second argument is going to be the starting value for our reduction, in our case that will be `0`.
+```js
+const movieTemplate = (movieData) => {
+  const dollars = parseInt(
+    movieData.BoxOffice.replace(/\,/g, "").replace(/\$/g, "")
+  );
+  const metaScore = parseInt(movieData.Metascore);
+  const imdbRating = parseFloat(movieData.imdbRating);
+  const imdbVotes = parseInt(movieData.imdbVotes.replace(/,/g, ""));
+
+  // 1. refactor with .reduce()
+	const awards = movieData.Awards.split(" ").reduce((prevValue, word) => {
+		const value = parseInt(word);
+
+		if (isNaN(value)) {
+			// 2. we need to make sure we're returning the next value for the next iteration of the loop
+			return prevValue;
+		} else {
+			// 3. otherwise, we're going to return the previous value we got plus the new value (this also allows us to delete our "let count" above "awards")
+			return prevValue + value;
+		}
+	}, 0);
+
+...
+```
+
+[⬆️ Top](#table-of-contents)
+
+---
+
+### 2.31 Applying Parsed Properties
+
+Now that we have access to all our our statistics, we need to add them to each of the appropriate `<article>` elements inside our `movieTemplate` function.
 
 [⬆️ Top](#table-of-contents)
 

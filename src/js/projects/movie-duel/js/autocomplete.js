@@ -7,7 +7,7 @@ const createAutoComplete = ({
 	fetchData
 }) => {
 	root.innerHTML = `
-    <label><b>Search</b></label>
+    <label><b>Search Movie:</b></label>
     <input class="input" placeholder="i.e. avengers" />
     <div class="dropdown">
       <div class="dropdown-menu">

@@ -31,12 +31,12 @@
 }
 body {
 	font-family: var(--font);
-	font-weight: 400;
+	font-weight: 400 !important;
 }
 input,
 button {
 	font-family: var(--font);
-	font-weight: 400;
+	font-weight: 400 !important;
 }
 
 /* Start Styles */
@@ -76,44 +76,44 @@ button {
 .dropdown {
 	display: block !important;
 }
-
 figure.image {
 	display: flex;
 	justify-content: center;
 	background-color: black;
 }
-
 figure .image img {
 	width: 128px;
 }
-
 .notification {
 	margin-top: 20px !important;
 }
-
+.title {
+	margin-bottom: 2rem !important;
+}
 .title .icon {
 	margin-left: 15px;
 }
-
 .hero {
 	margin-bottom: 20px;
 }
-
 .forms {
 	display: flex;
 	justify-content: space-around;
 }
-
 .dropdown-item {
 	display: flex;
 	align-items: center;
 	height: 60px;
 }
-
 .dropdown-item img {
 	height: 50px;
 	margin-right: 10px;
 }
 .notification.is-primary {
 	background-color: #0697ff;
+}
+.tutorial-card-wrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
