@@ -1,7 +1,6 @@
 // 1. Logic for the autoComplete Search Widget
 const createAutoComplete = ({ root, renderOption, onOptionSelect, inputValue, fetchData }) => {
-	// root is targeting the search bar widget container DOM element
-	// set the inner HTML of the search bar widget
+	// root is targeting the search bar widget parent container element
 	root.innerHTML = `
     <label><b>Search Movie:</b></label>
     <input class="input" placeholder="i.e. avengers" />
@@ -31,6 +30,7 @@ const createAutoComplete = ({ root, renderOption, onOptionSelect, inputValue, fe
 		resultsWrapper.innerHTML = '';
 		dropdown.classList.add('is-active');
 
+		// iterate over our returned options from the search
 		for (let item of items) {
 			// create our <a> tags for the returned search options
 			const option = document.createElement('a');
@@ -54,7 +54,7 @@ const createAutoComplete = ({ root, renderOption, onOptionSelect, inputValue, fe
 	// 2.2 Call our debounce function from utils.js
 	input.addEventListener('input', debounce(onInput, 500));
 
-	// 2.3 Close the dropdown if user clicks outside dropdown
+	// 2.3 If user clicks anywhere outside of the root dropdown element, close the dropdown
 	document.addEventListener('click', (event) => {
 		if (!root.contains(event.target)) {
 			dropdown.classList.remove('is-active');
