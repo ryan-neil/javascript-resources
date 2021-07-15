@@ -38,6 +38,10 @@ button {
 	font-family: var(--font);
 	font-weight: 400 !important;
 }
+input:focus {
+	border: 2px solid var(--color-blue) !important;
+	transition: var(--transitionInput) !important;
+}
 
 /* Start Styles */
 .navbar {

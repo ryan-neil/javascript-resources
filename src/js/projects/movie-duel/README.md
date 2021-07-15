@@ -64,6 +64,8 @@ The last feature to our practice application will be a "smart search" feature th
   2.29 [Extracting Statistic Values](#229-extracting-statistic-values)<br>
   2.30 [Parsing Number of Awards](#230-parsing-number-of-awards)<br>
   2.31 [Applying Parsed Properties](#231-applying-parsed-properties)<br>
+  2.32 [Applying Parsed Properties](#232-applying-styles)<br>
+  2.33 [Quick Wrap-up](#233-quick-wrap-up)<br>
 
 ----
 
@@ -2381,8 +2383,131 @@ const movieTemplate = (movieData) => {
 
 ### 2.31 Applying Parsed Properties
 
-Now that we have access to all our our statistics, we need to add them to each of the appropriate `<article>` elements inside our `movieTemplate` function.
+Now that we have access to all our our statistics, we need to add the `data-value` properties to each of the appropriate `<article>` elements inside our `movieTemplate` function.
+
+```js
+const movieTemplate = (movieData) => {
+  const dollars = parseInt(
+    movieData.BoxOffice.replace(/\,/g, "").replace(/\$/g, "")
+  );
+  const metaScore = parseInt(movieData.Metascore);
+  const imdbRating = parseFloat(movieData.imdbRating);
+  const imdbVotes = parseInt(movieData.imdbVotes.replace(/,/g, ""));
+
+  const awards = movieData.Awards.split(" ").reduce((prevValue, word) => {
+    const value = parseInt(word);
+
+    if (isNaN(value)) {
+      return prevValue;
+    } else {
+      return prevValue + value;
+    }
+  }, 0);
+
+  return `
+  <article class="media">
+    <figure class="media-left">
+      <p class="image">
+        <img src="${movieData.Poster}" alt="movie poster" />
+      </p>
+    </figure>
+
+    <div class="media-content">
+      <div class="content">
+        <h1>${movieData.Title}</h1>
+        <h4>${movieData.Genre}</h4>
+        <p>${movieData.Plot}</p>
+      </div>
+    </div>
+  </article>
+
+  <!-- 1. add all of our data-value's to the articles below -->
+
+  <!-- Awards -->
+  <article data-value=${awards} class="notification is-primary">
+    <p class="subtitle">Awards</p>
+    <p class="title">${movieData.Awards}</p>
+  </article>
+
+  <!-- Box Office -->
+  <article data-value=${dollars} class="notification is-primary">
+    <p class="subtitle">Box Office</p>
+    <p class="title">${movieData.BoxOffice}</p>
+  </article>
+
+  <!-- Metascore -->
+  <article data-value=${metaScore} class="notification is-primary">
+    <p class="subtitle">Metascore</p>
+    <p class="title">${movieData.Metascore}</p>
+  </article>
+
+  <!-- IMDB Rating -->
+  <article data-value=${imdbRating} class="notification is-primary">
+    <p class="subtitle">IMDB Rating</p>
+    <p class="title">${movieData.imdbRating}</p>
+  </article>
+
+  <!-- IMDB Votes -->
+  <article data-value=${imdbVotes} class="notification is-primary">
+    <p class="subtitle">IMDB Votes</p>
+    <p class="title">${movieData.imdbVotes}</p>
+  </article>
+  `;
+};
+```
+
+Now that we've added all our `data-value` properties, we can iterate over those article elements and select the `data-value`'s. 
+
+We will then iterate over both sets of articles on each side of the screen at the same time. Once we do this we can then compare each of them by looking at their `data-value` properties and which ever value is greater we will apply some classes to them with color styling (green and red).
 
 [⬆️ Top](#table-of-contents)
 
 ---
+
+### 2.32 Applying Styles
+
+```js
+// index.js file
+
+const runComparison = () => {
+  const leftSideStats = document.querySelectorAll('#left-summary .notification');
+  const rightSideStats = document.querySelectorAll('#right-summary .notification');
+
+  // loop over either column
+  leftSideStats.forEach((leftStat, idx) => {
+    // leftStat is left side article elements
+    // rightStat is right side article elements
+    const rightStat = rightSideStats[idx];
+
+    // get value property from each side
+    const leftSideValue = parseInt(leftStat.dataset.value);
+    const rightSideValue = parseInt(rightStat.dataset.value);
+
+    // check which side is greater
+    if (rightSideValue > leftSideValue) {
+      // add left side classes to elements
+      leftStat.classList.remove('is-primary');
+      leftStat.classList.add('is-danger');
+    } else {
+      // add right side classes to elements
+      rightStat.classList.remove('is-primary');
+      rightStat.classList.add('is-danger');
+    }
+  });
+};
+runComparison();
+```
+
+[⬆️ Top](#table-of-contents)
+
+---
+
+### 2.33 Quick Wrap-up
+
+__App wrap-up:__
+
+The most important thing about this application was the `createAutoComplete` function. The goal here was to create a widget that was entirely reusable in nature.
+
+We wanted to be able to swap out a different data source very easily and still have the widget work. We do this is our `fetchData` function. 
+
+For styling out what the search options should look like we cerated the `renderOption` that gives the options an image and a title.

@@ -3,9 +3,9 @@
 // 1. Reusable search bar widget logic
 const autoCompleteConfig = {
 	async fetchData(searchTerm) {
-		const response = await axios.get("http://www.omdbapi.com/", {
+		const response = await axios.get('http://www.omdbapi.com/', {
 			params: {
-				apikey: "1da41525",
+				apikey: '1da41525',
 				s: searchTerm
 			}
 		});
@@ -17,7 +17,7 @@ const autoCompleteConfig = {
 		return data.Search;
 	},
 	renderOption(movie) {
-		const imgSrc = movie.Poster === "N/A" ? "" : movie.Poster;
+		const imgSrc = movie.Poster === 'N/A' ? '' : movie.Poster;
 		return `
 		<img src="${imgSrc}" />
 		<p>${movie.Title} (${movie.Year})</p>
@@ -32,21 +32,21 @@ const autoCompleteConfig = {
 createAutoComplete({
 	// Left side
 	...autoCompleteConfig,
-	root: document.querySelector("#left-autocomplete"),
+	root: document.querySelector('#left-autocomplete'),
 	onOptionSelect(movie) {
-		document.querySelector(".tutorial").classList.add("is-hidden");
-		onMovieSelect(movie, document.querySelector("#left-summary"), "left");
+		document.querySelector('.tutorial').classList.add('is-hidden');
+		onMovieSelect(movie, document.querySelector('#left-summary'), 'left');
 	}
 });
 // 3. Custom search bar widget logic for the right side
 createAutoComplete({
 	// Right side
 	...autoCompleteConfig,
-	root: document.querySelector("#right-autocomplete"),
+	root: document.querySelector('#right-autocomplete'),
 	onOptionSelect(movie) {
-		document.querySelector(".tutorial").classList.add("is-hidden");
+		document.querySelector('.tutorial').classList.add('is-hidden');
 
-		onMovieSelect(movie, document.querySelector("#right-summary"), "right");
+		onMovieSelect(movie, document.querySelector('#right-summary'), 'right');
 	}
 });
 
@@ -56,9 +56,9 @@ let rightMovie;
 // 4. Get id from selected movie
 const onMovieSelect = async (movie, summaryElement, side) => {
 	// fetch specific movie data from user selection
-	const response = await axios.get("http://www.omdbapi.com/", {
+	const response = await axios.get('http://www.omdbapi.com/', {
 		params: {
-			apikey: "1da41525",
+			apikey: '1da41525',
 			i: movie.imdbID
 		}
 	});
@@ -69,7 +69,7 @@ const onMovieSelect = async (movie, summaryElement, side) => {
 	// set summaryElement's innerHTML to movieTemplate HTML content
 	summaryElement.innerHTML = movieTemplate(data);
 
-	if (side === "left") {
+	if (side === 'left') {
 		// lets update the left movie variable
 		leftMovie = response.data;
 	} else {
@@ -78,27 +78,46 @@ const onMovieSelect = async (movie, summaryElement, side) => {
 	}
 
 	if (leftMovie && rightMovie) {
-		// run the comparison
 		runComparison();
 	}
 };
 
 const runComparison = () => {
-	// inside here we can iterate through the two different movies
-	// run all the comparisons
-	// update the appropriate statistics on both sides of the screen
+	const leftSideStats = document.querySelectorAll('#left-summary .notification');
+	const rightSideStats = document.querySelectorAll('#right-summary .notification');
+
+	// loop over either column
+	leftSideStats.forEach((leftStat, idx) => {
+		// leftStat is left side article elements
+		// rightStat is right side article elements
+		const rightStat = rightSideStats[idx];
+
+		// get value property from each side
+		const leftSideValue = parseInt(leftStat.dataset.value);
+		const rightSideValue = parseInt(rightStat.dataset.value);
+
+		// check which side is greater
+		if (rightSideValue > leftSideValue) {
+			// add left side classes to elements
+			leftStat.classList.remove('is-primary');
+			leftStat.classList.add('is-danger');
+		} else {
+			// add right side classes to elements
+			rightStat.classList.remove('is-primary');
+			rightStat.classList.add('is-danger');
+		}
+	});
 };
+runComparison();
 
 // 5. set HTML rendering when user selects movie
 const movieTemplate = (movieData) => {
-	const dollars = parseInt(
-		movieData.BoxOffice.replace(/\,/g, "").replace(/\$/g, "")
-	);
+	const dollars = parseInt(movieData.BoxOffice.replace(/\,/g, '').replace(/\$/g, ''));
 	const metaScore = parseInt(movieData.Metascore);
 	const imdbRating = parseFloat(movieData.imdbRating);
-	const imdbVotes = parseInt(movieData.imdbVotes.replace(/,/g, ""));
+	const imdbVotes = parseInt(movieData.imdbVotes.replace(/,/g, ''));
 
-	const awards = movieData.Awards.split(" ").reduce((prevValue, word) => {
+	const awards = movieData.Awards.split(' ').reduce((prevValue, word) => {
 		const value = parseInt(word);
 
 		if (isNaN(value)) {
@@ -109,7 +128,6 @@ const movieTemplate = (movieData) => {
 			return prevValue + value;
 		}
 	}, 0);
-	console.log(awards);
 
 	return `
 	<article class="media">
@@ -129,31 +147,31 @@ const movieTemplate = (movieData) => {
 	</article>
 
 	<!-- Awards -->
-	<article class="notification is-primary">
+	<article data-value=${awards} class="notification is-primary">
 		<p class="subtitle">Awards</p>
 		<p class="title">${movieData.Awards}</p>
 	</article>
 
 	<!-- Box Office -->
-	<article class="notification is-primary">
+	<article data-value=${dollars} class="notification is-primary">
 		<p class="subtitle">Box Office</p>
 		<p class="title">${movieData.BoxOffice}</p>
 	</article>
 
 	<!-- Metascore -->
-	<article class="notification is-primary">
+	<article data-value=${metaScore} class="notification is-primary">
 		<p class="subtitle">Metascore</p>
 		<p class="title">${movieData.Metascore}</p>
 	</article>
 
 	<!-- IMDB Rating -->
-	<article class="notification is-primary">
+	<article data-value=${imdbRating} class="notification is-primary">
 		<p class="subtitle">IMDB Rating</p>
 		<p class="title">${movieData.imdbRating}</p>
 	</article>
 
 	<!-- IMDB Votes -->
-	<article class="notification is-primary">
+	<article data-value=${imdbVotes} class="notification is-primary">
 		<p class="subtitle">IMDB Votes</p>
 		<p class="title">${movieData.imdbVotes}</p>
 	</article>
