@@ -2,6 +2,7 @@
 
 // 1. Reusable search bar widget logic
 const autoCompleteConfig = {
+	// 1.1 fetch our data from api
 	async fetchData(searchTerm) {
 		const response = await axios.get('http://www.omdbapi.com/', {
 			params: {
@@ -14,8 +15,11 @@ const autoCompleteConfig = {
 			return [];
 		}
 
+		console.log(data.Search);
+
 		return data.Search;
 	},
+	// 1.2 rendered the data inside the dropdown
 	renderOption(movie) {
 		const imgSrc = movie.Poster === 'N/A' ? '' : movie.Poster;
 		return `
@@ -23,29 +27,32 @@ const autoCompleteConfig = {
 		<p>${movie.Title} (${movie.Year})</p>
 		`;
 	},
+	// 1.3 update input value on click helper function
 	inputValue(movie) {
 		return movie.Title;
 	}
 };
 
-// 2. Custom search bar widget logic for the left side
+// 2. Custom search bar widget logic (left side)
 createAutoComplete({
-	// Left side
+	// 2.1 import autoCompleteConfig functions from above
 	...autoCompleteConfig,
 	root: document.querySelector('#left-autocomplete'),
+	// 2.2 get id from selected movie helper function
 	onOptionSelect(movie) {
+		// 2.3 hide tutorial message on movie selection
 		document.querySelector('.tutorial').classList.add('is-hidden');
+		// 2.4 need description...
 		onMovieSelect(movie, document.querySelector('#left-summary'), 'left');
 	}
 });
-// 3. Custom search bar widget logic for the right side
+// 3. Custom search bar widget logic (right side)
 createAutoComplete({
-	// Right side
+	// 3.1 repeat same logic as left side "createAutoComplete"
 	...autoCompleteConfig,
 	root: document.querySelector('#right-autocomplete'),
 	onOptionSelect(movie) {
 		document.querySelector('.tutorial').classList.add('is-hidden');
-
 		onMovieSelect(movie, document.querySelector('#right-summary'), 'right');
 	}
 });
@@ -62,7 +69,6 @@ const onMovieSelect = async (movie, summaryElement, side) => {
 			i: movie.imdbID
 		}
 	});
-
 	// get specific movie data from user selection
 	const data = await response.data;
 
@@ -82,6 +88,7 @@ const onMovieSelect = async (movie, summaryElement, side) => {
 	}
 };
 
+// 6. Run all the comparison logic
 const runComparison = () => {
 	const leftSideStats = document.querySelectorAll('#left-summary .notification');
 	const rightSideStats = document.querySelectorAll('#right-summary .notification');

@@ -1,5 +1,5 @@
 // 1. Logic for the autoComplete Search Widget
-const createAutoComplete = ({ root, renderOption, onOptionSelect, inputValue, fetchData }) => {
+const createAutoComplete = ({ root, fetchData, renderOption, onOptionSelect, inputValue }) => {
 	// root is targeting the search bar widget parent container element
 	root.innerHTML = `
     <label><b>Search Movie:</b></label>
@@ -19,6 +19,7 @@ const createAutoComplete = ({ root, renderOption, onOptionSelect, inputValue, fe
 	const onInput = async (event) => {
 		// items returns our item results in an array
 		const items = await fetchData(event.target.value);
+		console.log(items);
 
 		// check if the returned items array is empty and if true, close the dropdown window
 		if (!items.length) {
@@ -32,13 +33,14 @@ const createAutoComplete = ({ root, renderOption, onOptionSelect, inputValue, fe
 
 		// iterate over our returned options from the search
 		for (let item of items) {
-			// create our <a> tags for the returned search options
-			const option = document.createElement('a');
-			option.classList.add('dropdown-item');
-			option.innerHTML = renderOption(item);
+			const optionLink = document.createElement('a');
 
-			// set click event listener on "option"
-			option.addEventListener('click', () => {
+			optionLink.classList.add('dropdown-item');
+			// call "renderOption" with "item" as the parameter
+			optionLink.innerHTML = renderOption(item);
+
+			// set click event listener on "optionLink"
+			optionLink.addEventListener('click', () => {
 				dropdown.classList.remove('is-active');
 				// set input.value equal to our new config helper function
 				input.value = inputValue(item);
@@ -47,7 +49,7 @@ const createAutoComplete = ({ root, renderOption, onOptionSelect, inputValue, fe
 			});
 
 			// append our "option" selection to our results wrapper element in the DOM
-			resultsWrapper.appendChild(option);
+			resultsWrapper.appendChild(optionLink);
 		}
 	};
 
