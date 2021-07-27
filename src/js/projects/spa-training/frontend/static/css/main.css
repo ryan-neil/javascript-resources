@@ -1,0 +1,59 @@
+:root {
+	--dark: #222222;
+	--light: #eeeeee;
+	--coral: #ff585d;
+	--orange: #e66000;
+	--yellow: #ffcb00;
+	--red: #db4437;
+	--blue: #4285f4;
+	--green: #34a853;
+	--light-blue: #00d8ff;
+	--purple: #6762a6;
+	--pink: #ff00bf;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+html {
+	font-family: 'Open Sans', Ubuntu, sans-serif;
+}
+body {
+	margin: 0 0 0 200px;
+	font-size: 18px;
+}
+a {
+	color: var(--coral);
+}
+
+/* side nav */
+.nav {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 200px;
+	height: 100vh;
+	background: var(--dark);
+}
+.nav__link {
+	display: block;
+	padding: 12px 18px;
+	text-decoration: none;
+	color: var(--light);
+	font-weight: 500;
+}
+.nav__link:hover {
+	background: rgba(255, 255, 255, 0.05);
+}
+
+/* main body */
+#app {
+	padding: 1rem;
+	line-height: 1.5;
+	font-weight: 500;
+}
+#app p {
+	margin: 1rem 0;
+}
