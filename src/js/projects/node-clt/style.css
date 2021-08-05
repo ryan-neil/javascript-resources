@@ -11,8 +11,6 @@
 	--color-text: #2b2b2b;
 	--color-text-light: #9b9b9b;
 	--color-border: #dadcdf;
-	/* Font */
-	--font: 'Open Sans', -apple-system, sans-serif;
 	/* Gradients */
 	--colorGradient1: linear-gradient(270deg, #f6d242 10%, #ff52e5 100%);
 	--colorGradient2: linear-gradient(270deg, #fccf31 10%, #f55555 100%);
@@ -22,20 +20,18 @@
 	--box-shadow-sm: 0px 2px 4px 0px rgba(14, 30, 37, 0.12);
 	--box-shadow-md: 0px 4px 20px 0px rgba(0, 0, 0, 0.12);
 	--box-shadow-lg: -10px 10px 80px 0px rgba(0, 0, 0, 0.1);
+	/* Font */
+	--font: 'Open Sans', -apple-system, sans-serif;
 }
+
 * {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
 }
-html {
+body {
 	font-family: var(--font);
-	font-size: 16px;
-}
-h1 {
-	margin-top: 0;
+	font-weight: 400 !important;
 }
 
-.row {
-	margin-top: 25vh;
-}
+/* Start Styles */
