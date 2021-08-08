@@ -105,8 +105,8 @@ A quick look at the files and directories you'll see in the repo.
     * [Polymorphism](#polymorphism)
 1. [OOP with JavaScript](#object-oriented-programming-with-javaScript)
     * [Classes](#classes-in-javascript)
-1. [Node.js](#node.js)
-    * [JavaScript with Node vs. JavaScript in the Browser](#javascript-with-node-vs.-javascript-in-the-browser)
+1. [Node.js](#nodejs)
+    * [JavaScript with Node vs. JavaScript in the Browser](#javascript-with-node-vs-javascript-in-the-browser)
     * [Executing JavaScript with Node](#executing-javascript-with-node)
     * [Working with Modules](#working-with-modules)
     * [Invisible Node Functions](#invisible-node-functions)
@@ -5144,6 +5144,8 @@ We can take this concept as deep as we want and maybe have `Pet` extend from `An
 
 ### Node.js
 
+  * [Node.js Documentation](https://nodejs.org/api/)
+
 ### JavaScript with Node vs. JavaScript in the Browser
 
 When we run code with Node, we're going to be running code directly on our machine (computer) without any browser being involved.
@@ -5364,9 +5366,11 @@ In the above example, when we require in `myscript.js` again we receive the exac
 
 Here's how we debug inside node:
 
-  1. `node inspect index.js`: Start up a debugger __CLI__ and __pause__ execution whenever a `debugger` statement is hit.
-  2. `node --inspect index.js`: Start up a debugger __instance__ and __pause__ execution whenever a `debugger` statement is hit. Access the debugger at `chrome://inspect`.
-  3. `node --inspect-brk index.js`: Start up a debugger instance and __wait__ to execute until a `debugger` statement is hit. Access the debugger at `chrome://inspect`.
+  1. `node inspect index.js`: Start up a debugger __CLI__ and __pause__ execution whenever a 'debugger' statement is hit.
+  2. `node --inspect index.js`: Start up a debugger __instance__ and __pause__ execution whenever a 'debugger' statement is hit. Access the debugger at 'chrome://inspect'.
+  3. `node --inspect-brk index.js`: Start up a debugger instance and __wait__ to execute until a 'debugger' statement is hit. Access the debugger at 'chrome://inspect'.
+
+  > Note: `node --inspect-brk index.js` is the more common method.
 
 #### CLI Debugger Commands
 

@@ -1,0 +1,15 @@
+{
+  "name": "node-app",
+  "version": "1.0.0",
+  "description": "## Introduction What we will be doing is creating a fullstack web application with Node.js to better understand how Node works behind the scenes.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
