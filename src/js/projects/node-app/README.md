@@ -18,7 +18,10 @@ What we will be doing is creating a fullstack web application with Node.js to be
     * [Node.js file system](#nodejs-file-system)
     * [Modules and npm](#modules-and-npm)
 1. [Part 2: Building the application](#part-2-building-the-application)
-    * [Something](#something-link)
+    * [HTTP and GET](#attp-and-get)
+    * [Handling the request](#handling-the-request)
+    * [Listening for requests](#listening-for-requests)
+    * [Deploying to the Cloud](#deploying-to-the-cloud)
 
 ----
 
@@ -34,7 +37,7 @@ The REPL acronym stands for READ, EVALUATE, PRINT & LOOP. REPL is an easy-to-use
 
 It captures the user's JavaScript code inputs, interprets, and evaluates the result of this code. It displays the result to the screen, and repeats the process till the user quits the shell.
 
-> Note: Ctrl + C twice will shut down the REPL environment.
+> Note: Ctrl + C twice will shut down the REPL environment
 
 REPL is useful when you want to debug your code, run or test some code outside your project but in most cases we will want to execute JavaScript code that lives inside an actual JavaScript file.
 
@@ -50,7 +53,7 @@ Since this is an "index" file we can shorten the command by just pointing to the
 
 ### Understanding the Node runtime
 
-In most ways, JavaScript works the same wait it does in the browser as it does in Node.js. Although, there are some very important differences we need to know about...
+In most ways, JavaScript works the same way it does in the browser as it does in Node.js. Although, there are some very important differences we need to know about...
 
 1. Node has a handful of built in "global" identifiers
 
@@ -58,7 +61,7 @@ One of those "globals" is `console`, which we are already familiar with for logg
 
 There's another "global" with the name of `global`. This object is a namespace that is available throughout the entire Node process. For example, if we assign a `luckyNumber` property to `global` we can then access it anywhere in our code:
 ```js
-console.log(global.luckyNumber)
+console.log(global.luckyNumber) // -> undefined
 
 global.luckyNumber = '23';
 
@@ -104,7 +107,7 @@ process.on('exit', function() {
 });
 ```
 
-This is similar to our DOM event listeners:
+This is similar to our DOM event listener syntax:
 ```js
 variable.addEventListener('click', function() {
   // logic
@@ -162,7 +165,7 @@ Back in our index.js file we'll import two functions from the file system module
 const { readFile, readFileSync } = require('fs');
 ```
 
-> Note: Anytime we see a function that ends in "sync", think "blocking" or in other words, it will need to finish all of it's work before any of our other code can run.
+> Note: Anytime we see a function that ends in "sync", think "blocking" or in other words, it will need to finish all of it's work before any of our other code can run
 
 We can read a `txt` file with Node by simply passing the path to that file and then specifying the encoding as `utf8`. This is a "blocking" method:
 ```js
@@ -263,11 +266,49 @@ At some point it's very likely we will want to use somebody else's code out ther
 npm init -y
 ```
 
-You'll notice this created a `package.json` file in our app directory. This file contains meta data about our project. But most importantly it keeps track of the dependencies that our app is using.
+You'll notice this created a `package.json` file in our app directory. This file contains meta data about our project. But most importantly it keeps track of the dependencies that our app is using:
+```json
+// package.json file
+
+{
+  "name": "node-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
+```
 
 The first thing we're going to install is [Express](https://expressjs.com/). Express is a minimal web application framework and one of the most popular third-party node modules.
 
-Inside our `package.json` file you'll notice we now have a `"dependencies"` section. In addition you might notice we now have a "node_modules" directory in our app directory. The "node_modules" folder contains the raw source code for the dependency and we should NEVER have to modify code in the "node_modules" directory.
+Inside our `package.json` file you'll notice we now have a `"dependencies"` section:
+```json
+// package.json file
+
+{
+  "name": "node-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  // newly created dependencies section
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
+```
+
+In addition you might notice we now have a "node_modules" directory in our app directory. The "node_modules" folder contains the raw source code for the dependency and we should NEVER have to modify code in the "node_modules" directory.
 
 Now that we have the Express package installed, we can import it by name in our JavaScript code by simply "requiring" `express`:
 ```js
@@ -282,7 +323,229 @@ We're now ready for part 2 where we build a real full-stack application and depl
 
 ### Part 2: Building the application
 
-What we're going to be building is your typical full-stack web application.
+What we're going to be building is your typical full-stack web application. Our server is going to live on a URL and when a user makes a request to this URL in the browser the server will respond with some HTML.
+
+In the code, we'll first create an instance of an Express app. An Express app allows us to create different URLs and "endpoints" that a user can navigate to in the browser. We then define code for the server to handle those requests.
+
+#### HTTP and GET
+
+Now, we won't get too deep into "[HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP)" but when the user navigates to a URL in the browser it's what's known as a "[GET](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GET)" request.
+
+A "GET" request means the user is requesting some data on the server and not trying modify or update anything on the server. With Express we can set up an "endpoint" like that by calling `app.get()`. 
+
+For the first argument we add the URL the user will navigate to, which in our example is just going to be a forward slash (`'/'`) for the route URL. 
+
+> Note: We can also create multiple pages for our web-app by creating different URLs here
+
+The second argument in our "GET" request is going to be the callback function. We can think of every request to this URL as an "event" and then we handle that "event" with this callback function. Express gives us two parameters to make use of, `request` and `response`.
+```js
+const express = require('express');
+const app = express();
+
+app.get('/', (request, response) => {
+  // some logic
+});
+```
+
+The `request` is the  incoming data from the user. In our example, we don't need to parse any data from the `request`, however in many cases we might want to look at the "headers" or the "body" of the `request` to authenticate a user or understand what the user is trying to do.
+
+#### Handling the request
+
+At this point we need to implement the code to handle the `request`. What we want to do is read some HTML from our file system and then send it back down to the browser.
+
+First thing we do is create a `home.html` file and add some generic code and styles to the document.
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Node App</title>
+
+  <style>
+    body {
+      font-family: -apple-system, Ubuntu, sans-serif;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>
+    This is my Node.js app!
+  </h1>
+</body>
+
+</html>
+```
+
+Next, in our source code we can import `readFile` from Node's "file system" module. We'll then read our `home.html` file, use `utf8` encoding, and in our callback function we'll have access to the HTML string:
+```js
+const express = require('express');
+const app = express();
+
+// import readFile module
+const { readFile, readFileSync } = require('fs');
+
+app.get('/', (request, response) => {
+
+  // set readFile
+  readFile('./home.html', 'utf8', (err, html) => {
+    // some logic
+  });
+
+});
+```
+
+We can now send a "response" back down to the client by calling `response.send()`:
+```js
+const express = require('express');
+const app = express();
+
+const { readFile, readFileSync } = require('fs');
+
+app.get('/', (request, response) => {
+
+  readFile('./home.html', 'utf8', (err, html) => {
+
+    // send response back to client
+    response.send(html);
+
+  });
+
+});
+```
+
+Let's also handle any error responses we might get back by sending a response with a status code of `500` which means a server error. This way the user knows something went wrong on the server:
+```js
+const express = require('express');
+const app = express();
+
+const { readFile, readFileSync } = require('fs');
+
+app.get('/', (request, response) => {
+
+  readFile('./home.html', 'utf8', (err, html) => {
+
+    // handle any errors we get back from the server
+    if (err) {
+      response.status(500).send('Sorry, issue with the server.')
+    }
+
+    response.send(html);
+
+  });
+
+});
+```
+
+That's all there is to it, we now have a way of sending HTML from the server to the client.
+
+#### Listening for requests
+
+The last thing we need to do is tell our Express app to start listening to incoming requests. We do this by defining a "[PORT](https://stackoverflow.com/questions/18864677/what-is-process-env-port-in-node-js)" which will normally come from a Node environment variable.
+
+Next, we call `app.listen()` with that "PORT" and when it starts up we'll `console.log` the, "App is available on http://localhost:3000":
+```js
+const express = require('express');
+const app = express();
+
+const { readFile, readFileSync } = require('fs');
+
+app.get('/', (request, response) => {
+
+  readFile('./home.html', 'utf8', (err, html) => {
+
+    // handle any errors we get back from the server
+    if (err) {
+      response.status(500).send('Sorry, issue with the server.')
+    }
+
+    response.send(html);
+
+  });
+
+});
+
+// tell the app to start listening
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`App is available on http://localhost:3000`);
+});
+```
+
+We can start it up by opening the terminal and running `node .` with the current working directory.
+
+Now, there's one important thing we need to know and that's that callbacks can be very difficult to work with especially as the app grows in complexity.
+
+It often leads to a state known as "callback hell" where we have a bunch of callbacks nested within callbacks, within callbacks, within more callbacks... The best way to avoid code like this is to use promises.
+
+Instead of importing `readFile` from just `require('fs')`, we'll import it from `require('fs').promises`. We can then make our callback function `async` and then we can write the response in a single line of code by saying `response.send()` and then `await readFile()` with the html page followed by the `utf8` encoding:
+```js
+const express = require('express');
+const app = express();
+
+const { readFile } = require('fs').promises;
+
+app.get('/', async (request, response) => {
+  response.send(await readFile('home.html', 'utf8'));
+});
+
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`App is available on http://localhost:3000`);
+});
+```
+
+This is much more concise and readable but it's especially useful when we have multiple `async` operations to handle in a single request. Now that we've built a Node.js app, let's see how we would deploy it to the cloud.
+
+#### Deploying to the Cloud
+
+There are a bunch of different ways we could deploy our app tp the cloud but for our example, we will use [Google App Engine](https://cloud.google.com/appengine).
+
+App Engine has what's called a "standard environment" for Node.js up to version 12 and what this does is provide us with a server in the cloud that scales automatically based on the incoming traffic to the app.
+
+We first need to have a [Google Cloud Platform](https://cloud.google.com/) account as well as the [Google Cloud Command Line Tools](https://cloud.google.com/sdk) installed on our local system.
+
+  * [GCP Account Tutorial](https://www.youtube.com/watch?v=hRXMuMQQ27c)
+
+Once we've done this, we can go into our source code and create an `app.yaml` file. This file is used to configure our cloud server. All we need to do for this is specify a `runtime` of `nodejs12` (Node.js version 12):
+```yaml
+# app.yaml file
+
+runtime: nodejs12
+```
+
+App Engine will run our code by looking in the `package.json` file for `"start"` script:
+```json
+// package.json file
+
+{
+  "name": "node-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    // define our start script
+    "start": "node ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
+```
+
+From here, we can simply open the terminal and run:
+```bash
+gcloud app deploy
+```
+
+This will give us a URL where we can access our app publicly on the web. 
+
+Congratulations, we're now full-stack cloud architects! 😉
 
 **[⬆ Top](#table-of-contents)**
 
