@@ -1,0 +1,71 @@
+/* 
+==========================
+Colors
+	* https://clickup.com/
+*/
+:root {
+	/* Portfolio Palette */
+	--color-primary: #0d1219;
+	--color-primary-light: #384d6b;
+	--color-secondary: #19a0f6;
+	--color-secondary-light: #62bef9;
+	--color-white: #ffffff;
+	--color-black: #000000;
+	--color-green: #57b660;
+	--color-red: #e04239;
+	--color-orange: #ec6337;
+	--color-blue: #5576ff;
+	--color-light-blue: #49ccf9;
+	--color-yellow: #ffc703;
+	--color-pink: #fd71af;
+	--color-violet: #7b68ee;
+	--color-primary-bg: #fcfcfc;
+	--color-secondary-bg: #edeef0;
+	/* Tags */
+	--color-tag-green: #dff1e0;
+	--color-tag-red: #f5e0e0;
+	--color-tag-orange: #fff1e5;
+	--color-tag-blue: #eef1ff;
+	--color-tag-light-blue: #ebfafd;
+	--color-tag-yellow: #fff9e5;
+	--color-tag-pink: #feebf3;
+	--color-tag-violet: #e5e0fc;
+	/* Type */
+	--color-text-heading: #233043;
+	--color-text-subheading: #233043;
+	--color-text-p: #354865;
+}
+/* Dark Mode */
+.darkMode {
+	--color-primary-bg: #21272f;
+	--color-secondary-bg: #2c333c;
+	/* Typography */
+	--text-color-heading: #d7e2eb;
+	--text-color-subheading: #95a3af;
+	--text-color-p: #95a3af;
+}
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+html {
+	font-family: 'Open Sans', -apple-system, sans-serif;
+	font-weight: 400;
+}
+a {
+	text-decoration: none;
+}
+
+/*
+=================================
+[Section]
+*/
+
+/*
+=================================
+[Section] Responsive Media
+*/
+@media (max-width: 55rem) {
+	/* logic */
+}

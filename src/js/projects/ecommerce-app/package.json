@@ -1,0 +1,16 @@
+{
+	"name": "ecommerce-app",
+	"version": "1.0.0",
+	"description": "In this application, we're going to be building an e-commerce app. In addition, we're going to be building a Node.js web server that's going to serve up some HTML pages to the user where they can view items, shop, add them to a cart, and eventually purchase their items.",
+	"main": "index.js",
+	"scripts": {
+		"dev": "nodemon index.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"express": "^4.17.1",
+		"nodemon": "^2.0.12"
+	}
+}

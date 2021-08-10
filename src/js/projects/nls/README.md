@@ -23,7 +23,14 @@ What we're going to be doing is basically recreating the "ls" command from the t
 
 ### Table of Contents
 1. [Running a Node Program as an Executable](#running-a-node-program-as-an-executable)
+    * [package.json File](#packagejson-file)
+    * ["configuration" Section](#"configuration"-section)
 1. [Running our Project from Anywhere](#running-our-project-from-anywhere)
+    * [Change index.js File Permissions](#change-indexjs-file-permissions)
+    * [Allow index.js to be Treated like an Executable](#allow-indexjs-to-be-treated-like-an-executable)
+    * [Linking our Project](#linking-our-project)
+1. [Styling the Console Logged files](#styling-the-console-logged-files)
+    * [File or Folder?](#file-or-folder)
 
 ----
 
@@ -70,7 +77,7 @@ Let's fix this.
 
 First thing we need to do is, run `npm init -y` inside our project directory. When we run this command, it's going to create a new [special :)] file in my project directory. This new file is called `package.json`.
 
-#### package.json
+#### package.json File
 
 Overall, this file describes some of the different qualities ("name", "version", "description", "scripts", etc.) of our project.
 
@@ -132,6 +139,10 @@ In our project example, the name of that program is `nls`. This name could be an
 
 Then as the value, we specify `index.js`. This means that when we run "nls" at our terminal we want to run the `index.js` file.
 
+[⬆️ Top](#table-of-contents)
+
+---
+
 ### Running our Project from Anywhere
 
 Adding the `configuration` section to our `package.json` file is only step one on being able to run our project from anywhere on our machine.
@@ -178,9 +189,21 @@ npm link
 
 What this command does is essentially take our current project and make it globally available everywhere else on our machine.
 
+[⬆️ Top](#table-of-contents)
+
+---
+
 ### Styling the Console Logged files
 
+Right now when we use the command `ls` in our terminal, the files and folders get logged as slightly different colors. What we want to accomplish is to be able to log out the file names as one color and the folder names as another color.
+
 #### File or Folder?
+
+ In order to know if the files we're looking at inside the directory are files or folders we're going to need to use the `fs` module and try and decide whether or not each of the items is a file or a folder.
+
+ For this task we'll be using `fs.lstat()` and some of it's methods.
+
+ The first thing we're going to do is iterate over all of our file names.
 
 [⬆️ Top](#table-of-contents)
 

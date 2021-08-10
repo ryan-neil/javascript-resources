@@ -301,7 +301,6 @@ Inside our `package.json` file you'll notice we now have a `"dependencies"` sect
   "keywords": [],
   "author": "",
   "license": "ISC",
-  // newly created dependencies section
   "dependencies": {
     "express": "^4.17.1"
   }
@@ -526,7 +525,6 @@ App Engine will run our code by looking in the `package.json` file for `"start"`
   "description": "",
   "main": "index.js",
   "scripts": {
-    // define our start script
     "start": "node ."
   },
   "keywords": [],
