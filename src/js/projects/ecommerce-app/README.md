@@ -33,13 +33,13 @@ A quick look at the files and directories you'll see in the repo.
 
 ### Table of Contents
 1. [Part 1: Project start](#part-1)
-    * [App architecture](#app-architecture)
-    * [Package.json scripts](#packagejson-scripts)
-    * [Creating a web server](#creating-a-web-server)
-    * [Requests behind the scenes](#requests-behind-the-scenes)
-    * [Displaying simple HTML](#displaying-simple-html)
-    * [Understanding form submissions](#understanding-form-submissions)
-    * [Parsing form data](#parsing-form-data)
+    * [1.1 App architecture](#11-app-architecture)
+    * [1.2 Package.json scripts](#12-packagejson-scripts)
+    * [1.3 Creating a web server](#13-creating-a-web-server)
+    * [1.4 Requests behind the scenes](#14-requests-behind-the-scenes)
+    * [1.5 Displaying simple HTML](#15-displaying-simple-html)
+    * [1.6 Understanding form submissions](#16-understanding-form-submissions)
+    * [1.7 Parsing form data](#17-parsing-form-data)
 1. [Part 2: Designing a custom database](#part-1)
 1. [Part 3: Production-grade authentication](#part-1)
 
@@ -47,14 +47,14 @@ A quick look at the files and directories you'll see in the repo.
 
 ### Part 1: Project start
 
-### App architecture
+### 1.1 App architecture
 
   1. Create a new project directory
   1. Generate a package.json file
   1. Install the dependencies we need to write the app
   1. Create a "start" script to run our project
 
-### Package.json scripts
+### 1.2 Package.json scripts
 
 We'll begin by creating our `package.json` file inside our root directory "ecommerce-app":
 ```bash
@@ -103,7 +103,7 @@ __[Back to Top](#table-of-contents)__
 
 ----
 
-### Creating a web server
+### 1.3 Creating a web server
 
 First thing we need to do is "require" in our "Express" library and then we will use it to set up a new web server. We're then going to use the Express library to create a new variable called "app":
 ```js
@@ -159,7 +159,7 @@ __[Back to Top](#table-of-contents)__
 
 ----
 
-### Requests behind the scenes
+### 1.4 Requests behind the scenes
 
 When we typed in `localhost:3000` into our browser, our browser formulated a network request. The browser itself is not actually responsible for issuing that network request. Instead, it hands the request off to our operating system and all the different network devices connected to our operating system.
 
@@ -181,7 +181,7 @@ __[Back to Top](#table-of-contents)__
 
 ----
 
-### Displaying simple HTML
+### 1.4 Displaying simple HTML
 
 The first thing we want to focus on is our Admin Panel Sign Up page. We need to make sure we have the ability to show two different forms to the user, one to sign up and one to sign in.
 
@@ -215,7 +215,7 @@ __[Back to Top](#table-of-contents)__
 
 ----
 
-### Understanding form submissions
+### 1.6 Understanding form submissions
 
 By inspecting the "Network" tab in the browser dev tools we know that whenever we have a form element and we click on some sign up button, a request is being issued. The important thing to understand is exactly what is being communicated.
 
@@ -312,7 +312,7 @@ __[Back to Top](#table-of-contents)__
 
 ----
 
-### Parsing form data
+### 1.7 Parsing form data
 
 Now that we have a better understanding of how the browser makes a form submission to our server, we need to figure out how to access the information that is sent along with the request on our web server.
 
