@@ -39,6 +39,11 @@ A quick look at the files and directories you'll see in the repo.
     * 2.4 [Opening the repo data file](#24-opening-the-repo-data-file)
     * 2.5 [Saving records](#25-saving-records)
     * 2.6 [Random ID generation](#26-random-id-generation)
+    * 2.7 [Finding by ID](#27-finding-by-id)
+    * 2.8 [Deleting records](#28-deleting-records)
+    * 2.9 [Updating records](#29-updating-records)
+    * 2.10 [Adding filtering logic](#210-adding-filtering-logic)
+    * 2.11 [Exporting an instance](#211-exporting-an-instance)
 1. [Part 3: Production-grade authentication](#part-3)
 
 ----
@@ -451,7 +456,7 @@ We will implement the 'Data Store' from scratch, so we're going to figure out ho
 
 It's important to note that this 'Data Store' we will be implementing is not suited for production use. Let's discuss a few reason's why this is the case:
   1. If we try to open/write to the same file twice at the same time we will get an error
-  2. This won't work if we have multiple servers running on different machines because they're all going to have their own version of a products.json and users.json file
+  2. This won't work if we have multiple servers running on different machines because they're all going to have their own version of a products.json and `users.json` file
   3. Also, the performance won't be that great because we have to write to the file system every single time we want to update some data inside of our app.
 
 __[Back to Top](#table-of-contents)__
@@ -476,7 +481,7 @@ Let's think about how we would design the `UsersRepository`:
 | update |	id, attributes | null |	Updates the user with the given id using the given attributes |
 | delete |	id | null |	Delete the user with the given id |
 | randomId |	- | id |	Generates a random id |
-| writeAll |	- | null |	Writes all users to a users.json file |
+| writeAll |	- | null |	Writes all users to a `users.json` file |
 
 Again, this is going to be a class that has a bunch of different methods attached to it for working all the different users that we intend to create inside of our app.
 
@@ -556,22 +561,22 @@ class UsersRepository {
 
   // 1. create the getAll method
   async getAll() {
-    // 2. open the file called this.filename
+    // open the file called this.filename
     const contents = await fs.promises.readFile(this.filename, { encoding: 'utf8' });
-    // 3. read the files contents (returns an array string)
+    // read the files contents (returns an array string)
     console.log(contents); // -> '[]'
-    // 4. parse the contents (turns the data into an actual JS array)
+    // parse the contents (turns the data into an actual JS array)
     const data = JSON.parse(contents);
-    // 5. return parsed data
+    // return parsed data
     return data;
   }
 }
 
-// 6. create an async test function
+// 2. create an async test function
 const test = async () => {
   const repo = new UsersRepository('users.json');
 
-  // 7. assign our parsed user.json data to a variable
+  // assign our parsed user.json data to a variable
   const users = await repo.getAll();
   console.log(users); // -> []
 };
@@ -591,6 +596,7 @@ class UsersRepository {
   }
 }
 
+// 2. test our new getAll function
 const test = async () => {
   const repo = new UsersRepository('users.json');
 
@@ -621,28 +627,28 @@ class UsersRepository {
   }
 
   // 1. create async function
-	async create(attrs) {
-		// this gives us our big list of existing users
-		const records = await this.getAll();
-		// push in the new user
-		records.push(attrs);
-		// write the updated 'records' array back to this.filename (users.json)
-		await fs.promises.writeFile(this.filename, JSON.stringify(records));
-	}
+  async create(attrs) {
+    // this gives us our big list of existing users
+    const records = await this.getAll();
+    // push in the new user
+    records.push(attrs);
+    // write the updated 'records' array back to this.filename (users.json)
+    await fs.promises.writeFile(this.filename, JSON.stringify(records));
+  }
 }
 
 // 2. test the create function
 const test = async () => {
   // get access to users repository
-	const repo = new UsersRepository('users.json');
+  const repo = new UsersRepository('users.json');
 
-	// save a new record to the users repository
-	await repo.create({ email: 'test@test.com', password: '123abc' });
+  // save a new record to the users repository
+  await repo.create({ email: 'test@test.com', password: '123abc' });
 
-	// get all the records we have saved
-	const users = await repo.getAll();
-	// console log all saved records
-	console.log(users);
+  // get all the records we have saved
+  const users = await repo.getAll();
+  // console log all saved records
+  console.log(users);
 };
 test();
 ```
@@ -658,19 +664,19 @@ class UsersRepository {
     ...
   }
 
-	async create(attrs) {
-		const records = await this.getAll();
-		records.push(attrs);
+  async create(attrs) {
+    const records = await this.getAll();
+    records.push(attrs);
 
     // 2. call writeAll function that adds our new users
-		await this.writeAll(records);
-	}
+    await this.writeAll(records);
+  }
 
-	// 1. writeAll async function called with some list of records that need to be saved
-	async writeAll(records) {
-		// write the updated 'records' array from 'create()' back to 'this.filename' (users.json)
-		await fs.promises.writeFile(this.filename, JSON.stringify(records, null, 2));
-	}
+  // 1. writeAll async function called with some list of records that need to be saved
+  async writeAll(records) {
+    // write the updated 'records' array from 'create()' back to 'this.filename' (users.json)
+    await fs.promises.writeFile(this.filename, JSON.stringify(records, null, 2));
+  }
 }
 
 const test = async () => {
@@ -686,6 +692,348 @@ __[Back to Top](#table-of-contents)__
 ----
 
 ### 2.6 Random ID generation
+
+When creating our database, it's possible that an item (product) could have the same name. Because of this we're going to create a method that generates a random ID for us.
+
+Fot this we will be using the Node `crypto` module, `randomBytes()`. Let's look at an example in action:
+```js
+const crypto = require('crypto');
+
+// return 4 byte random numbers
+crypto.randomBytes(4); // -> 6d 8e c7 44
+
+// return random hex string
+crypto.randomBytes(4).toString('hex'); // -> 'cbdf097c'
+```
+
+Let's implement this into our code now:
+```js
+class UsersRepository {
+  constructor(filename) {
+    ...
+  }
+
+  async getAll() {
+    ...
+  }
+
+  async create(attrs) {
+    // 2. generate our users random ID
+    attrs.id = this.randomId();
+
+    const records = await this.getAll();
+    records.push(attrs);
+
+    await this.writeAll(records);
+  }
+
+  async writeAll(records) {
+    ...
+  }
+
+  // 1. method to create a ransom ID using the 'crypto' module (randomBytes)
+  randomId() {
+    return crypto.randomBytes(4).toString('hex');
+  }
+}
+
+const test = async () => {
+	...
+};
+test();
+```
+
+__[Back to Top](#table-of-contents)__
+
+----
+
+### 2.7 Finding by ID
+
+We're now going to create another function called `getOne()` with a parameter of `id` to help find a user by ID:
+```js
+class UsersRepository {
+  constructor(filename) {
+    ...
+  }
+
+  async getAll() {
+    ...
+  }
+
+  async create(attrs) {
+    ...
+  }
+
+  async writeAll(records) {
+    ...
+  }
+
+  randomId() {
+    ...
+  }
+
+  // 1. function to find the ID of the record we want to retrieve
+  async getOne(id) {
+    // get all of our records out of the users database file
+    const records = await this.getAll();
+    // iterate through that different array of records and find the user with the particular ID and return it if it exists
+    return records.find((record) => record.id === id);
+  }
+}
+
+// 2. test 'getOne()'
+const test = async () => {
+  // get access to users repository
+  const repo = new UsersRepository('users.json');
+
+  // get a specific user ID
+  const user = await repo.getOne('3e620a80');
+
+  // console log the user with the matching ID
+  console.log(user);
+};
+test();
+```
+
+__[Back to Top](#table-of-contents)__
+
+----
+
+### 2.8 Deleting records
+
+Now we're going to create a function that removes records from our users database. For this we will pass in the ID of the record we want to delete.
+```js
+class UsersRepository {
+  constructor(filename) {
+    ...
+  }
+
+  async getAll() {
+    ...
+  }
+
+  async create(attrs) {
+    ...
+  }
+
+  async writeAll(records) {
+    ...
+  }
+
+  randomId() {
+    ...
+  }
+
+  async getOne(id) {
+    ...
+  }
+
+  // 1. delete function that removes records from our users database (we will pass in the ID of the record we want to delete)
+  async delete(id) {
+    // get all users
+    const records = await this.getAll();
+    // iterate through list of records (users) with filter and filter out any record that has the same ID as the ID that was passed in
+    const filteredRecords = records.filter((record) => record.id !== id);
+    // pass filteredRecords back into our writeAll function
+    await this.writeAll(filteredRecords);
+  }
+}
+
+// 2. test 'delete()'
+const test = async () => {
+  // get access to users repository
+  const repo = new UsersRepository('users.json');
+
+  // delete a user by specific ID
+  await repo.delete('3e620a80');
+};
+test();
+```
+
+We now deleted our user with the ID of `'3e620a80'`.
+
+__[Back to Top](#table-of-contents)__
+
+----
+
+### 2.9 Updating records
+
+The next method we will be creating in our `UsersRepository` class is the `update` method. The idea behind this method is, we will receive an `id` and some object that has the new `attributes` that we want to use to update an existing record.
+
+Then, we're going to find the appropriate record inside of our array of records (`users.json`), update it and then save all that back to our `users.json` file. We'll handle this now:
+```js
+class UsersRepository {
+  constructor(filename) {
+    ...
+  }
+
+  async getAll() {
+    ...
+  }
+
+  async create(attrs) {
+    ...
+  }
+
+  async writeAll(records) {
+    ...
+  }
+
+  randomId() {
+    ...
+  }
+
+  async getOne(id) {
+    ...
+  }
+
+  async delete(id) {
+    ...
+  }
+
+  // 1. create our 'update' method
+  async update(id, attrs) {
+    // get all our records
+    const records = await this.getAll();
+    // find the record we want to update
+    const record = records.find((record) => record.id === id);
+
+    // check if the record has been found, throw error if nothing is found
+    if (!record) {
+      throw new Error(`Record with the id ${id} not found`);
+    }
+
+    // now we update the record we just found with 'Object.assign()'
+    Object.assign(record, attrs);
+    // take all of our records inside of the 'records' array and write them back to our 'users.json' file
+    await this.writeAll(records);
+  }
+}
+
+// 2. test the 'update' method
+const test = async () => {
+  // get access to users repository
+  const repo = new UsersRepository('users.json');
+
+  // update the user
+  // the 1st argument takes the ID of the user we want to update and 
+  // the 2nd argument takes the update we want to apply
+  await repo.update('61598ab3', { password: 'mypassword' });
+};
+test();
+```
+
+Let's explain what `Object.assign()` is doing in the above code example. In our example `Object.assign(record, attrs)` is going to take all the different properties and key value pairs inside the `attrs` object and copy them one by one into the `record` object.
+
+So say we have:
+```js
+record === { email: 'test@test.com' }
+attrs === { password: 'mypassword' }
+```
+
+`record` would be updated to look like:
+```js
+record === { email: 'test@test.com', password: 'mypassword' }
+```
+
+__[Back to Top](#table-of-contents)__
+
+----
+
+### 2.10 Adding filtering logic
+
+In this section we're going to be creating our last `UsersRepository` method, `getOneBy()`. Let's break down how we'll take care of this.
+
+We'll begin by getting the collection of all the `records` and then iterating through those `records`. We'll create a variable called `found` and set it equal to `true`.
+
+Next, we're going to iterate over our `filters` object and look at every key value pair and for every key we're going to compare the value at the appropriate key inside the `record` object. If they are __NOT__ the same then we're going to update `found` to `false`. If they are the same then we won't update `found` at all.
+
+Lastly, after we iterate through all the different properties inside of `filters`, if `found` is still equal to `true` that means we must have found the record we are looking for so we will immediately `return` it.
+
+```js
+class UsersRepository {
+  constructor(filename) {
+    ...
+  }
+
+  async getAll() {
+    ...
+  }
+
+  async create(attrs) {
+    ...
+  }
+
+  async writeAll(records) {
+    ...
+  }
+
+  randomId() {
+    ...
+  }
+
+  async getOne(id) {
+    ...
+  }
+
+  async delete(id) {
+    ...
+  }
+
+  async update(id, attrs) {
+    ...
+  }
+
+  // 1. create getOneBy function
+  async getOneBy(filters) {
+    // get collection of all records
+    const records = await this.getAll();
+
+    // iterate through our records
+    for (let record of records) {
+      let found = true;
+
+      // iterate over our filters object and look at every key value pair and for every key we're going to compare the value at the appropriate key inside the record object
+      // if they are NOT the same then we're going to update found to false
+      // if they are the same then we won't update found at all
+      for (let key in filters) {
+        // this is saying that the email or the password that we passed inside the filters is different than the email or password inside of the record that we are currently iterating over
+        if (record[key] !== filters[key]) {
+          found = false;
+        }
+      }
+
+      // after we iterate through all the different properties inside of filters, if found is still equal to true that means we must have found the record we are looking for so we will immediately return it
+      if (found) {
+				return record;
+      }
+    }
+  }
+}
+
+// 2. test the 'update' method
+const test = async () => {
+  // get access to users repository
+  const repo = new UsersRepository('users.json');
+
+  // filter for the user with an email of 'test@test.com'
+  const user = await repo.getOneBy({ email: 'test@test.com' });
+
+  // log the entire user object to the console
+  console.log(user);
+};
+test();
+```
+
+> Note: When iterating through an object we use a for...in loop
+
+And thats it! That's pretty much our `UsersRepository` class overall. We now have a very useful set of "methods" that allows us to work with a collection of users and manipulate them in some predictable fashion.
+
+__[Back to Top](#table-of-contents)__
+
+----
+
+### 2.11 Exporting an instance
 
 
 

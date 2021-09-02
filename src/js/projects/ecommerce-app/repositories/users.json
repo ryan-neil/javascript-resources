@@ -1,22 +1,7 @@
 [
   {
     "email": "test@test.com",
-    "password": "123abc"
-  },
-  {
-    "email": "test@test.com",
-    "password": "123abc"
-  },
-  {
-    "email": "test@test.com",
-    "password": "123abc"
-  },
-  {
-    "email": "test@test.com",
-    "password": "123abc"
-  },
-  {
-    "email": "test@test.com",
-    "password": "123abc"
+    "id": "61598ab3",
+    "password": "mypassword"
   }
 ]
