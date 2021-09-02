@@ -2,7 +2,7 @@
 const fs = require('fs');
 
 class UsersRepository {
-	// check to see if we have a file already created to store data in
+	// 1. check to see if we have a file already created to store data in
 	constructor(filename) {
 		// check to make sure we were passed a filename, if no filename was given we will throw an error right away
 		if (!filename) {
@@ -21,18 +21,40 @@ class UsersRepository {
 		}
 	}
 
+	// 2. getAll async function
 	async getAll() {
 		// 1. return the parsed json from our file
 		return JSON.parse(await fs.promises.readFile(this.filename, { encoding: 'utf8' }));
 	}
+
+	// 3. create async function
+	async create(attrs) {
+		// this gives us our big list of existing users
+		const records = await this.getAll();
+		// push in the new user
+		records.push(attrs);
+
+		// call our write all function that adds new users
+		await this.writeAll(records);
+	}
+
+	// 4. writeAll async function called with some list of records that need to be saved
+	async writeAll(records) {
+		// write the updated 'records' array from 'create()' back to 'this.filename' (users.json)
+		await fs.promises.writeFile(this.filename, JSON.stringify(records, null, 2));
+	}
 }
 
 const test = async () => {
-	// quick testing code pass in filename to use
+	// get access to users repository
 	const repo = new UsersRepository('users.json');
 
-	// assign our parsed user.json data to a variable
+	// save a new record to the users repository
+	await repo.create({ email: 'test@test.com', password: '123abc' });
+
+	// get all the records we have saved
 	const users = await repo.getAll();
+	// console log all saved records
 	console.log(users);
 };
 test();

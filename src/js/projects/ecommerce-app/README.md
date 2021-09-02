@@ -37,6 +37,8 @@ A quick look at the files and directories you'll see in the repo.
     * 2.2 [Different data modeling approaches](#22-different-data-modeling-approaches)
     * 2.3 [Implementing the users repository](#23-implementing-the-users-repository)
     * 2.4 [Opening the repo data file](#24-opening-the-repo-data-file)
+    * 2.5 [Saving records](#25-saving-records)
+    * 2.6 [Random ID generation](#26-random-id-generation)
 1. [Part 3: Production-grade authentication](#part-3)
 
 ----
@@ -578,8 +580,114 @@ test();
 
 The code above works but we have some extraneous, or unrelated variables being used. Let's see how we can refactor the above code down to a single expression:
 ```js
+class UsersRepository {
+  constructor(filename) {
+    ...
+  }
 
+  async getAll() {
+    // 1. refactor the returned parsed json from our file
+    return JSON.parse(await fs.promises.readFile(this.filename, { encoding: 'utf8' }));
+  }
+}
+
+const test = async () => {
+  const repo = new UsersRepository('users.json');
+
+  const users = await repo.getAll();
+};
+test();
 ```
+
+__[Back to Top](#table-of-contents)__
+
+----
+
+### 2.5 Saving records
+
+Our next step is to create the `create` function. The `create` function is going to take some attributes (`attrs`) that a user should have. We will then take that record and store it inside our data file.
+
+In order to add a new user we must first load up the contents of our `users.json` file. Essentially every time we want to make a change to our list of users, we're going to load our file back up so we have the most recent collection of the data.
+
+We will then add in our new user to that array and then write the file directly back to our hard drive (`fs.promises.writeFile()`). Let's take a look at this now:
+```js
+class UsersRepository {
+  constructor(filename) {
+    ...
+  }
+
+  async getAll() {
+    ...
+  }
+
+  // 1. create async function
+	async create(attrs) {
+		// this gives us our big list of existing users
+		const records = await this.getAll();
+		// push in the new user
+		records.push(attrs);
+		// write the updated 'records' array back to this.filename (users.json)
+		await fs.promises.writeFile(this.filename, JSON.stringify(records));
+	}
+}
+
+// 2. test the create function
+const test = async () => {
+  // get access to users repository
+	const repo = new UsersRepository('users.json');
+
+	// save a new record to the users repository
+	await repo.create({ email: 'test@test.com', password: '123abc' });
+
+	// get all the records we have saved
+	const users = await repo.getAll();
+	// console log all saved records
+	console.log(users);
+};
+test();
+```
+
+After this lets really quickly create our `writeAll` function. We'll do this now:
+```js
+class UsersRepository {
+  constructor(filename) {
+    ...
+  }
+
+  async getAll() {
+    ...
+  }
+
+	async create(attrs) {
+		const records = await this.getAll();
+		records.push(attrs);
+
+    // 2. call writeAll function that adds our new users
+		await this.writeAll(records);
+	}
+
+	// 1. writeAll async function called with some list of records that need to be saved
+	async writeAll(records) {
+		// write the updated 'records' array from 'create()' back to 'this.filename' (users.json)
+		await fs.promises.writeFile(this.filename, JSON.stringify(records, null, 2));
+	}
+}
+
+const test = async () => {
+	...
+};
+test();
+```
+
+> Note: The second and third arguments to JSON.stringify is 'null' and '2'. 'null' = json formatting and '2' = tab indentation.
+
+__[Back to Top](#table-of-contents)__
+
+----
+
+### 2.6 Random ID generation
+
+
 
 __[Back to Top](#table-of-contents)__
 
