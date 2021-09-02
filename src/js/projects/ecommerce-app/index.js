@@ -1,7 +1,11 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 
 // app is an object that describes what our web server can do
 const app = express();
+
+// all route handlers inside our app will now automatically be body parsed for us
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // set our route handler
 app.get('/', (req, res) => {
@@ -18,8 +22,9 @@ app.get('/', (req, res) => {
 });
 
 // tell our router to watch for an incoming request with path of "/" and a method of POST
+// we can think of "middleware functions" as functions in the "middle" (literally) of a request handler
 app.post('/', (req, res) => {
-	// get access to email, password, and passwordConfirmation
+	console.log(req);
 	res.send('Account created!');
 });
 

@@ -6,15 +6,6 @@
 ## Introduction
 In this application, we're going to be building an e-commerce app. In addition, we're going to be building a Node.js web server that's going to serve up some HTML pages to the user where they can view items, shop, add them to a cart, and eventually purchase their items.
 
-<br>
-
-<!-- <p float="left" align="middle">
-  <img src="" width="49%" alt="">
-  <img src="" width="49%" alt="">
-</p> -->
-
-<br>
-
 ### 🧐 What's inside?
 A quick look at the files and directories you'll see in the repo.
 
@@ -32,20 +23,25 @@ A quick look at the files and directories you'll see in the repo.
 ----
 
 ### Table of Contents
-1. [Part 1: Project start](#part-1)
-    * [1.1 App architecture](#11-app-architecture)
-    * [1.2 Package.json scripts](#12-packagejson-scripts)
-    * [1.3 Creating a web server](#13-creating-a-web-server)
-    * [1.4 Requests behind the scenes](#14-requests-behind-the-scenes)
-    * [1.5 Displaying simple HTML](#15-displaying-simple-html)
-    * [1.6 Understanding form submissions](#16-understanding-form-submissions)
-    * [1.7 Parsing form data](#17-parsing-form-data)
-1. [Part 2: Designing a custom database](#part-1)
-1. [Part 3: Production-grade authentication](#part-1)
+1. [Part 1: Project Start](#part-1-project-start)
+    * 1.1 [App architecture](#11-app-architecture)
+    * 1.2 [Package.json scripts](#12-packagejson-scripts)
+    * 1.3 [Creating a web server](#13-creating-a-web-server)
+    * 1.4 [Requests behind the scenes](#14-requests-behind-the-scenes)
+    * 1.5 [Displaying simple HTML](#15-displaying-simple-html)
+    * 1.6 [Understanding form submissions](#16-understanding-form-submissions)
+    * 1.7 [Parsing form data](#17-parsing-form-data)
+    * 1.8 [Middlewares in Express](#18-middlewares-in-express)
+1. [Part 2: Designing a Custom Database](#part-2-designing-a-custom-database)
+    * 2.1 [Data storage](#21-data-storage)
+    * 2.2 [Different data modeling approaches](#22-different-data-modeling-approaches)
+    * 2.3 [Implementing the users repository](#23-implementing-the-users-repository)
+    * 2.4 [Opening the repo data file](#24-opening-the-repo-data-file)
+1. [Part 3: Production-grade authentication](#part-3)
 
 ----
 
-### Part 1: Project start
+### Part 1: Project Start
 
 ### 1.1 App architecture
 
@@ -97,7 +93,7 @@ Now, to start our project up we can open up the terminal and inside the project 
 $ npm run dev
 ```
 
-To stop the application from running we can type "Control + C" in the terminal.
+> Note: To stop the application from running we can type "Control + C" in the terminal
 
 __[Back to Top](#table-of-contents)__
 
@@ -132,9 +128,9 @@ app.get('/', (req, res) => {
 });
 ```
 
-The first argument, `req` stands for request and it is an object that represents the incoming request from a browser into our web server. The second argument, `res` stands for response and it represents the outgoing response from our server back over to the browser.
+The first argument, `req` stands for "request" and it is an object that represents the incoming request from a browser into our web server. The second argument, `res` stands for "response" and it represents the outgoing response from our server back over to the browser.
 
-So what this segment of code is saying is, anytime someone makes a network request to the root route of our application we want to run the callback function. When this callback function runs we're going to take the string "Hi there!" and send it back to whoever just made a request to us.
+So what this segment of code is saying is, anytime someone makes a network request to the root route of our application we want to run the callback function. When this callback function runs we're going to take the string `"Hi there!"` and send it back to whoever just made a request to us.
 
 Now that we've done that we can tell our application to start listening for incoming network requests. By default, when we run all of this code we can't actually access it right away from a browser. Instead, we have to tell this application to start listening for incoming network traffic on a particular "port" on our machine:
 ```js
@@ -153,7 +149,7 @@ app.listen(3000, () => {
 })
 ```
 
-Now, when we type in `localhost:3000` we are making an HTTP request to the running Express web server that we just created on our local machine. And those are the basics of using Express!
+Now, when we type in `localhost:3000` into the browser search bar we are making an HTTP request to the running Express web server that we just created on our local machine. And those are the basics of using Express!
 
 __[Back to Top](#table-of-contents)__
 
@@ -181,11 +177,11 @@ __[Back to Top](#table-of-contents)__
 
 ----
 
-### 1.4 Displaying simple HTML
+### 1.5 Displaying simple HTML
 
 The first thing we want to focus on is our Admin Panel Sign Up page. We need to make sure we have the ability to show two different forms to the user, one to sign up and one to sign in.
 
-Back inside our index.js file, we're going to find our route handler and we're going to replace our `res.send('Hi there!')` with a template string and some html instead:
+Back inside our index.js file, we're going to find our route handler and we're going to replace our `res.send('Hi there!')` with a template string and some html for our sign up page instead:
 ```js
 // index.js file
 
@@ -221,7 +217,7 @@ By inspecting the "Network" tab in the browser dev tools we know that whenever w
 
 By default whenever we click a "submit" button inside of a form or whenever we select an input and hit the "enter" key, the browser is going to initiate an "automatic submission".
 
-With the "automatic submission" our browser is going to take a look at that form element. It's going to find all the different input elements inside of it and the browser is going to attempt to collect all that information for each of those input elements that have a name property assigned to them. Let's revisit our res.send html we add earlier and assign name properties to our inputs:
+With the "automatic submission" our browser is going to take a look at that form element. It's going to find all the different input elements inside of it and the browser is going to attempt to collect all that information for each of those input elements that have a name property assigned to them. Let's revisit our `res.send` html we added earlier and assign name properties to our inputs:
 ```js
 // index.js file
 
@@ -275,7 +271,7 @@ app.get('/', (req, res) => {
 
 Adding a `method` property of `POST` to the form element is going to cause the default behavior of the browser to change. Now, rather than making a `GET` type request to our Express web server it is instead going to make a `POST` type request.
 
-A `POST` type request is commonly associated with creating a record of some kind (blog post, comment, image upload, user account, etc.). Currently, we're getting an error message of, "Cannot POST /". Our browser is trying to make a method or a request with a method of `POST` and a route of forward slash (`/`) and this is coming from our running Express web server. It's complaining that we don't have any configuration to handle a request with the "POST /" configuration.
+A `POST` type request is commonly associated with creating a record of some kind (blog post, comment, image upload, user account, etc.). Currently, we're getting an error message of, "Cannot POST /". Our browser is trying to make a request with a method of `POST` and a route of forward slash (`/`) and this is coming from our running Express web server. It's complaining that we don't have any configuration to handle a request with the "POST /" configuration.
 
 We can easily fix this by adding `app.post()` underneath our `app.get()` statement. We tell our router to watch for an incoming request with a path of `'/'` and method of POST:
 ```js
@@ -318,10 +314,276 @@ Now that we have a better understanding of how the browser makes a form submissi
 
 Since our form is making a request with a method of `POST`, all the information is being appended into the body of the request.
 
+Our goal here is to make sure we can add in some code to `app.post()` request handler and take the email, password, and password confirmation that the user provides inside the request object (`req`) and create a user account with it.
+
+First thing we do is call `req.on()` and pass in the data event along with a callback function that will receive an argument of `data`.
+```js
+// index.js file
+
+...
+
+app.post('/', (req, res) => {
+  req.on('data', (data) => {
+    console.log(data); // -> Buffer object with hex values
+  });
+  res.send('Account created!');
+});
+
+...
+```
+
+Right now, let's look under the hood of `req.on('data')`. Back inside of the browser we have the `addEventListener` method that we can use to register a callback function whenever some event occurred. Essentially, `req.on('data')` is doing the same thing.
+
+We can think of the `req` object as being like an HTML element that is going to emit an event at some point in time. The `on()` method is just about identical to `addEventListener` method we have in the browser. In our case, the event that we're waiting for is called the `'data'` event. So, the `req` object emits a `data` event any time that it receives some bit of data.
+
+The received `data` is then passed in as the first argument to the callback function in `req.on()`. When we run the above code we get back a "Buffer" object which is essentially an array of raw information. 
+
+What we now need to do with this information is convert it into a string so we can understand exactly what is being communicated. We then need to create an object with our key value pairs of user information so we can access it much more easily:
+```js
+// index.js file
+
+...
+
+app.post('/', (req, res) => {
+  req.on('data', (data) => {
+    // parse data to turn it into plain information that we can use
+    const parsed = data.toString('utf8').split('&');
+
+    // create our formData object
+    const formData = {};
+    // loop through parsed data
+    for (let pair of parsed) {
+      // destructure key and value, then split each pair by the equal sign
+      const [ key, value ] = pair.split('=');
+      // now we can use key and value and add that information to our formData object
+      formData[key] = value;
+    }
+  });
+  res.send('Account created!');
+});
+
+...
+```
+
+Let's brake down some of the more confusing aspects of the code example above. Inside of our for loop, we're destructing our `key` and `value` variables with `pair.split()`. 
+
+When we call `pair.split()`, we're going to receive an array of 2 strings. When we put `key` and `value` in brackets its saying, take the first element out of that array and assign it to the `key` variable and then take the second element and assign it to the `value` variable.
+
 __[Back to Top](#table-of-contents)__
 
 ----
 
+### 1.8 Middlewares in Express
+
+Anytime we get a `POST` request to our root (`/`) or a `POST` request to products (`/products`), we would want to run our form parsing logic and essentially receive all the information in the body of the request BEFORE we hand it off to our final root handler that contains the actual application specific logic (account creation, product creation, etc.).
+
+This is a separate helper function that's going to process an incoming requests is what we refer to inside of Express as a "middleware function". 
+
+Inside of Express, "middleware functions" are functions that do some amount of preprocessing or computation on a request object or a response object. These "middleware functions" are executed before we ever call a final route handler. These "middleware functions" are our primary means of code reuse whenever we are making use of Express.
+
+So with our example we want to extract all the form parse and logic into a "middleware function":
+```js
+// index.js file
+
+...
+
+app.post('/', (req, res) => {
+  // extract this req.on() logic into a middleware function
+  req.on('data', (data) => {
+    const parsed = data.toString('utf8').split('&');
+
+    const formData = {};
+    for (let pair of parsed) {
+      const [ key, value ] = pair.split('=');
+      formData[key] = value;
+    }
+  });
+  res.send('Account created!');
+});
+
+...
+```
+
+We're then going to make sure we run that "middleware function" before we call our actual route handler which in our example is the `app.post()` callback function (`(req, res) => {}`).
+
+Next, we're going to refactor our `app.post()` function with a sub-dependency of Express called `body-parser`:
+```js
+const express = require('express');
+const bodyParser = require('body-parser');
+
+const app = express();
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
+...
+```
+
+We can now use the `app.use()` function whenever we need to wire up some middleware inside of our app.
+
+> Note: The body-parser middleware is going to auto detect whether or not we are using it on a 'GET' or 'POST' type request and NOT apply it on a 'GET' type request
+
+__[Back to Top](#table-of-contents)__
+
+----
+### Part 2: Designing a Custom Database
+
+### 2.1 Data storage
+
+Let's begin to think about what it means to create an account. To begin, this most likely means we need to have some kind of record of the user coming to the application and entering their email and their password.
+
+To do this we need to store their email somewhere and record them as being someone who signed into our application or at least created an account. In order to store this information, we're going to have to have some "persistent" data store.
+
+"Persistent" meaning, if we ever happen to restart our application, we need to make sure that all the information or all the different accounts that have been created somehow get "persisted" into the next restart or start up of our server.
+
+Let's see how we're going to implement this:
+
+We will have our "Express Server" interface with a "Data Store". The "Data Store" is going to store a "List of Users" who have created an account with our application and a "List of Products".
+
+The "Data Store" itself is going to save all of its data to our "Hard Drive" in the form of JSON files (`products.json`, `users.json`). 
+
+#### Building the data store
+We will implement the 'Data Store' from scratch, so we're going to figure out how to:
+  * Create the data store
+  * How to work with some data stored inside of a file
+  * How to load it all up, etc
+
+It's important to note that this 'Data Store' we will be implementing is not suited for production use. Let's discuss a few reason's why this is the case:
+  1. If we try to open/write to the same file twice at the same time we will get an error
+  2. This won't work if we have multiple servers running on different machines because they're all going to have their own version of a products.json and users.json file
+  3. Also, the performance won't be that great because we have to write to the file system every single time we want to update some data inside of our app.
+
+__[Back to Top](#table-of-contents)__
+
+----
+
+### 2.2 Different data modeling approaches
+
+To begin, our "Data Store" is going to take the form of a couple of different individual classes. Each individual class is going to manage its own collection of objects. For example:
+  * We're going to have one class manage all of the different user of our application
+  * Another class that's going to manage all of our different products in the application
+
+We're going to call these different objects, "Repositories". So for example, the object that matches the "List of Users" will be called the "Users Repository". And the object that matches the "List of Products" will be called the "Products Repository".
+
+Let's think about how we would design the `UsersRepository`:
+| Method  | Input Arguments | Return Value | Description |
+| ------------- | ------------- | ------------- | ------------- |
+| getAll |	- | [user] |	Get a list of all users |
+| getOne |	id | user |	Finds the user with the given id |
+| getOneBy |	filters | user |	Finds one user with the given filters |
+| create |	attributes | null |	Creates a suer with the given attributes |
+| update |	id, attributes | null |	Updates the user with the given id using the given attributes |
+| delete |	id | null |	Delete the user with the given id |
+| randomId |	- | id |	Generates a random id |
+| writeAll |	- | null |	Writes all users to a users.json file |
+
+Again, this is going to be a class that has a bunch of different methods attached to it for working all the different users that we intend to create inside of our app.
+
+In the world of server design and data management, especially around web applications, there are two very popular approaches for managing data:
+  1. __Repository approach__: A single class (repository) is responsible for data access. All records are stored and used as plain JavaScript objects.
+  2. __Active record approach__: Every record is an instance of a "model" class that has methods to save, update, delete this record.
+
+__[Back to Top](#table-of-contents)__
+
+----
+
+### 2.3 Implementing the users repository
+
+Currently, we have our `'POST'` request handler to handle account creation:
+```js
+app.post('/', (req, res) => {
+  res.send('Account created!');
+});
+```
+
+So when a user makes a `'POST'` request we need to save some details about the user that is being created, mainly their email and password. This way later on when they log in they can log in with that same email and password combination.
+
+Let's implement this now. We'll begin by creating a new folder called `repositories` inside of our root project folder. Inside `repositories` we'll create a file called `users.js`. This is where all the logic for our `UsersRepository` class will live.
+
+Next, we need to make sure that we have some file on our "Hard Drive" that we can use to store all of our information to. For this we will be using the Node "file system" module.  Let's write some code for this:
+```js
+// 1. require in Node "file system"
+const fs = require('fs');
+
+class UsersRepository {
+  // 2. the argument to the constructor is going to be the file we pass in
+  constructor(filename) {
+    // 3. check to make sure we were passed a filename
+    if (!filename) {
+      throw new Error('Creating a repository requires a filename');
+    }
+    
+    // 4. store whatever filename was provided into an instance variable
+    this.filename = filename;
+
+    // 5. using a node function to make sure the filename exists, try catch to catch the error if it doesn't exist
+    try {
+      fs.accessSync(this.filename);
+    } catch (err) {
+      // 6. if we end up inside this catch case that means the file does not exists which means we need to create the file, when we create the file we'll pass in an empty array
+      fs.writeFileSync(this.filename, '[]');
+    }
+  }
+}
+
+// 7. quick testing code to make sure everything is working as expected
+const repo = new UsersRepository('users.json');
+```
+
+Let's explain the code example above, the first thing we're doing is checking to see if we have a file already created to store data in (`users.json`) and if we don't, we need to create it. 
+
+To begin we create our `UsersRepository` class and we'll use a constructor function for this because they get created instantly whenever we create a new instance of the class. The argument to the constructor is going to be a `filename` that we will pass to it when we invoke the class.
+
+Next, we need to store whatever filename was provided into an instance variable `this.filename = filename`. Now we need to use a node "file system" module function (`fs.accessSync()`) to make sure the filename exists and if it doesn't exist it will throw an error so we need to wrap it in a try catch to catch the error.
+
+If we end up inside the `catch` case which means the file does not exists which means we need to create the file with another Node "file system" module (`fs.writeFile()` & `fs.writeFileSync()`).
+
+Now when we call our new class we pass in a `filename` to use which should create the `users.json` file with an empty array (`[]`) in our "repositories" directory.
+
+__[Back to Top](#table-of-contents)__
+
+----
+
+### 2.4 Opening the repo data file
+
+Now we're going to implement the `getAll` method for our `UsersRepository` class. For this we will be using another Node module function called `fs.promises.readFile()`. Let's handle this now:
+```js
+class UsersRepository {
+  constructor(filename) {
+    ...
+  }
+
+  // 1. create the getAll method
+  async getAll() {
+    // 2. open the file called this.filename
+    const contents = await fs.promises.readFile(this.filename, { encoding: 'utf8' });
+    // 3. read the files contents (returns an array string)
+    console.log(contents); // -> '[]'
+    // 4. parse the contents (turns the data into an actual JS array)
+    const data = JSON.parse(contents);
+    // 5. return parsed data
+    return data;
+  }
+}
+
+// 6. create an async test function
+const test = async () => {
+  const repo = new UsersRepository('users.json');
+
+  // 7. assign our parsed user.json data to a variable
+  const users = await repo.getAll();
+  console.log(users); // -> []
+};
+test();
+```
+
+The code above works but we have some extraneous, or unrelated variables being used. Let's see how we can refactor the above code down to a single expression:
+```js
+
+```
+
+__[Back to Top](#table-of-contents)__
+
+----
 
 ### ⚒️ Built With
 * HTML
