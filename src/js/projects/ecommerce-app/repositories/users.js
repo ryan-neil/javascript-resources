@@ -1,9 +1,10 @@
-// require in Node file system and crypto module
+// 1. Require in Node file system and crypto module
 const fs = require('fs');
 const crypto = require('crypto');
 
+// 2. Create the class
 class UsersRepository {
-	// 1. check to see if we have a file already created to store data in
+	// 2.1 check to see if we have a file already created to store data in
 	constructor(filename) {
 		// check to make sure we were passed a filename, if no filename was given we will throw an error right away
 		if (!filename) {
@@ -22,13 +23,13 @@ class UsersRepository {
 		}
 	}
 
-	// 2. getAll async function
+	// 2.2 getAll async function
 	async getAll() {
 		// 1. return the parsed json from our file
 		return JSON.parse(await fs.promises.readFile(this.filename, { encoding: 'utf8' }));
 	}
 
-	// 3. create async function
+	// 2.3 create async function
 	async create(attrs) {
 		// generate our random ID
 		attrs.id = this.randomId();
@@ -42,18 +43,18 @@ class UsersRepository {
 		await this.writeAll(records);
 	}
 
-	// 4. writeAll async function called with some list of records that need to be saved
+	// 2.4 writeAll async function called with some list of records that need to be saved
 	async writeAll(records) {
 		// write the updated 'records' array from 'create()' back to 'this.filename' (users.json)
 		await fs.promises.writeFile(this.filename, JSON.stringify(records, null, 2));
 	}
 
-	// 5. method to create a ransom ID using the 'crypto' module (randomBytes)
+	// 2.5 method to create a ransom ID using the 'crypto' module (randomBytes)
 	randomId() {
 		return crypto.randomBytes(4).toString('hex');
 	}
 
-	// 6. getOne function find the ID of the record we want to retrieve
+	// 2.6 getOne function find the ID of the record we want to retrieve
 	async getOne(id) {
 		// get all of our records out of the users database file
 		const records = await this.getAll();
@@ -61,7 +62,7 @@ class UsersRepository {
 		return records.find((record) => record.id === id);
 	}
 
-	// 7. delete function that removes records from our users database (we will pass in the ID of the record we want to delete)
+	// 2.7 delete function that removes records from our users database (we will pass in the ID of the record we want to delete)
 	async delete(id) {
 		// get all users
 		const records = await this.getAll();
@@ -71,7 +72,7 @@ class UsersRepository {
 		await this.writeAll(filteredRecords);
 	}
 
-	// 8. function that updates users
+	// 2.8 function that updates users
 	async update(id, attrs) {
 		// get all our records
 		const records = await this.getAll();
@@ -89,7 +90,7 @@ class UsersRepository {
 		await this.writeAll(records);
 	}
 
-	// 9. create getOneBy function
+	// 2.9 create getOneBy function
 	async getOneBy(filters) {
 		// get collection of all records
 		const records = await this.getAll();
@@ -114,8 +115,5 @@ class UsersRepository {
 	}
 }
 
-const test = async () => {
-	// get access to users repository
-	const repo = new UsersRepository('users.json');
-};
-test();
+// 3. Export an instance of the class
+module.exports = new UsersRepository('users.json');

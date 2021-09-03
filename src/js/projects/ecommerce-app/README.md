@@ -44,6 +44,7 @@ A quick look at the files and directories you'll see in the repo.
     * 2.9 [Updating records](#29-updating-records)
     * 2.10 [Adding filtering logic](#210-adding-filtering-logic)
     * 2.11 [Exporting an instance](#211-exporting-an-instance)
+    * 2.12 [Signup validation logic](#212-signup-validation-logic)
 1. [Part 3: Production-grade authentication](#part-3)
 
 ----
@@ -1034,6 +1035,40 @@ __[Back to Top](#table-of-contents)__
 ----
 
 ### 2.11 Exporting an instance
+
+The last thing we need to do inside of our `users.js` file is clean up the code base a bit. We also need to be sure we export our `UsersRepository` class we created. This way other files inside of our project can get access to this class.
+
+To do this, at the bottom of the code base we add:
+```js
+  async update(id, attrs) {
+    ...
+  }
+
+  async getOneBy(filters) {
+    ...
+  }
+}
+
+// export an instance of the class for other files to use
+module.exports = new UsersRepository('users.json');
+```
+
+Other file example of using the exported class:
+```js
+// index.js file
+
+const repo = require('./users');
+
+repo.getAll();
+repo.create();
+repo.randomId(); // etc...
+```
+
+__[Back to Top](#table-of-contents)__
+
+----
+
+### 2.12 Signup validation logic
 
 
 
