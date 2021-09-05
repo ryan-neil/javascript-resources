@@ -1,5 +1,5 @@
 # JavaScript Resources
-<img src="/src/assets/js-resources.gif" width="800" alt="js-resources-gif">
+<img src="/assets/js-resources.gif" width="800" alt="js-resources-gif">
 
 ## Introduction
 The goal of this document is to provide a quick reference guide for the main features of JavaScript along with simple to understand sample code.
@@ -15,35 +15,42 @@ I wanted to remove the bloat that comes with learning a programming language and
 A quick look at the files and directories you'll see in the repo.
 
 ```bash
-├─ src
-│ ├─ assets
-│ │ └─ repo image files
-│ └─ js
-│   ├─ components
-│   │ ├─ arrays.js
-│   │ ├─ arrow-functions.js
-│   │ ├─ async-await.js
-│   │ ├─ asynchronous-callbacks.js
-│   │ ├─ basics.js
-│   │ ├─ callbacks.js
-│   │ ├─ destructuring.js
-│   │ ├─ dom-events.js
-│   │ ├─ dom.js
-│   │ ├─ functions.js
-│   │ ├─ json.js
-│   │ ├─ loops.js
-│   │ ├─ objects.js
-│   │ ├─ promises.js
-│   │ ├─ prototypes.js
-│   │ ├─ requests-axios.js
-│   │ ├─ requests.js
-│   │ ├─ rest.js
-│   │ ├─ spread.js
-│   │ └─ this.js
-│   └── projects
-│     ├─ color-flipper
-│     ├─ movie-duel
-│     └─ simpler-timer
+├── assets
+│   └── repo image files
+├── src
+│   ├── components
+│   │   ├── arrays.js
+│   │   ├── arrow-functions.js
+│   │   ├── async-await.js
+│   │   ├── asynchronous-callbacks.js
+│   │   ├── basics.js
+│   │   ├── callbacks.js
+│   │   ├── destructuring.js
+│   │   ├── dom-events.js
+│   │   ├── dom.js
+│   │   ├── functions.js
+│   │   ├── json.js
+│   │   ├── loops.js
+│   │   ├── objects.js
+│   │   ├── promises.js
+│   │   ├── prototypes.js
+│   │   ├── requests-axios.js
+│   │   ├── requests.js
+│   │   ├── rest.js
+│   │   ├── spread.js
+│   │   └── this.js
+│   ├── frontend
+│   │   └── react
+│   ├── backend
+│   │   ├── node-js
+│   │   └── express-js
+│   ├── projects
+│   │   ├── color-flipper
+│   │   ├── ecommerce-app
+│   │   ├── movie-duel
+│   │   ├── node-app
+│   │   └── spa-app
+├── README.md
 ```
 
 ## 🔗 JavaScript Resources
@@ -1469,7 +1476,7 @@ add(5, 4); // -> 9
 
 For the visual learners out there:
 <p align="left">
-  <img src="/src/assets/function-definition.jpg" width="80%" alt="function-definition">
+  <img src="/assets/function-definition.jpg" width="80%" alt="function-definition">
 </p>
 
 With functions in JavaScript, you can:
@@ -4468,7 +4475,7 @@ We could then set the value of the properties defined in the class to describe R
 
 Let's visualize this below:
 
-<img src="/src/assets/oop-diagram-01.png" width="800" alt="Object Oriented Programming Diagram 1">
+<img src="/assets/oop-diagram-01.png" width="800" alt="Object Oriented Programming Diagram 1">
 
 __So what's so great about OOP? What are it's benefits?__
 
@@ -4534,7 +4541,7 @@ We then create two child classes of `Car`, `LargeCar` and `SmallCar`. These have
 
 Finally, we create objects of the `LargeCar` and `SmallCar` type to represent the individual cars `ryansCar` and `katiesCar`.
 
-<img src="/src/assets/oop-diagram-02.png" width="800" alt="Object Oriented Programming Diagram 2">
+<img src="/assets/oop-diagram-02.png" width="800" alt="Object Oriented Programming Diagram 2">
 
 ### The Building Blocks of OOP
 
@@ -4731,7 +4738,7 @@ Let's continue our theme and use a car as a metaphor for encapsulation. The info
 
 In contrast, private data like the engine temperature and current gas level are __private interfaces__ and would just confuse other drivers.
 
-<img src="/src/assets/oop-encapsulation-diagram.png" width="800" alt="Object Oriented Programming Encapsulation Diagram">
+<img src="/assets/oop-encapsulation-diagram.png" width="800" alt="Object Oriented Programming Encapsulation Diagram">
 
 Encapsulation adds __security__. Attributes and methods can be set to private, so they can’t be accessed outside the class. To get information about data in an object, public methods & properties are used to access or update that data.
 
@@ -4804,7 +4811,7 @@ Abstraction is an extension of encapsulation. For example, you don't have to kno
 
 To make a car work, a lot of pieces have to work under the hood (literally), but exposing that information to the driver would be extremely confusing and just dangerous.
 
-<img src="/src/assets/oop-abstraction-diagram.png" width="800" alt="Object Oriented Programming Abstraction Diagram">
+<img src="/assets/oop-abstraction-diagram.png" width="800" alt="Object Oriented Programming Abstraction Diagram">
 
 Abstraction also serves an important security role. By only displaying selected pieces of data, and only allowing data to be __accessed through classes__ and __modified through methods__, we protect the data from exposure. To continue with our car example again, you wouldn't want an open gas tank while driving a car.
 
