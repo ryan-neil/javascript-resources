@@ -28,10 +28,12 @@ Redis is an in-memory database system known for its fast performance. No, but yo
 1. [Create Express server](#Create-Express-server)
 1. [Basic routing in Express](#Basic-routing-in-Express)
 1. [Sending data in Express](#Sending-data-in-Express)
-1. [Rendering HTML in Express](#Rendering-HTML-in-Express)
 1. [Routers in Express](#Routers-in-Express)
 1. [Advanced routing in Express](#Advanced-routing-in-Express)
 1. [Middleware in Express](#Middleware-in-Express)
+1. [Rendering static files in Express](#Rendering-static-files-in-Express)
+1. [Parsing form/JSON data in Express](#Parsing-form/JSON-data-in-Express)
+1. [Parsing query params in Express](#Parsing-query-params-in-Express)
 
 ### Installation
 
@@ -197,23 +199,6 @@ app.get('/', function (req, res) {
 
 ---
 
-### Rendering HTML in Express
-
-Rendering a file to the user:
-```js
-const express = require('express');
-const app = express();
-
-app.use(express.static(__dirname + '/views'));
-
-app.listen(3000)
-```
-  * [Serving static files in Express](https://expressjs.com/en/starter/static-files.html)
-
-[Back to Top](#Table-of-Contents)
-
----
-
 ### Routers in Express
 
 A router is a way for us to create another instance of the application that is it's own little mini application that has all of it's own logic applied to it and can be inserted into the main application.
@@ -291,8 +276,6 @@ Now, we import the router from users.js into the server and link up the routes:
 const express = require('express');
 const app = express();
 
-app.use(express.static(__dirname + '/views'));
-
 // import router from users.js into the server
 const userRouter = require('./routes/users.js');
 
@@ -312,8 +295,6 @@ For example, if we had a "post" section we would just do:
 
 const express = require('express');
 const app = express();
-
-app.use(express.static(__dirname + '/views'));
 
 const userRouter = require('./routes/users.js');
 // import a post route
@@ -414,7 +395,7 @@ router.delete('/:id', (req, res) => {
 
 #### app.route() Function:
 
-The GET, PUT, and DELETE pattern is so common that Express created another method called.
+The GET, PUT, and DELETE pattern is so common that Express created another method called __app.route()__.
 
 The [app.route()](https://www.geeksforgeeks.org/express-js-app-route-function/) function returns an instance of a single route, which you can then use to handle HTTP verbs with optional middleware. Use __app.route()__ to avoid duplicate route names (and thus typo errors).
 
@@ -445,18 +426,18 @@ router.delete('/:id', (req, res) => {
 // 2. pass it the path to our dynamic route (/:id)
 // 3. we can then chain together all our requests
 router.route('/:id')
-  .get('/:id', (req, res) => {
+  .get((req, res) => {
     res.send(`Get User with ID ${req.params.id}`);
   })
-  .put('/:id', (req, res) => {
+  .put((req, res) => {
     res.send(`Update User with ID ${req.params.id}`);
   })
-  .delete('/:id', (req, res) => {
+  .delete((req, res) => {
     res.send(`Delete User with ID ${req.params.id}`);
   });
 ```
 
-This makes our code base a lot cleaner and we have less of a chance to make typos.
+This makes our code-base a lot cleaner and we have less of a chance to make typos.
 
 #### app.param() Function:
 
@@ -482,7 +463,7 @@ router.route('/:id')
   .delete(...);
 
 router.param('id', (req, res, next, id) => {
-	console.log(id); // -> 2
+  console.log(id); // -> 2
   next(); // -> app will continue to run code
 });
 
@@ -496,13 +477,13 @@ Since `app.param()` is a type of "middleware" in Express. Middleware inside of E
 
 For example, our:
 ```js
-  .get('/:id', (req, res) => {
+  .get((req, res) => {
     res.send(`Get User with ID ${req.params.id}`);
   })
-  .put('/:id', (req, res) => {
+  .put((req, res) => {
     res.send(`Update User with ID ${req.params.id}`);
   })
-  .delete('/:id', (req, res) => {
+  .delete((req, res) => {
     res.send(`Delete User with ID ${req.params.id}`);
   });
 ```
@@ -518,9 +499,11 @@ router.route('/:id')
   .put(...)
   .delete(...);
 
+// create users array
 const users = [ { name: 'Ryan' }, { name: 'Katie' } ];
+
 router.param('id', (req, res, next, id) => {
-  // id comes from URL '/users/1'
+  // create req.user variable ("id" comes from URL)
   req.user = users[id];
   next();
 });
@@ -537,6 +520,153 @@ This saves us from having to write a ton of code inside of each request in order
 ---
 
 ### Middleware in Express
+
+  * [Express Middleware](https://www.youtube.com/watch?v=lY6icfhap2o)
+
+__Middleware__ is essentially code that runs between the _starting_ if the _request_ and the _ending_ of the _request_.
+
+A really common type of middleware we might create is a middleware for logging out something:
+```js
+// server.js
+
+const express = require('express');
+const app = express();
+
+// use our logger middleware (call it before our other app.use() functions)
+app.use(logger);
+
+const userRouter = require('./routes/users.js');
+
+app.use('/users', userRouter);
+
+// create middleware logger function
+function logger(req, res, next) {
+  // print out the URL this request comes from
+  console.log(req.originalUrl); // -> i.e. "/users/1"
+  next();
+}
+```
+
+Every piece of middleware takes `req`, `res`, and `next`. They work exactly the same as our .get() functions which take a `req`, `res`, and `next`, we just never use the `next` function when we're making a GET or POST request. So, we only ever see `next` when we're creating middleware.
+
+If we have a middleware that we would want to use everywhere on all of our routes, always define it at the very top of the page, like in the example above. If we do NOT want it to be used everywhere we can just use it on individual endpoints.
+
+We can also move our `logger` function into the `router` for our users inside our `users.js` file. We then call `router.use(logger)` at the top of the file:
+```js
+// users.js file
+
+const express = require('express');
+const router = express.Router();
+
+// use our logger middleware
+router.use(logger);
+
+router.get('/', (req, res) => {
+	res.send('User List');
+});
+
+router.get('/new', (req, res) => {
+	res.send('User New Form');
+});
+
+router.post('/', (req, res) => {
+	res.send('Create User');
+});
+
+router.route('/:id')
+	.get(...)
+	.put(...)
+	.delete(...);
+
+const users = [ { name: 'Ryan' }, { name: 'Katie' } ];
+router.param('id', (req, res, next, id) => {
+	req.user = users[id];
+	next();
+});
+
+// create middleware for logging out something
+function logger(req, res, next) {
+	// print out the URL this request comes from
+	console.log(req.originalUrl);
+	next();
+}
+
+module.exports = router;
+```
+
+This now means that every route defined on the `router` (user routes) are going to log themselves out to the terminal.
+
+[Back to Top](#Table-of-Contents)
+
+---
+
+### Rendering static files in Express
+
+Express has built in middleware functions and one of the most common built in middleware functions is for serving static files, things like, static HTML, CSS or JavaScript that we want to serve to the user.
+
+  * [Serving static files in Express](https://expressjs.com/en/starter/static-files.html)
+
+Let's begin by creating a folder called `public`. Inside `public` let's create an `index.html` file. Now back inside our `server.js` file lets write out some code to serve our static HTML file:
+```js
+// server.js file
+
+const express = require('express');
+const app = express();
+
+// serve/render the "index.html" from our "public" folder to the user
+app.use(express.static('public'));
+```
+
+The function we are using is called `express.static()`. The `.static()` function takes the name of the folder where all of our static files are located, so for our app it would be `public`.
+
+So now let's serve our test file from another folder inside `public`. To do this we'll create a folder inside `public` called, `test`. Inside `test` create a file called `test.html`.
+
+Now we just need to go to: `http://localhost:3000/test/test.html`, we will see our text being rendered out to the screen. Similarly, if we have any static CSS or JavaScript we need to render out they will also go inside that `public` folder, which we will need in just about every application.
+
+[Back to Top](#Table-of-Contents)
+
+---
+
+### Parsing form/JSON data in Express
+
+Another instance where we're going to be harnessing Express middleware is for parsing all the information sent to your server from something like a form or JSON requests.
+
+By default Express does not allow us to access the body, or form data. To do this we need to use another built in middleware function called `urlencoded()`. This will allow us to access information coming from forms.
+
+Inside of our `.urlencoded()` middleware function we need to pass in an object called `extended` that is set to `true`. So to use:
+```js
+app.use(express.urlencoded({ extended: true }));
+```
+
+We can also do the exact same thing with the `.json()` middleware function. But this works for whenever we are making a JSON request. So maybe we're making a `fetch` from the client to the server or calling an API, `.json()` will allow us to parse JSON information from the body. To use this:
+```js
+app.use(express.json());
+```
+
+[Back to Top](#Table-of-Contents)
+
+---
+
+### Parsing query params in Express
+
+Now let's talk about when we have to deal with query parameters. For example, if we put a query parameter in our URL that has, `http://localhost:3000/users?name=Ryan`, what we want to do is access the actual name property from users and get that name from the query string.
+
+Inside `router.get('/', (req, res) => {}`:
+```js
+// users.js
+// http://localhost:3000/users?name=Ryan
+
+...
+
+router.get('/', (req, res) => {
+	console.log(req.query.name); // -> Ryan
+	res.send('User List');
+});
+
+...
+```
+
+The `.name` from `req.query.name` is coming from whatever we pass into the URL as our name.
 
 [Back to Top](#Table-of-Contents)
 
