@@ -31,6 +31,7 @@ Redis is an in-memory database system known for its fast performance. No, but yo
 1. [Rendering HTML in Express](#Rendering-HTML-in-Express)
 1. [Routers in Express](#Routers-in-Express)
 1. [Advanced routing in Express](#Advanced-routing-in-Express)
+1. [Middleware in Express](#Middleware-in-Express)
 
 ### Installation
 
@@ -325,13 +326,217 @@ app.use('/posts', postRouter);
 app.listen(3000);
 ```
 
+We can do this for all the different routes in the application, which keeps the code in our `server.js` and `users.js` super clean.
+
 [Back to Top](#Table-of-Contents)
 
 ---
 
 ### Advanced routing in Express
 
-<!-- 16:00 -->
+Let's look at some ways we can clean up how our routes are going to look, this both works if we want to call it on the `app` variable or the `router` variable. 
+
+We'll show it in the `router` instance because it's going to make the most sense to do all of these in router files.
+
+Let's now create a user:
+```js
+// users.js file
+
+// create a new user
+router.post('/', (req, res) => {
+  res.send('Create User');
+});
+
+// access an individual user based on the ID (dynamically)
+router.get('/:id', (req, res) => {
+  // get the id parameter
+  res.send(`Get User with ID ${req.params.id}`);
+  // http://localhost:3000/users/01458 -> "Get User with ID 01458"
+});
+```
+
+An important thing to note is when using dynamic parameters like in our example above (`/:id`), if we have another parameter such as (`/new`) and we call it underneath the GET request to `/:id` [18:30]:
+```js
+...
+
+router.get('/', (req, res) => {
+  res.send('User List');
+});
+
+router.post('/', (req, res) => {
+  res.send('Create User');
+});
+
+// http://localhost:3000/users/new
+// this becomes '/new' since we typed it into our URL
+router.get('/:id', (req, res) => {
+  res.send(`Get User with ID ${req.params.id}`);
+});
+
+// move route "/new" down under route "/:id"
+router.get('/new', (req, res) => {
+  res.send('User New Form');
+});
+
+...
+```
+What's going to happen is Express runs everything top to bottom, so if we make a URL, `http://localhost:3000/users/new` it's going to read, `router.get('/', (req, res) => {}` first and check if our `users/new` route matches a `/` route, which it does not.
+
+Next, it's going to skip over `router.post('/', (req, res) => {}` because it's a POST request.
+
+Next, it runs `router.get('/new', (req, res) => {}` and checks if the route matches `/new` which it does.
+
+Last, it runs `router.get('/:id', (req, res) => {}`, which is dynamic, so whatever we type in after `/` becomes that route. Then, it checks if the route matches `/` with anything after it, which it does (`/users/new`). So, `req.params.id` becomes `new`.
+
+> Note: the `/users` in `/users/new` is coming from the `server.js` file.
+
+If we ever have a route like, `/new` that's static (hard-coded), we need to be sure we ALWAYS put it above our dynamic routes (i.e. `/:<something>`).
+
+> Note: Almost ALWAYS when we're creating routes we will be using a PUT route. This allows us to update a user based on an ID.
+
+Let's look at 3 very common routes:
+```js
+// GET: dynamically access an individual user based on the ID
+router.get('/:id', (req, res) => {
+  res.send(`Get User with ID ${req.params.id}`);
+});
+
+// PUT: dynamically update a user based on an ID
+router.put('/:id', (req, res) => {
+  res.send(`Update User with ID ${req.params.id}`);
+});
+
+// DELETE: dynamically delete a user based on an ID
+router.delete('/:id', (req, res) => {
+  res.send(`Delete User with ID ${req.params.id}`);
+});
+```
+
+#### app.route() Function:
+
+The GET, PUT, and DELETE pattern is so common that Express created another method called.
+
+The [app.route()](https://www.geeksforgeeks.org/express-js-app-route-function/) function returns an instance of a single route, which you can then use to handle HTTP verbs with optional middleware. Use __app.route()__ to avoid duplicate route names (and thus typo errors).
+
+__Syntax:__
+```js
+app.route( path )
+```
+
+Let's look at an example from our app:
+```js
+// users.js file
+
+// Old
+router.get('/:id', (req, res) => {
+  res.send(`Get User with ID ${req.params.id}`);
+});
+
+router.put('/:id', (req, res) => {
+  res.send(`Update User with ID ${req.params.id}`);
+});
+
+router.delete('/:id', (req, res) => {
+  res.send(`Delete User with ID ${req.params.id}`);
+});
+
+// New
+// 1. call the route() function
+// 2. pass it the path to our dynamic route (/:id)
+// 3. we can then chain together all our requests
+router.route('/:id')
+  .get('/:id', (req, res) => {
+    res.send(`Get User with ID ${req.params.id}`);
+  })
+  .put('/:id', (req, res) => {
+    res.send(`Update User with ID ${req.params.id}`);
+  })
+  .delete('/:id', (req, res) => {
+    res.send(`Delete User with ID ${req.params.id}`);
+  });
+```
+
+This makes our code base a lot cleaner and we have less of a chance to make typos.
+
+#### app.param() Function:
+
+The [app.param()](https://www.geeksforgeeks.org/express-js-app-param-function/) function is used to add the callback triggers to route parameters. It is commonly used to check for the existence of the data requested related to the route parameter.
+
+__Syntax:__
+```js
+app.param([name], callback)
+```
+
+__Parameters:__
+1. __name__: It is the name of the parameter or an array of them.
+2. __callback__: It is a function that is passed as a parameter.
+
+Let's look at an example from our app:
+```js
+// users.js file
+// http://localhost:3000/users/2
+
+router.route('/:id')
+  .get(...)
+  .put(...)
+  .delete(...);
+
+router.param('id', (req, res, next, id) => {
+	console.log(id); // -> 2
+  next(); // -> app will continue to run code
+});
+
+```
+
+In the code above, the `router.param()` function is saying, whenever we go to a route that has an `id` parameter which all of our routes (get, put, delete) from `router.route()` do. We're going to run the callback function with the `req`, `res`, `next`, `id` params.
+
+We need to call the `next()` function in order for the program to run other code. Without calling `next()` our browser will load indefinitely.
+
+Since `app.param()` is a type of "middleware" in Express. Middleware inside of Express is code that runs between the _request_ being sent to our _server_ and the actual _response_ being returned to the _user_.
+
+For example, our:
+```js
+  .get('/:id', (req, res) => {
+    res.send(`Get User with ID ${req.params.id}`);
+  })
+  .put('/:id', (req, res) => {
+    res.send(`Update User with ID ${req.params.id}`);
+  })
+  .delete('/:id', (req, res) => {
+    res.send(`Delete User with ID ${req.params.id}`);
+  });
+```
+are all the responses being sent to the user and middleware is code that runs before this section. So `route.param` is actually running first.
+
+Now, instead of just console logging out the `id`, let's get the user with that `id`:
+```js
+router.route('/:id')
+  .get((req, res) => {
+    console.log(req.user); // -> { name: 'Katie' }
+    ...
+  })
+  .put(...)
+  .delete(...);
+
+const users = [ { name: 'Ryan' }, { name: 'Katie' } ];
+router.param('id', (req, res, next, id) => {
+  // id comes from URL '/users/1'
+  req.user = users[id];
+  next();
+});
+```
+
+What this `param` has allowed us to do is, anytime we have an `id` get it from our `users[id]`. Then continue on with the rest of our code (`next()`). We're saving that `id` inside `req.user`.
+
+Now, anywhere else we have a request object (`req`) which is pretty much everywhere, we can access that user directly with `req.user` and do whatever we want with that user.
+
+This saves us from having to write a ton of code inside of each request in order to get the `id`.
+
+[Back to Top](#Table-of-Contents)
+
+---
+
+### Middleware in Express
 
 [Back to Top](#Table-of-Contents)
 
