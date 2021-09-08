@@ -562,33 +562,33 @@ const router = express.Router();
 router.use(logger);
 
 router.get('/', (req, res) => {
-	res.send('User List');
+  res.send('User List');
 });
 
 router.get('/new', (req, res) => {
-	res.send('User New Form');
+  res.send('User New Form');
 });
 
 router.post('/', (req, res) => {
-	res.send('Create User');
+  res.send('Create User');
 });
 
 router.route('/:id')
-	.get(...)
-	.put(...)
-	.delete(...);
+  .get(...)
+  .put(...)
+  .delete(...);
 
 const users = [ { name: 'Ryan' }, { name: 'Katie' } ];
 router.param('id', (req, res, next, id) => {
-	req.user = users[id];
-	next();
+  req.user = users[id];
+  next();
 });
 
 // create middleware for logging out something
 function logger(req, res, next) {
-	// print out the URL this request comes from
-	console.log(req.originalUrl);
-	next();
+  // print out the URL this request comes from
+  console.log(req.originalUrl);
+  next();
 }
 
 module.exports = router;
@@ -653,14 +653,14 @@ Now let's talk about when we have to deal with query parameters. For example, if
 
 Inside `router.get('/', (req, res) => {}`:
 ```js
-// users.js
+// users.js file
 // http://localhost:3000/users?name=Ryan
 
 ...
 
 router.get('/', (req, res) => {
-	console.log(req.query.name); // -> Ryan
-	res.send('User List');
+  console.log(req.query.name); // -> Ryan
+  res.send('User List');
 });
 
 ...
@@ -669,5 +669,3 @@ router.get('/', (req, res) => {
 The `.name` from `req.query.name` is coming from whatever we pass into the URL as our name.
 
 [Back to Top](#Table-of-Contents)
-
----
