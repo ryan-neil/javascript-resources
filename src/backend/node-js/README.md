@@ -17,7 +17,7 @@ This allows __Node.js__ to handle thousands of concurrent connections with a sin
 
 1. [How The Backend Works](#1-How-The-Backend-Works)
 2. [REST](#2-REST)
-3. [MVC](#3-MVC)
+3. [Model View Controller](#3-Model-View-Controller)
 
 ## 1. How The Backend Works
 
@@ -117,7 +117,9 @@ It's basically a fancy way of saying that a server responds to __Create__, __Rea
 http://example.com/users
 ```
 
-In the example above, `/users` represents the resource that the server is exposing. As we mentioned earlier, REST needs a way to __Create__, __Read__, __Update__, and __Delete__ these resources. It does so with the following 5 URL's:
+In the example above, `/users` represents the resource that the server is exposing. As we mentioned earlier, REST needs a way to __Create__, __Read__, __Update__, and __Delete__ these resources. 
+
+Let's explore this with  the following 5 URL's:
 ```
 http://example.com/users
 http://example.com/users
@@ -192,12 +194,53 @@ This URL is the most straight forward of them all. It is used to __delete__ a re
 
 In order for a website to use REST the URL's do not have to be formatted exactly the same as above. For example, using these URL's would still be considered "RESTful" but most applications use the previously mentioned URL's.
 
-The only thing that matters with REST is that the URL's used represent a resource, in our case a _user_, and that they support _Creating_, _Reading_, _Updating_, and _Deleting_ from that resource using the HTTP actions _GET_, _POST_, _UPDATE_, and _DELETE_.
+The only thing that matters with REST is that the URL's used represent a resource, in our case a _user_, and that they support _Creating_, _Reading_, _Updating_, and _Deleting_ from that resource using the HTTP actions __GET__, __POST__, __UPDATE__, and __DELETE__.
 
 [Back to Top](#Table-of-Contents)
 
-## 3. MVC
+## 3. Model View Controller
 
+In order to make highly complex web applications easier to work with, developers use different patterns to lay out there projects to make the code less complex and easier to maintain.
 
+By far the most popular of these patterns is __MVC__, also known as:
+  * Model
+  * View
+  * Controller
+
+The goal of the __MVC__ pattern is to split a large application into specific sections that all have there own purpose. Let's look at an example where a user is requesting a specific page from the server:
+
+#### Controller:
+1. __Request__: Based on what URL the user is requesting the server will send all the request information to a specific _Controller_.
+  * __Handles request flow__: The _Controller_ is responsible for handling the entire request from the client and will tell the rest of the server what to do with the request. It acts as the middleman between the other two sections, _Model_ and _View_. It should not contain very much code.
+  * __Never handles data logic__: The _Controller_ should never directly interact with the data logic, it should only ever use the _Model_ to perform these interactions. The Controller never has to worry about how to handle the data that it sends and receives and instead only needs to tell the _Model_ what to do and then respond based on what the _Model_ returns.
+
+#### Model:
+2. __Get Data__: The first thing that happens when a _Controller_ receives a request is it asks the _Model_ for information based on the request. 
+  * __Handles data logic__: The _Model_ is responsible for handling all of the data logic of a request. 
+  * __Interacts with database__: The _Model_ interacts with the database and handles all __validation__, __saving__, __updating__, __deleting__, etc. of the data. The _Model_ never has to worry about handling user requests and what to do on failure or success, this is all handled by the _Controller_ and the Model only cares about interacting with the data.
+
+#### View:
+3. __Get Presentation__: After the _Model_ sends its response back to the _Controller_ the _Controller_ then needs to interact with the _View_ to render the data to the user. 
+  * __Handles data presentation__: The _View_ is only concerned with how to present the information that the Controller sends it. 
+  * __Dynamically rendered__: The _View_ will be a template file that dynamically renders HTML based on the data the Controller sends. The View does not worry about how to handle the final presentation of the data but instead only cares about how to present it.
+
+#### Controller:
+4. __Response__: The _View_ will send it's final presentation back to the _Controller_ and the _Controller_ will handle sending that presentation back to the user.
+
+The important thing to note about this design is that the _Model_ and _View_ __NEVER__ interact with each other. Any interactions between the _Model_ and the _View_ are done through the _Controller_. Having the _Controller_ between the _Model_ and the _View_ means that the presentation of data and the logic of data are completely separated, which makes creating complex applications much easier.
+
+#### Example:
+Let's look at an example of how this design handles a request. Let's imagine a user sends a request to a server to get a list of _Dogs_.
+
+1. __Get Dogs__: Server sends that request to the _Controller_ that handles `Dogs` (User -> Server -> Controller)
+2. __Get Dog Data__: _Controller_ then asks the _Model_ that handles `Dogs` to return a list of all `Dogs` (Controller -> Model)
+  * _Model_ queries database for list of all `Dogs` and then return that list back to _Controller_ (Model -> Controller)
+  * If the _Model_ returns an error instead of a list of `Dogs` the _Controller_ would handle that error by asking the view that handles errors to render a presentation for that error (3. Get Error Presentation) (Model -> Controller -> View)
+  * This error presentation would then be returned to the user instead of the `Dog` list presentation (4. Error!) (View -> Controller -> User)
+3. __Get Dog Presentation__: If the response back from the _Model_ was successful then the _Controller_ would ask the _View_ associated with `Dogs` to return a presentation of the list of `Dogs` (Model -> Controller -> View)
+  * This _View_ would take the list of `Dogs` from the _Controller_ and render the list into HTML that could be used by the browser (View -> Controller -> User)
+4. __Dogs!__: The _Controller_ would then take that presentation and return it back to the user, thus ending the request (View -> Controller -> User)
+
+As we can see from this example, the _Model_ handles all the data, the _View_ handles all the presentation, and the _Controller_ just tells the _Model_ and _View_ what to do.
 
 [Back to Top](#Table-of-Contents) 
