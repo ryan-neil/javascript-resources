@@ -211,18 +211,18 @@ The goal of the __MVC__ pattern is to split a large application into specific se
 
 #### Controller:
 1. __Request__: Based on what URL the user is requesting the server will send all the request information to a specific _Controller_.
-  * __Handles request flow__: The _Controller_ is responsible for handling the entire request from the client and will tell the rest of the server what to do with the request. It acts as the middleman between the other two sections, _Model_ and _View_. It should not contain very much code.
-  * __Never handles data logic__: The _Controller_ should never directly interact with the data logic, it should only ever use the _Model_ to perform these interactions. The Controller never has to worry about how to handle the data that it sends and receives and instead only needs to tell the _Model_ what to do and then respond based on what the _Model_ returns.
+    * __Handles request flow__: The _Controller_ is responsible for handling the entire request from the client and will tell the rest of the server what to do with the request. It acts as the middleman between the other two sections, _Model_ and _View_. It should not contain very much code.
+    * __Never handles data logic__: The _Controller_ should never directly interact with the data logic, it should only ever use the _Model_ to perform these interactions. The Controller never has to worry about how to handle the data that it sends and receives and instead only needs to tell the _Model_ what to do and then respond based on what the _Model_ returns.
 
 #### Model:
 2. __Get Data__: The first thing that happens when a _Controller_ receives a request is it asks the _Model_ for information based on the request. 
-  * __Handles data logic__: The _Model_ is responsible for handling all of the data logic of a request. 
-  * __Interacts with database__: The _Model_ interacts with the database and handles all __validation__, __saving__, __updating__, __deleting__, etc. of the data. The _Model_ never has to worry about handling user requests and what to do on failure or success, this is all handled by the _Controller_ and the Model only cares about interacting with the data.
+    * __Handles data logic__: The _Model_ is responsible for handling all of the data logic of a request. 
+    * __Interacts with database__: The _Model_ interacts with the database and handles all __validation__, __saving__, __updating__, __deleting__, etc. of the data. The _Model_ never has to worry about handling user requests and what to do on failure or success, this is all handled by the _Controller_ and the Model only cares about interacting with the data.
 
 #### View:
 3. __Get Presentation__: After the _Model_ sends its response back to the _Controller_ the _Controller_ then needs to interact with the _View_ to render the data to the user. 
-  * __Handles data presentation__: The _View_ is only concerned with how to present the information that the Controller sends it. 
-  * __Dynamically rendered__: The _View_ will be a template file that dynamically renders HTML based on the data the Controller sends. The View does not worry about how to handle the final presentation of the data but instead only cares about how to present it.
+    * __Handles data presentation__: The _View_ is only concerned with how to present the information that the Controller sends it. 
+    * __Dynamically rendered__: The _View_ will be a template file that dynamically renders HTML based on the data the Controller sends. The View does not worry about how to handle the final presentation of the data but instead only cares about how to present it.
 
 #### Controller:
 4. __Response__: The _View_ will send it's final presentation back to the _Controller_ and the _Controller_ will handle sending that presentation back to the user.
@@ -234,13 +234,13 @@ Let's look at an example of how this design handles a request. Let's imagine a u
 
 1. __Get Dogs__: Server sends that request to the _Controller_ that handles `Dogs` (User -> Server -> Controller)
 2. __Get Dog Data__: _Controller_ then asks the _Model_ that handles `Dogs` to return a list of all `Dogs` (Controller -> Model)
-  * _Model_ queries database for list of all `Dogs` and then return that list back to _Controller_ (Model -> Controller)
-  * If the _Model_ returns an error instead of a list of `Dogs` the _Controller_ would handle that error by asking the view that handles errors to render a presentation for that error (3. Get Error Presentation) (Model -> Controller -> View)
-  * This error presentation would then be returned to the user instead of the `Dog` list presentation (4. Error!) (View -> Controller -> User)
+    * _Model_ queries database for list of all `Dogs` and then return that list back to _Controller_ (Model -> Controller)
+    * If the _Model_ returns an error instead of a list of `Dogs` the _Controller_ would handle that error by asking the _View_ that handles errors to render a presentation for that error (3. Get Error Presentation) (Model -> Controller -> View)
+    * This error presentation would then be returned to the user instead of the `Dog` list presentation (4. Error!) (View -> Controller -> User)
 3. __Get Dog Presentation__: If the response back from the _Model_ was successful then the _Controller_ would ask the _View_ associated with `Dogs` to return a presentation of the list of `Dogs` (Model -> Controller -> View)
-  * This _View_ would take the list of `Dogs` from the _Controller_ and render the list into HTML that could be used by the browser (View -> Controller -> User)
+    * This _View_ would take the list of `Dogs` from the _Controller_ and render the list into HTML that could be used by the browser (View -> Controller -> User)
 4. __Dogs!__: The _Controller_ would then take that presentation and return it back to the user, thus ending the request (View -> Controller -> User)
 
 As we can see from this example, the _Model_ handles all the data, the _View_ handles all the presentation, and the _Controller_ just tells the _Model_ and _View_ what to do.
 
-[Back to Top](#Table-of-Contents) 
+[Back to Top](#Table-of-Contents)
