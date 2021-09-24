@@ -71,6 +71,7 @@ A quick look at the files and directories you'll see in the repo.
 ### Table of Contents
 
 1. [Running JavaScript](#running-javascript)
+1. [Debugging JavaScript (Firefox)](#debugging-javascript-firefox)
 1. [Commenting](#commenting)
 1. [Variables](#variables)
 1. [Naming Conventions](#naming-conventions)
@@ -112,14 +113,6 @@ A quick look at the files and directories you'll see in the repo.
     * [Polymorphism](#polymorphism)
 1. [OOP with JavaScript](#object-oriented-programming-with-javaScript)
     * [Classes](#classes-in-javascript)
-1. [Node.js](#nodejs)
-    * [JavaScript with Node vs. JavaScript in the Browser](#javascript-with-node-vs-javascript-in-the-browser)
-    * [Executing JavaScript with Node](#executing-javascript-with-node)
-    * [Working with Modules](#working-with-modules)
-    * [Invisible Node Functions](#invisible-node-functions)
-        * [Node Functions Arguments](#node-functions-arguments)
-    * [The Require Cache](#the-require-cache)
-    * [Debugging with Node](#debugging-with-node)
 
 ----
 
@@ -222,6 +215,14 @@ function getType() {
 ```
 
 > When it comes to commenting, don't explain what the code does, explain what the intentions of the code are. Generally, anyone can tell what the code is doing by looking at it, but it can often be impossible to understand why it's being done just by looking at the code alone. - Some internet guy
+
+**[⬆ Top](#table-of-contents)**
+
+----
+
+### Debugging JavaScript (Firefox)
+
+  * [Run and Debug JavaScript with Firefox developer tools](https://www.youtube.com/watch?v=yjQVG6ubUTA)
 
 **[⬆ Top](#table-of-contents)**
 
@@ -5144,248 +5145,6 @@ console.log(cat1.getLivesLeft()); // -> 8
 ```
 
 We can take this concept as deep as we want and maybe have `Pet` extend from `Animal` and `Animal` extend from `LivingThing`, etc. An example of this from the web API is `HTMLElement` which extends from 5 or 6 different classes.
-
-**[⬆ Top](#table-of-contents)**
-
-----
-
-### Node.js
-
-  * [Node.js Documentation](https://nodejs.org/api/)
-
-### JavaScript with Node vs. JavaScript in the Browser
-
-When we run code with Node, we're going to be running code directly on our machine (computer) without any browser being involved.
-
-__JavaScript in the Browser:__
-1. Executed by adding script tags to an HTML document
-2. We get access to the DOM and related objects (window)
-3. Code can references variables in other files freely
-4. Include libraries by adding script tags (more complicated solutions exist)
-
-__Vs.__
-
-__JavaScript with Node:__
-1. Executed by running the Node CLI (Command Line Interface) from your terminal
-2. No DOM exists
-3. Each file is its own separate world
-4. Include libraries by using NPM (Node Package Manager)
-
-[⬆️ Top](#table-of-contents)
-
----
-
-### Executing JavaScript with Node
-
-We have two different ways to run code with node:
-
-The first way is to run node and then the name of the file in the same directory:
-
-```bash 
-node <file name>
-```
-
-> Note: We can technically execute files in different directories, we just have to provide a relative path
-
-The second way to run JavaScript code with node is by entering the node REPL by just running `node`:
-
-```bash 
-node
-```
-
-We can use the node REPL to execute one off JavaScript statements. This is very similar to the console inside the browser.
-
-> Note: To stop node at any time, we can press Control + C twice
-
-[⬆️ Top](#table-of-contents)
-
----
-
-### Working with Modules
-
-#### Sharing Code Between Multiple Files
-
-If we want to share code between different JavaScript files, we have to use the "module system". An example of how we would share code between files would look something like this:
-
-`index.js` file:
-```js
-const message = require('./myscript.js');
-
-console.log(message) // -> Hello there!
-```
-
-`myscript.js` file:
-```js
-const message = 'Hello there!';
-
-module.exports = message
-```
-
-[⬆️ Top](#table-of-contents)
-
----
-
-### Invisible Node Functions
-
-How Node works is technically, the code inside `index.js` is being automatically wrapped inside of a function and then executed.
-
-Let's look at this visually:
-```js
-// index.js file
-
-const message = require('./myscript.js');
-console.log(message) // -> "Hey, it's working!"
-```
-
-The above code at runtime looks like this:
-```js
-function(exports, require, module, __filename, __dirname) {
-  const message = require('./myscript.js');
-
-  console.log(message) // -> "Hey, it's working!"
-}
-```
-
-In the above example `message` is calling the `require` argument to read the code inside of our `myscript.js` file.
-
-> Note: A real world example of this could be, when 1 file (`feature.js`) has maybe one function that is a key feature of the app that we would want to use in our root JavaScript file.
-
-In total, there are 5 different arguments being automatically passed into the function.
-
-Let's look at these 5 different arguments and what they mean:
-1. `exports`: Equivalent to `module.exports`. We can technically export code using this, but it is easier to use `module.exports` because of a little corner case.
-2. `require`: Function to get access to the exports from another file.
-3. `module`: Object that defines some properties + information about the current file.
-4. `__filename`: Full path + file name of this file.
-5. `__dirname`: Full path of this file.
-
-#### Node Functions Arguments
-
-Now in our index.js file if we `console.log` "arguments" (`console.log(arguments)`), we are returned a big object with indices of `0-4`. So in other words, it's an array of all the different arguments that are being passed to this invisible function.
-
-Here's an example:
-```js
-[Arguments] {
-  // The "exports" object
-  '0': {},
-  // The "require" object
-  '1': [Function: require] {
-    resolve: [Function: resolve] { paths: [Function: paths] },
-    main: Module {
-      id: '.',
-      path: '/Users/username/Documents/Ryan Neil/1_Programming/5_Github Repos/JavaScript-Resources/src/js/projects/node-clt/js',
-      exports: {},
-      parent: null,
-      filename: '/Users/username/Documents/Ryan Neil/1_Programming/5_Github Repos/JavaScript-Resources/src/js/projects/node-clt/js/index.js',
-      loaded: false,
-      children: [],
-      paths: [Array]
-    },
-    extensions: [Object: null prototype] {
-      '.js': [Function (anonymous)],
-      '.json': [Function (anonymous)],
-      '.node': [Function (anonymous)]
-    },
-    cache: [Object: null prototype] {
-      '/Users/username/Documents/Ryan Neil/1_Programming/5_Github Repos/JavaScript-Resources/src/js/projects/node-clt/js/index.js': [Module]
-    }
-  },
-  // The "module" object
-  '2': Module {
-    id: '.',
-    path: '/Users/username/Documents/Ryan Neil/1_Programming/5_Github Repos/JavaScript-Resources/src/js/projects/node-clt/js',
-    exports: {},
-    parent: null,
-    filename: '/Users/username/Documents/Ryan Neil/1_Programming/5_Github Repos/JavaScript-Resources/src/js/projects/node-clt/js/index.js',
-    loaded: false,
-    children: [],
-    paths: [
-      '/Users/username/Documents/node_modules',
-      '/Users/username/node_modules',
-      '/Users/node_modules',
-      '/node_modules'
-    ]
-  },
-  // The "__filename" object
-  '3': '/Users/username/Documents/Ryan Neil/1_Programming/5_Github Repos/JavaScript-Resources/src/js/projects/node-clt/js/index.js',
-  // The "__dirname" object
-  '4': '/Users/username/Documents/Ryan Neil/1_Programming/5_Github Repos/JavaScript-Resources/src/js/projects/node-clt/js'
-}
-```
-
-[⬆️ Top](#table-of-contents)
-
----
-
-### The Require Cache
-
-The "require cache" is an object that stores the results of requiring in a file. This "object" is going to have some number of __keys__ and __values__.
-
-The different __keys__ of this object are going to be the names of the different files that we require in and the __value__ is going to be whatever we exported from that file. From the example above, we can imagine the __key__ is going to be `myscript.js` and the value is going to be `module.exports = "Hey, it's working!"`.
-
-When we call `require()` for the first time, node is going to look out into the current file folder and find the file being referenced (i.e. `require('./myscript.js')`). It's then going to wrap the contents of that file in that invisible function and execute it.
-
-Here's the key part, if we try and and call `require('./myscript.js')` a second time it's not going to cause the `myscript.js` file to be executed again. Instead, node is going to look at the "require cache" and it's going to see we've already required in that file called `myscript.js`.
-
-Now, it's going to take a short cut and look at whatever has been exported previously and give us that value directly.
-
-This is the big key point in a Node.js project. Each file is only ever executed one single time.
-
-#### Files Get Required Once!
-
- So why do we care about knowing that we can only run a given file exactly one time in the life cycle of a project?
-
- Let's look at an example:
- ```js
-// myscript.js file
-
-let counter = 0;
-
-module.exports = {
-  incrementCounter() {
-    counter = counter + 1;
-  },
-  getCounter() {
-    return counter;
-  }
-};
- ```
- ```js
-// index.js file
-
-const counterObject = require('./myscript.js');
-
-console.log(counterObject.getCounter()); // -> 0
-counterObject.incrementCounter();
-console.log(counterObject.getCounter()); // -> 1
-
-const newCounterObject = require('./myscript.js');
-
-console.log(newCounterObject.getCounter()); // -> 1
- ```
-In the above example, when we require in `myscript.js` again we receive the exact same object with reference to the same counter variable that we received the first time. So `newCounterObject` takes the same value as `counterObject`, which is 1.
-
-[⬆️ Top](#table-of-contents)
-
----
-
-### Debugging with Node
-
-Here's how we debug inside node:
-
-  1. `node inspect index.js`: Start up a debugger __CLI__ and __pause__ execution whenever a 'debugger' statement is hit.
-  2. `node --inspect index.js`: Start up a debugger __instance__ and __pause__ execution whenever a 'debugger' statement is hit. Access the debugger at 'chrome://inspect'.
-  3. `node --inspect-brk index.js`: Start up a debugger instance and __wait__ to execute until a 'debugger' statement is hit. Access the debugger at 'chrome://inspect'.
-
-  > Note: `node --inspect-brk index.js` is the more common method.
-
-#### CLI Debugger Commands
-
-  1. `c`: Continue execution until program ends or next debugger statement.
-  2. `n`: Run the next line of code.
-  3. `s`: Step in to a function.
-  4. `o`: Step out of the current function.
-  5. `repl`: Start up an execution environment where we can reference the different variables inside our program.
 
 **[⬆ Top](#table-of-contents)**
 
