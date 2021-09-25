@@ -649,6 +649,14 @@ app.use(express.json());
 
 ### Parsing query params in Express
 
+We can send data in our HTTP request in different ways. Some different ways we can send data are inside the:
+  * Body
+  * Query parameters
+  * Headers
+  * Resource parameter
+
+For this example we'll be passing data with query parameters.
+
 Now let's talk about when we have to deal with query parameters. For example, if we put a query parameter in our URL that has, `http://localhost:3000/users?name=Ryan`, what we want to do is access the actual name property from users and get that name from the query string.
 
 Inside `router.get('/', (req, res) => {}`:
