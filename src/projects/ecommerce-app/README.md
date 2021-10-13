@@ -45,11 +45,10 @@ A quick look at the files and directories you'll see in the repo.
     * 2.10 [Adding filtering logic](#210-adding-filtering-logic)
     * 2.11 [Exporting an instance](#211-exporting-an-instance)
     * 2.12 [Signup validation logic](#212-signup-validation-logic)
-1. [Part 3: Production-grade authentication](#part-3)
+1. [Part 3: Production-grade authentication](#part-3-Production-grade-authentication)
+    * 3.1 [Cookie Based Authentication](#31-Cookie-Based-Authentication)
 
-----
-
-### Part 1: Project Start
+## Part 1: Project Start
 
 ### 1.1 App architecture
 
@@ -432,8 +431,7 @@ We can now use the `app.use()` function whenever we need to wire up some middlew
 
 __[Back to Top](#table-of-contents)__
 
-----
-### Part 2: Designing a Custom Database
+## Part 2: Designing a Custom Database
 
 ### 2.1 Data storage
 
@@ -1070,18 +1068,77 @@ __[Back to Top](#table-of-contents)__
 
 ### 2.12 Signup validation logic
 
+Whenever a user submits a sign up form to our application, we're going to run some checks inside of our POST request handler.
 
+We'll first check to see if another user already signed up at the provided email. We will only allow one unique email for each user. If they are the same we will show an error.
+
+Next, we'll then also check to see if the password and password confirmation are different. If the passwords are different we will show an error as well.
+
+If the user gets past both of our checks we will create an account for this user.
+
+```js
+// index.js file
+
+...
+
+app.post('/', async (req, res) => {
+  // deconstruct our form fields variables
+  const { email, password, passwordConfirmation } = req.body;
+
+  // create existingUser variable
+  const existingUser = await usersRepo.getOneBy({ email: email });
+  // check if email is already in use
+  if (existingUser) {
+    return res.send('Email in use');
+  }
+
+  // check if passwords match each other
+  if (password !== passwordConfirmation) {
+    res.send('Passwords must match');
+  }
+
+  res.send('Account created!');
+});
+
+...
+```
 
 __[Back to Top](#table-of-contents)__
 
-----
+## Part 3: Production-grade authentication
 
-### ⚒️ Built With
+### 3.1 Cookie Based Authentication
+
+### Request Cookies
+
+So we have our browser that is making a request to some server. Whenever the server responds back to our browser, inside the request the server can optionally a __cookie__.
+
+A __cookie__ is a very small of characters that the server wants the browser to store. So the server is going to send over a small string of characters and it's going to tell the browser to include that small string of characters with every followup request that is made to that exact same server.
+
+When we say "exact same server" we're referring to any server at that particular domain. So for example, the server at google.com or airbnb.com, etc. Whenever the browser makes a request to that same domain, the browser is going to automatically include that small string of characters with the request that is being issued to that server.
+
+In short, the only thing we have to understand about cookies is that the server can provide a __cookie__, a __cookie__ is a small string of characters, and the server can require that the browser sends that __cookie__ whenever it is making a followup request bact to the server.
+
+This __cookie__ is the absolute core of the vast majority of authentication, it is what is going to allow us inside of our application and many other applications out there in general to id users who are coming to an application and making some series of requests.
+
+### Problems with handling authentication
+
+The whole idea of signing up and signing in to an application revolves around a server being able to identify who is making the requests to that server.
+`
+If we think about Google, or Facebook, or Airbnb, Amazon, etc., these companies have servers that get thousands to millions of requests every second. Because of this, these servers need to be able to positively identify exactly who is making the request. 
+
+Now, in order to identify the person making the request, a __cookie__ is used.
+
+[3:23]
+
+---
+
+### ⚒️ Built With`
 * HTML
 * CSS
-* JavaScript (Node.js, Express.js)
+* JavaScript (Express.js)
 
 ----
 
 ### Contributing
-Contributions are always welcome! All I ask is that you open an issue and we discuss your proposed changes before you create a pull request.
+Contributions are always welcome! All I ask is that you open an issue and we discuss your proposed changes before you create a pull request. Normally, when our browser makes a request, the server doesn't have any inherent idea of who is making that request.

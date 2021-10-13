@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const usersRepo = require('./repositories/users.js');
 
 // app is an object that describes what our web server can do
 const app = express();
@@ -23,12 +24,26 @@ app.get('/', (req, res) => {
 
 // tell our router to watch for an incoming request with path of "/" and a method of POST
 // we can think of "middleware functions" as functions in the "middle" (literally) of a request handler
-app.post('/', (req, res) => {
-	console.log(req);
+app.post('/', async (req, res) => {
+	// deconstruct our form fields variables
+	const { email, password, passwordConfirmation } = req.body;
+
+	// create existingUser variable
+	const existingUser = await usersRepo.getOneBy({ email: email });
+	// check if email is already in use
+	if (existingUser) {
+		return res.send('Email in use');
+	}
+
+	// check if passwords match each other
+	if (password !== passwordConfirmation) {
+		res.send('Passwords must match');
+	}
+
 	res.send('Account created!');
 });
 
-// tell our app to start listening on port 3000
-app.listen(process.env.PORT || 3000, () => {
-	console.log('Server running on http://localhost:3000');
+// tell our app to start listening on port 3080
+app.listen(process.env.PORT || 3080, () => {
+	console.log('Server running on http://localhost:3080');
 });
