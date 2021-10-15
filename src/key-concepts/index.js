@@ -1,15 +1,30 @@
-((namespace) => {
-	namespace.count = 0;
-	namespace.current = function() {
-		return `App count is ${this.count}.`;
-	};
-	namespace.increment = function() {
-		this.count++;
-	};
-	namespace.reset = function() {
-		this.count = 0;
-	};
-})((window.App = window.App || {}));
+let x = 1;
 
-App.increment();
-console.log(App.current());
+const parentFunction = () => {
+	let myValue = 2;
+	console.log(x);
+	console.log(myValue);
+
+	const childFunction = () => {
+		console.log((x += 5));
+		console.log((myValue += 1));
+	};
+
+	return childFunction;
+};
+
+const result = parentFunction();
+
+// call result twice (the child function continues to increment)
+result();
+result();
+console.log(x);
+console.log(myValue);
+// -> 1
+// -> 2
+// -> 6
+// -> 3
+// -> 11
+// -> 4
+// -> 11
+// -> reference error since myValue is a private variable
