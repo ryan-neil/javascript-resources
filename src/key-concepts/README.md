@@ -18,7 +18,7 @@ This guide will attempt to explain some of the most important concepts any JavaS
 4. [Immediately Invoked Function Expressions (IIFE)](#4-Immediately-Invoked-Function-Expressions-IIFE)
 5. [Hoisting](#5-Hoisting)
 6. [Callbacks](#6-Callbacks)
-7. [Promises](#7-Promises)
+7. [Promises](#7-Promise)
 8. [Async & Await](#8-Async-&-Await)
 9. [Bonus Questions](#9-Bonus-Questions)
 
@@ -240,6 +240,7 @@ The last part of this answer: "even if the parent function has returned" is call
 ### Resources:
   * [Learn Closures in 7 Minutes - Web Dev Simplified](https://www.youtube.com/watch?v=3a0I8ICR1Vg)
   * [Javascript Closures Explained - Dave Gray](https://www.youtube.com/watch?v=1S8SBDhA7HA)
+  * [JavaScript Closures and How to Use Closures - JavaScript Tutorial Article](https://www.javascripttutorial.net/javascript-closure/)
 
 _"A closure is a function that has access to the parent scope (this is the lexical context), even after the parent function has closed (this is the closure context)."_ - w3schools
 
@@ -293,11 +294,9 @@ const parentFunction = () => {
 parentFunction();
 ```
 
-This example does not necessarily display _Closure_. Although, we can say the child function has _Closure_ over the scope of the parent function because it has access to its environment. We can even go as far as saying the child function has _Closure_ over the _Global_ scope because it also has access to it and it's variables.
+This example does not necessarily display _Closure_. Although, we can say the child function has _Closure_ over the scope of the parent function because it has access to its environment. We can even go as far as saying the child function has _Closure_ over the _Global_ scope because it also has access to it and it's variables. A Closure is created when we _define_ a function, not when a function is _executed_.
 
 Again, this does not exactly give an example of Closure, _Lexical_ scope is just an important part of Closure, it's not actually showing what Closure is.
-
-So, let's refactor our example a bit to actually show what Closure is. A Closure is created when we _define_ a function, not when a function is _executed_.
 
 Let's try to think about this through an analogy, think of the sports game soccer (real football `;)`). The painted perimeter lines, or boundaries, of where the players can play are set before we play the game. 
 
@@ -305,23 +304,24 @@ We can think of Closures in the same way, it is created when we define the funct
 
 ### Let's look at a couple examples of what it means to have access to a parent scope even after the parent function has closed.
 
+This is the key part to Closures. Let's further reactor our example from above to give our child function access to these scopes even after the parent function has closed:
+
 ### Closure Example 1:
 
-This is the key part to Closures. Let's further reactor our example from above to give our child function access to these scopes even after the parent function has closed:
 ```js
 let x = 1;
 
 const parentFunction = () => {
-	let myValue = 2;
-	console.log(x); // -> 1
-	console.log(myValue); // -> 2
+  let myValue = 2;
+  console.log(x); // -> 1
+  console.log(myValue); // -> 2
 
-	const childFunction = () => {
-		console.log((x += 5));
-		console.log((myValue += 1));
-	};
-	// instead of calling the child function, we return the child function
-	return childFunction;
+  const childFunction = () => {
+    console.log((x += 5));
+    console.log((myValue += 1));
+  };
+  // instead of calling the child function, we return the child function
+  return childFunction;
 };
 
 // set 'result' equal to the parent function
@@ -335,14 +335,14 @@ As you can see when we run this, we don't get any output from the child function
 let x = 1;
 
 const parentFunction = () => {
-	let myValue = 2;
-	console.log(x); // -> 1
-	console.log(myValue); // -> 2
+  let myValue = 2;
+  console.log(x); // -> 1
+  console.log(myValue); // -> 2
 
-	const childFunction = () => {
-		console.log((x += 5)) // -> 6
-		console.log((myValue += 1)) // -> 3
-	};
+  const childFunction = () => {
+    console.log((x += 5)) // -> 6
+    console.log((myValue += 1)) // -> 3
+  };
 
 	return childFunction;
 };
@@ -362,16 +362,16 @@ Because `myValue` was not defined inside the child function. Although the parent
 let x = 1;
 
 const parentFunction = () => {
-	let myValue = 2;
-	console.log(x); // -> 1
-	console.log(myValue); // -> 2
+  let myValue = 2;
+  console.log(x); // -> 1
+  console.log(myValue); // -> 2
 
-	const childFunction = () => {
-		console.log((x += 5)) // -> 6
-		console.log((myValue += 1)) // -> 3
-	};
+  const childFunction = () => {
+    console.log((x += 5)) // -> 6
+    console.log((myValue += 1)) // -> 3
+  };
 
-	return childFunction;
+  return childFunction;
 };
 
 const result = parentFunction();
@@ -394,6 +394,8 @@ console.log(myValue);
 This is a good way to create a private variable and only have access to it with a child function. So this is Closure because we have access to the scope of the parent function even after the parent function has returned.
 
 ### Closure Example 2:
+
+Left off here... [9:56]
 
 **[⬆ Top](#Table-of-Contents)**
 
@@ -623,15 +625,17 @@ console.log(Game.current()); // -> Game score is 0.
 
 **[⬆ Top](#Table-of-Contents)**
 
-## 7. Promises
+## 7. Promise
 
 ### Resources:
+  * [JavaScript Promise in 100 Seconds - Fireship.io](https://www.youtube.com/watch?v=RvYYCGs45L4)
 
 **[⬆ Top](#Table-of-Contents)**
 
 ## 8. Async & Await
 
 ### Resources:
+  * [The Async Await Episode I Promised - Fireship.io](https://www.youtube.com/watch?v=vn3tm0quoqE)
 
 **[⬆ Top](#Table-of-Contents)**
 
