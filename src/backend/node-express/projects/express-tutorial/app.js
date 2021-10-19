@@ -1,29 +1,22 @@
 const express = require('express');
-const path = require('path');
 const app = express();
-const port = 3080;
 
-// setup static and middleware
-// 'static' is a file (assets) that the server doesn't have to change
-app.use(express.static('./public'));
-
-// setup the home page
+// set index route
 app.get('/', (req, res) => {
-	res.status(200).sendFile(path.resolve(__dirname, './navbar-app/index.html'));
+	res.status(200).send('Home page');
 });
 
-// setup the about page
+// set about page route
 app.get('/about', (req, res) => {
 	res.status(200).send('About page');
 });
 
-// setup 404 response
-// '*' == all routes
+// set 404 route
 app.all('*', (req, res) => {
-	res.status(404).send('<h2>Resource not found: 404</h2>');
+	res.status(404).send('<h1>404</h1>');
 });
 
 // run the server
-app.listen(port, () => {
-	console.log(`Example app listening at http://localhost:${port}`);
+app.listen(3000, () => {
+	console.log(`Server listening at port 3000...`);
 });
