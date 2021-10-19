@@ -1,4 +1,16 @@
-## Node.js
+# 💾 Node.js - Express.js
+
+These are just the fundamentals of Node and Express. This guide is not meant to be used for anything too serious...lol
+
+## ✌🏻
+
+### Table of Contents:
+1. [Node.js](#1-Nodejs)
+2. [Express.js](#2-Expressjs)
+
+#
+
+# 1. Node.js
 
 * [Introduction to Node.js](https://nodejs.dev/learn)
 * [Node.js Docs](https://nodejs.org/api/all.html)
@@ -27,7 +39,7 @@ This allows __Node.js__ to handle thousands of concurrent connections with a sin
 3. [REST](#3-REST)
 4. [Model View Controller](#4-Model-View-Controller)
 
-## 1. Introduction
+## Introduction
 
 ### JavaScript with Node vs. JavaScript in the Browser
 
@@ -265,7 +277,7 @@ Here's how we debug inside node:
 
 **[⬆ Top](#table-of-contents)**
 
-## 2. How The Backend Works
+## How The Backend Works
 
 The web is made up of two main parts, the __Front End__ and the __Back End__.
 
@@ -351,7 +363,7 @@ This is why it's safe to have a database and a website running on the same serve
 
 [Back to Top](#Table-of-Contents)
 
-## 3. REST
+## REST
 
 What is REST?
   * (RE)presentation
@@ -444,7 +456,7 @@ The only thing that matters with REST is that the URL's used represent a resourc
 
 [Back to Top](#Table-of-Contents)
 
-## 4. Model View Controller
+## Model View Controller
 
 In order to make highly complex web applications easier to work with, developers use different patterns to lay out there projects to make the code less complex and easier to maintain.
 
@@ -488,5 +500,62 @@ Let's look at an example of how this design handles a request. Let's imagine a u
 4. __Dogs!__: The _Controller_ would then take that presentation and return it back to the user, thus ending the request (View -> Controller -> User)
 
 As we can see from this example, the _Model_ handles all the data, the _View_ handles all the presentation, and the _Controller_ just tells the _Model_ and _View_ what to do.
+
+[Back to Top](#Table-of-Contents)
+
+# 2. Express.js
+
+[Documentation](https://expressjs.com/en/5x/api.html)
+
+## Installing Express: [Docs](https://expressjs.com/en/starter/installing.html)
+
+Install Express with the CLI:
+```bash
+npm install express --save
+```
+
+## Start up the Express server:
+
+This app will start a server and listen on port 3080 for connections. The app responds with “Hello World!” for requests to the root URL (`/`) or route. For every other path, it will respond with a `404 Not Found`.
+
+## Run the app:
+
+Inside the file directory:
+```bash
+node app.js
+```
+
+```js
+const express = require('express')
+const app = express()
+const port = 3080
+
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
+
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`)
+})
+```
+
+## App methods:
+
+The most commonly used Express methods are going to be:
+```js
+const express = require('express');
+const app = express();
+
+app.get() // read data
+app.post() // insert data
+app.put() // update data
+app.delete() // delete data
+
+app.all() // response if we can't find a resource on the server
+app.use() // responsible for middleware in the app
+app.listen() // listens for connections on the specified host and port
+```
+
+
 
 [Back to Top](#Table-of-Contents)

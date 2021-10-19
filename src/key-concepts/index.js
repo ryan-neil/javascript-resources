@@ -1,30 +1,21 @@
-let x = 1;
+const credits = ((num) => {
+	let credits = num;
+	console.log(`Initial credits value: ${credits}`);
 
-const parentFunction = () => {
-	let myValue = 2;
-	console.log(x);
-	console.log(myValue);
-
-	const childFunction = () => {
-		console.log((x += 5));
-		console.log((myValue += 1));
+	return () => {
+		credits -= 1;
+		if (credits > 0)
+			console.log(`Continue playing the game: ${credits} credit(s) remaining`);
+		if (credits <= 0) console.log(`Game over! Not enough credits`);
 	};
+})(3);
 
-	return childFunction;
-};
+credits();
+credits();
+credits();
 
-const result = parentFunction();
-
-// call result twice (the child function continues to increment)
-result();
-result();
-console.log(x);
-console.log(myValue);
-// -> 1
-// -> 2
-// -> 6
-// -> 3
-// -> 11
-// -> 4
-// -> 11
-// -> reference error since myValue is a private variable
+// [Console]
+// -> Initial credits value: 3
+// -> Continue playing the game: 2 credit(s) remaining
+// -> Continue playing the game: 1 credit(s) remaining
+// -> Game over! Not enough credits

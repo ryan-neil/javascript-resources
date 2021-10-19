@@ -244,7 +244,7 @@ The last part of this answer: "even if the parent function has returned" is call
 
 _"A closure is a function that has access to the parent scope (this is the lexical context), even after the parent function has closed (this is the closure context)."_ - w3schools
 
-_"JavaScipt variables do not hold the values, they rather hold the references to the physical memory slots in which values are contained. When variables are returned from a function, it forms a closure because the function is not returning the variables/values, the function is rather returning the references to memory slots."_ - YouTube comment
+_"JavaScript variables do not hold the values, they rather hold the references to the physical memory slots in which values are contained. When variables are returned from a function, it forms a closure because the function is not returning the variables/values, the function is rather returning the references to memory slots."_ - YouTube comment
 
 In order to understand Closures, it's important to have a good understanding of [Scope](#2-Scope). Let's briefly discuss _Lexical_ scope:
 
@@ -326,8 +326,12 @@ const parentFunction = () => {
 
 // set 'result' equal to the parent function
 const result = parentFunction();
-
 console.log(result); // -> [Function: childFunction]
+
+// [Console]
+// -> 1
+// -> 2
+// -> [Function: childFunction]
 ```
 
 As you can see when we run this, we don't get any output from the child function. Instead, we just get the output of our console logs from the parent function. We can further see that our console log of the `result` variable gives us `childFunction`. We can now use `result` to call the child function:
@@ -351,6 +355,8 @@ const result = parentFunction();
 
 // we can now call result as a function and it will give us all our outputs
 result();
+
+// [Console]
 // -> 1
 // -> 2
 // -> 6
@@ -367,8 +373,8 @@ const parentFunction = () => {
   console.log(myValue); // -> 2
 
   const childFunction = () => {
-    console.log((x += 5)) // -> 6
-    console.log((myValue += 1)) // -> 3
+    console.log((x += 5)) // -> 6  -> 11
+    console.log((myValue += 1)) // -> 3  -> 4
   };
 
   return childFunction;
@@ -379,8 +385,10 @@ const result = parentFunction();
 // call result twice (the child function continues to increment)
 result();
 result();
-console.log(x);
-console.log(myValue); 
+console.log(x); // -> 11
+console.log(myValue);
+
+// [Console]
 // -> 1
 // -> 2
 // -> 6
@@ -388,14 +396,69 @@ console.log(myValue);
 // -> 11
 // -> 4
 // -> 11
-// -> reference error since myValue is a private variable
+// -> ReferenceError: myValue is a 'private' variable...
 ```
 
 This is a good way to create a private variable and only have access to it with a child function. So this is Closure because we have access to the scope of the parent function even after the parent function has returned.
 
-### Closure Example 2:
+### Closure Example 2: Immediately Invoked Function Expression (IIFE)
 
-Left off here... [9:56]
+```js
+const privateCounter = (() => {
+  let count = 0;
+  console.log(`Initial value: ${count}`); // this code only runs once
+
+  // return an anonymous function that increments and logs 'count'
+  return () => {
+    count += 1;
+    console.log(count);
+  };
+})();
+
+privateCounter();
+privateCounter();
+privateCounter();
+
+// [Console]
+// -> Initial value: 0
+// -> 1
+// -> 2
+// -> 3
+```
+
+Every time we call `privateCounter()` we're continuing to increment our counter but we're using a "private" variable (`count`) to do so. `count` is not available in the _global_ scope, the only way this variable can be accessed is through the _lexical_ scope of the child function (the anonymous function). 
+
+So it has _closure_ over the private counter scope and the _global_ scope. It is important to highlight that the console log statement only runs one time. The original function that is called into action immediately only returns one time and it only returns the anonymous function to `privateCounter` one time.
+
+After the initial invocation, when we call `privateCounter()` we're ONLY calling the returned anonymous function, which is incrementing and logging out our counter.
+
+### Closure Example 3: IIFE with a Parameter
+
+This example is very similar to the previous IIFE example except for this example we'll use an IIFE with a parameter.
+
+```js
+const credits = ((num) => {
+  let credits = num;
+  console.log(`Initial credits value: ${credits}`);
+
+  return () => {
+    credits -= 1;
+    if (credits > 0)
+      console.log(`Continue playing the game: ${credits} credit(s) remaining`);
+    if (credits <= 0) console.log(`Game over! Not enough credits`);
+  };
+})(3);
+
+credits();
+credits();
+credits();
+
+// [Console]
+// -> Initial credits value: 3
+// -> Continue playing the game: 2 credit(s) remaining
+// -> Continue playing the game: 1 credit(s) remaining
+// -> Game over! Not enough credits
+```
 
 **[⬆ Top](#Table-of-Contents)**
 
@@ -616,6 +679,97 @@ console.log(Game.current()); // -> Game score is 0.
 ## 5. Hoisting
 
 ### Resources:
+  * [Hoisting Javascript (Variables, Functions, and Javascript Arrow Functions) - Dave Gray](https://www.youtube.com/watch?v=_uTDzYyYz-U)
+  * [WTF Is JavaScript Variable Hoisting - Colt Steele](https://www.youtube.com/watch?v=j-9_15QBW2s)
+
+### What is Hoisting?
+Hoisting is a JavaScript mechanism where variables and function declarations are moved to the top of their scope before code execution.
+
+This means that no matter where functions and variables are declared, they are moved to the top of their scope regardless of whether their scope is global or local.
+
+> Note: the hoisting mechanism only moves the declaration. The assignments are left in place. 
+
+### Hoisting with `var`:
+```js
+console.log(x); // -> undefined
+var x = 0;
+```
+In the above code, the `var` keyword is pushed above the code and initialized automatically by JavaScript (only `x` variable is pushed above, not the value 0). So at the time of execution, the code looks something like this:
+```js
+var x; // automatically inserted by JS Engine at run time
+console.log(x);
+var x = 0;
+```
+`x` has been pushed above and initialized by the JS engine, that's why we get undefined at the console line instead of a `ReferenceError`.
+
+### Hoisting with `let` and `const`:
+In the case of `var`, when JavaScript moves all the variables and functions to the top of the code, it __initializes__ it. This is not the case with `let` and `const`. 
+
+```js
+// let
+
+console.log(y); // -> ReferenceError: Cannot access 'y' before initialization
+let y = 0;
+```
+
+```js
+// const
+
+console.log(z); // -> ReferenceError: Cannot access 'z' before initialization
+const z = 0;
+```
+In the case of `let` and `const`, the JavaScript engine hoists the variable declarations but __doesn't initialize__ them. The JS engine is aware of the variable, but it can not be used until it is declared or initialized.
+
+### Hoisting a Function:
+Functions __are__ hoisted in JavaScript. On the contrary, function expressions __are not__ hoisted in JavaScript.
+
+```js
+let x = 20;
+let y = 30;
+
+let total = add(x, y);
+console.log(total); // -> 50, because the function is hoisted
+
+function add(a, b) {
+  return a + b;
+}
+```
+In the above code, the output will be `50` as the regular function is also hoisted (moved to the top of the script) in JavaScript.
+
+What about when we have a function expression?
+```js
+let x = 20;
+let y = 30;
+
+let total = sum(x, y);
+console.log(total); // -> TypeError: sum is not a function
+
+// function expression with var
+var sum = function(a, b) {
+  return a + b;
+};
+```
+As the function is stored in the variable `sum` (declared by `var` keyword), it is hoisted and initialized above (not the function expression, as only the variable is pushed above, not the value), and the value of `sum` gets undefined. Therefore we get `sum` is not a function as it is undefined.
+
+At the time of execution, the code looks something like this:
+```js
+let x = 20;
+let y = 30;
+var sum; // automatically inserted by JS engine
+
+let total = sum(x, y);
+console.log(total);
+
+var sum = function(a, b) {
+  return a + b;
+};
+```
+
+### Why is Hoisting Important?
+
+Hoisting is (to many developers) an unknown or overlooked behavior of JavaScript. If a developer doesn't understand hoisting, programs may contain bugs (errors).
+
+To avoid bugs, always declare all variables at the beginning of every scope.
 
 **[⬆ Top](#Table-of-Contents)**
 
