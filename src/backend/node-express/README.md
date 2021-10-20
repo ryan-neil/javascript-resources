@@ -7,6 +7,15 @@ These are just the fundamentals of Node and Express. This guide is not meant to 
 ### Table of Contents:
 1. [Node.js](#1-Nodejs)
 2. [Express.js](#2-Expressjs)
+    * [Installation](#Installation)
+    * [Starting the server](#Starting-the-server)
+    * [Running the application](#Running-the-application)
+    * [HTTP methods](#HTTP-methods)
+    * [Sending files with HTTP methods](#Sending-files-with-HTTP-methods)
+    * [Serving static files](#Serving-static-files)
+    * [API vs. SSR](#API-vs-SSR)
+    * [res.json Method](#resjson-Method)
+    * [Route Parameters and Query Strings](#Route-Parameters-and-Query-Strings)
 
 #
 
@@ -504,42 +513,45 @@ As we can see from this example, the _Model_ handles all the data, the _View_ ha
 [Back to Top](#Table-of-Contents)
 
 # 2. Express.js
+  * [Express Documentation](https://expressjs.com/en/5x/api.html)
+  * [Express Tutorial (FCC - 4:48:00)](https://www.youtube.com/watch?v=Oe421EPjeBE)
 
-[Documentation](https://expressjs.com/en/5x/api.html)
-
-## Installing Express: [Docs](https://expressjs.com/en/starter/installing.html)
+## Installation
+  * [Docs - Installation](https://expressjs.com/en/starter/installing.html)
 
 Install Express with the CLI:
 ```bash
 npm install express --save
 ```
 
-## Start up the Express server:
+## Starting the server
 
 This app will start a server and listen on port 3080 for connections. The app responds with “Hello World!” for requests to the root URL (`/`) or route. For every other path, it will respond with a `404 Not Found`.
-
-## Run the app:
-
-Inside the file directory:
-```bash
-node app.js
-```
 
 ```js
 const express = require('express')
 const app = express()
-const port = 3080
+const port = 3000
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`Server listening at: http://localhost:${port}`)
 })
 ```
 
-## App methods:
+## Running the application
+
+Inside the file directory:
+```bash
+node app.js
+```
+
+## HTTP methods
+
+HTTP methods are referring to what the user is trying to do. Is the user trying read data, update data, delete data? By default, all browsers perform a GET request.
 
 The most commonly used Express methods are going to be:
 ```js
@@ -554,6 +566,230 @@ app.delete() // delete data
 app.all() // response if we can't find a resource on the server
 app.use() // responsible for middleware in the app
 app.listen() // listens for connections on the specified host and port
+```
+
+Example HTTP requests:
+```
+GET     www.store.com/api/orders      ->  get all orders
+POST    www.store.com/api/orders      ->  place an order (send data)
+GET     www.store.com/api/orders/:id  ->  get single order (path params)
+PUT     www.store.com/api/orders/:id  ->  update specific order (params + send data)
+DELETE  www.store.com/api/orders/:id  ->  delete order (path params)
+```
+
+Let's now set up some standard paths for our application:
+```js
+const express = require('express');
+const app = express();
+
+// set index route
+app.get('/', (req, res) => {
+  res.status(200).send('Home page');
+});
+
+// set about page route
+app.get('/about', (req, res) => {
+  res.status(200).send('About page');
+});
+
+// set 404 route
+app.all('*', (req, res) => {
+  res.status(404).send('<h1>404</h1>');
+});
+
+// run the server
+app.listen(port, () => {
+  console.log(`Server listening at port 3000...`);
+});
+```
+
+> Note: The `all` method handles all HTTP verbs (GET, POST, etc.). We will use a `*` as the first argument, which refers to all routes.
+
+This is a bare-bones example of how we would set up an Express application.
+
+[Back to Top](#Table-of-Contents)
+
+## Sending files with HTTP methods
+
+For this, we need to use the `sendFile` method that comes with Express. In order to accomplish this we need to send an absolute path and use the `path` module.
+
+```js
+const express = require('express');
+// import the 'path' module
+const path = require('path');
+const app = express();
+
+app.get('/', (req, res) => {
+  // use the 'sendFile' method to serve the index.html file
+  res.sendFile(path.resolve(__dirname, './<path to index.html>'));
+});
+
+...
+```
+
+> Note: `__dirname` is providing the absolute path for us.
+
+[Back to Top](#Table-of-Contents)
+
+## Serving static files
+
+So what does the term 'static', or 'static asset' mean? In the terms of our application, this means it's a file that the server doesn't have to change. Common examples of 'static' files are, an image file, styles files and most JavaScript files (as far as the server is concerned).
+
+To serve static files such as images, CSS files, and JavaScript files, we use the `express.static` built-in middleware function in Express. 
+
+The function syntax is:
+```js
+express.static(root, [options])
+```
+
+The `root` argument specifies the root directory from which to serve static assets. Standard convention is to name this directory, 'public'.
+
+For example, use the following code to serve images, CSS files, and JavaScript files in a directory named public:
+```js
+app.use(express.static('./public'));
+```
+
+Now, we can load the files that are in the public directory:
+```bash
+http://localhost:3000/images/kitten.jpg
+http://localhost:3000/css/style.css
+http://localhost:3000/js/app.js
+http://localhost:3000/images/bg.png
+http://localhost:3000/hello.html
+```
+
+Let's add this to our application now:
+```js
+const express = require('express');
+const path = require('path');
+const app = express();
+
+// set up middleware and serve the static folder
+app.use(express.static('./public'));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.resolve(__dirname, './<path to index.html file>'));
+});
+
+...
+```
+
+> Note: It's important to remember `app.use` is used for setting up the middleware.
+
+[Back to Top](#Table-of-Contents)
+
+## API vs. SSR
+
+When it comes to using Express we will be using one of these two following options:
+  1. Setting up API's
+  2. Templating with Server Side Rendering (SSR)
+
+### API's with Express
+When talking about API's with Express, we are talking about setting up an HTTP interface to interact with out data. 
+
+Data is sent using JSON and in order to send back a response we will be using the `res.json` method. This will do all the heavy lifting for us like setting up the proper content type and stringify-ing our data.
+
+### Server Side Rendering with Express
+This is where we set up templates and send back entire HTML, CSS, and JavaScript ourselves. We will accomplish this by using `res.render` method.
+
+## res.json Method
+  * [res.json Documentation](https://expressjs.com/en/4x/api.html#res.json)
+
+The `res.json` method Sends a JSON response. It sends a response (with the correct content-type) that is the parameter converted to a JSON string using JSON.stringify().
+
+The parameter can be any JSON type, including object, array, string, Boolean, number, or null, and you can also use it to convert other values to JSON:
+```js
+res.json(null)
+res.json({ user: 'Ryan' })
+res.status(500).json({ error: 'message' })
+```
+
+Let's look at a quick example of this in our application where we hard-code in the data to `res.json`:
+```js
+const express = require('express');
+const app = express();
+
+app.get('/', (req, res) => {
+  res.json([ { name: 'Ryan' }, { name: 'Katie' } ]);
+});
+
+...
+```
+
+This returns us JSON with our two objects in the browser. And this is a very basic API where `res.json` is serving our data and we can build the frontend app using this data.
+
+Instead of hard-coding our data let's replace that with a file:
+```js
+// data.js file
+
+const users = [
+	{
+		id: 1,
+		name: 'Ryan',
+    email: 'ryan@gmail.com'
+	},
+	{
+		id: 2,
+		name: 'Katie',
+    email: 'katie@gmail.com'
+	}
+];
+
+// export users array
+module.exports = { users };
+```
+
+Now, inside of our `app.js` file:
+```js
+// app.js file
+
+const express = require('express');
+const app = express();
+// import our data.js file
+const { users } = require('./data');
+
+app.get('/', (req, res) => {
+  // pass in data.js file to res.json
+	res.json(users);
+});
+```
+
+Let's continue to build a more meaningful API with route parameters and query string parameters.
+
+[Back to Top](#Table-of-Contents)
+
+## Route Parameters and Query Strings
+  * [Parameter Documentation](https://expressjs.com/en/4x/api.html#res.json)
+
+### Route parameters:
+
+Let's look at some example code with route parameters. A more realistic approach is to send back specific information about the data we're fetching. So let's do that below:
+```js
+// app.js 
+
+const express = require('express');
+const app = express();
+
+const { users } = require('./data.js');
+
+// index route
+app.get('/', (req, res) => {
+  res.send('<h1>Home Page</h1><a href="/api/users">Users</a>');
+});
+
+// api route
+app.get('/api/users', (req, res) => {
+  // create new array and iterate with each item as a 'user'
+  const newUsers = users.map((user) => {
+    // destructure out name, and email
+    const { name, email } = user;
+    // return new object with just name, and email
+    return { name, email };
+  });
+
+  // get JSON data from our new users array
+  res.json(newUsers);
+});
 ```
 
 
