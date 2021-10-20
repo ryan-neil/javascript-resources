@@ -1,14 +1,24 @@
 const express = require('express');
 const app = express();
+// import our data.js data
+const { products } = require('./data.js');
 
-// set index route
+// set api products route
 app.get('/', (req, res) => {
-	res.status(200).send('Home page');
+	res.send('<h1>Home Page</h1><a href="/api/products">Products</a>');
 });
 
-// set about page route
-app.get('/about', (req, res) => {
-	res.status(200).send('About page');
+// set GET route for the above request
+app.get('/api/products', (req, res) => {
+	// create new array with each item as a 'product'
+	const newProducts = products.map((product) => {
+		// destructure out id, name, and image
+		const { id, name, image } = product;
+		// return new object with just id, name, and image
+		return { id, name, image };
+	});
+
+	res.json(newProducts);
 });
 
 // set 404 route
