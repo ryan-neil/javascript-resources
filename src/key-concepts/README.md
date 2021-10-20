@@ -20,7 +20,8 @@ This guide will attempt to explain some of the most important concepts any JavaS
 6. [Callbacks](#6-Callbacks)
 7. [Promises](#7-Promise)
 8. [Async & Await](#8-Async-&-Await)
-9. [Bonus Questions](#9-Bonus-Questions)
+9. [Higher Order Functions and Arrays](#9-Higher-Order-Functions-and-Arrays)
+10. [Bonus Questions](#10-Bonus-Questions)
 
 ---
 
@@ -793,7 +794,14 @@ To avoid bugs, always declare all variables at the beginning of every scope.
 
 **[⬆ Top](#Table-of-Contents)**
 
-## 9. Bonus Questions
+## 9. Higher Order Functions and Arrays
+
+### Resources:
+  * [JavaScript Higher Order Functions & Arrays - Traversy Media](https://www.youtube.com/watch?v=rRgD1yVwIvE)
+
+**[⬆ Top](#Table-of-Contents)**
+
+## 10. Bonus Questions
 
 ### Resources:
   * [12 Common JavaScript Questions I Used to Ask in Interviews](https://javascript.plainenglish.io/12-common-javascript-questions-i-used-to-ask-in-interview-be39ce27b3c5)
