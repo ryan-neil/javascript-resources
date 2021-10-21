@@ -1,32 +1,28 @@
 const express = require('express');
 const app = express();
-// import our data.js data
-const { products } = require('./data.js');
 
-// set api products route
-app.get('/', (req, res) => {
-	res.send('<h1>Home Page</h1><a href="/api/products">Products</a>');
+// req => middleware => res
+
+// logger helper function
+const logger = (req, res, next) => {
+	const method = req.method;
+	const url = req.url;
+	const date = new Date().getFullYear();
+	console.log(method, url, date);
+
+	// pass to next middleware (req, res)
+	next();
+};
+
+// pass in logger middleware function
+app.get('/', logger, (req, res) => {
+	res.send('Home page');
 });
 
-// set GET route for the above request
-app.get('/api/products', (req, res) => {
-	// create new array with each item as a 'product'
-	const newProducts = products.map((product) => {
-		// destructure out id, name, and image
-		const { id, name, image } = product;
-		// return new object with just id, name, and image
-		return { id, name, image };
-	});
-
-	res.json(newProducts);
+app.get('/about', logger, (req, res) => {
+	res.send('About page');
 });
 
-// set 404 route
-app.all('*', (req, res) => {
-	res.status(404).send('<h1>404</h1>');
-});
-
-// run the server
 app.listen(3000, () => {
 	console.log(`Server listening at port 3000...`);
 });
