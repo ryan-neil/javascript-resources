@@ -960,12 +960,12 @@ Because of this, understanding middleware is fundamental to any developer using 
 
 ### Middleware Example 1:
 
-Let's start with a simple scenario where we have two routes, the _Home_ (`/`) route and the _About_ (`/about`) route. In these routes, we'll log out the _method_ the user is using, the _url_ the user is trying to access, and the _date_.
+Let's start with a simple scenario where we have two routes, the 'home' (`/`) route and the 'about' (`/about`) route. In these routes, we'll log out the _method_ the user is using, the _url_ the user is trying to access, and the _date_.
 ```js
 const express = require('express');
 const app = express();
 
-// req => middleware => res
+// request => middleware => response
 
 // index route
 app.get('/', (req, res) => {
@@ -987,7 +987,6 @@ app.get('/about', (req, res) => {
   res.send('About page');
 });
 
-// start server
 app.listen(3000, () => {
   console.log(`Server listening at port 3000...`);
 });
@@ -995,14 +994,14 @@ app.listen(3000, () => {
 
 The problem with this method is we have to add those 4 lines of code to every single route and if our app has tons of routes this can get very messy. 
 
-I better solution for this would be to set up a separate function to handle our logging logic. Then, we can just attach the `logger` function to any of our routes that need it. 
+I better solution for this would be to set up a separate function to handle our 'logging' logic. Then, we can just attach the `logger` function to any of the routes we want. 
 
 Let's do this now:
 ```js
 const express = require('express');
 const app = express();
 
-// req => middleware => res
+// request => middleware => response
 
 // logger helper function
 const logger = (req, res, next) => {
@@ -1012,12 +1011,13 @@ const logger = (req, res, next) => {
   console.log(method, url, date); // -> GET / 2021
 };
 
-// pass in logger middleware to index route
+// pass in logger middleware to 'index' route
 app.get('/', logger, (req, res) => {
   res.send('Home page');
 });
 
-app.get('/about', (req, res) => {
+  // pass in logger middleware to 'about' route
+app.get('/about', logger, (req, res) => {
   res.send('About page');
 });
 
@@ -1030,14 +1030,14 @@ In our logger function above, express passes in the `req`, `res`, and `next` aut
 
 In the above example, we are successfully logging out the users, `method`, `url` and `date` but you might notice our browser wheel is infinitely spinning. This is happening because we haven't passed it on to the next middleware.
 
-So when we work with middleware, we must ALWAYS pass it on to the next middleware, unless we're terminating the whole cycle by sending back the response.
+So when we work with middleware, we must ALWAYS pass it on to the 'next' middleware, unless we're purposely terminating the whole cycle by sending back the response.
 
-Let's adjust our code a bit:
+Let's adjust our code a bit more:
 ```js
 const express = require('express');
 const app = express();
 
-// req => middleware => res
+// request => middleware => response
 
 // logger helper function
 const logger = (req, res, next) => {
@@ -1050,13 +1050,11 @@ const logger = (req, res, next) => {
   next();
 };
 
-// pass in logger middleware function to index route
 app.get('/', logger, (req, res) => {
   res.send('Home page');
 });
 // -> GET / 2021
 
-// pass in logger middleware function to about route
 app.get('/about', logger, (req, res) => {
   res.send('About page');
 });
@@ -1067,8 +1065,121 @@ app.listen(3000, () => {
 });
 ```
 
-### app.use Method
+Okay, this is working as expected. But we have a few issues. First, our `app.js` file is getting a bit large and messy. It would be much cleaner with we put our `logger` function in a separate file.
 
-[Video 6:21:00](https://www.youtube.com/watch?v=Oe421EPjeBE)
+Secondly, what if our `app.js` file as ~50 routes? We wouldn't want to add our `logger` function manually to all 50 routes. A much more efficient solution would be to have a method that essentially adds our middleware function to any route.
+
+We're in luck because in Express there is such a function that does this for us, `app.use()`. We'll dive deeper into the `.use()` method in the next section.
+
+### The app.use() Method
+  * [Express app Middleware](https://expressjs.com/en/guide/using-middleware.html)
+
+In short, each `app.use(<middleware>)` method is called every time a request is sent to the server.
+
+So carrying on from our above example, let's add our `logger` middleware function to all of our routes:
+```js
+// logger.js file
+
+// logger helper function
+const logger = (req, res, next) => {
+  const method = req.method;
+  const url = req.url;
+  const date = new Date().getFullYear();
+  console.log(method, url, date);
+
+  next();
+};
+
+module.exports = logger;
+```
+```js
+// app.js file
+
+const express = require('express');
+// import our logger function
+const logger = require('./logger.js');
+const app = express();
+
+// middleware function to add logger to all application routes
+app.use(logger);
+
+// index route
+app.get('/', (req, res) => {
+  res.send('Home');
+});
+
+// about route
+app.get('/about', (req, res) => {
+  res.send('About');
+});
+
+// api products route
+app.get('/api/products', (req, res) => {
+  res.send('Products');
+});
+
+// api items route
+app.get('/api/items', (req, res) => {
+  res.send('Items');
+});
+
+app.listen(3000, () => {
+  console.log(`Server listening at port 3000...`);
+});
+```
+
+Now when we visit our route URL's we are getting our console logs:
+```bash
+GET / 2021
+GET /about 2021
+GET /api/products 2021
+GET /api/items 2021
+```
+
+Now, it's important to note that where we invoke our `app.use(logger)` middleware matters. In Express everything goes in order. If we were to call our middleware below the index route (`/`) it will not work on that route. It will however, work on the about route because it is being called before that route get method.
+```js
+// app.js file
+
+const express = require('express');
+const logger = require('./logger.js');
+const app = express();
+
+// logger does not work here
+app.get('/', (req, res) => {
+  res.send('Home');
+});
+
+// invoke logger below index route
+app.use(logger);
+
+// logger will work here though
+app.get('/about', (req, res) => {
+  res.send('About');
+});
+```
+
+We can also provide a path to our `app.use()` middleware functions. Now when we add the path to `use` it's going to be applied to anything that the base of the request path matches:
+```js
+const express = require('express');
+const logger = require('./logger.js');
+const app = express();
+
+// middleware function will only be applied to routes with base of '/api'
+app.use('/api', logger);
+
+// doesn't work
+app.get('/', (req, res) => {
+  res.send('Home');
+});
+
+// will work
+app.get('/api/products', (req, res) => {
+  res.send('Products');
+});
+```
+
+### Multiple Middleware Functions
+
+[Tutorial](https://www.youtube.com/watch?v=Oe421EPjeBE)
 
 [Back to Top](#Table-of-Contents)
