@@ -1,6 +1,6 @@
 ## MongoDB
 
-* [MongoDB Tutorial](https://www.youtube.com/watch?v=Www6cTUymCY)
+* [MongoDB Crash Course - Web Dev Simplified](https://www.youtube.com/watch?v=ofme2o29ngU)
 * [Ultimate MongoDB Guide](https://masteringbackend.com/posts/mongodb-tutorial-the-ultimate-guide)
 * [MongoDB Docs](https://docs.mongodb.com/)
 

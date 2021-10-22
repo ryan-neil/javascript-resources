@@ -704,7 +704,7 @@ For now we will just be focusing on the API side of Express.
 
 The `res.json` method Sends a JSON response. It sends a response (with the correct content-type) that is the parameter converted to a JSON string using JSON.stringify().
 
-The parameter can be any JSON type, including object, array, string, Boolean, number, or null, and you can also use it to convert other values to JSON:
+The parameter can be any JSON type (object, array, string, boolean, number, or null) and you can also use it to convert other values to JSON:
 ```js
 res.json(null)
 res.json({ user: 'Ryan' })
@@ -730,18 +730,18 @@ Instead of hard-coding our data let's replace that with a file:
 // data.js file
 
 const users = [
-	{
-		id: 1,
-		name: 'Ryan',
+  {
+    id: 1,
+    name: 'Ryan',
     email: 'ryan@gmail.com',
     gender: 'male'
-	},
-	{
-		id: 2,
-		name: 'Katie',
+  },
+  {
+    id: 2,
+    name: 'Katie',
     email: 'katie@gmail.com',
     gender: 'female'
-	}
+  }
 ];
 
 // export users array
@@ -759,7 +759,7 @@ const { users } = require('./data');
 
 app.get('/', (req, res) => {
   // pass in data.js file to res.json
-	res.json(users);
+  res.json(users);
 });
 ```
 ### Expected Output:
@@ -769,8 +769,6 @@ app.get('/', (req, res) => {
   { "id": 1, "name": "Katie", "email": "katie@gmail.com", "gender": "female" }
 ]
 ```
-
-Let's continue to build a more meaningful API with route parameters and query string parameters.
 
 [Back to Top](#Table-of-Contents)
 
@@ -796,7 +794,8 @@ app.get('/', (req, res) => {
   `);
 });
 
-// api route (all users)
+// api route for all users
+// url = http://localhost:3000/api/users
 app.get('/api/users', (req, res) => {
   // get JSON data from our imported users array
   res.json(users);
@@ -810,7 +809,7 @@ app.get('/api/users', (req, res) => {
 ]
 ```
 
-A more realistic approach is to send back specific information about the data we're fetching. This time let's just return the `name` and `email` of our `users`:
+A more realistic approach is to send back specific information about the data we're fetching. This time let's just return the `name` and `email` from our `users`:
 
 ```js
 const express = require('express');
@@ -826,13 +825,11 @@ app.get('/', (req, res) => {
   `);
 });
 
-// api route (users' name and email)
-// browser url example = http://localhost:3000/api/users
+// api route for all users
+// url = http://localhost:3000/api/users
 app.get('/api/users', (req, res) => {
   const newUsers = users.map((user) => {
-    // destructure out name, and email
     const { name, email } = user;
-
     return { name, email };
   });
 
@@ -847,7 +844,7 @@ app.get('/api/users', (req, res) => {
 ]
 ```
 
-Now, when we navigate to the `/api/products` route in the browser we see the JSON data with our two `users` objects, displaying only the users' `name` and `email`.
+Now, when we navigate to the `/api/users` route in the browser we see the JSON data with our two `users` objects, displaying only the users' `name` and `email`.
 
 #### Return Data for One Specific User
 
@@ -867,8 +864,8 @@ app.get('/', (req, res) => {
   `);
 });
 
-// api route (single user)
-// browser url example = http://localhost:3000/api/users/1
+// api route for single user
+// url = http://localhost:3000/api/users/1
 app.get('/api/users/:userID', (req, res) => {
   const { userID } = req.params;
 
@@ -877,7 +874,6 @@ app.get('/api/users/:userID', (req, res) => {
   });
 
   res.json(singleUser);
-  // -> { id: 1, name: 'Ryan', email: 'ryan@gmail.com', gender: 'male' }
 });
 ```
 ### Expected Output:
@@ -916,7 +912,7 @@ app.get('/api/users/:userID', (req, res) => {
 
   // check if the single user exists
   if (!singleUser) {
-    return res.status(404).send('User Does Not Exist...');
+    return res.status(404).send('User Does Not Exist');
   }
 
   return res.json(singleUser);
@@ -1010,23 +1006,23 @@ const app = express();
 
 // logger helper function
 const logger = (req, res, next) => {
-	const method = req.method;
-	const url = req.url;
-	const date = new Date().getFullYear();
-	console.log(method, url, date); // -> GET / 2021
+  const method = req.method;
+  const url = req.url;
+  const date = new Date().getFullYear();
+  console.log(method, url, date); // -> GET / 2021
 };
 
 // pass in logger middleware to index route
 app.get('/', logger, (req, res) => {
-	res.send('Home page');
+  res.send('Home page');
 });
 
 app.get('/about', (req, res) => {
-	res.send('About page');
+  res.send('About page');
 });
 
 app.listen(3000, () => {
-	console.log(`Server listening at port 3000...`);
+  console.log(`Server listening at port 3000...`);
 });
 ```
 

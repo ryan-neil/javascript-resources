@@ -791,6 +791,8 @@ To avoid bugs, always declare all variables at the beginning of every scope.
 
 ### Resources:
   * [The Async Await Episode I Promised - Fireship.io](https://www.youtube.com/watch?v=vn3tm0quoqE)
+  * [Master Async JavaScript using Async/Await | Quokka JS - JavaScript Mastery](https://www.youtube.com/watch?v=HXQZfuSMTfM)
+  * [Asynchronous JavaScript Course (Async/Await, Promises, Callbacks) - FCC](https://www.youtube.com/watch?v=ZYb_ZU8LNxs)
 
 **[⬆ Top](#Table-of-Contents)**
 
