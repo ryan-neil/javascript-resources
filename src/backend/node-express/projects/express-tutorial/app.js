@@ -1,10 +1,12 @@
 const express = require('express');
-// import our logger function
+// import logger middleware function
 const logger = require('./logger.js');
+// import authorize middleware function
+const authorize = require('./authorize.js');
 const app = express();
 
-// middleware function to add logger to all application routes
-app.use(logger);
+// execute multiple middleware functions (place in an array)
+// app.use([ logger, authorize ]);
 
 // index route
 app.get('/', (req, res) => {
@@ -22,7 +24,9 @@ app.get('/api/products', (req, res) => {
 });
 
 // api 'items' route
-app.get('/api/items', (req, res) => {
+app.get('/api/items', [ logger, authorize ], (req, res) => {
+	// log the user
+	console.log(req.user);
 	res.send('Items');
 });
 

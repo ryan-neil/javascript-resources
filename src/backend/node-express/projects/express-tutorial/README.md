@@ -16,6 +16,7 @@ These are just the fundamentals of Node and Express. This guide is not meant to 
     * [2.7 Express API](#27-Express-APIs)
     * [2.8 Route Parameters and Query String Parameters](#28-Route-Parameters-and-Query-String-Parameters)
     * [2.9 Middleware](#29-Middleware)
+    * [2.10 Advanced HTTP Methods](#210-Advanced-HTTP-Methods)
 
 #
 
@@ -638,7 +639,9 @@ app.get('/', (req, res) => {
 
 So what does the term 'static', or 'static asset' mean? In the terms of our application, this means it's a file that the server doesn't have to change. Common examples of 'static' files are, an image file, styles files and most JavaScript files (as far as the server is concerned).
 
-To serve static files such as images, CSS files, and JavaScript files, we use the `express.static` built-in middleware function in Express. 
+To serve static files such as images, CSS files, and JavaScript files, we use the `express.static` built-in middleware function in Express.
+
+So basically the 'static' method is only looking for our 'public' folder. It then places all the contents of the 'public' folder as our 'static' assets so they are publicly available.
 
 The function syntax is:
 ```js
@@ -647,7 +650,7 @@ express.static(root, [options])
 
 The `root` argument specifies the root directory from which to serve static assets. Standard convention is to name this directory, 'public'.
 
-For example, use the following code to serve images, CSS files, and JavaScript files in a directory named public:
+For example, use the following code to serve images, CSS files, and JavaScript files in a directory named `public`:
 ```js
 app.use(express.static('./public'));
 ```
@@ -661,7 +664,7 @@ http://localhost:3000/images/bg.png
 http://localhost:3000/hello.html
 ```
 
-Let's look at some example code of this now:
+Let's look at some example code inside our little application:
 ```js
 const express = require('express');
 const path = require('path');
@@ -702,13 +705,13 @@ For now we will just be focusing on the API side of Express.
 ### res.json Method
   * [res.json Documentation](https://expressjs.com/en/4x/api.html#res.json)
 
-The `res.json` method Sends a JSON response. It sends a response (with the correct content-type) that is the parameter converted to a JSON string using JSON.stringify().
+The `res.json` method sends a JSON response. It sends a response (with the correct content-type) that is the parameter converted to a JSON string using JSON.stringify().
 
 The parameter can be any JSON type (object, array, string, boolean, number, or null) and you can also use it to convert other values to JSON:
 ```js
 res.json(null)
 res.json({ user: 'Ryan' })
-res.status(500).json({ error: 'message' })
+res.status(500).json({ error: 'error message' })
 ```
 
 Let's look at a quick example of this in our application where we hard-code in the data to `res.json`:
@@ -725,7 +728,7 @@ app.get('/', (req, res) => {
 
 This returns us JSON with our two objects in the browser. And this is a very basic API where `res.json` is serving our data and we can build the frontend app using this data.
 
-Instead of hard-coding our data let's replace that with a file:
+Let's take it a step further and instead of hard-coding our data let's replace that with a file:
 ```js
 // data.js file
 
@@ -762,7 +765,7 @@ app.get('/', (req, res) => {
   res.json(users);
 });
 ```
-### Expected Output:
+#### Expected Output:
 ```json
 [
   { "id": 1, "name": "Ryan", "email": "ryan@gmail.com", "gender": "male" },
@@ -794,14 +797,15 @@ app.get('/', (req, res) => {
   `);
 });
 
-// api route for all users
-// url = http://localhost:3000/api/users
+// EXample URL = http://localhost:3000/api/users
+
+// api route (all users)
 app.get('/api/users', (req, res) => {
   // get JSON data from our imported users array
   res.json(users);
 });
 ```
-### Expected Output:
+#### Expected Output:
 ```json
 [
   { "id": 1, "name": "Ryan", "email": "ryan@gmail.com", "gender": "male" },
@@ -825,8 +829,9 @@ app.get('/', (req, res) => {
   `);
 });
 
-// api route for all users
-// url = http://localhost:3000/api/users
+// Example URL = http://localhost:3000/api/users
+
+// api route (users name and email)
 app.get('/api/users', (req, res) => {
   const newUsers = users.map((user) => {
     const { name, email } = user;
@@ -836,7 +841,7 @@ app.get('/api/users', (req, res) => {
   res.json(newUsers);
 });
 ```
-### Expected Output:
+#### Expected Output:
 ```json
 [
   { "name": "Ryan", "email": "ryan@gmail.com" },
@@ -864,8 +869,9 @@ app.get('/', (req, res) => {
   `);
 });
 
-// api route for single user
-// url = http://localhost:3000/api/users/1
+// Example URL = http://localhost:3000/api/users/1
+
+// api route (single user)
 app.get('/api/users/:userID', (req, res) => {
   const { userID } = req.params;
 
@@ -876,14 +882,14 @@ app.get('/api/users/:userID', (req, res) => {
   res.json(singleUser);
 });
 ```
-### Expected Output:
+#### Expected Output:
 ```json
 [
   { "id": 1, "name": "Ryan", "email": "ryan@gmail.com", "gender": "male" }
 ]
 ```
 
-It's important to remember that the request parameter will return a string. So our returned user ID is, `'1'`. So we must convert it into a number with the `Number()` method.
+It's important to remember that the request parameter will return a string. So our returned user ID is, `'1'` which we must convert into a number with the `Number()` method.
 
 Of course, if our ID's are set up as strings (which is quite typical) then we can leave it as is and pass in the string.
 
@@ -903,6 +909,9 @@ app.get('/', (req, res) => {
   `);
 });
 
+// Example URL = http://localhost:3000/api/users/1
+
+// api route (single user)
 app.get('/api/users/:userID', (req, res) => {
   const { userID } = req.params;
 
@@ -1030,7 +1039,7 @@ In our logger function above, express passes in the `req`, `res`, and `next` aut
 
 In the above example, we are successfully logging out the users, `method`, `url` and `date` but you might notice our browser wheel is infinitely spinning. This is happening because we haven't passed it on to the next middleware.
 
-So when we work with middleware, we must ALWAYS pass it on to the 'next' middleware, unless we're purposely terminating the whole cycle by sending back the response.
+So when we work with middleware, we must __always__ pass it on to the 'next' middleware, unless we're purposely terminating the whole cycle by sending back the response.
 
 Let's adjust our code a bit more:
 ```js
@@ -1136,7 +1145,7 @@ GET /api/products 2021
 GET /api/items 2021
 ```
 
-Now, it's important to note that where we invoke our `app.use(logger)` middleware matters. In Express everything goes in order. If we were to call our middleware below the index route (`/`) it will not work on that route. It will however, work on the about route because it is being called before that route get method.
+Now, it's important to note that where we invoke our `app.use(logger)` middleware matters. In Express everything goes in order. If we were to call our middleware below the index route (`/`) it will not work on that route. It will however, work on the about route because it is being called before that route's `GET` method.
 ```js
 // app.js file
 
@@ -1149,10 +1158,10 @@ app.get('/', (req, res) => {
   res.send('Home');
 });
 
-// invoke logger below index route
+// invoke logger here
 app.use(logger);
 
-// logger will work here though
+// logger works here
 app.get('/about', (req, res) => {
   res.send('About');
 });
@@ -1180,6 +1189,186 @@ app.get('/api/products', (req, res) => {
 
 ### Multiple Middleware Functions
 
-[Tutorial](https://www.youtube.com/watch?v=Oe421EPjeBE)
+In order to execute multiple middleware functions we can simply just place our functions in an array inside `app.use()`:
+
+```js
+const express = require('express');
+// import authorize middleware function
+const authorize = require('./authorize.js');
+// import logger middleware function
+const logger = require('./logger.js');
+const app = express();
+
+// place imported middleware inside an array to be used on all routes
+app.use([ logger, authorize ]);
+
+app.get('/', (req, res) => {
+  res.send('Home');
+});
+
+app.listen(3000, () => {
+  console.log(`Server listening at port 3000...`);
+});
+```
+
+It's important to note that the middleware functions will be executed in order so if we flip the functions inside the `app.use` array, they will be called in that order:
+```js
+// 'authorize' will now be invoked before 'logger'
+app.use([ authorize, logger ]);
+```
+
+### Adding an 'if' condition to our middleware functions
+
+> Note: This is not how we authorize users in our Express applications. This is simply an example of executing multiple middleware functions.
+
+Let's look at a simple example using a query string parameter. So what we're going to do is check if the user provides a query string in the URL, then send back the resource the user is requesting. However, if the user does not provide the query string parameter, we'll send back `401`:
+```js
+// authorize.js file
+
+const authorize = (req, res, next) => {
+  // look for specific user query string
+  const { user } = req.query;
+  // check if user provides a query string to the URL
+  if (user === 'ryan') {
+    // add a property of user onto the req object
+    req.user = { name: 'ryan', id: 3 };
+    // must call 'next'
+    next();
+  } else {
+    // send back if user doesn't provide the query string
+    res.status(401).send('Unauthorized');
+  }
+
+  next();
+};
+
+module.exports = authorize;
+```
+
+> Error 401 stands for 'unauthorized'.
+
+Now, if we navigate to our home page (`http://localhost:3000`), products page (`http://localhost:3000/products`), or any of the routes, we get `401` 'Unauthorized'. This is because there is no path in our `app.use()`.
+
+But, if we provide the correct query string parameters (`http://localhost:3000/?user=ryan`), we successfully get our home page. This is because the condition from our `authorize.js` file is  and we got o 'next'.
+
+This is incredibly powerful because inside our `authorize` function we add the user (`{ name: 'ryan', id: 3 }`) which means we can now check for that query string parameter as well as accessing the users information (`name`, `id`, etc.).
+
+Again, this is for demonstration purposes, normally what we would do is check for the JSON Web Token (JWT) and then check if the token exists and communicate with the database to get the user.
+
+Back in the `app.js` file, let's add `req.user` to any of the routes just for demonstration purposes:
+```js
+const express = require('express');
+const authorize = require('./authorize.js');
+const logger = require('./logger.js');
+const app = express();
+
+app.use([ logger, authorize ]);
+
+app.get('/', (req, res) => {
+  res.send('Home');
+});
+
+// log the user at api/items route
+app.get('/api/items', (req, res) => {
+  // access to our 'req' object from 'authorize'
+  console.log(req.user);
+
+  res.send('Items');
+});
+
+app.listen(3000, () => {
+  console.log(`Server listening at port 3000...`);
+});
+```
+#### Expected Output:
+```
+GET /api/items?user=ryan 2021
+{ name: 'ryan', id: 3 }
+```
+
+This is why it's so powerful, we can add our middleware and then do some kind of functionality. So now we're essentially attaching this to our `req` object in `api/items`. 
+
+So, we have the `req` object and we're attaching the `req.user` property and now in any of our routes, we went with `api/items` in our example but it really doesn't matter because in any of our routes we have access to that user.
+
+This is why middleware is so crucial and that's also why it's a big part of Express applications because it truly allows us to structure our applications as lego blocks.
+
+### Common questions:
+
+  1. If we have access to `app.use()` and know how to use it, are we going to add the middleware in route?
+
+The answer is, yes. Imagine the scenario where we don't want to apply the `app.use()` to all our routes. For example, say we only want to check for 'authorized' users in the `/api/items` route.
+
+We would just add our authorized middle to that route:
+```js
+const express = require('express');
+const authorize = require('./authorize.js');
+const logger = require('./logger.js');
+const app = express();
+
+app.get('/', (req, res) => {
+  res.send('Home');
+});
+
+// pass in 'authorize' middleware function
+app.get('/api/items', authorize, (req, res) => {
+  console.log(req.user);
+  res.send('Items');
+});
+```
+
+To pass two middleware functions into a route we would:
+```js
+const express = require('express');
+const authorize = require('./authorize.js');
+const logger = require('./logger.js');
+const app = express();
+
+app.get('/', (req, res) => {
+  res.send('Home');
+});
+
+// pass 2 middleware functions inside an array
+app.get('/api/items', [ logger, authorize ], (req, res) => {
+  console.log(req.user);
+  res.send('Items');
+});
+```
+
+  2. What are our options when it comes to middleware?
+
+So far, we have covered one option, _setting up our own middleware_. The other option is _Express_. Express provides it's own built in middleware functions and for this we just need to reference the documentation and see what options are provided.
+
+An example of a built in Express middleware function is `static`. We've seen this method when linking all of our static files (images, css, js, etc.):
+```js
+const express = require('express');
+const app = express();
+
+// built in middleware
+app.use(express.static('./public'));
+```
+
+In the above example, `app.use()` is expecting to be passed some middleware (`static`). So somewhere in the Express codebase there is some logic for `static()` that is tacked onto the `express` object. 
+```js
+class Express {
+  constructor() {}
+
+  static(req, res, next) {
+    // some crazy static logic...
+  }
+}
+
+module.exports = Express;
+```
+Now this is way over simplified but hopefully you get the jist. 
+
+The last option is _third parties_. For third party middleware we need to install them into our application. An example of a third party middleware library is '[morgan](https://www.npmjs.com/package/morgan)'.
+
+[Back to Top](#Table-of-Contents)
+
+## 2.10 Advanced HTTP Methods
+
+### GET Methods
+
+[Continue here...](https://www.youtube.com/watch?v=Oe421EPjeBE)
 
 [Back to Top](#Table-of-Contents)
