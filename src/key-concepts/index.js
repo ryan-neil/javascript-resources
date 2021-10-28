@@ -1,21 +1,23 @@
-const credits = ((num) => {
-	let credits = num;
-	console.log(`Initial credits value: ${credits}`);
+function firstAction(callback, message, anotherCallback) {
+	console.log(message); // -> Im the first action!
+	setTimeout(callback, 1000); // 'secondAction' is the callback function and will execute after 1 second of being invoked
+	anotherCallback();
+}
 
-	return () => {
-		credits -= 1;
-		if (credits > 0)
-			console.log(`Continue playing the game: ${credits} credit(s) remaining`);
-		if (credits <= 0) console.log(`Game over! Not enough credits`);
-	};
-})(3);
+function secondAction(message) {
+	console.log(message); // -> Im the second action!
+}
 
-credits();
-credits();
-credits();
+function thirdAction() {
+	console.log('Im the third action!');
+}
 
-// [Console]
-// -> Initial credits value: 3
-// -> Continue playing the game: 2 credit(s) remaining
-// -> Continue playing the game: 1 credit(s) remaining
-// -> Game over! Not enough credits
+setTimeout(
+	() =>
+		firstAction(
+			() => secondAction('Im the second action!'),
+			'Im the first action!',
+			thirdAction
+		),
+	3000
+);

@@ -17,11 +17,12 @@ This guide will attempt to explain some of the most important concepts any JavaS
 3. [Closures](#3-Closures)
 4. [Immediately Invoked Function Expressions (IIFE)](#4-Immediately-Invoked-Function-Expressions-IIFE)
 5. [Hoisting](#5-Hoisting)
-6. [Callbacks](#6-Callbacks)
-7. [Promises](#7-Promise)
-8. [Async & Await](#8-Async-&-Await)
-9. [Higher Order Functions and Arrays](#9-Higher-Order-Functions-and-Arrays)
-10. [Bonus Questions](#10-Bonus-Questions)
+6. [Async JavaScript](#Async-JavaScript) \
+  6.1 [Callbacks](#61-Callbacks) \
+  6.2 [Promises](#62-Promises) \
+  6.3 [Async & Await](#63-Async-&-Await)
+7. [Higher Order Functions and Arrays](#7-Higher-Order-Functions-and-Arrays)
+8. [Bonus Questions](#8-Bonus-Questions)
 
 ---
 
@@ -774,36 +775,238 @@ To avoid bugs, always declare all variables at the beginning of every scope.
 
 **[⬆ Top](#Table-of-Contents)**
 
-## 6. Callbacks
+## 6. Async JavaScript
 
 ### Resources:
+  * [Asynchronous JavaScript Course (Callbacks, Promises, Async/Await) - FCC](https://www.youtube.com/watch?v=ZYb_ZU8LNxs)
+  * [Async JS Crash Course - Callbacks, Promises, Async Await - Traversy Media](https://www.youtube.com/watch?v=PoRJizFvM7s)
+
+### 6.1 Callbacks
+#### Resources:
+  * [Callback Function - MDN Web Docs](https://developer.mozilla.org/en-US/docs/Glossary/Callback_function)
+  * [Callbacks in JavaScript Explained! - Code with Ania Kubów](https://www.youtube.com/watch?v=cNjIUSDnb9k)
+
+#### What is a Callback?
+
+_"A callback function is a function passed into another function as an argument, which is then invoked inside the outer function to complete some kind of routine or action."_ - MDN Web Docs
+
+MDN Example:
+```js
+function greeting(name) {
+  alert(`Hello ${name}!`);
+}
+
+function processUserInput(callback) {
+  const name = prompt('Please enter your name.');
+  // 'greeting' is the callback function here
+  callback(name); // -> Hello Ryan!
+}
+
+processUserInput(greeting);
+```
+
+Note, however, that callbacks are often used to continue code execution after an _asynchronous_ operation has completed — these are called asynchronous callbacks. A good example is the callback functions executed inside a `.then()` block chained onto the end of a promise after that promise fulfills or rejects. This structure is used in many modern web APIs, such as `fetch()`.
+
+#### Simple Callback Function Example:
+```js
+// target button element from index.html
+const button = document.querySelector('button');
+
+const toggle = () => {
+  // toggle the class of 'changeColor' to our button
+  button.classList.toggle('changeColor');
+};
+
+// invoke 'toggle' right away
+toggle()
+```
+
+In the above example our `button` element changes color instantaneously.
+
+Now, what if we don't want our `toggle` function to be invoked right away? What if we only want it to change color when we click the button? To achieve this we will be using a _callback function_ to call our `toggle` function when certain requirements are met.
+
+To achieve this lets look at a JavaScript method that takes functions as one of its parameters, the `addEventListener()` method:
+```js
+const button = document.querySelector('.btn');
+
+const toggle = () => {
+  button.classList.toggle('changeColor');
+};
+
+// if we click on the 'button' we want our 'toggle' function to run
+button.addEventListener('click', toggle);
+```
+
+One way to think of this is, our function `toggle` is just sitting, waiting to burst and once we call it (`toggle()`, add the parenthesis) it gets to release all of it's JavaScript logic and power.
+
+However, without the parenthesis it is considered a _callback function_.
+```js
+const button = document.querySelector('.btn');
+const toggle = () => {
+  button.classList.toggle('changeColor');
+};
+
+// callback function (named)
+button.addEventListener('click', toggle);
+
+// callback function (anonymous)
+button.addEventListener('click', function() {
+  button.classList.toggle('changeColor');
+});
+
+// callback arrow function (anonymous)
+button.addEventListener('click', () => {
+  button.classList.toggle('changeColor');
+});
+```
+
+In the examples above the function is only being called by the outer function/method `addEventListener` if a click has been made. All 3 of the second arguments being passed into `addEventListener` are callback functions and they all achieve the same exact result.
+
+Just to be very clear:
+```js
+// good
+toggle === () => {}
+
+// bad
+toggle() !== () => {}
+```
+
+toggle with the parenthesis will be called immediately and cannot be used or considered a callback function:
+```js
+// this does not work
+button.addEventListener('click', toggle())
+```
+
+#### Passing Parameters to a Callback Function
+
+JavaScript runs code sequentially from top to bottom. However, sometimes we don't want this behavior to happen. Sometimes we want a function to be called after something else happens or a certain condition is met. This is called _asynchronous programming_.
+
+Let's look at an example:
+```js
+function firstAction() {
+  console.log('Im the first action!'); // runs first after 3 seconds
+  setTimeout(secondAction, 1000); // runs second after 4 seconds
+}
+
+function secondAction() {
+  console.log('Im the second action!');
+}
+
+setTimeout(firstAction, 3000);
+
+// -> Im the first action!
+// -> Im the second action!
+```
+
+As we can see above, even though the `secondAction` is called after 2 seconds because it's in the `firstAction` function which happens to be inside the `setTimeout` and is a callback function that won't be called until 3 seconds has passed, the string `'Im the second action'` will only be called after all of our code runs and therefore after 4 seconds has passed.
+
+Now, with understanding asynchronous programming a bit more, how would be pass a parameter into the first action? How about something like this?
+```js
+function firstAction(callback) {
+  console.log('Im the first action!');
+  setTimeout(callback, 1000);
+}
+
+function secondAction() {
+  console.log('Im the second action!');
+}
+
+// bad
+setTimeout(firstAction(secondAction), 3000);
+```
+
+This does not work how we want because the `firstAction` function is being called immediately since we opened the parenthesis. Instead, we need to convert it to a callback function:
+```js
+function firstAction(callback) {
+  console.log('Im the first action!');
+  setTimeout(callback, 1000);
+}
+
+function secondAction() {
+  console.log('Im the second action!');
+}
+
+// good
+setTimeout( () => firstAction( secondAction ), 3000)
+```
+
+So again, to summarize:
+```js
+// first argument is a callback
+setTimeout( firstAction, 3000 )
+
+// we opened up parenthesis so it's no longer a callback
+setTimeout( firstAction( secondAction ), 3000)
+
+// converted to callback again with an anonymous function
+setTimeout( () => firstAction( secondAction ), 3000)
+```
+
+Now to take it a step further, let's make the `firstAction` and `secondAction` functions reusable to print out our messages:
+```js
+function firstAction(callback, message) {
+  console.log(message); // -> Im the first action!
+  setTimeout(callback, 1000); // 'secondAction' is the callback function and will execute after 1 second of being invoked
+}
+
+function secondAction(message) {
+  console.log(message); // -> Im the second action!
+}
+
+setTimeout( () => firstAction( () => secondAction('Im the second action!'), 'Im the first action!' ), 3000 );
+```
+
+Let's add one more layer for fun:
+```js
+// add our third parameter and invoke it
+function firstAction(callback, message, anotherCallback) {
+  console.log(message);
+  setTimeout(callback, 1000);
+  anotherCallback();
+}
+
+function secondAction(message) {
+  console.log(message);
+}
+
+// add our third action
+function thirdAction() {
+  console.log('Im the third action!');
+}
+
+// pass 'thirdAction' as the third argument to 'firstAction'
+setTimeout( () => firstAction( () => secondAction('Im the second action!'), 'Im the first action!', thirdAction ), 3000 );
+
+// -> Im the first action!
+// -> Im the third action!
+// -> Im the second action!
+```
+
+So again, we're invoking the third callback function inside the outer function (`firstAction`). This is essentially what is happening under the hood of `addEventListener` and `setTimeout`.
 
 **[⬆ Top](#Table-of-Contents)**
 
-## 7. Promise
-
-### Resources:
+### 6.2 Promises
+#### Resources:
   * [JavaScript Promise in 100 Seconds - Fireship.io](https://www.youtube.com/watch?v=RvYYCGs45L4)
 
 **[⬆ Top](#Table-of-Contents)**
 
-## 8. Async & Await
-
-### Resources:
-  * [The Async Await Episode I Promised - Fireship.io](https://www.youtube.com/watch?v=vn3tm0quoqE)
-  * [Master Async JavaScript using Async/Await | Quokka JS - JavaScript Mastery](https://www.youtube.com/watch?v=HXQZfuSMTfM)
-  * [Asynchronous JavaScript Course (Async/Await, Promises, Callbacks) - FCC](https://www.youtube.com/watch?v=ZYb_ZU8LNxs)
+### 6.3 Async & Await
+#### Resources:
+  * [The Async Await Episode - Fireship.io](https://www.youtube.com/watch?v=vn3tm0quoqE)
+  * [Master Async JavaScript using Async/Await & Quokka JS - JavaScript Mastery](https://www.youtube.com/watch?v=HXQZfuSMTfM)
 
 **[⬆ Top](#Table-of-Contents)**
 
-## 9. Higher Order Functions and Arrays
+## 7. Higher Order Functions and Arrays
 
 ### Resources:
   * [JavaScript Higher Order Functions & Arrays - Traversy Media](https://www.youtube.com/watch?v=rRgD1yVwIvE)
 
 **[⬆ Top](#Table-of-Contents)**
 
-## 10. Bonus Questions
+## 8. Bonus Questions
 
 ### Resources:
   * [12 Common JavaScript Questions I Used to Ask in Interviews](https://javascript.plainenglish.io/12-common-javascript-questions-i-used-to-ask-in-interview-be39ce27b3c5)
