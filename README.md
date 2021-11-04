@@ -8,52 +8,58 @@ I wanted to remove the bloat that comes with learning a programming language and
 
 > _“Any intelligent fool can make things bigger, more complex, and more violent. It takes a touch of genius—and a lot of courage—to move in the opposite direction.” —E.F. Schumacher_
 
-###### If you found this guide helpful give me a follow and let me know! 🤙🏻
+##### If you found this guide helpful give me a follow and let me know! 🤙🏻
 [![Twitter Badge](https://img.shields.io/badge/-Twitter-00acee?style=flat-square&logo=Twitter&logoColor=white)](https://twitter.com/home?lang=en)
 
-### 🧐 What's inside?
-A quick look at the files and directories you'll see in the repo.
+## 📓 Table of Contents
 
-```bash
-├── assets
-│   └── repo image files
-├── src
-│   ├── components
-│   │   ├── arrays.js
-│   │   ├── arrow-functions.js
-│   │   ├── async-await.js
-│   │   ├── asynchronous-callbacks.js
-│   │   ├── basics.js
-│   │   ├── callbacks.js
-│   │   ├── destructuring.js
-│   │   ├── dom-events.js
-│   │   ├── dom.js
-│   │   ├── functions.js
-│   │   ├── json.js
-│   │   ├── loops.js
-│   │   ├── objects.js
-│   │   ├── promises.js
-│   │   ├── prototypes.js
-│   │   ├── requests-axios.js
-│   │   ├── requests.js
-│   │   ├── rest.js
-│   │   ├── spread.js
-│   │   └── this.js
-│   ├── frontend
-│   │   └── react
-│   ├── backend
-│   │   ├── node-js
-│   │   └── express-js
-│   ├── projects
-│   │   ├── color-flipper
-│   │   ├── ecommerce-app
-│   │   ├── movie-duel
-│   │   ├── node-app
-│   │   └── spa-app
-├── README.md
-```
+1. [JavaScript Resources](#1-javascript-resources)
+1. [Running JavaScript](#2-running-javascript)
+1. [Debugging JavaScript (Firefox)](#3-debugging-javascript-firefox)
+1. [Commenting](#4-commenting)
+1. [Variables](#5-variables)
+1. [Naming Conventions](#6-naming-conventions)
+1. [Properties](#7-properties)
+1. [For Loops](#8-for-loops)
+1. [Math](#9-math)
+1. [Date & Time](#10-date-and-time)
+1. [Conditionals](#11-conditionals)
+1. [Ternary Operator](#12-ternary-operator)
+1. [Objects](#13-objects)
+1. [Methods](#14-methods)
+    * [Array Methods](#array-methods)
+    * [Object Methods](#object-methods)
+    * [String Methods](#string-methods)
+1. [Functions](#15-functions)
+    * [Callback Functions](#callback-functions)
+    * [Higher-Order Functions](#higher-order-functions)
+1. [Destructuring](#16-destructuring)
+1. [Spread](#17-spread)
+1. [Rest](#18-rest)
+1. [This](#19-this)
+1. [Getters and Setters](#20-getters-and-setters)
+1. [The DOM](#21-the-document-object-model-dom)
+    * [DOM Methods and Properties](#dom-methods-and-properties)
+    * [DOM Events](#dom-events)
+1. [The Call Stack](#22-the-call-stack)
+1. [Asynchronous JavaScript](#23-asynchronous-javascript)
+    * [Asynchronous Callbacks](#asynchronous-callbacks)
+    * [Promises](#promises)
+    * [Requests](#requests)
+      * [Fetch](#fetch)
+    * [Async Functions](#async-functions)
+    * [Await](#await)
+1. [Object Oriented Programming](#24-object-oriented-programming)
+    * [Inheritance](#inheritance)
+    * [Encapsulation](#encapsulation)
+    * [Abstraction](#abstraction)
+    * [Polymorphism](#polymorphism)
+1. [OOP with JavaScript](#25-object-oriented-programming-with-javaScript)
+    * [Classes](#classes-in-javascript)
 
-## 🔗 JavaScript Resources
+#
+
+## 1. JavaScript Resources
 - [JavaScript MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 - [JavaScript.info](https://javascript.info/)
 - [Dev Docs](https://devdocs.io/javascript/)
@@ -65,57 +71,7 @@ A quick look at the files and directories you'll see in the repo.
 - [JavaScript Visualized](https://dev.to/lydiahallie/series/3341)
 - [1 Line - JavaScript Utilities](https://1loc.dev/)
 
-----
-
-### 📓 Notes
-### Table of Contents
-
-1. [Running JavaScript](#running-javascript)
-1. [Debugging JavaScript (Firefox)](#debugging-javascript-firefox)
-1. [Commenting](#commenting)
-1. [Variables](#variables)
-1. [Naming Conventions](#naming-conventions)
-1. [Properties](#properties)
-1. [For Loops](#for-loops)
-1. [Math](#math)
-1. [Date & Time](#date-and-time)
-1. [Conditionals](#conditionals)
-1. [Ternary Operator](#ternary-operator)
-1. [Objects](#objects)
-1. [Methods](#methods)
-    * [Array Methods](#array-methods)
-    * [Object Methods](#object-methods)
-    * [String Methods](#string-methods)
-1. [Functions](#functions)
-    * [Callback Functions](#callback-functions)
-    * [Higher-Order Functions](#higher-order-functions)
-1. [Destructuring](#destructuring)
-1. [Spread](#spread)
-1. [Rest](#rest)
-1. [This](#this)
-1. [Getters and Setters](#getters-and-setters)
-1. [The DOM](#the-document-object-model-dom)
-    * [DOM Methods and Properties](#dom-methods-and-properties)
-    * [DOM Events](#dom-events)
-1. [The Call Stack](#the-call-stack)
-1. [Asynchronous JavaScript](#asynchronous-javascript)
-    * [Asynchronous Callbacks](#asynchronous-callbacks)
-    * [Promises](#promises)
-    * [Requests](#requests)
-      * [Fetch](#fetch)
-    * [Async Functions](#async-functions)
-    * [Await](#await)
-1. [Object Oriented Programming](#object-oriented-programming)
-    * [Inheritance](#inheritance)
-    * [Encapsulation](#encapsulation)
-    * [Abstraction](#abstraction)
-    * [Polymorphism](#polymorphism)
-1. [OOP with JavaScript](#object-oriented-programming-with-javaScript)
-    * [Classes](#classes-in-javascript)
-
-----
-
-### Running JavaScript
+## 2. Running JavaScript
 
 #### From the Command Line:
 Running JavaScript from the command line is handled by NodeJS.
@@ -156,9 +112,7 @@ Here's a curated list of some of the most used CLI shortcuts.
 `CTRL-P`/`UP`: The previous command in history. \
 `CTRL-N`/`DOWN`: The next command in history.
 
-----
-
-### Commenting
+## 3. Commenting
 
 We use `/** ... */` for multiline comments.
 
@@ -217,17 +171,13 @@ function getType() {
 
 **[⬆ Top](#table-of-contents)**
 
-----
-
-### Debugging JavaScript (Firefox)
+## 4. Debugging JavaScript (Firefox)
 
   * [Run and Debug JavaScript with Firefox developer tools](https://www.youtube.com/watch?v=yjQVG6ubUTA)
 
 **[⬆ Top](#table-of-contents)**
 
-----
-
-### Variables
+## 5. Variables
 
 We always want to use `const` or `let` to declare variables. Not doing so will result in global variables. We need to be carful not to muddy up the global namespace.
 
@@ -245,9 +195,7 @@ let counter = counter + 1; // -> 2
 
 **[⬆ Top](#table-of-contents)**
 
-----
-
-### Naming Conventions
+## 6. Naming Conventions
 If possible, avoid single letter names. Be descriptive with your naming.
 
 ```javascript
@@ -321,9 +269,7 @@ const HTTPRequests = [
 
 **[⬆ Top](#table-of-contents)**
 
-----
-
-### Properties
+## 7. Properties
 We use dot notation `.` when accessing properties.
 
 ```javascript
@@ -358,9 +304,7 @@ console.log(isSuperhero); // -> true
 
 **[⬆ Top](#table-of-contents)**
 
-----
-
-### For Loops
+## 8. For Loops
 
 The 4 for loops of JavaScript:
 ```javascript
@@ -493,9 +437,7 @@ for (let i of sports) {
 
 **[⬆ Top](#table-of-contents)**
 
-----
-
-### Math
+## 9. Math
 `Math` is a built-in object that has __properties__ and __methods__ for mathematical constants and functions. It’s not a function object.
 
 Value of pi:
@@ -550,9 +492,7 @@ Math.floor(Math.random() * 10) + 1; // -> 10 etc.
 
 **[⬆ Top](#table-of-contents)**
 
-----
-
-### Date and Time
+## 10. Date and Time
 
 Let's have a look at how we can get todays date and time:
 ```js
@@ -597,9 +537,7 @@ tomorrow.toLocaleDateString("de-DE", options); // -> Montag, 14. Juni 2021
 
 **[⬆ Top](#table-of-contents)**
 
-----
-
-### Conditionals
+## 11. Conditionals
 Conditional Statements are used for making decisions with code. They can have 3 different pieces, an __if__, an __else if__, and __else__.
 
 `if` = Run the code `if` a given condition is true
@@ -778,9 +716,7 @@ switch (item) {
 
 **[⬆ Top](#table-of-contents)**
 
-----
-
-### Ternary Operator
+## 12. Ternary Operator
 A shortcut syntax that we can use for certain conditionals. It basically takes an `if` and an `else` and turns them into a single line of code. This will only work if there are no `else if` statements.
 
 __Syntax__:
@@ -808,9 +744,7 @@ if (status === 'offline') {
 
 **[⬆ Top](#table-of-contents)**
 
-----
-
-### Objects
+## 13. Objects
 #### What are Objects?
 In short, Objects allow us to keep properties and/or methods in the same data structure when convenient. We can then apply methods to the correct set of values inside of the Object.
 
@@ -890,9 +824,7 @@ console.log(student.exams);
 
 **[⬆ Top](#table-of-contents)**
 
-----
-
-### Methods
+## 14. Methods
 This is a collection of the most commonly used ES5 and ES6+ methods for arrays, objects and strings.
 
 JavaScript methods are actions that can be performed on objects. Methods are functions stored as object properties.
@@ -1358,9 +1290,7 @@ console.log(indexOfFirst); // -> 11
 
 **[⬆ Top](#table-of-contents)**
 
-----
-
-### Functions
+## 15. Functions
 A function is simply a reusable procedure. They also allow us to write modular code which keeps our codebase clean and organized. We define a chunk of code that we can then execute at a later time.
 
 We can think of a vending machine... imagine you approach a vending machine, put in some coins and make a selection. You start to hear sounds and things going on in the vending machine but you're not really sure whats happening. Then all of a sudden something pop's out.
@@ -1640,9 +1570,7 @@ square = (x) => x + x;
 
 **[⬆ Top](#table-of-contents)**
 
-----
-
-### Destructuring
+## 16. Destructuring
 
 #### Object Destructuring:
 Destructuring saves you from creating temporary references for those properties, and from repetitive access of the object. Repeating object access creates more repetitive code, requires more reading, and creates more opportunities for mistakes. 
@@ -1707,9 +1635,7 @@ const { left, top } = processInput(input);
 
 **[⬆ Top](#table-of-contents)**
 
-----
-
-### Spread
+## 17. Spread
 The spread operator (`...`) allows you to expand a single array into its values. Some common use-cases for the spread operator include:
 
 * Expanding an array's values to pass them as arguments to a function that does not accept an array.
@@ -1744,9 +1670,7 @@ console.log(g); // -> g = ['h', 'e', 'l', 'l', 'o']
 
 **[⬆ Top](#table-of-contents)**
 
-----
-
-### Rest
+## 18. Rest
 The rest parameter syntax allows you to collapse any remaining arguments into an array. While it looks very similar to the spread operator, the rest parameter syntax is only used in function declarations (arrow or otherwise).
 
 ```javascript
@@ -1761,9 +1685,7 @@ foo('hey', ...data); // -> 'hey_456', `nums` will be [4, 5, 6]
 
 **[⬆ Top](#table-of-contents)**
 
-----
-
-### This
+## 19. This
 `this` is a fundamental part of JavaScript that helps us write much more useful `methods` in our `objects`.
 
 We can think of `this` as a reference to the current *execution scope*. It is going to give you an `object` back.
@@ -1880,7 +1802,7 @@ console.log(person.sayHello());
 // -> undefined says hi there!!
 ```
 
-### Determining the Value of "this"
+## 20. Determining the Value of "this"
 
 We have 3 different ways at which we can determine the value of `this` inside of a function:
   1. We ask ourselves, did I define the function with an arrow function?
@@ -1942,9 +1864,7 @@ randomObject.printColor();
 
 **[⬆ Top](#table-of-contents)**
 
-----
-
-### Getters and Setters
+## 21. Getters and Setters
   * [Property Getters and Setters](https://javascript.info/property-accessors)
 
 Getters and setters allow you to define Object Accessors (Computed Properties).
@@ -2073,9 +1993,7 @@ console.log(user1); // -> Object { _name: "Ryan" }
 
 **[⬆ Top](#table-of-contents)**
 
-----
-
-### The Document Object Model (DOM)
+## 22. The Document Object Model (DOM)
 
 The Document Object Model (DOM) is an application programming interface (API) for manipulating HTML and XML documents.
 
@@ -3148,9 +3066,7 @@ for (let input of inputs) {
 
 **[⬆ Top](#table-of-contents)**
 
-----
-
-### The Call Stack
+## 23. The Call Stack
 The Call Stack is the mechanism the JavaScript interpreter uses to keep track of its place in a script that calls multiple functions.
 
 How JavaScript "knows" what function is currently being run and what functions are called from within that function, etc.
@@ -3212,9 +3128,7 @@ isRightTriangle(3, 4, 5);
 
 **[⬆ Top](#table-of-contents)**
 
-----
-
-### Asynchronous JavaScript
+## 24. Asynchronous JavaScript
 JavaScript, fundamentally, is a [single-threaded](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Concepts) language. At any given point in time, that single JavaScript thread is running at most one line of JavaScript code.
 
 __How Asynchronous Callbacks Actually Work__:
@@ -3477,8 +3391,6 @@ moveX(btn, 200, 1000)
 ```
 
 **[⬆ Top](#table-of-contents)**
-
-----
 
 ### Promises
   * [How to Write JavaScript Promises](https://www.freecodecamp.org/news/how-to-write-a-javascript-promise-4ed8d44292b8/)
@@ -3790,8 +3702,6 @@ fakeRequest("/users")
 
 **[⬆ Top](#table-of-contents)**
 
-----
-
 ### Requests
 Requests are used to send or receive data from a server side resource. Some ways we can achieve this are:
   * [XMLHttp](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest) - Old school method
@@ -3900,8 +3810,6 @@ fetchJSON("/some.json");
 ```
 
 **[⬆ Top](#table-of-contents)**
-
-----
 
 ### Fetch
 * [Fetch: Chrome Dev](https://developers.google.com/web/updates/2015/03/introduction-to-fetch)
@@ -4359,9 +4267,7 @@ startingPokemon();
 
 **[⬆ Top](#table-of-contents)**
 
-----
-
-### Object Oriented Programming
+## 25. Object Oriented Programming
 
 * [OOP Explained](https://www.educative.io/blog/object-oriented-programming)
 
@@ -4833,9 +4739,7 @@ Object Oriented programming requires thinking about the structure of the program
 
 **[⬆ Top](#table-of-contents)**
 
-----
-
-### Object Oriented Programming with JavaScript
+## 26. Object Oriented Programming with JavaScript
 
 * [OOP for JavaScript](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Object-oriented_JS)
 
@@ -5054,8 +4958,6 @@ console.log(cat1.getLivesLeft()); // -> 8
 We can take this concept as deep as we want and maybe have `Pet` extend from `Animal` and `Animal` extend from `LivingThing`, etc. An example of this from the web API is `HTMLElement` which extends from 5 or 6 different classes.
 
 **[⬆ Top](#table-of-contents)**
-
-----
 
 ### Contributing
 Contributions are always welcome! All I ask is that you open an issue and we discuss your proposed changes before you create a pull request.

@@ -7,25 +7,28 @@ These are just the fundamentals of Node and Express. This guide is not meant to 
 ### Table of Contents:
 1. [Node.js](#1-Nodejs)
 2. [Express.js](#2-Expressjs)
-    * [2.1 Installation](#21-Installation)
-    * [2.2 Starting the Server](#22-Starting-the-server)
-    * [2.3 HTTP Methods](#23-HTTP-methods)
-    * [2.4 Sending Files with HTTP Methods](#24-Sending-files-with-HTTP-methods)
-    * [2.5 Serving Static Files](#25-Serving-static-files)
-    * [2.6 API vs. SSR](#26-API-vs-SSR)
-    * [2.7 Express API](#27-Express-APIs)
-    * [2.8 Route Parameters and Query String Parameters](#28-Route-Parameters-and-Query-String-Parameters)
-    * [2.9 Middleware](#29-Middleware)
-    * [2.10 Advanced HTTP Methods](#210-Advanced-HTTP-Methods)
-    * [2.11 Express Router](#211-Express-Router)
-    * [2.12 Express Controllers](#211-Express-Controllers)
 
 #
 
 # 1. Node.js
-
+## Resources:
 * [Introduction to Node.js](https://nodejs.dev/learn)
 * [Node.js Docs](https://nodejs.org/api/all.html)
+
+## Table of Contents:
+  * [1.1 Introduction](#11-introduction)
+      * [JavaScript with Node vs. JavaScript in the Browser](#javascript-with-node-vs-javascript-in-the-browser)
+      * [Executing JavaScript with Node](#executing-javascript-with-node)
+      * [Working with Modules](#working-with-modules)
+      * [Invisible Node Functions](#invisible-node-functions)
+          * [Node Functions Arguments](#node-functions-arguments)
+      * [The Require Cache](#the-require-cache)
+      * [Debugging with Node](#debugging-with-node)
+  * [1.2 How The Backend Works](#12-How-The-Backend-Works)
+  * [1.3 REST](#13-REST)
+  * [1.4 Model View Controller](#14-Model-View-Controller)
+
+## 1.1 Introduction
 
 __Node.js__ is an open-source and cross-platform JavaScript runtime environment. It is a popular tool for almost any kind of project!
 
@@ -36,22 +39,6 @@ A __Node.js__ app runs in a single process, without creating a new thread for ev
 When __Node.js__ performs an I/O operation, like reading from the network, accessing a database or the filesystem, instead of blocking the thread and wasting CPU cycles waiting, __Node.js__ will resume the operations when the response comes back.
 
 This allows __Node.js__ to handle thousands of concurrent connections with a single server without introducing the burden of managing thread concurrency, which could be a significant source of bugs.
-
-## Table of Contents
-
-1. [Introduction](#1-introduction)
-    * [JavaScript with Node vs. JavaScript in the Browser](#javascript-with-node-vs-javascript-in-the-browser)
-    * [Executing JavaScript with Node](#executing-javascript-with-node)
-    * [Working with Modules](#working-with-modules)
-    * [Invisible Node Functions](#invisible-node-functions)
-        * [Node Functions Arguments](#node-functions-arguments)
-    * [The Require Cache](#the-require-cache)
-    * [Debugging with Node](#debugging-with-node)
-2. [How The Backend Works](#2-How-The-Backend-Works)
-3. [REST](#3-REST)
-4. [Model View Controller](#4-Model-View-Controller)
-
-## Introduction
 
 ### JavaScript with Node vs. JavaScript in the Browser
 
@@ -289,15 +276,15 @@ Here's how we debug inside node:
 
 **[⬆ Top](#table-of-contents)**
 
-## How The Backend Works
+## 1.2 How The Backend Works
 
 The web is made up of two main parts, the __Front End__ and the __Back End__.
 
-#### Front End
+#### Frontend
   * Concerned with presentation
   * Fairly easy to understand since it's what we interact with daily on the web
 
-#### Back End
+#### Backend
   * Consists of all the parts of the web that users do not interact with
 
 Let's see how the backend really works. Starting at the beginning the server will receive a request from a client in the form of a URL: 
@@ -375,7 +362,7 @@ This is why it's safe to have a database and a website running on the same serve
 
 [Back to Top](#Table-of-Contents)
 
-## REST
+## 1.3 REST
 
 What is REST?
   * (RE)presentation
@@ -468,7 +455,7 @@ The only thing that matters with REST is that the URL's used represent a resourc
 
 [Back to Top](#Table-of-Contents)
 
-## Model View Controller
+## 1.4 Model View Controller
 
 In order to make highly complex web applications easier to work with, developers use different patterns to lay out there projects to make the code less complex and easier to maintain.
 
@@ -516,11 +503,28 @@ As we can see from this example, the _Model_ handles all the data, the _View_ ha
 [Back to Top](#Table-of-Contents)
 
 # 2. Express.js
+
+## Resources:
   * [Express Documentation](https://expressjs.com/en/5x/api.html)
   * [Express Tutorial (FCC - 4:48:00)](https://www.youtube.com/watch?v=Oe421EPjeBE)
 
+## Table of Contents:
+  * [2.1 Installation](#21-Installation)
+  * [2.2 Starting the Server](#22-Starting-the-server)
+  * [2.3 HTTP Methods](#23-HTTP-methods)
+  * [2.4 Sending Files with HTTP Methods](#24-Sending-files-with-HTTP-methods)
+  * [2.5 Serving Static Files](#25-Serving-static-files)
+  * [2.6 API vs. SSR](#26-API-vs-SSR)
+  * [2.7 Express API](#27-Express-APIs)
+  * [2.8 Route Parameters and Query String Parameters](#28-Route-Parameters-and-Query-String-Parameters)
+  * [2.9 Middleware](#29-Middleware)
+  * [2.10 Advanced HTTP Methods](#210-Advanced-HTTP-Methods)
+  * [2.11 Express Router](#211-Express-Router)
+  * [2.12 Express Controllers](#211-Express-Controllers)
+
 ## 2.1 Installation
-  * [Docs - Installation](https://expressjs.com/en/starter/installing.html)
+
+  * [Express Installation - Docs](https://expressjs.com/en/starter/installing.html)
 
 First create a directory named myapp, or whatever you want your app to be called and navigate into it. Use the `npm init` command to create a `package.json` file for your application:
 ```bash
@@ -536,19 +540,19 @@ npm install express --save
 
 Let's first create a `app.js` file, or `server.js` file whichever you prefer. This will be where all of our server logic will live.
 
-We can now invoke our server and listen for port 3000. When we run the application, we should receive a "`Cannot GET /`" message since our index route has yet to be defined:
+We can now invoke our server and listen for port `9001`. When we run the application, we should receive a "`Cannot GET /`" message since our index route has yet to be defined:
 ```js
-const express = require('express')
-const app = express()
-const port = 3000
+const express = require('express');
+const app = express;()
+const port = 9001;
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+  res.send('Hello World!');
+});
 
 app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`)
-})
+  console.log(`Server listening at http://localhost:${port}`);
+});
 ```
 
 To run our application locally, inside the file's directory we simply run the following command:
@@ -566,7 +570,7 @@ const express = require('express');
 const app = express();
 
 app.get() // read data
-app.post() // insert data
+app.post() // add data
 app.put() // update data
 app.delete() // delete data
 
@@ -588,23 +592,23 @@ DELETE   www.store.com/api/orders/:id   ->   delete order (path params)
 
 Let's now set up some standard routes (paths) for our application:
 ```js
-const express = require('express')
-const app = express()
-const port = 3000
+const express = require('express');
+const app = express();
+const PORT = 9001;
 
 // index route
 app.get('/', (req, res) => {
   res.status(200).send('Hello World!')
-})
+});
 
 // 404 route
 app.all('*', (req, res) => {
-  res.status(404).send('<h1>404</h1>');
+  res.status(404).send('<h1>404</h1>')
 });
 
-app.listen(port, () => {
-  console.log(`Server listening at: http://localhost:${port}`)
-})
+app.listen(PORT, () => {
+  console.log(`Server listening at: http://localhost:${PORT}`)
+});
 ```
 
 The app will respond with “Hello World!” for requests to the root URL (`/`). For every other route, it will respond with a `404 Not Found`.
@@ -627,7 +631,7 @@ const app = express();
 
 app.get('/', (req, res) => {
   // use the 'sendFile' method to serve the index.html file
-  res.sendFile(path.resolve(__dirname, './<path to index.html>'));
+  res.sendFile(path.resolve(__dirname, './index.html'));
 });
 
 ...
@@ -659,11 +663,11 @@ app.use(express.static('./public'));
 
 Now, we can load the files that are in the public directory:
 ```bash
-http://localhost:3000/images/kitten.jpg
-http://localhost:3000/css/style.css
-http://localhost:3000/js/app.js
-http://localhost:3000/images/bg.png
-http://localhost:3000/hello.html
+http://localhost:9001/images/kitten.jpg
+http://localhost:9001/css/style.css
+http://localhost:9001/js/app.js
+http://localhost:9001/images/bg.png
+http://localhost:9001/hello.html
 ```
 
 Let's look at some example code inside our little application:
@@ -676,7 +680,7 @@ const app = express();
 app.use(express.static('./public'));
 
 app.get('/', (req, res) => {
-  res.sendFile(path.resolve(__dirname, './<path to index.html file>'));
+  res.sendFile(path.resolve(__dirname, './index.html'));
 });
 
 ...
@@ -771,7 +775,7 @@ app.get('/', (req, res) => {
 ```json
 [
   { "id": 1, "name": "Ryan", "email": "ryan@gmail.com", "gender": "male" },
-  { "id": 1, "name": "Katie", "email": "katie@gmail.com", "gender": "female" }
+  { "id": 2, "name": "Katie", "email": "katie@gmail.com", "gender": "female" }
 ]
 ```
 
@@ -785,6 +789,8 @@ app.get('/', (req, res) => {
 
 Let's look at some example code with route parameters. Here we'll return all the users' information:
 
+Example URL: `http://localhost:9001/api/users`
+
 ```js
 const express = require('express');
 const app = express();
@@ -798,8 +804,6 @@ app.get('/', (req, res) => {
     <a href="/api/users">Users</a>
   `);
 });
-
-// EXample URL = http://localhost:3000/api/users
 
 // api route (all users)
 app.get('/api/users', (req, res) => {
@@ -811,11 +815,13 @@ app.get('/api/users', (req, res) => {
 ```json
 [
   { "id": 1, "name": "Ryan", "email": "ryan@gmail.com", "gender": "male" },
-  { "id": 1, "name": "Katie", "email": "katie@gmail.com", "gender": "female" }
+  { "id": 2, "name": "Katie", "email": "katie@gmail.com", "gender": "female" }
 ]
 ```
 
 A more realistic approach is to send back specific information about the data we're fetching. This time let's just return the `name` and `email` from our `users`:
+
+Example URL: `http://localhost:9001/api/users`
 
 ```js
 const express = require('express');
@@ -830,8 +836,6 @@ app.get('/', (req, res) => {
     <a href="/api/users">Users</a>
   `);
 });
-
-// Example URL = http://localhost:3000/api/users
 
 // api route (users name and email)
 app.get('/api/users', (req, res) => {
@@ -857,6 +861,8 @@ Now, when we navigate to the `/api/users` route in the browser we see the JSON d
 
 Let's now see how we can get some information about one specific user using Express route parameters:
 
+Example URL: `http://localhost:9001/api/users/1`
+
 ```js
 const express = require('express');
 const app = express();
@@ -870,8 +876,6 @@ app.get('/', (req, res) => {
     <a href="/api/users">Users</a>
   `);
 });
-
-// Example URL = http://localhost:3000/api/users/1
 
 // api route (single user)
 app.get('/api/users/:userID', (req, res) => {
@@ -898,6 +902,9 @@ Of course, if our ID's are set up as strings (which is quite typical) then we ca
 #### Error Handling with Route Parameters
 
 What if the user gives us an ID that doesn't make sense or is not present in our database? Let's see how we can handle this situation:
+
+Example URL: `http://localhost:9001/api/users/1`
+
 ```js
 const express = require('express');
 const app = express();
@@ -910,8 +917,6 @@ app.get('/', (req, res) => {
     <a href="/api/users">Users</a>
   `);
 });
-
-// Example URL = http://localhost:3000/api/users/1
 
 // api route (single user)
 app.get('/api/users/:userID', (req, res) => {
@@ -998,8 +1003,8 @@ app.get('/about', (req, res) => {
   res.send('About page');
 });
 
-app.listen(3000, () => {
-  console.log(`Server listening at port 3000...`);
+app.listen(9001, () => {
+  console.log(`Server listening at port 9001...`);
 });
 ```
 
@@ -1032,8 +1037,8 @@ app.get('/about', logger, (req, res) => {
   res.send('About page');
 });
 
-app.listen(3000, () => {
-  console.log(`Server listening at port 3000...`);
+app.listen(9001, () => {
+  console.log(`Server listening at port 9001...`);
 });
 ```
 
@@ -1071,8 +1076,8 @@ app.get('/about', logger, (req, res) => {
 });
 // -> GET /about 2021
 
-app.listen(3000, () => {
-  console.log(`Server listening at port 3000...`);
+app.listen(9001, () => {
+  console.log(`Server listening at port 9001...`);
 });
 ```
 
@@ -1134,8 +1139,8 @@ app.get('/api/items', (req, res) => {
   res.send('Items');
 });
 
-app.listen(3000, () => {
-  console.log(`Server listening at port 3000...`);
+app.listen(9001, () => {
+  console.log(`Server listening at port 9001...`);
 });
 ```
 
@@ -1208,8 +1213,8 @@ app.get('/', (req, res) => {
   res.send('Home');
 });
 
-app.listen(3000, () => {
-  console.log(`Server listening at port 3000...`);
+app.listen(9001, () => {
+  console.log(`Server listening at port 9001...`);
 });
 ```
 
@@ -1249,9 +1254,9 @@ module.exports = authorize;
 
 > Error 401 stands for 'unauthorized'.
 
-Now, if we navigate to our home page (`http://localhost:3000`), products page (`http://localhost:3000/products`), or any of the routes, we get `401` 'Unauthorized'. This is because there is no path in our `app.use()`.
+Now, if we navigate to our home page (`http://localhost:9001`), products page (`http://localhost:9001/products`), or any of the routes, we get `401` 'Unauthorized'. This is because there is no path in our `app.use()`.
 
-But, if we provide the correct query string parameters (`http://localhost:3000/?user=ryan`), we successfully get our home page. This is because the condition from our `authorize.js` file is  and we got o 'next'.
+But, if we provide the correct query string parameters (`http://localhost:9001/?user=ryan`), we successfully get our home page. This is because the condition from our `authorize.js` file is  and we got o 'next'.
 
 This is incredibly powerful because inside our `authorize` function we add the user (`{ name: 'ryan', id: 3 }`) which means we can now check for that query string parameter as well as accessing the users information (`name`, `id`, etc.).
 
@@ -1278,8 +1283,8 @@ app.get('/api/items', (req, res) => {
   res.send('Items');
 });
 
-app.listen(3000, () => {
-  console.log(`Server listening at port 3000...`);
+app.listen(9001, () => {
+  console.log(`Server listening at port 9001...`);
 });
 ```
 #### Expected Output:
@@ -1398,7 +1403,7 @@ app.get('/api/people', (req, res) => {
 });
 
 // start server...
-app.listen(3000, () => console.log(`Server listening at port 3000...`));
+app.listen(9001, () => console.log(`Server listening at port 9001...`));
 ```
 
 Output:
@@ -1451,7 +1456,7 @@ app.post('/login', (req, res) => {
 });
 
 // start server...
-app.listen(3000, () => console.log(`Server listening at port 3000...`));
+app.listen(9001, () => console.log(`Server listening at port 9001...`));
 ```
 
 Parsing the data with the `urlencoded` method adds the values of the form to the `req.body`. Let's now add some more logic to this example.
@@ -1478,7 +1483,7 @@ app.post('/login', (req, res) => {
 });
 
 // start server...
-app.listen(3000, () => console.log(`Server listening at port 3000...`));
+app.listen(9001, () => console.log(`Server listening at port 9001...`));
 ```
 
 #### Method 2: JavaScript Example
