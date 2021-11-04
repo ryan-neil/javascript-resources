@@ -17,7 +17,7 @@ This guide will attempt to explain some of the most important concepts any JavaS
 3. [Closures](#3-Closures)
 4. [Immediately Invoked Function Expressions (IIFE)](#4-Immediately-Invoked-Function-Expressions-IIFE)
 5. [Hoisting](#5-Hoisting)
-6. [Async JavaScript](#Async-JavaScript) \
+6. [Async JavaScript](#6-Async-JavaScript) \
   6.1 [Callbacks](#61-Callbacks) \
   6.2 [Promises](#62-Promises) \
   6.3 [Async & Await](#63-Async-&-Await)
@@ -783,7 +783,7 @@ To avoid bugs, always declare all variables at the beginning of every scope.
 
 ### 6.1 Callbacks
 #### Resources:
-  * [Callback Function - MDN Web Docs](https://developer.mozilla.org/en-US/docs/Glossary/Callback_function)
+  * [Callback Functions - MDN Web Docs](https://developer.mozilla.org/en-US/docs/Glossary/Callback_function)
   * [Callbacks in JavaScript Explained! - Code with Ania Kubów](https://www.youtube.com/watch?v=cNjIUSDnb9k)
 
 #### What is a Callback?
@@ -825,7 +825,7 @@ In the above example our `button` element changes color instantaneously.
 
 Now, what if we don't want our `toggle` function to be invoked right away? What if we only want it to change color when we click the button? To achieve this we will be using a _callback function_ to call our `toggle` function when certain requirements are met.
 
-To achieve this lets look at a JavaScript method that takes functions as one of its parameters, the `addEventListener()` method:
+To achieve this lets look at the JavaScript method `addEventListener()` which takes a function as one of its parameters:
 ```js
 const button = document.querySelector('.btn');
 
@@ -837,7 +837,7 @@ const toggle = () => {
 button.addEventListener('click', toggle);
 ```
 
-One way to think of this is, our function `toggle` is just sitting, waiting to burst and once we call it (`toggle()`, add the parenthesis) it gets to release all of it's JavaScript logic and power.
+One way to think of this is, our function `toggle` is just sitting, waiting to burst and once we call it (`toggle()`) it gets to release all of it's JavaScript logic and power.
 
 However, without the parenthesis it is considered a _callback function_.
 ```js
@@ -862,24 +862,18 @@ button.addEventListener('click', () => {
 
 In the examples above the function is only being called by the outer function/method `addEventListener` if a click has been made. All 3 of the second arguments being passed into `addEventListener` are callback functions and they all achieve the same exact result.
 
-Just to be very clear:
+Just to be very clear, `toggle` with the parenthesis will be called immediately and cannot be used or considered a callback function:
 ```js
-// good
-toggle === () => {}
-
 // bad
-toggle() !== () => {}
-```
-
-toggle with the parenthesis will be called immediately and cannot be used or considered a callback function:
-```js
-// this does not work
 button.addEventListener('click', toggle())
+
+// good
+button.addEventListener('click', toggle)
 ```
 
 #### Passing Parameters to a Callback Function
 
-JavaScript runs code sequentially from top to bottom. However, sometimes we don't want this behavior to happen. Sometimes we want a function to be called after something else happens or a certain condition is met. This is called _asynchronous programming_.
+In order to understand how to achieve this, we first need to discuss _asynchronous programming_ in JavaScript. JavaScript runs code sequentially from top to bottom. However, sometimes we don't want this behavior to happen. Sometimes we want a function to be called after something else happens or a certain condition is met. This is called _asynchronous programming_.
 
 Let's look at an example:
 ```js
@@ -898,9 +892,11 @@ setTimeout(firstAction, 3000);
 // -> Im the second action!
 ```
 
-As we can see above, even though the `secondAction` is called after 2 seconds because it's in the `firstAction` function which happens to be inside the `setTimeout` and is a callback function that won't be called until 3 seconds has passed, the string `'Im the second action'` will only be called after all of our code runs and therefore after 4 seconds has passed.
+As we can see above, even though the `secondAction` is called after 2 seconds, since it's in the `firstAction` function which happens to be inside the `setTimeout` and is a callback function that won't be called until 3 seconds has passed, the string `'Im the second action'` will only be called after all of our code runs and therefore after 4 seconds has passed.
 
-Now, with understanding asynchronous programming a bit more, how would be pass a parameter into the first action? How about something like this?
+Now that we understanding asynchronous programming in JavaScript a bit more, how would we pass a parameter into the first action? 
+
+How about something like this?:
 ```js
 function firstAction(callback) {
   console.log('Im the first action!');
@@ -958,7 +954,7 @@ setTimeout( () => firstAction( () => secondAction('Im the second action!'), 'Im 
 
 Let's add one more layer for fun:
 ```js
-// add our third parameter and invoke it
+// add our third parameter ('anotherCallback') and invoke it
 function firstAction(callback, message, anotherCallback) {
   console.log(message);
   setTimeout(callback, 1000);
