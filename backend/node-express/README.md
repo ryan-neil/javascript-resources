@@ -11,11 +11,11 @@ These are just the fundamentals of Node and Express. This guide is not meant to 
 #
 
 # 1. Node.js
-## Resources:
+### Resources:
 * [Introduction to Node.js](https://nodejs.dev/learn)
 * [Node.js Docs](https://nodejs.org/api/all.html)
 
-## Table of Contents:
+### Table of Contents:
   * [1.1 Introduction](#11-introduction)
       * [JavaScript with Node vs. JavaScript in the Browser](#javascript-with-node-vs-javascript-in-the-browser)
       * [Executing JavaScript with Node](#executing-javascript-with-node)
@@ -504,11 +504,11 @@ As we can see from this example, the _Model_ handles all the data, the _View_ ha
 
 # 2. Express.js
 
-## Resources:
+### Resources:
   * [Express Documentation](https://expressjs.com/en/5x/api.html)
   * [Express Tutorial (FCC - 4:48:00)](https://www.youtube.com/watch?v=Oe421EPjeBE)
 
-## Table of Contents:
+### Table of Contents:
   * [2.1 Installation](#21-Installation)
   * [2.2 Starting the Server](#22-Starting-the-server)
   * [2.3 HTTP Methods](#23-HTTP-methods)
