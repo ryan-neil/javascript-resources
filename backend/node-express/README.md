@@ -590,6 +590,8 @@ DELETE   www.store.com/api/orders/:id   ->   delete order (path params)
 
 > Note: By default, all browsers perform a GET request.
 
+> PUT vs. PATCH: Both are for updating the resource BUT the general assumption for when using PUT is when we are trying to replace the existing resource and PATCH is for a partial update.
+
 Let's now set up some standard routes (paths) for our application:
 ```js
 const express = require('express');
