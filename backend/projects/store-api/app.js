@@ -6,10 +6,10 @@ const express = require('express');
 const app = express();
 
 // imports
-const connectDB = require('./src/db/connect');
 const productsRouter = require('./src/routes/products');
 const errorHandlerMiddleware = require('./src/middleware/error-handler');
 const notFoundMiddleware = require('./src/middleware/not-found');
+const connectDB = require('./src/db/connect');
 
 // express json middleware
 app.use(express.json());
