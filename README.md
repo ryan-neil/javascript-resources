@@ -803,7 +803,7 @@ if (status === 'offline') {
 
 ### Optional Chaining `?.`
 
-Optional chaining ?. in JavaScript is a safe way to access nested object properties, even if an intermediate property doesn’t exist.
+Optional chaining `?.` in JavaScript is a safe way to access nested object properties, even if an intermediate property doesn’t exist.
 
 **The issue**:
 
@@ -850,14 +850,10 @@ alert(user?.address?.street); // undefined (no error)
 ```js
 let user = {}; // a user without "address" property
 
-alert(user.address.street); // Error!
-```
+// okay
+alert(user.address ? user.address.street : undefined); // undefined (no error)
 
-vs.
-
-```js
-let user = {}; // user has no address
-
+// better
 alert(user?.address?.street); // undefined (no error)
 ```
 
